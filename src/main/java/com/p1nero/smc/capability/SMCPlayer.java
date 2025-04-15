@@ -1,6 +1,11 @@
 package com.p1nero.smc.capability;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
@@ -9,23 +14,25 @@ import java.util.function.Consumer;
  * 懒得换成DataKey了将就一下吧
  */
 public class SMCPlayer {
-    private boolean canEnterPBiome;
-    private int deathCount;
+    private int level;
 
-    public boolean canEnterPBiome() {
-        return canEnterPBiome;
+    public void setLevel(int level) {
+        this.level = level;
     }
 
-    public void setCanEnterPBiome(boolean canEnterPBiome) {
-        this.canEnterPBiome = canEnterPBiome;
+    public int getLevel() {
+        return level;
     }
 
-    public void setDeathCount(int deathCount) {
-        this.deathCount = deathCount;
+    @Nullable
+    private PathfinderMob currentTalkingEntity;
+
+    public void setCurrentTalkingEntity(@Nullable PathfinderMob currentTalkingEntity) {
+        this.currentTalkingEntity = currentTalkingEntity;
     }
 
-    public int getDeathCount() {
-        return deathCount;
+    public @Nullable PathfinderMob getCurrentTalkingEntity() {
+        return currentTalkingEntity;
     }
 
     private CompoundTag data = new CompoundTag();
@@ -56,21 +63,25 @@ public class SMCPlayer {
     }
 
     public void saveNBTData(CompoundTag tag){
+        tag.putInt("tradeLevel", level);
         tag.put("customDataManager", data);
-        tag.putBoolean("canEnterBiome", canEnterPBiome);
-        tag.putInt("deathCount", deathCount);
     }
 
     public void loadNBTData(CompoundTag tag){
+        level = tag.getInt("tradeLevel");
         data = tag.getCompound("customDataManager");
-        canEnterPBiome = tag.getBoolean("canEnterBiome");
-        deathCount = tag.getInt("deathCount");
     }
 
     public void copyFrom(SMCPlayer old){
         data = old.data;
-        canEnterPBiome = old.canEnterPBiome;
-        deathCount = old.deathCount;
+        this.level = old.level;
+    }
+
+    public void tick(Player player){
+        if(this.currentTalkingEntity != null && this.currentTalkingEntity.isAlive()){
+            this.currentTalkingEntity.getLookControl().setLookAt(player);
+            this.currentTalkingEntity.getNavigation().stop();
+        }
     }
 
 }

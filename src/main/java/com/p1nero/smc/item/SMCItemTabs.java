@@ -26,5 +26,9 @@ public class SMCItemTabs {
                 output.accept(SMCRegistrateItems.IRON_SKILLET_LEVEL3);
                 output.accept(SMCRegistrateItems.IRON_SKILLET_LEVEL4);
                 output.accept(SMCRegistrateItems.IRON_SKILLET_LEVEL5);
+                output.accept(SMCRegistrateItems.SPATULA_V2);
+                output.accept(SMCRegistrateItems.SPATULA_V3);
+                output.accept(SMCRegistrateItems.SPATULA_V4);
+                output.accept(SMCRegistrateItems.SPATULA_V5);
             }).build());
 }

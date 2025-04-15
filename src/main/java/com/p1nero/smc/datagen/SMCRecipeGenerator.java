@@ -17,23 +17,43 @@ public class SMCRecipeGenerator extends SMCRecipeProvider implements IConditionB
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, SMCRegistrateItems.IRON_SKILLET_LEVEL2.get(), 1)
-                .requires(CDItems.SKILLET.get(), 9)
+                .requires(CDItems.SKILLET.get(), 5)
                 .unlockedBy(getHasName(CDItems.SKILLET.get()), has(CDItems.SKILLET.get()))
                 .save(consumer);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, SMCRegistrateItems.IRON_SKILLET_LEVEL3.get(), 1)
-                .requires(SMCRegistrateItems.IRON_SKILLET_LEVEL2.get(), 9)
+                .requires(SMCRegistrateItems.IRON_SKILLET_LEVEL2.get(), 5)
                 .unlockedBy(getHasName(CDItems.SKILLET.get()), has(CDItems.SKILLET.get()))
                 .save(consumer);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, SMCRegistrateItems.IRON_SKILLET_LEVEL4.get(), 1)
-                .requires(SMCRegistrateItems.IRON_SKILLET_LEVEL3.get(), 9)
+                .requires(SMCRegistrateItems.IRON_SKILLET_LEVEL3.get(), 5)
                 .unlockedBy(getHasName(CDItems.SKILLET.get()), has(CDItems.SKILLET.get()))
                 .save(consumer);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, SMCRegistrateItems.IRON_SKILLET_LEVEL5.get(), 1)
-                .requires(SMCRegistrateItems.IRON_SKILLET_LEVEL4.get(), 9)
+                .requires(SMCRegistrateItems.IRON_SKILLET_LEVEL4.get(), 5)
                 .unlockedBy(getHasName(CDItems.SKILLET.get()), has(CDItems.SKILLET.get()))
+                .save(consumer);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, SMCRegistrateItems.SPATULA_V2.get(), 1)
+                .requires(CDItems.SPATULA, 5)
+                .unlockedBy(getHasName(CDItems.SPATULA.get()), has(CDItems.SPATULA.get()))
+                .save(consumer);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, SMCRegistrateItems.SPATULA_V3.get(), 1)
+                .requires(SMCRegistrateItems.SPATULA_V2, 5)
+                .unlockedBy(getHasName(CDItems.SPATULA.get()), has(CDItems.SPATULA.get()))
+                .save(consumer);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, SMCRegistrateItems.SPATULA_V4.get(), 1)
+                .requires(SMCRegistrateItems.SPATULA_V3, 5)
+                .unlockedBy(getHasName(CDItems.SPATULA.get()), has(CDItems.SPATULA.get()))
+                .save(consumer);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, SMCRegistrateItems.SPATULA_V5.get(), 1)
+                .requires(SMCRegistrateItems.SPATULA_V4, 5)
+                .unlockedBy(getHasName(CDItems.SPATULA.get()), has(CDItems.SPATULA.get()))
                 .save(consumer);
     }
 

@@ -2,6 +2,7 @@ package com.p1nero.smc.datagen;
 
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.item.SMCItems;
+import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
 import dev.xkmc.cuisinedelight.init.registrate.CDItems;
 import net.minecraft.advancements.*;
@@ -12,6 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeAdvancementProvider;
 import org.jetbrains.annotations.NotNull;
@@ -42,13 +44,14 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                     .display(CDItems.SKILLET.asItem(),
                             Component.translatable(pre + SkilletManCoreMod.MOD_ID),
                             Component.translatable(pre + SkilletManCoreMod.MOD_ID + ".desc"),
-                            new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/block/bg.png"),
+                            new ResourceLocation( "textures/block/bricks.png"),
                             FrameType.TASK, false, false, false)
-                    .addCriterion(SkilletManCoreMod.MOD_ID, ChangeDimensionTrigger.TriggerInstance.changedDimensionTo(SMCDimension.P_SKY_ISLAND_LEVEL_KEY))
+                    .addCriterion(SkilletManCoreMod.MOD_ID, new ImpossibleTrigger.TriggerInstance())
                     .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID), existingFileHelper);
 
 //            //打boss的成就
-//            Advancement seed = registerAdvancement(root, "seed", FrameType.TASK, DOTEItems.HOLY_RADIANCE_SEED.get());
+            Advancement no_your_power = registerAdvancement(root, "no_your_power", FrameType.TASK, Blocks.BARRIER);
+            Advancement first_5star_skillet = registerAdvancement(root, "first_5star_skillet", FrameType.TASK, SMCRegistrateItems.IRON_SKILLET_LEVEL5.get());
 //            Advancement core = registerAdvancement(seed, "core", FrameType.TASK, DOTEItems.CORE_OF_HELL.get());
 //            Advancement goldenFlame = registerAdvancement(seed, "golden_flame", FrameType.TASK, DOTEItems.WITHERC.get());
 //            Advancement end = registerAdvancement(goldenFlame, "book", FrameType.TASK, DOTEItems.BOOK_OF_ENDING.get());

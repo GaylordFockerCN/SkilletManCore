@@ -1,19 +1,19 @@
-package com.p1nero.smc.item.custom.skillets;
+package com.p1nero.smc.item.custom.spatulas;
 
-import com.p1nero.smc.item.custom.SMCCuisineSkilletItem;
+import com.p1nero.smc.item.custom.SMCSpatulaItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
-public class SkilletV2 extends SMCCuisineSkilletItem {
-    public SkilletV2(Block block, Properties properties) {
-        super(block, properties);
+public class SpatulaV2 extends SMCSpatulaItem {
+    public SpatulaV2(Properties pProperties) {
+        super(pProperties);
     }
 
     @Override
     public @NotNull Component getName(@NotNull ItemStack itemStack) {
         return super.getDescription().copy().append(Component.literal(" ⭐⭐").withStyle(ChatFormatting.GREEN));
     }
+
 }

@@ -19,6 +19,7 @@ public class SMCBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         leavesBlock(SMCBlocks.BETTER_STRUCTURE_BLOCK);
+        blockWithItem(SMCBlocks.MAIN_COOK_BLOCK);
     }
 
     private void saplingBlock(RegistryObject<Block> blockRegistryObject) {

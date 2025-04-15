@@ -2,7 +2,10 @@ package com.p1nero.smc.event;
 
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
+import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
@@ -57,7 +60,11 @@ public class LivingEntityListener {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onEntityHurt(LivingHurtEvent event) {
-
+        if(event.getEntity() instanceof Villager && event.getSource().getEntity() instanceof Player player) {
+            event.setAmount(0);
+            event.setCanceled(true);
+            player.displayClientMessage(SkilletManCoreMod.getInfo("customer_is_first").withStyle(ChatFormatting.RED), true);
+        }
 
     }
 

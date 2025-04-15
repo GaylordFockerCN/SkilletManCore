@@ -26,7 +26,7 @@ public abstract class SMCLangProvider extends LanguageProvider {
     }
 
     public void addInfo(String key, String content){
-        this.add("info.the_casket_of_reveries." + key, content);
+        this.add("info.smc." + key, content);
     }
 
     public void addTask(String key, String task, String content){

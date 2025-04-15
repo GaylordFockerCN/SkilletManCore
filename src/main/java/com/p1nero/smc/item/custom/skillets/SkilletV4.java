@@ -19,7 +19,7 @@ public class SkilletV4 extends SMCCuisineSkilletItem {
 
     @Override
     public @NotNull Component getName(@NotNull ItemStack itemStack) {
-        return super.getDescription().copy().append(Component.literal(" ⭐ 4").withStyle(ChatFormatting.DARK_PURPLE));
+        return super.getDescription().copy().append(Component.literal(" ⭐⭐⭐⭐").withStyle(ChatFormatting.DARK_PURPLE));
     }
 
 }
