@@ -1,0 +1,246 @@
+[
+  {
+    "section": "Duel of the End dimension DLC",
+    "disciplines": [
+      {
+        "discipline": "Textures & Model",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "Jobin Ghy",
+              "Ink Hiro",
+              "NHblock (白露)",
+              "RSGed",
+              "ⅩⅧ凌"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "Programming",
+        "titles": [
+          {
+            "title": "World",
+            "names": [
+              "P1nero",
+              "Corrupt_Dog (腐犬)",
+              "太阳照常升起",
+              "ShelMarow",
+              "修缘哉"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "Narrative Designer",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "NHblock (白露)"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "Environment Artist",
+        "titles": [
+          {
+            "title": "Church",
+            "names": [
+              "El_mal"
+            ]
+          },
+          {
+            "title": "Final Arena",
+            "names": [
+              "RSGed"
+            ]
+          },
+          {
+            "title": "Biome Distribution",
+            "names": [
+              "P1nero"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "Animator",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "Asanginxst",
+              "MoGlasses",
+              "Corrupt_Dog (腐犬)"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "section": "凝星制作组",
+    "disciplines": [
+      {
+        "discipline": "整合现作者",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "太阳照常升起",
+              "HantOnN（24岁_事指挥官）"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "整合原作者",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "Jobin Ghy",
+              "Kindom（奋斗吧清峰）"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "任务制作",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "太刀虾萧萧"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "建筑制作",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "RSGed (kk)",
+              "一撮骨灰",
+              "El_mal"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "美术制作",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "Ink_Hiro（喵紙）",
+              "马了还想马",
+              "一只路过的小吴"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "背景设定",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "一只无情码字机"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "设备支持",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              " 斑鸠（zhifan）"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "技术支持",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "longlong",
+              "普白丁（zdyyy）",
+              "孤豪_",
+              "东非大野猪（Tairitsu）",
+              "凌",
+              "Corrupt_Dog (腐犬)",
+              "P1nero",
+              "NHblock (白露)"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "吉祥物",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "蒂蒂"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "section": "贡献人员",
+    "disciplines": [
+      {
+        "discipline": "",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "番茄布丁",
+              "dlack（厄老师）",
+              "流光（Liuguang233）",
+              "伯皆无人（Oldsmar）",
+              "环环（Huanhuan_）",
+              "忘幽（Creation-YM）",
+              "jiojio卷不动啦",
+              "一纸空文",
+              "马铃薯不是大土豆（豆纱粉）",
+              "豁浪玄黄（yellow_sea）"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "section": "Special Thanks",
+    "disciplines": [
+      {
+        "discipline": "",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "Epic Fight",
+              "Weapons of Miracles",
+              "Epic Fight - Indestructible",
+              "Minecraft Forge",
+              "and to all the friends who participated in the beta test and provided skins."
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

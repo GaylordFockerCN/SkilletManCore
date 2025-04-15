@@ -1,0 +1,26 @@
+{
+  "required": true,
+  "package": "com.p1nero.smc.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "AnimationsMixin",
+    "AntitheusDarknessMixin",
+    "AttackAnimationMixin",
+    "AttributesMixin",
+    "BasicMultipleAttackAnimationMixin",
+    "CuisineSkilletItemMixin",
+    "MainFrameAnimationMixin",
+    "ServerGamePacketListenerImplMixin",
+    "WOMAnimationsMixin",
+    "WorldOptionsMixin"
+  ],
+  "client": [
+    "CreateWorldScreenMixin",
+    "WorldListEntryMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "duel_of_the_end.mixin-refmap.json",
+  "minVersion": "0.8"
+}

@@ -1,0 +1,48 @@
+package com.p1nero.smc.client.keymapping;
+
+import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.network.SMCPacketHandler;
+import com.p1nero.smc.network.PacketRelay;
+import com.p1nero.smc.network.packet.serverbound.RequestExitSpectatorPacket;
+import com.p1nero.smc.worldgen.dimension.SMCDimension;
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import org.lwjgl.glfw.GLFW;
+
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = {Dist.CLIENT})
+public class KeyMappings {
+
+	public static final MyKeyMapping EXIT_SPECTATOR = new MyKeyMapping(buildKey("exit_spectator"), GLFW.GLFW_KEY_ENTER, "key.categories.smc");
+
+	public static String buildKey(String name){
+		return "key.smc." + name;
+	}
+
+	@SubscribeEvent
+	public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
+		event.register(EXIT_SPECTATOR);
+	}
+
+	@Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID, value = Dist.CLIENT)
+	public static class KeyPressHandler {
+
+		@SubscribeEvent
+		public static void onClientTick(TickEvent.ClientTickEvent event) {
+			if(event.phase.equals(TickEvent.Phase.END)){
+				while (EXIT_SPECTATOR.consumeClick()){
+					if (Minecraft.getInstance().player != null && Minecraft.getInstance().screen == null && !Minecraft.getInstance().isPaused()) {
+						if(Minecraft.getInstance().player.isSpectator() && Minecraft.getInstance().player.level().dimension() == SMCDimension.P_SKY_ISLAND_LEVEL_KEY) {
+							PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new RequestExitSpectatorPacket());
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+}
