@@ -12,8 +12,8 @@ public class SMCCommands {
     @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event) {
         CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
-        SetConfigCommand.register(dispatcher);
-        SMCTimeCommand.register(dispatcher);
+        SMCSetConfigCommand.register(dispatcher);
         SMCSetWorldLevelCommand.register(dispatcher);
+//        SMCTimeCommand.register(dispatcher);
     }
 }

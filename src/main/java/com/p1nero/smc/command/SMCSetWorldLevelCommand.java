@@ -9,7 +9,7 @@ import net.minecraft.network.chat.Component;
 
 public class SMCSetWorldLevelCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(Commands.literal("dote")
+        dispatcher.register(Commands.literal("smc")
                 .then(Commands.literal("set_world_level").requires((commandSourceStack) -> commandSourceStack.hasPermission(2))
                         .then(Commands.argument("value", IntegerArgumentType.integer())
                                 .executes((context) -> {

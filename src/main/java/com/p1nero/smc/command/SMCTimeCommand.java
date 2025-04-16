@@ -13,7 +13,7 @@ import net.minecraft.server.level.ServerLevel;
  */
 public class SMCTimeCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(Commands.literal("dote")
+        dispatcher.register(Commands.literal("smc")
                 .then(Commands.literal("time").requires((commandSourceStack) -> commandSourceStack.hasPermission(2))
                         .then(Commands.literal("set")
                                 .then(Commands.literal("day").executes((context) -> setTime(context.getSource(), 3000)))

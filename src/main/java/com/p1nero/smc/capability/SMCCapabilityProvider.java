@@ -16,10 +16,10 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID)
 public class SMCCapabilityProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
-    public static Capability<SMCPlayer> DOTE_PLAYER = CapabilityManager.get(new CapabilityToken<>() {});
+    public static Capability<SMCPlayer> SMC_PLAYER = CapabilityManager.get(new CapabilityToken<>() {});
 
     private SMCPlayer SMCPlayer = null;
     
@@ -35,7 +35,7 @@ public class SMCCapabilityProvider implements ICapabilityProvider, INBTSerializa
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction direction) {
-        if(capability == DOTE_PLAYER){
+        if(capability == SMC_PLAYER){
             return optional.cast();
         }
 
@@ -54,35 +54,34 @@ public class SMCCapabilityProvider implements ICapabilityProvider, INBTSerializa
         createTCRPlayer().loadNBTData(tag);
     }
 
-    @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID)
-    public static class Registration {
-        @SubscribeEvent
-        public static void attachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
-            if (event.getObject() instanceof Player) {
-               if(!event.getObject().getCapability(SMCCapabilityProvider.DOTE_PLAYER).isPresent()){
-                   event.addCapability(new ResourceLocation(SkilletManCoreMod.MOD_ID, "tcr_player"), new SMCCapabilityProvider());
-               }
+    @SubscribeEvent
+    public static void attachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
+        if (event.getObject() instanceof Player) {
+            if(!event.getObject().getCapability(SMCCapabilityProvider.SMC_PLAYER).isPresent()){
+                event.addCapability(new ResourceLocation(SkilletManCoreMod.MOD_ID, "tcr_player"), new SMCCapabilityProvider());
             }
         }
-
-        @SubscribeEvent
-        public static void onPlayerCloned(PlayerEvent.Clone event) {
-            event.getOriginal().reviveCaps();//。。。怎么之前没加这个也可以，现在没加不行
-            if(event.isWasDeath()) {
-                event.getOriginal().getCapability(SMCCapabilityProvider.DOTE_PLAYER).ifPresent(oldStore -> {
-                    event.getEntity().getCapability(SMCCapabilityProvider.DOTE_PLAYER).ifPresent(newStore -> {
-                        newStore.copyFrom(oldStore);
-                    });
-                });
-            }
-        }
-
-        @SubscribeEvent
-        public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
-            event.register(SMCPlayer.class);
-        }
-
     }
 
+    @SubscribeEvent
+    public static void onPlayerCloned(PlayerEvent.Clone event) {
+        event.getOriginal().reviveCaps();//。。。怎么之前没加这个也可以，现在没加不行
+        if(event.isWasDeath()) {
+            event.getOriginal().getCapability(SMCCapabilityProvider.SMC_PLAYER).ifPresent(oldStore -> {
+                event.getEntity().getCapability(SMCCapabilityProvider.SMC_PLAYER).ifPresent(newStore -> {
+                    newStore.copyFrom(oldStore);
+                });
+            });
+        }
+    }
+
+    @SubscribeEvent
+    public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+        event.register(SMCPlayer.class);
+    }
+
+    public static SMCPlayer getSMCPlayer(Player player) {
+        return player.getCapability(SMCCapabilityProvider.SMC_PLAYER).orElse(new SMCPlayer());
+    }
 
 }

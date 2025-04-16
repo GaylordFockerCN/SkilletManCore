@@ -24,10 +24,8 @@ import net.minecraft.world.entity.player.Player;
  * @author LZY
  */
 public class DataManager {
-    public static BoolData keyGot =  new BoolData("key_got",false);
-    public static BoolData lootGot =  new BoolData("loot_got",false);
-    public static BoolData BarunTalked =  new BoolData("barun_talked",false);
-    public static BoolData BarunGiftGot =  new BoolData("barun_gift_got",false);
+    public static BoolData firstJoint =  new BoolData("first_joint",false);
+    public static BoolData firstGiftGot =  new BoolData("first_gift_got",false);
     public static void putData(Player player, String key, double value) {
         getDOTEPlayer(player).putDouble(key, value);
     }
@@ -53,7 +51,7 @@ public class DataManager {
     }
 
     public static SMCPlayer getDOTEPlayer(Player player) {
-        return player.getCapability(SMCCapabilityProvider.DOTE_PLAYER).orElseThrow(() -> new IllegalStateException("Player " + player.getName().getContents() + " has no DOTE Player Capability!"));
+        return player.getCapability(SMCCapabilityProvider.SMC_PLAYER).orElseThrow(() -> new IllegalStateException("Player " + player.getName().getContents() + " has no DOTE Player Capability!"));
     }
 
 

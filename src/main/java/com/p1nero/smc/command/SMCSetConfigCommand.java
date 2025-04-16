@@ -11,9 +11,9 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.common.ForgeConfigSpec;
 
-public class SetConfigCommand {
+public class SMCSetConfigCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(Commands.literal("dote")
+        dispatcher.register(Commands.literal("smc")
                 .then(Commands.literal("set_config").requires((commandSourceStack) -> commandSourceStack.hasPermission(2))
                         .then(Commands.literal("enable_better_structure_block_load")
                                 .then(Commands.argument("value", BoolArgumentType.bool())

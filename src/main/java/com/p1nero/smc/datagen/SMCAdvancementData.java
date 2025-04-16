@@ -118,8 +118,8 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             SkilletManCoreMod.LOGGER.info("advancement:\""+name+"\" is null!");
             return false;
         }
-        AdvancementProgress _ap = serverPlayer.getAdvancements().getOrStartProgress(_adv);
-        return _ap.isDone();
+        AdvancementProgress advancementProgress = serverPlayer.getAdvancements().getOrStartProgress(_adv);
+        return advancementProgress.isDone();
     }
 
 }

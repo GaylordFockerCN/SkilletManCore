@@ -40,7 +40,24 @@ public class SMCLangGenerator extends SMCLangProvider {
 
         add(SMCEntities.GOLDEN_FLAME.get(), "金焰神王");
 
-        add(SMCEntities.START_NPC.get(), "NPC");
+        add(SMCEntities.START_NPC.get(), "[ 村民 ]: ");
+        add(SMCEntities.START_NPC.get() + "_empty", "§c⬇对话以开始经营⬇");
+        add(SMCEntities.START_NPC.get().getDescriptionId() + "_hired", "§a绿宝石数：");
+        add(SMCEntities.START_NPC.get().getDescriptionId() + "_guider", "§b⬇对话以查看");
+        this.addDialog(SMCEntities.START_NPC, 0, "客官可是要在此地歇一歇因果？");
+        this.addDialogChoice(SMCEntities.START_NPC, 0, "入职 §a[花费 10 绿宝石]");
+        this.addDialogChoice(SMCEntities.START_NPC, 1, "雇佣 §a[花费 10000 绿宝石]");
+        this.addDialogChoice(SMCEntities.START_NPC, 2, "告辞");
+        this.addDialogChoice(SMCEntities.START_NPC, 3, "领取新手福利");
+        this.addDialogChoice(SMCEntities.START_NPC, 4, "新手帮助");
+        this.addDialogChoice(SMCEntities.START_NPC, 5, "领取全部收入");
+        this.addDialogChoice(SMCEntities.START_NPC, 6, "升级店铺");
+        this.addDialogChoice(SMCEntities.START_NPC, 7, "返回");
+        this.addDialog(SMCEntities.START_NPC, 1, "恩公有何贵干？");
+        this.addDialog(SMCEntities.START_NPC, 2, "本店亏损已久，承蒙恩公相助！");
+        this.addDialog(SMCEntities.START_NPC, 3, "已全部取出！");
+        this.addDialog(SMCEntities.START_NPC, 4, "已升级！");
+        this.addDialog(SMCEntities.START_NPC, 5, "领取你的厨具吧！[由于作者没有建筑水平，因此还特地补偿了一些建筑方块]");
 
     }
 }

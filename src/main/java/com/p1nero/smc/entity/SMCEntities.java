@@ -32,7 +32,7 @@ import yesman.epicfight.gameasset.Armatures;
 public class SMCEntities {
 	public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, SkilletManCoreMod.MOD_ID);
 
-	public static final RegistryObject<EntityType<StartNPC>> START_NPC = register("start_man",
+	public static final RegistryObject<EntityType<StartNPC>> START_NPC = register("start_npc",
 			EntityType.Builder.of(StartNPC::new, MobCategory.MONSTER).sized(0.6f, 1.8f));
 
 	public static final RegistryObject<EntityType<BlackHoleEntity>> BLACK_HOLE = register("black_hole",
@@ -54,8 +54,6 @@ public class SMCEntities {
 	public static void setPatch(EntityPatchRegistryEvent event) {
 		//BOSS
 		event.getTypeEntry().put(GOLDEN_FLAME.get(), (entity) -> GoldenFlamePatch::new);
-		//NPC
-		event.getTypeEntry().put(START_NPC.get(), (entity) -> ()-> new NPCPatch(()-> Animations.BIPED_IDLE, null, null, null));
 	}
 
 	/**
@@ -65,9 +63,6 @@ public class SMCEntities {
 	public static void setArmature(ModelBuildEvent.ArmatureBuild event) {
 		//Boss
 		Armatures.registerEntityTypeArmature(GOLDEN_FLAME.get(), Armatures.SKELETON);
-
-		//NPC
-		Armatures.registerEntityTypeArmature(START_NPC.get(), Armatures.BIPED);
 	}
 
 	@SubscribeEvent

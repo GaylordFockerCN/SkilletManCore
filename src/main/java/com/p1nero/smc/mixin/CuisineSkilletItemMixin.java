@@ -15,7 +15,7 @@ import vectorwing.farmersdelight.common.item.SkilletItem;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 
-@Mixin(value = CuisineSkilletItem.class, remap = false)
+@Mixin(value = CuisineSkilletItem.class)
 public abstract class CuisineSkilletItemMixin extends SkilletItem {
 
     public CuisineSkilletItemMixin(Block block, Properties properties) {

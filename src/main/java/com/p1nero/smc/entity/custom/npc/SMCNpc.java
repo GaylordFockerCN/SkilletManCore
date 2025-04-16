@@ -1,5 +1,6 @@
 package com.p1nero.smc.entity.custom.npc;
 
+import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.archive.SMCArchiveManager;
 import com.p1nero.smc.entity.ai.goal.NpcDialogueGoal;
 import com.p1nero.smc.entity.api.HomePointEntity;
@@ -26,6 +27,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.Merchant;
@@ -35,13 +37,13 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class SMCNpc extends PathfinderMob implements HomePointEntity, NpcDialogue, Merchant {
+public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDialogue, Merchant {
     @Nullable
     private Player conversingPlayer;
     @Nullable
     private Player tradingPlayer;
     protected static final EntityDataAccessor<BlockPos> HOME_POS = SynchedEntityData.defineId(SMCNpc.class, EntityDataSerializers.BLOCK_POS);
-    public SMCNpc(EntityType<? extends PathfinderMob> entityType, Level level) {
+    public SMCNpc(EntityType<? extends Villager> entityType, Level level) {
         super(entityType, level);
         setHomePos(getOnPos());
     }
@@ -87,11 +89,13 @@ public abstract class SMCNpc extends PathfinderMob implements HomePointEntity, N
     }
 
     @Override
-    protected @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
+    public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         if (player instanceof ServerPlayer serverPlayer) {
             this.lookAt(player, 180.0F, 180.0F);
             if (this.getConversingPlayer() == null) {
-                PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCDialoguePacket(this.getId(), SMCArchiveManager.BIOME_PROGRESS_DATA.toNbt(new CompoundTag())), serverPlayer);
+                CompoundTag compoundTag = new CompoundTag();
+                compoundTag.putBoolean("first_gift_got", DataManager.firstGiftGot.get(player));
+                PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCDialoguePacket(this.getId(), SMCArchiveManager.BIOME_PROGRESS_DATA.toNbt(compoundTag)), serverPlayer);
                 this.setConversingPlayer(serverPlayer);
             }
         }

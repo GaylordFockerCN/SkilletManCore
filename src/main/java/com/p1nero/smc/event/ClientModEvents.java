@@ -8,9 +8,9 @@ import com.p1nero.smc.entity.custom.boss.goldenflame.client.BlackHoleRenderer;
 import com.p1nero.smc.entity.custom.boss.goldenflame.client.FlameCircleRenderer;
 import com.p1nero.smc.entity.custom.boss.goldenflame.client.GoldenFlamePatchedRenderer;
 import com.p1nero.smc.entity.custom.boss.goldenflame.client.GoldenFlameRenderer;
-import com.p1nero.smc.entity.custom.npc.start_npc.client.StartNPCRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.VillagerRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -36,7 +36,7 @@ public class ClientModEvents{
 
 
         //NPC
-        EntityRenderers.register(SMCEntities.START_NPC.get(), StartNPCRenderer::new);
+        EntityRenderers.register(SMCEntities.START_NPC.get(), VillagerRenderer::new);
 
     }
 
@@ -60,8 +60,6 @@ public class ClientModEvents{
         EntityRendererProvider.Context context = event.getContext();
         //BOSS
         event.addPatchedEntityRenderer(SMCEntities.GOLDEN_FLAME.get(), (entityType) -> new GoldenFlamePatchedRenderer(() -> Meshes.SKELETON, context, entityType).initLayerLast(context, entityType));
-        //NPC
-        event.addPatchedEntityRenderer(SMCEntities.START_NPC.get(), (entityType) -> new PHumanoidRenderer<>(() -> Meshes.BIPED, context, entityType).initLayerLast(context, entityType));
     }
 
 }

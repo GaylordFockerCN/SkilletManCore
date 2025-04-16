@@ -10,7 +10,8 @@ import net.minecraft.world.entity.npc.Villager;
  */
 public class VillagerTasks {
 
-    public static ImmutableList<Pair<Integer, ? extends BehaviorControl<? super Villager>>> getTCRVillagerCorePackage() {
-        return null;
+    public static ImmutableList<Pair<Integer, ? extends BehaviorControl<? super Villager>>> getSMCVillagerCorePackage() {
+        //反击和对话
+        return ImmutableList.of(Pair.of(0, new NPCDialogueTask()));
     }
 }

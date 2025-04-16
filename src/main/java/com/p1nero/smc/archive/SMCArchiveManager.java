@@ -1,23 +1,12 @@
 package com.p1nero.smc.archive;
 
 import com.p1nero.smc.SkilletManCoreMod;
-import com.p1nero.smc.capability.SMCCapabilityProvider;
-import com.p1nero.smc.datagen.SMCAdvancementData;
-import com.p1nero.smc.entity.api.LevelableEntity;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.packet.SyncArchivePacket;
-import com.p1nero.smc.network.packet.clientbound.BroadcastMessagePacket;
-import com.p1nero.smc.network.packet.clientbound.OpenEndScreenPacket;
-import com.p1nero.smc.worldgen.dimension.SMCDimension;
-import com.p1nero.smc.worldgen.portal.SMCTeleporter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -43,7 +32,7 @@ public class SMCArchiveManager {
     }
 
     private static int worldLevel = 0;
-    public static final BiomeProgressData BIOME_PROGRESS_DATA = new BiomeProgressData();
+    public static final ProgressData BIOME_PROGRESS_DATA = new ProgressData();
     private static boolean noPlotMode = false;
 
     public static void setNoPlotMode() {
@@ -63,18 +52,17 @@ public class SMCArchiveManager {
             SMCArchiveManager.worldLevel = worldLevel;
             return true;
         } else {
-            SkilletManCoreMod.LOGGER.info("failed to set world level. world level should between [0, 2]");
+            SkilletManCoreMod.LOGGER.info("failed to set world level. world level should between [1, 3]");
             return false;
         }
     }
 
     public static String getWorldLevelName(){
         return switch (worldLevel){
-            case 0 -> "N";
-            case 1 -> "Ⅰ";
-            case 2 -> "Ⅱ";
-            case 3 -> "Ⅲ";
-            case 4 -> "Ⅳ";
+            case 0 -> "Ⅰ";
+            case 1 -> "Ⅱ";
+            case 2 -> "Ⅲ";
+            case 3 -> "Ⅳ";
             default -> throw new IllegalStateException("Unexpected worldLevel value: " + worldLevel);
         };
     }
@@ -144,7 +132,7 @@ public class SMCArchiveManager {
         }
     }
 
-    public static class BiomeProgressData {
+    public static class ProgressData {
 
         private boolean guideSummoned;
         private boolean boss1fought;
@@ -235,7 +223,7 @@ public class SMCArchiveManager {
             this.choice3 = choice3;
         }
 
-        public BiomeProgressData(){
+        public ProgressData(){
 
         }
 

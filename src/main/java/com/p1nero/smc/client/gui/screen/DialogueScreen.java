@@ -23,6 +23,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -33,17 +34,29 @@ import java.util.List;
 public class DialogueScreen extends Screen {
     public static final ResourceLocation MY_BACKGROUND_LOCATION = new ResourceLocation(SkilletManCoreMod.MOD_ID,"textures/gui/background.png");
     protected final DialogueAnswerComponent dialogueAnswer;
+    @Nullable
     protected final Entity entity;
     public final int typewriterInterval;
     private int typewriterTimer = 0;
+    @Nullable
     EntityType<?> entityType;
 
-    public DialogueScreen(Entity entity, EntityType<?> entityType) {
+    public DialogueScreen(@NotNull Entity entity) {
         super(entity.getDisplayName());
         typewriterInterval = DOTEConfig.TYPEWRITER_EFFECT_INTERVAL.get();
         this.dialogueAnswer = new DialogueAnswerComponent(this.buildDialogueAnswerName(entity.getDisplayName().copy().withStyle(ChatFormatting.YELLOW)).append(": "));
         this.entity = entity;
-        this.entityType = entityType;
+        this.entityType = entity.getType();
+    }
+
+    public DialogueScreen(Component name, @Nullable Entity entity) {
+        super(name);
+        typewriterInterval = DOTEConfig.TYPEWRITER_EFFECT_INTERVAL.get();
+        this.dialogueAnswer = new DialogueAnswerComponent(name);
+        this.entity = entity;
+        if(entity != null) {
+            this.entityType = entity.getType();
+        }
     }
 
     /**
@@ -85,7 +98,7 @@ public class DialogueScreen extends Screen {
      * @param component The message {@link Component}.
      */
     protected void setDialogueAnswer(Component component) {
-        PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new AddDialogPacket(entity.getDisplayName(), component, true));
+        PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new AddDialogPacket(entity == null ? title : entity.getDisplayName(), component, true));
         if(DOTEConfig.ENABLE_TYPEWRITER_EFFECT.get()){
             this.dialogueAnswer.updateTypewriterDialogue(component);
         }else {
@@ -113,7 +126,7 @@ public class DialogueScreen extends Screen {
      * @see NpcPlayerInteractPacket
      */
     protected void finishChat(byte interactionID) {
-        PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new NpcPlayerInteractPacket(this.entity.getId(), interactionID));
+        PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new NpcPlayerInteractPacket(this.entity == null ? -1 :this.entity.getId(), interactionID));
         super.onClose();
     }
 
@@ -154,10 +167,7 @@ public class DialogueScreen extends Screen {
      */
     @Override
     public void renderBackground(@NotNull GuiGraphics guiGraphics) {
-        if (this.getMinecraft().level != null) {
-//            guiGraphics.blit(MY_BACKGROUND_LOCATION, 0, 0, 0, 0.0F, 0.0F, this.width, this.height, 214, 252);
-            MinecraftForge.EVENT_BUS.post(new ScreenEvent.BackgroundRendered(this, guiGraphics));
-        }
+
     }
 
     @Override

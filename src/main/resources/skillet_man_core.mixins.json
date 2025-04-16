@@ -21,6 +21,6 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "refmap": "duel_of_the_end.mixin-refmap.json",
+  "refmap": "skillet_man_core.mixin-refmap.json",
   "minVersion": "0.8"
 }

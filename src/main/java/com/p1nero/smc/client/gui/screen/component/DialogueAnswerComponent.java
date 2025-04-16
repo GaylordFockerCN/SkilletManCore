@@ -22,7 +22,7 @@ public class DialogueAnswerComponent {
     //完整的分割后的对话
     private final List<NpcDialogueElement> fullSplitLines;
     private Component message;
-    private final Component name;
+    private Component name;
     public int height;
     //打字机效果的下标
     private int index;
@@ -37,6 +37,10 @@ public class DialogueAnswerComponent {
         this.fullSplitLines = new ArrayList<>();
         name = message;
         this.updateDialogue(Component.empty());
+    }
+
+    public void setName(Component name) {
+        this.name = name;
     }
 
     public boolean shouldRenderOption() {

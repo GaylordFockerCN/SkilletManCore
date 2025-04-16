@@ -119,6 +119,11 @@ public class DialogueComponentBuilder {
         return Component.literal("\n").append(component);//换行符有效
     }
 
+    public MutableComponent buildEntityAnswer(int i) {
+        Component component = Component.translatable(entityType+".dialog"+i);
+        return Component.literal("[").append(entityType.getDescription().copy().withStyle(ChatFormatting.YELLOW)).append(Component.literal("]: ").append(component));
+    }
+
     public MutableComponent buildDialogueAnswer(int skinID , int i) {
         Component component = Component.translatable(entityType+".dialog"+skinID+"_"+i);
 

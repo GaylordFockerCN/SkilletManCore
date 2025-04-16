@@ -15,6 +15,26 @@ import java.util.function.Consumer;
  */
 public class SMCPlayer {
     private int level;
+    private int stage;
+
+    private int moneyCount;
+
+    public int getMoneyCount() {
+        return moneyCount;
+    }
+
+    public void setMoneyCount(int moneyCount) {
+        this.moneyCount = moneyCount;
+        //TODO 同步到客户端
+    }
+
+    public void setStage(int stage) {
+        this.stage = stage;
+    }
+
+    public int getStage() {
+        return stage;
+    }
 
     public void setLevel(int level) {
         this.level = level;
@@ -64,17 +84,26 @@ public class SMCPlayer {
 
     public void saveNBTData(CompoundTag tag){
         tag.putInt("tradeLevel", level);
+        tag.putInt("tradeStage", stage);
+        tag.putInt("money_count", moneyCount);
         tag.put("customDataManager", data);
     }
 
     public void loadNBTData(CompoundTag tag){
         level = tag.getInt("tradeLevel");
+        stage = tag.getInt("tradeStage");
+        moneyCount = tag.getInt("money_count");
         data = tag.getCompound("customDataManager");
     }
 
     public void copyFrom(SMCPlayer old){
         data = old.data;
         this.level = old.level;
+        this.stage = old.stage;
+    }
+
+    public void syncToClient(ServerPlayer serverPlayer) {
+
     }
 
     public void tick(Player player){

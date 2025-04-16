@@ -11,6 +11,9 @@ import com.p1nero.smc.network.packet.clientbound.SyncUuidPacket;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
 import dev.xkmc.cuisinedelight.content.item.CuisineSkilletItem;
 import dev.xkmc.cuisinedelight.content.item.SpatulaItem;
+import net.blay09.mods.waystones.block.ModBlocks;
+import net.blay09.mods.waystones.block.WaystoneBlock;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -18,6 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
@@ -64,6 +68,13 @@ public class PlayerEventListener {
                     SMCAdvancementData.getAdvancement("no_your_power", ((ServerPlayer) event.player));
                 }
             }
+        }
+    }
+    @SubscribeEvent
+    public static void onPlayerClickBlock(PlayerInteractEvent event){
+        //传送石就是重生点
+        if(event.getEntity() instanceof ServerPlayer serverPlayer && event.getLevel().getBlockState(event.getPos()).is(ModBlocks.waystone)) {
+            serverPlayer.setRespawnPosition(serverPlayer.serverLevel().dimension(), event.getEntity().blockPosition(), 0.0F, true, true);
         }
     }
 

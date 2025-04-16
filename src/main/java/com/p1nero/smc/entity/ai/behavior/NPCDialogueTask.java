@@ -32,7 +32,6 @@ public class NPCDialogueTask extends Behavior<Mob> {
     @Override
     protected void tick(@NotNull ServerLevel level, @NotNull Mob mob, long p_22553_) {
         if(mob instanceof NpcDialogue npc && npc.getConversingPlayer() != null){
-//            mob.lookAt(npc.getConversingPlayer(), 30, 30);
             mob.getLookControl().setLookAt(npc.getConversingPlayer());
         }
         mob.getNavigation().stop();
