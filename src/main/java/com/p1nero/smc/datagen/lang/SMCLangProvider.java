@@ -153,6 +153,11 @@ public abstract class SMCLangProvider extends LanguageProvider {
     public void addDialog(RegistryObject<? extends EntityType<?>> entity, int i, String text) {
         this.add(entity.get()+".dialog" + i, text);
     }
+
+    public void addDialog(RegistryObject<? extends EntityType<?>> entity, String answer, String text) {
+        this.add(entity.get()+".dialog" + answer, text);
+    }
+
     public void addDialogChoice(RegistryObject<? extends EntityType<?>> entity, int i, String text) {
         this.add(entity.get()+".choice" + i, text);
     }

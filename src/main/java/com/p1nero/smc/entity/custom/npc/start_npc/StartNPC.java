@@ -156,6 +156,11 @@ public class StartNPC extends SMCNpc {
     }
 
     public void onSecond() {
+
+        if(this.position().distanceTo(this.getHomePos().getCenter()) > 2.9) {
+            this.setPos(this.getHomePos().getCenter());
+        }
+
         long currentTime = this.level().getDayTime();
         if(!level().isClientSide && this.isHired() && currentTime > 600 && currentTime < 12700){
             this.getEntityData().set(INCOME, this.getIncome() + this.getIncomeSpeed());
@@ -204,49 +209,49 @@ public class StartNPC extends SMCNpc {
     public void openDialogueScreen(CompoundTag senderData) {
         LinkListStreamDialogueScreenBuilder builder = new LinkListStreamDialogueScreenBuilder(this, name.copy().append(": "));
 
-        DialogueComponentBuilder choiceBuilder = new DialogueComponentBuilder(this);
+        DialogueComponentBuilder dialogueComponentBuilder = new DialogueComponentBuilder(this);
 
         if (isHired()) {
 
             if(isWorkingTime()) {
-                TreeNode takeMoney = new TreeNode(choiceBuilder.buildDialogueAnswer(3), choiceBuilder.buildDialogueOption(5))
+                TreeNode takeMoney = new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(3), dialogueComponentBuilder.buildDialogueOption(5))
                         .execute((byte) 4);
-                TreeNode main = new TreeNode(choiceBuilder.buildDialogueAnswer(1), choiceBuilder.buildDialogueOption(7))
+                TreeNode main = new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(1), dialogueComponentBuilder.buildDialogueOption(7))
                         .addChild(takeMoney)//全部取出
-                        .addLeaf(choiceBuilder.buildDialogueOption(6, this.getUpgradeNeed()), (byte) 5)//升级
-                        .addLeaf(choiceBuilder.buildDialogueOption(2), (byte) 3);//告辞
+                        .addLeaf(dialogueComponentBuilder.buildDialogueOption(6, this.getUpgradeNeed()), (byte) 5)//升级
+                        .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3);//告辞
                 takeMoney.addChild(main);
                 builder.setAnswerRoot(main);//告辞
             } else {
-                builder.setAnswerRoot(new TreeNode(choiceBuilder.buildDialogueAnswer(8))
-                        .addLeaf(choiceBuilder.buildDialogueOption(9), (byte) 3)
-                        .addLeaf(choiceBuilder.buildDialogueOption(10), (byte) 7));
+                builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(8))
+                        .addLeaf(dialogueComponentBuilder.buildDialogueOption(9), (byte) 3)
+                        .addLeaf(dialogueComponentBuilder.buildDialogueOption(10), (byte) 7));
             }
 
         } else if (isGuider()) {
             //入职给予新手福利，锅铲和锅，建筑方块，初始食材订购机等等
             if (senderData.getBoolean("first_gift_got")) {
-                builder.setAnswerRoot(new TreeNode(choiceBuilder.buildDialogueAnswer(1))
+                builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(1))
                         // 新手帮助
-                        .addChild(new TreeNode(choiceBuilder.buildDialogueAnswer(6), choiceBuilder.buildDialogueOption(4))
-                                .addChild(new TreeNode(choiceBuilder.buildDialogueAnswer(7), choiceBuilder.buildDialogueOption(8))
-                                        .addLeaf(choiceBuilder.buildDialogueOption(2), (byte) 3)))
-                        .addLeaf(choiceBuilder.buildDialogueOption(2), (byte) 3)); //告辞
+                        .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(6), dialogueComponentBuilder.buildDialogueOption(4))
+                                .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(7), dialogueComponentBuilder.buildDialogueOption(8))
+                                        .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3)))
+                        .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3)); //告辞
             } else {
-                builder.setAnswerRoot(new TreeNode(choiceBuilder.buildDialogueAnswer(1))
-                        .addLeaf(choiceBuilder.buildDialogueOption(3), (byte) 6) //新手福利
+                builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(1))
+                        .addLeaf(dialogueComponentBuilder.buildDialogueOption(3), (byte) 6) //新手福利
                         // 新手帮助
-                        .addChild(new TreeNode(choiceBuilder.buildDialogueAnswer(6), choiceBuilder.buildDialogueOption(4))
-                                .addChild(new TreeNode(choiceBuilder.buildDialogueAnswer(7), choiceBuilder.buildDialogueOption(8))
-                                        .addLeaf(choiceBuilder.buildDialogueOption(2), (byte) 3)))
-                        .addLeaf(choiceBuilder.buildDialogueOption(2), (byte) 3)); //告辞
+                        .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(6), dialogueComponentBuilder.buildDialogueOption(4))
+                                .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(7), dialogueComponentBuilder.buildDialogueOption(8))
+                                        .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3)))
+                        .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3)); //告辞
             }
         } else {
             //初始态
-            builder.setAnswerRoot(new TreeNode(choiceBuilder.buildDialogueAnswer(0))
-                    .addLeaf(choiceBuilder.buildDialogueOption(0, 100), (byte) 1) //入职
-                    .addLeaf(choiceBuilder.buildDialogueOption(1, 1000), (byte) 2) //雇佣
-                    .addLeaf(choiceBuilder.buildDialogueOption(2), (byte) 3)); //告辞
+            builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(0))
+                    .addLeaf(dialogueComponentBuilder.buildDialogueOption(0, 100), (byte) 1) //入职
+                    .addLeaf(dialogueComponentBuilder.buildDialogueOption(1, 1000), (byte) 2) //雇佣
+                    .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3)); //告辞
         }
 
         if (!builder.isEmpty()) {
@@ -259,7 +264,7 @@ public class StartNPC extends SMCNpc {
      */
     @Override
     public void handleNpcInteraction(ServerPlayer player, byte interactionID) {
-        DialogueComponentBuilder answerBuilder = new DialogueComponentBuilder(this);
+        DialogueComponentBuilder dialogueComponentBuilder = new DialogueComponentBuilder(this);
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
         //购买
         if (interactionID == 1) {
@@ -271,7 +276,7 @@ public class StartNPC extends SMCNpc {
                 this.setState(GUIDER);
                 this.setOwnerUUID(player.getUUID());
                 this.playSound(SoundEvents.VILLAGER_CELEBRATE);
-                player.displayClientMessage(answerBuilder.buildEntityAnswer(2), false);
+                player.displayClientMessage(dialogueComponentBuilder.buildEntityAnswer(2), false);
             }
         }
 
@@ -286,7 +291,7 @@ public class StartNPC extends SMCNpc {
                 this.setOwnerUUID(player.getUUID());
                 this.setIncomeSpeed(1);
                 this.playSound(SoundEvents.VILLAGER_CELEBRATE);
-                player.displayClientMessage(answerBuilder.buildEntityAnswer(2), false);
+                player.displayClientMessage(dialogueComponentBuilder.buildEntityAnswer(2), false);
             }
         }
 
@@ -311,7 +316,7 @@ public class StartNPC extends SMCNpc {
 
         if(interactionID == 6) {
             DataManager.firstGiftGot.put(player, true);
-            player.displayClientMessage(answerBuilder.buildEntityAnswer(5), false);
+            player.displayClientMessage(dialogueComponentBuilder.buildEntityAnswer(5), false);
             ItemUtil.addItem(player, CDItems.SKILLET.asItem(), 1);
             ItemUtil.addItem(player, CDItems.SPATULA.asItem(), 1);
             ItemUtil.addItem(player, Blocks.CRAFTING_TABLE.asItem(), 1);
@@ -355,11 +360,11 @@ public class StartNPC extends SMCNpc {
     }
 
     /**
-     * 推不动
+     * 小范围内可推，不能推出范围
      */
     @Override
     public boolean isPushable() {
-        return false;
+        return this.position().distanceTo(this.getHomePos().getCenter()) < 3.5;
     }
 
 }

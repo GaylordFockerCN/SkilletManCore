@@ -5,6 +5,7 @@ import com.p1nero.smc.block.SMCBlocks;
 import com.p1nero.smc.client.SMCSounds;
 import com.p1nero.smc.effect.SMCEffects;
 import com.p1nero.smc.entity.SMCEntities;
+import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.worldgen.biome.SMCBiomes;
 import net.minecraft.data.PackOutput;
@@ -32,7 +33,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("resting", "休息中");
         this.addInfo("all_taken", "已全部取出！");
         this.addInfo("customer_is_first", "§c顾客就是上帝！");
-        this.addInfo("no_your_power", "这份力量并不属于你...设定上你只能使用平底锅");
+        this.addInfo("no_your_power", "Oh 不, 这份力量并不属于你...设定上你只能使用平底锅");
 
         this.addEffect(SMCEffects.BURNT, "灼伤");
 
@@ -42,6 +43,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("no_your_power", "忠于平底锅", "企图使用其他武器的力量");
         this.addAdvancement("first_5star_skillet", "第一个五星锅！", "将一把平底锅升到五星");
         this.addAdvancement("fake_sleep", "睡觉时间到！", "企图唤醒你的员工，但你永远无法唤醒一个正在装睡的人。");
+        this.addAdvancement("try_push", "碰碰车", "企图推开核心NPC，太可恶了！");
 
         this.add(SMCRegistrateItems.SPATULA_V2.get(), "锅铲");
         this.add(SMCRegistrateItems.SPATULA_V3.get(), "锅铲");
@@ -82,8 +84,9 @@ public class SMCLangGenerator extends SMCLangProvider {
 
         add(SMCEntities.CUSTOMER.get(), "§e人畜无害的顾客§r");
         this.addDialog(SMCEntities.CUSTOMER, -1, "（你感受到面前的这位客人有一股强大的气场）");
-        this.addDialogChoice(SMCEntities.CUSTOMER, -1, "难不成是武林前辈？");
-        this.addDialogChoice(SMCEntities.CUSTOMER, -2, "吸一口凉气");
+
+        Customer.customers.forEach(customerData -> customerData.generateTranslation(this));
+        Customer.specialCustomers.forEach(customerData -> customerData.generateTranslation(this));
 
     }
 }

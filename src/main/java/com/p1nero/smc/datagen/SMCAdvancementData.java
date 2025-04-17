@@ -53,6 +53,7 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement noYourPower = registerAdvancement(root, "no_your_power", FrameType.TASK, Blocks.BARRIER);
             Advancement first5StarSkillet = registerAdvancement(root, "first_5star_skillet", FrameType.TASK, SMCRegistrateItems.IRON_SKILLET_LEVEL5.get());
             Advancement fakeSleep = registerAdvancement(root, "fake_sleep", FrameType.TASK, Items.RED_BED);
+            Advancement tryPush = registerAdvancement(root, "try_push", FrameType.TASK, Blocks.PISTON);
 
         }
 

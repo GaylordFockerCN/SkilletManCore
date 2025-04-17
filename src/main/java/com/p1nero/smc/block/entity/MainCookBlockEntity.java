@@ -6,7 +6,7 @@ import com.p1nero.smc.block.custom.INpcDialogueBlock;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
-import com.p1nero.smc.entity.custom.npc.start_npc.Customer;
+import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.start_npc.StartNPC;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;

@@ -1,7 +1,7 @@
 package com.p1nero.smc.entity.ai.behavior;
 
 import com.google.common.collect.ImmutableMap;
-import com.p1nero.smc.entity.custom.npc.start_npc.Customer;
+import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.behavior.Behavior;

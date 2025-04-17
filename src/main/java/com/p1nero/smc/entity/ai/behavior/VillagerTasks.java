@@ -3,7 +3,7 @@ package com.p1nero.smc.entity.ai.behavior;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import com.p1nero.smc.entity.custom.npc.SMCNpc;
-import com.p1nero.smc.entity.custom.npc.start_npc.Customer;
+import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import net.minecraft.world.entity.ai.behavior.BehaviorControl;
 import net.minecraft.world.entity.npc.Villager;
 

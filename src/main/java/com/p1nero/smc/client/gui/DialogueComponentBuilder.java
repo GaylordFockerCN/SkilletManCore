@@ -102,6 +102,11 @@ public class DialogueComponentBuilder {
         return Component.literal(newLine ? "\n" : "").append(component);//换行符有效
     }
 
+    public MutableComponent buildDialogueAnswer(String s) {
+        Component component = Component.translatable(entityType + ".dialog" + s);
+        return Component.literal("\n").append(component);//换行符有效
+    }
+
     public MutableComponent buildDialogueAnswer(int i) {
         Component component = Component.translatable(entityType + ".dialog" + i);
         return Component.literal("\n").append(component);//换行符有效

@@ -1,10 +1,12 @@
-package com.p1nero.smc.entity.custom.npc.start_npc;
+package com.p1nero.smc.entity.custom.npc.customer;
 
 import com.mojang.serialization.Dynamic;
 import com.p1nero.smc.block.entity.MainCookBlockEntity;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
+import com.p1nero.smc.client.gui.DialogueComponentBuilder;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
+import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.entity.ai.behavior.VillagerTasks;
 import com.p1nero.smc.entity.custom.npc.SMCNpc;
 import net.minecraft.client.Minecraft;
@@ -27,12 +29,25 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Customer extends SMCNpc {
 
     protected static final EntityDataAccessor<Boolean> TRADED = SynchedEntityData.defineId(Customer.class, EntityDataSerializers.BOOLEAN);//是否交易过
     protected static final EntityDataAccessor<Float> DISTANCE = SynchedEntityData.defineId(Customer.class, EntityDataSerializers.FLOAT);//距炉子距离
     protected static final EntityDataAccessor<Boolean> IS_SPECIAL = SynchedEntityData.defineId(Customer.class, EntityDataSerializers.BOOLEAN);//是否是隐士，可以给予武林秘籍
-    protected static final EntityDataAccessor<Integer> ID = SynchedEntityData.defineId(Customer.class, EntityDataSerializers.INT);//村民编号，用于区别对话
+    protected static final EntityDataAccessor<Integer> SMC_ID = SynchedEntityData.defineId(Customer.class, EntityDataSerializers.INT);//村民编号，用于区别对话
+
+    public static final List<CustomerData> customers = new ArrayList<>();
+    public static final List<CustomerData> specialCustomers = new ArrayList<>();
+
+    static {
+        //TODO 添加各种神人
+    }
+
+    protected CustomerData customerData = customers.get(0);
+
     protected final BlockPos spawnPos;
     private int dieTimer = 0;
     public Customer(EntityType<? extends Villager> entityType, Level level) {
@@ -84,9 +99,18 @@ public class Customer extends SMCNpc {
         return super.getTeamColor();
     }
 
+    public int getSMCId() {
+        return this.getEntityData().get(SMC_ID);
+    }
+
+    public void setSMCId(int id) {
+        this.getEntityData().set(SMC_ID, id);
+    }
+
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
+        this.getEntityData().define(SMC_ID, 0);
         this.getEntityData().define(TRADED, false);
         this.getEntityData().define(DISTANCE, 0.0F);
         this.getEntityData().define(IS_SPECIAL, false);
@@ -140,12 +164,12 @@ public class Customer extends SMCNpc {
 
     @Override
     public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
-        if(!level().isClientSide) {
-            SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
-            //每五个顾客随机一个隐士
-            if(smcPlayer.getLevel() % 5 == 0) {
-                this.setSpecial(true);
-            }
+        SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
+        //每五个顾客随机一个隐士
+        if(smcPlayer.getLevel() % 5 == 0) {
+
+        } else {
+
         }
         return super.mobInteract(player, hand);
     }
@@ -153,22 +177,26 @@ public class Customer extends SMCNpc {
     @Override
     protected CompoundTag getDialogData(CompoundTag compoundTag, ServerPlayer serverPlayer) {
         compoundTag.putBoolean("is_special", isSpecial());
+        compoundTag.putInt("smc_id", getSMCId());
         return super.getDialogData(compoundTag, serverPlayer);
     }
 
     /**
      * 一句寒暄，一个提交选项。
+     * customer _ 实体编号 _ 是否为特殊顾客 _ 对话编号
+     *            1 ~ 100    _s            0 ~ 4
+     * 0:需求
+     * 1:选项 （交付）
+     * 2：100%时的评价
+     * 3：80%时的评价
+     * 4：60%时的评价
      * 如果是特殊村民则弹出 气场不凡 的提示
      */
     @Override
     public void openDialogueScreen(CompoundTag senderData) {
-
         LinkListStreamDialogueScreenBuilder builder = new LinkListStreamDialogueScreenBuilder(this);
-        //防止延迟，所以还是用nbt判断好
-        if(senderData.getBoolean("is_special")) {
-
-        }
-
+        DialogueComponentBuilder dialogueComponentBuilder = new DialogueComponentBuilder(this);
+        this.customerData.getDialogScreen(senderData, builder, dialogueComponentBuilder);
         if(!builder.isEmpty()){
             Minecraft.getInstance().setScreen(builder.build());
         }
@@ -176,7 +204,20 @@ public class Customer extends SMCNpc {
 
     @Override
     public void handleNpcInteraction(ServerPlayer player, byte interactionID) {
-
+        if(interactionID == -1) {
+            player.getMainHandItem().shrink(1);
+        } else {
+            this.customerData.handle(player, interactionID);
+        }
         super.handleNpcInteraction(player, interactionID);
     }
+
+    public static abstract class CustomerData{
+        public abstract void generateTranslation(SMCLangGenerator generator);
+        public abstract void getDialogScreen(CompoundTag serverData, LinkListStreamDialogueScreenBuilder screenBuilder, DialogueComponentBuilder dialogueComponentBuilder);
+
+        public abstract void handle(ServerPlayer serverPlayer, int interactId);
+
+    }
+
 }

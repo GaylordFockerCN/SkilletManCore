@@ -2,11 +2,10 @@ package com.p1nero.smc.entity;
 
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.entity.custom.boss.goldenflame.GoldenFlamePatch;
-import com.p1nero.smc.capability.epicfight.NPCPatch;
 import com.p1nero.smc.entity.custom.boss.goldenflame.BlackHoleEntity;
 import com.p1nero.smc.entity.custom.boss.goldenflame.FlameCircleEntity;
 import com.p1nero.smc.entity.custom.boss.goldenflame.GoldenFlame;
-import com.p1nero.smc.entity.custom.npc.start_npc.Customer;
+import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.start_npc.StartNPC;
 import com.p1nero.smc.event.ClientModEvents;
 import net.minecraft.resources.ResourceLocation;
@@ -25,7 +24,6 @@ import net.minecraftforge.registries.RegistryObject;
 import yesman.epicfight.api.client.forgeevent.PatchedRenderersEvent;
 import yesman.epicfight.api.forgeevent.EntityPatchRegistryEvent;
 import yesman.epicfight.api.forgeevent.ModelBuildEvent;
-import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.Armatures;
 
 

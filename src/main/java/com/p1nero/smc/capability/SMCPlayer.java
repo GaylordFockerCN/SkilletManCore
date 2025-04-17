@@ -78,7 +78,7 @@ public class SMCPlayer {
     }
 
     public void setLevel(int level) {
-        this.level = level;
+        this.level = level;//TODO 双端
     }
 
     public void levelUp() {
