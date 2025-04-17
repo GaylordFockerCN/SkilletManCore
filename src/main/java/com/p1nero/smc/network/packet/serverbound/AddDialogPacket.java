@@ -1,6 +1,6 @@
 package com.p1nero.smc.network.packet.serverbound;
 
-import com.p1nero.smc.DOTEConfig;
+import com.p1nero.smc.SMCConfig;
 import com.p1nero.smc.network.packet.BasePacket;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.FriendlyByteBuf;
@@ -27,9 +27,9 @@ public record AddDialogPacket(Component name, Component content, boolean broadca
     @Override
     public void execute(@Nullable Player playerEntity) {
 //        DOTEArchiveManager.addDialog(name, content);
-        if(playerEntity != null && broadcast && DOTEConfig.BROADCAST_DIALOG.get()){
+        if(playerEntity != null && broadcast && SMCConfig.BROADCAST_DIALOG.get()){
             for(Player player : playerEntity.level().players()){
-                if(player != playerEntity && player.getPosition(1.0f).distanceTo(playerEntity.getPosition(1.0f)) < DOTEConfig.BROADCAST_DISTANCE.get()){
+                if(player != playerEntity && player.getPosition(1.0f).distanceTo(playerEntity.getPosition(1.0f)) < SMCConfig.BROADCAST_DISTANCE.get()){
                     player.displayClientMessage(Component.literal("[").append(name.copy().withStyle(ChatFormatting.YELLOW)).append(Component.literal("]:")), false);
                     player.displayClientMessage(content, false);
                 }

@@ -1,6 +1,6 @@
 package com.p1nero.smc.entity.custom.boss;
 
-import com.p1nero.smc.DOTEConfig;
+import com.p1nero.smc.SMCConfig;
 import com.p1nero.smc.block.entity.spawner.BossSpawnerBlockEntity;
 import com.p1nero.smc.client.BossMusicPlayer;
 import com.p1nero.smc.entity.ai.goal.AttemptToGoHomeGoal;
@@ -97,7 +97,7 @@ public abstract class SMCBoss extends SMCMonster implements HomePointEntity, IWa
 
     @Override
     public float getHomeRadius() {
-        return DOTEConfig.SPAWNER_BLOCK_PROTECT_RADIUS.get();
+        return SMCConfig.SPAWNER_BLOCK_PROTECT_RADIUS.get();
     }
 
     public void setPhase(int phase){
@@ -184,7 +184,7 @@ public abstract class SMCBoss extends SMCMonster implements HomePointEntity, IWa
         if(level().isClientSide && this.isAlive()){
             BossMusicPlayer.playBossMusic(this, getFightMusic(), 32);
         } else {
-            if(!DOTEConfig.ALLOW_BVB.get()){
+            if(!SMCConfig.ALLOW_BVB.get()){
                 if(level().getBlockEntity(getHomePos()) instanceof BossSpawnerBlockEntity<?> bossSpawnerBlockEntity){
                     if(bossSpawnerBlockEntity.getMyEntity() == null || !bossSpawnerBlockEntity.getMyEntity().getType().equals(this.getType())){
                         explodeAndDiscard();

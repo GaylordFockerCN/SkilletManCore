@@ -4,8 +4,14 @@ import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
@@ -16,9 +22,16 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import yesman.epicfight.world.item.EpicFightItems;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID)
 public class LivingEntityListener {
+
+    public static List<ItemStack> weapons = new ArrayList<>();
+
 
     /**
      * 穿盔甲加效果
@@ -70,7 +83,25 @@ public class LivingEntityListener {
 
     @SubscribeEvent
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
+        if(weapons.isEmpty()) {
+            weapons.add(Items.IRON_SWORD.getDefaultInstance());
+            weapons.add(Items.IRON_AXE.getDefaultInstance());
+            weapons.add(EpicFightItems.IRON_LONGSWORD.get().getDefaultInstance());
+            weapons.add(EpicFightItems.IRON_GREATSWORD.get().getDefaultInstance());
+            weapons.add(EpicFightItems.IRON_SPEAR.get().getDefaultInstance());
+            weapons.add(EpicFightItems.IRON_TACHI.get().getDefaultInstance());
+            weapons.add(EpicFightItems.UCHIGATANA.get().getDefaultInstance());
+            weapons.add(EpicFightItems.IRON_DAGGER.get().getDefaultInstance());
+        }
 
+        if(event.getEntity() instanceof Monster monster) {
+            if(monster.getMainHandItem().isEmpty()) {
+                monster.setItemInHand(InteractionHand.MAIN_HAND, weapons.get(monster.getRandom().nextInt(weapons.size())));
+                if(monster.getRandom().nextInt(5) == 0){
+                    monster.setItemInHand(InteractionHand.OFF_HAND, monster.getMainHandItem());
+                }
+            }
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 package com.p1nero.smc.block.custom;
 
-import com.p1nero.smc.DOTEConfig;
+import com.p1nero.smc.SMCConfig;
 import com.p1nero.smc.block.entity.BetterStructureBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -40,7 +40,7 @@ public class BetterStructureBlock extends StructureBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
         return ((level1, blockPos, blockState, t) -> {
-            if(level1 instanceof ServerLevel serverLevel && DOTEConfig.ENABLE_BETTER_STRUCTURE_BLOCK_LOAD.get()){
+            if(level1 instanceof ServerLevel serverLevel && SMCConfig.ENABLE_BETTER_STRUCTURE_BLOCK_LOAD.get()){
                 if(t instanceof BetterStructureBlockEntity blockEntity){
                     blockEntity.loadStructure(serverLevel);
                 }

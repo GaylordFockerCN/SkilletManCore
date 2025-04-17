@@ -9,6 +9,7 @@
     "AttributesMixin",
     "BasicMultipleAttackAnimationMixin",
     "CuisineSkilletItemMixin",
+    "HumanoidMobPatchMixin",
     "MainFrameAnimationMixin",
     "ServerGamePacketListenerImplMixin",
     "WOMAnimationsMixin",

@@ -3,7 +3,7 @@ package com.p1nero.smc.worldgen.dimension;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.p1nero.smc.DOTEConfig;
+import com.p1nero.smc.SMCConfig;
 import com.p1nero.smc.worldgen.biome.SMCBiomeProvider;
 import com.p1nero.smc.worldgen.structure.SMCStructurePoses;
 import com.p1nero.smc.worldgen.structure.PositionPlacement;
@@ -129,7 +129,7 @@ public class SMCChunkGenerator extends NoiseBasedChunkGeneratorWrapper {
                 int chunkX = p.getX() >> 4;
                 int chunkZ = p.getZ() >> 4;
 
-                if (Math.pow(chunkX - pChunkPos.x, 2) + Math.pow(chunkZ - pChunkPos.z, 2) < Math.pow(DOTEConfig.MIN_CHUNK_BETWEEN_STRUCTURE.get(), 2)) {
+                if (Math.pow(chunkX - pChunkPos.x, 2) + Math.pow(chunkZ - pChunkPos.z, 2) < Math.pow(SMCConfig.MIN_CHUNK_BETWEEN_STRUCTURE.get(), 2)) {
                     return false;
                 }
             }

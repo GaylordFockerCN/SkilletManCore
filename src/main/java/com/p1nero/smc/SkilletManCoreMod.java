@@ -59,8 +59,8 @@ public class SkilletManCoreMod {
         SMCRegistrateItems.register();
         SMCRegistrateBlocks.register();
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, DOTEConfig.SPEC);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, DOTEConfig.CLIENT_SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SMCConfig.SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, SMCConfig.CLIENT_SPEC);
     }
 
     public static MutableComponent getInfo(String key){

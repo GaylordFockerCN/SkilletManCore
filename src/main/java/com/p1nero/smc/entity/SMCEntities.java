@@ -6,6 +6,7 @@ import com.p1nero.smc.capability.epicfight.NPCPatch;
 import com.p1nero.smc.entity.custom.boss.goldenflame.BlackHoleEntity;
 import com.p1nero.smc.entity.custom.boss.goldenflame.FlameCircleEntity;
 import com.p1nero.smc.entity.custom.boss.goldenflame.GoldenFlame;
+import com.p1nero.smc.entity.custom.npc.start_npc.Customer;
 import com.p1nero.smc.entity.custom.npc.start_npc.StartNPC;
 import com.p1nero.smc.event.ClientModEvents;
 import net.minecraft.resources.ResourceLocation;
@@ -33,8 +34,10 @@ public class SMCEntities {
 	public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, SkilletManCoreMod.MOD_ID);
 
 	public static final RegistryObject<EntityType<StartNPC>> START_NPC = register("start_npc",
-			EntityType.Builder.of(StartNPC::new, MobCategory.MONSTER).sized(0.6f, 1.8f));
+			EntityType.Builder.of(StartNPC::new, MobCategory.CREATURE).sized(0.6f, 1.9f));
 
+	public static final RegistryObject<EntityType<Customer>> CUSTOMER = register("customer",
+			EntityType.Builder.of(Customer::new, MobCategory.CREATURE).sized(0.6f, 1.9f));
 	public static final RegistryObject<EntityType<BlackHoleEntity>> BLACK_HOLE = register("black_hole",
 			EntityType.Builder.of(BlackHoleEntity::new, MobCategory.MISC).sized(1.0f, 1.0f));
 	public static final RegistryObject<EntityType<FlameCircleEntity>> FLAME_CIRCLE = register("flame_circle",

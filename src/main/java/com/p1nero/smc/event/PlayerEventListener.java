@@ -1,7 +1,12 @@
 package com.p1nero.smc.event;
 
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.archive.SMCArchiveManager;
+import com.p1nero.smc.block.SMCBlocks;
+import com.p1nero.smc.block.entity.MainCookBlockEntity;
+import com.p1nero.smc.capability.SMCCapabilityProvider;
+import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.entity.custom.boss.SMCBoss;
 import com.p1nero.smc.network.SMCPacketHandler;
@@ -12,19 +17,22 @@ import com.p1nero.smc.worldgen.dimension.SMCDimension;
 import dev.xkmc.cuisinedelight.content.item.CuisineSkilletItem;
 import dev.xkmc.cuisinedelight.content.item.SpatulaItem;
 import net.blay09.mods.waystones.block.ModBlocks;
-import net.blay09.mods.waystones.block.WaystoneBlock;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+
+import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID)
 public class PlayerEventListener {
@@ -41,9 +49,17 @@ public class PlayerEventListener {
         if(event.getEntity() instanceof ServerPlayer serverPlayer){
             //同步客户端数据
             PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new SyncArchivePacket(SMCArchiveManager.toNbt()), serverPlayer);
+            SMCCapabilityProvider.syncPlayerDataToClient(serverPlayer);
             //防止重进后boss的uuid不同
             SMCBoss.SERVER_BOSSES.forEach(((uuid, integer) -> PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new SyncUuidPacket(uuid, integer), serverPlayer)));
-            SMCAdvancementData.getAdvancement(SkilletManCoreMod.MOD_ID, serverPlayer);
+            SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID, serverPlayer);
+
+            if(!DataManager.firstJoint.get(serverPlayer)) {
+                SMCPlayer.addMoney(500, serverPlayer);
+                DataManager.firstJoint.put(serverPlayer, true);
+                CommandSourceStack commandSourceStack = serverPlayer.createCommandSourceStack().withPermission(2);
+                Objects.requireNonNull(serverPlayer.getServer()).getCommands().performPrefixedCommand(commandSourceStack, "gamerule keepInventory true");
+            }
         } else {
             //单机世界的同步数据
             if(SMCArchiveManager.isAlreadyInit()){
@@ -60,21 +76,45 @@ public class PlayerEventListener {
     public static void onPlayerTick(TickEvent.PlayerTickEvent event){
         if(!event.player.level().isClientSide){
             ItemStack mainHandItem = event.player.getMainHandItem();
-            if(!EpicFightCapabilities.getItemStackCapability(mainHandItem).isEmpty() && !event.player.isCreative()) {
+            if(!EpicFightCapabilities.getItemStackCapability(mainHandItem).isEmpty() && !event.player.isCreative() && EpicFightCapabilities.getEntityPatch(event.player, PlayerPatch.class).isBattleMode()) {
                 if(!(mainHandItem.getItem() instanceof CuisineSkilletItem || mainHandItem.getItem() instanceof SpatulaItem)) {
                     event.player.drop(mainHandItem.copy(), true);
                     mainHandItem.shrink(1);
                     event.player.displayClientMessage(SkilletManCoreMod.getInfo("no_your_power"), true);
-                    SMCAdvancementData.getAdvancement("no_your_power", ((ServerPlayer) event.player));
+                    SMCAdvancementData.finishAdvancement("no_your_power", ((ServerPlayer) event.player));
                 }
             }
         }
     }
+
+    /**
+     * 提示开战斗模式
+     */
+    @SubscribeEvent
+    public static void onPlayerAttack(LivingAttackEvent event){
+        if(event.getSource().getEntity() instanceof ServerPlayer serverPlayer) {
+            if(!EpicFightCapabilities.getEntityPatch(serverPlayer, PlayerPatch.class).isBattleMode()) {
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("please_in_battle_mode"), true);
+                event.setCanceled(true);
+            }
+        }
+    }
+
     @SubscribeEvent
     public static void onPlayerClickBlock(PlayerInteractEvent event){
-        //传送石就是重生点
-        if(event.getEntity() instanceof ServerPlayer serverPlayer && event.getLevel().getBlockState(event.getPos()).is(ModBlocks.waystone)) {
-            serverPlayer.setRespawnPosition(serverPlayer.serverLevel().dimension(), event.getEntity().blockPosition(), 0.0F, true, true);
+        if(event.getEntity() instanceof ServerPlayer serverPlayer) {
+            //传送石就是重生点
+            if(event.getLevel().getBlockState(event.getPos()).is(ModBlocks.waystone)){
+                serverPlayer.setRespawnPosition(serverPlayer.serverLevel().dimension(), event.getEntity().blockPosition(), 0.0F, true, true);
+            }
+
+            //和灶王爷对话
+            if(event.getLevel().getBlockState(event.getPos()).is(vectorwing.farmersdelight.common.registry.ModBlocks.STOVE.get()) && event.getLevel().getBlockState(event.getPos().below()).is(SMCBlocks.MAIN_COOK_BLOCK.get())){
+                MainCookBlockEntity mainCookBlockEntity = ((MainCookBlockEntity) event.getLevel().getBlockEntity(event.getPos().below()));
+                if(mainCookBlockEntity != null && mainCookBlockEntity.isWorking()){
+                    mainCookBlockEntity.onClickStove(serverPlayer, event.getPos().below(), event.getFace(), event.getHand());
+                }
+            }
         }
     }
 

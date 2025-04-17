@@ -3,6 +3,7 @@ package com.p1nero.smc.entity.api;
 import com.p1nero.smc.client.gui.DialogueComponentBuilder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
@@ -26,7 +27,7 @@ public interface NpcDialogue {
      * @param player The interacting {@link Player}.
      * @param interactionID The {@link Byte} ID corresponding to the option the player chose.
      */
-    void handleNpcInteraction(Player player, byte interactionID);
+    void handleNpcInteraction(ServerPlayer player, byte interactionID);
 
     void setConversingPlayer(@Nullable Player player);
 

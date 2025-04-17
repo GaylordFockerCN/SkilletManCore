@@ -1,6 +1,6 @@
 package com.p1nero.smc.client.gui.screen.component;
 
-import com.p1nero.smc.DOTEConfig;
+import com.p1nero.smc.SMCConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -22,7 +22,7 @@ public class DialogueAnswerComponent {
     //完整的分割后的对话
     private final List<NpcDialogueElement> fullSplitLines;
     private Component message;
-    private Component name;
+    private final Component name;
     public int height;
     //打字机效果的下标
     private int index;
@@ -32,19 +32,15 @@ public class DialogueAnswerComponent {
 
     private boolean shouldRenderOption = false;
 
-    public DialogueAnswerComponent(Component message) {
+    public DialogueAnswerComponent(Component name) {
         this.splitLines = new ArrayList<>();
         this.fullSplitLines = new ArrayList<>();
-        name = message;
+        this.name = name;
         this.updateDialogue(Component.empty());
     }
 
-    public void setName(Component name) {
-        this.name = name;
-    }
-
     public boolean shouldRenderOption() {
-        if(!DOTEConfig.ENABLE_TYPEWRITER_EFFECT.get()){
+        if(!SMCConfig.ENABLE_TYPEWRITER_EFFECT.get()){
             return true;
         }
         return shouldRenderOption;
@@ -81,7 +77,7 @@ public class DialogueAnswerComponent {
 //                maxWidth = Minecraft.getInstance().font.width(fullSplitLines.get(1).text) + 2;
 //            }
 
-            if(DOTEConfig.ENABLE_TYPEWRITER_EFFECT.get() && i != 0){//因为第一个变量是NPC名字，所以要取下标1。
+            if(SMCConfig.ENABLE_TYPEWRITER_EFFECT.get() && i != 0){//因为第一个变量是NPC名字，所以要取下标1。
                 dialogue.x = width / 2 - maxWidth / 2;
             } else {
                 dialogue.x = width / 2 - dialogue.width / 2;
@@ -131,7 +127,7 @@ public class DialogueAnswerComponent {
     public void updateTypewriterDialogue() {
         Style style = message.getStyle();
         updateDialogue(Component.literal(message.getString(index)).withStyle(style));
-        index += DOTEConfig.TYPEWRITER_EFFECT_SPEED.get();
+        index += SMCConfig.TYPEWRITER_EFFECT_SPEED.get();
         if(index > max){
             index = max;
             shouldRenderOption = true;

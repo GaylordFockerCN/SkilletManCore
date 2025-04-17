@@ -2,7 +2,7 @@ package com.p1nero.smc.command;
 
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
-import com.p1nero.smc.DOTEConfig;
+import com.p1nero.smc.SMCConfig;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.p1nero.smc.archive.SMCArchiveManager;
@@ -17,70 +17,70 @@ public class SMCSetConfigCommand {
                 .then(Commands.literal("set_config").requires((commandSourceStack) -> commandSourceStack.hasPermission(2))
                         .then(Commands.literal("enable_better_structure_block_load")
                                 .then(Commands.argument("value", BoolArgumentType.bool())
-                                        .executes((context) -> setData(DOTEConfig.ENABLE_BETTER_STRUCTURE_BLOCK_LOAD, BoolArgumentType.getBool(context, "value"), context))
+                                        .executes((context) -> setData(SMCConfig.ENABLE_BETTER_STRUCTURE_BLOCK_LOAD, BoolArgumentType.getBool(context, "value"), context))
                                 )
                                 .then(Commands.literal("reset")
-                                        .executes((context) -> resetData(DOTEConfig.ENABLE_BETTER_STRUCTURE_BLOCK_LOAD, context))
+                                        .executes((context) -> resetData(SMCConfig.ENABLE_BETTER_STRUCTURE_BLOCK_LOAD, context))
                                 )
                         )
                         .then(Commands.literal("allow_bvb")
                                 .then(Commands.argument("value", BoolArgumentType.bool())
-                                        .executes((context) -> setData(DOTEConfig.ALLOW_BVB, BoolArgumentType.getBool(context, "value"), context))
+                                        .executes((context) -> setData(SMCConfig.ALLOW_BVB, BoolArgumentType.getBool(context, "value"), context))
                                 )
                                 .then(Commands.literal("reset")
-                                        .executes((context) -> resetData(DOTEConfig.ALLOW_BVB, context))
+                                        .executes((context) -> resetData(SMCConfig.ALLOW_BVB, context))
                                 )
                         )
                         .then(Commands.literal("test_x")
                                 .then(Commands.argument("value", DoubleArgumentType.doubleArg())
-                                        .executes((context) -> setData(DOTEConfig.TEST_X, DoubleArgumentType.getDouble(context, "value"), context))
+                                        .executes((context) -> setData(SMCConfig.TEST_X, DoubleArgumentType.getDouble(context, "value"), context))
                                 )
                         )
                         .then(Commands.literal("test_y")
                                 .then(Commands.argument("value", DoubleArgumentType.doubleArg())
-                                        .executes((context) -> setData(DOTEConfig.TEST_Y, DoubleArgumentType.getDouble(context, "value"), context))
+                                        .executes((context) -> setData(SMCConfig.TEST_Y, DoubleArgumentType.getDouble(context, "value"), context))
                                 )
                         )
                         .then(Commands.literal("test_z")
                                 .then(Commands.argument("value", DoubleArgumentType.doubleArg())
-                                        .executes((context) -> setData(DOTEConfig.TEST_Z, DoubleArgumentType.getDouble(context, "value"), context))
+                                        .executes((context) -> setData(SMCConfig.TEST_Z, DoubleArgumentType.getDouble(context, "value"), context))
                                 )
                         )
                         .then(Commands.literal("fast_kill_boss")
                                 .then(Commands.argument("value", BoolArgumentType.bool())
-                                        .executes((context) -> setData(DOTEConfig.FAST_BOSS_FIGHT, BoolArgumentType.getBool(context, "value"), context))
+                                        .executes((context) -> setData(SMCConfig.FAST_BOSS_FIGHT, BoolArgumentType.getBool(context, "value"), context))
                                 )
                         )
                         .then(Commands.literal("task_tip_x")
                                 .then(Commands.argument("value", DoubleArgumentType.doubleArg(0, 1))
-                                        .executes((context) -> setData(DOTEConfig.TASK_X, DoubleArgumentType.getDouble(context, "value"), context))
+                                        .executes((context) -> setData(SMCConfig.INFO_X, DoubleArgumentType.getDouble(context, "value"), context))
                                 )
                                 .then(Commands.literal("reset")
-                                        .executes((context) -> resetData(DOTEConfig.TASK_X, context))
+                                        .executes((context) -> resetData(SMCConfig.INFO_X, context))
                                 )
                         )
                         .then(Commands.literal("task_tip_y")
                                 .then(Commands.argument("value", DoubleArgumentType.doubleArg(0, 1))
-                                        .executes((context) -> setData(DOTEConfig.TASK_Y, DoubleArgumentType.getDouble(context, "value"), context))
+                                        .executes((context) -> setData(SMCConfig.INFO_Y, DoubleArgumentType.getDouble(context, "value"), context))
                                 )
                                 .then(Commands.literal("reset")
-                                        .executes((context) -> resetData(DOTEConfig.TASK_Y, context))
+                                        .executes((context) -> resetData(SMCConfig.INFO_Y, context))
                                 )
                         )
                         .then(Commands.literal("task_tip_size")
                                 .then(Commands.argument("value", DoubleArgumentType.doubleArg(0))
-                                        .executes((context) -> setData(DOTEConfig.TASK_SIZE, DoubleArgumentType.getDouble(context, "value"), context))
+                                        .executes((context) -> setData(SMCConfig.TASK_SIZE, DoubleArgumentType.getDouble(context, "value"), context))
                                 )
                                 .then(Commands.literal("reset")
-                                        .executes((context) -> resetData(DOTEConfig.TASK_SIZE, context))
+                                        .executes((context) -> resetData(SMCConfig.TASK_SIZE, context))
                                 )
                         )
                         .then(Commands.literal("task_tip_interval")
                                 .then(Commands.argument("value", DoubleArgumentType.doubleArg(0))
-                                        .executes((context) -> setData(DOTEConfig.INTERVAL, ((int) DoubleArgumentType.getDouble(context, "value")), context))
+                                        .executes((context) -> setData(SMCConfig.INTERVAL, ((int) DoubleArgumentType.getDouble(context, "value")), context))
                                 )
                                 .then(Commands.literal("reset")
-                                        .executes((context) -> resetData(DOTEConfig.INTERVAL, context))
+                                        .executes((context) -> resetData(SMCConfig.INTERVAL, context))
                                 )
                         )
                         .then(Commands.literal("worldLevel")
@@ -100,8 +100,8 @@ public class SMCSetConfigCommand {
         key.set(value);
         if(stack.getPlayer() != null){
             stack.getPlayer().displayClientMessage(Component.literal( context.getInput() + " : SUCCESS"), false);
-            if(key == DOTEConfig.TEST_Y || key == DOTEConfig.TEST_X || key == DOTEConfig.TEST_Z){
-                stack.getPlayer().displayClientMessage(Component.literal(DOTEConfig.TEST_X.get()+ ", " + DOTEConfig.TEST_Y.get() + ", " + DOTEConfig.TEST_Z.get()), false);
+            if(key == SMCConfig.TEST_Y || key == SMCConfig.TEST_X || key == SMCConfig.TEST_Z){
+                stack.getPlayer().displayClientMessage(Component.literal(SMCConfig.TEST_X.get()+ ", " + SMCConfig.TEST_Y.get() + ", " + SMCConfig.TEST_Z.get()), false);
             }
         }
         return 0;

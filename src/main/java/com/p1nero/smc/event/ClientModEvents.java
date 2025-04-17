@@ -21,7 +21,6 @@ import yesman.epicfight.api.client.forgeevent.PatchedRenderersEvent;
 import yesman.epicfight.api.client.model.Meshes;
 import yesman.epicfight.api.forgeevent.EntityPatchRegistryEvent;
 import yesman.epicfight.api.forgeevent.ModelBuildEvent;
-import yesman.epicfight.client.renderer.patched.entity.PHumanoidRenderer;
 
 @SuppressWarnings("unchecked")
 @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

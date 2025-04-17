@@ -1,9 +1,8 @@
 package com.p1nero.smc.datagen;
 
 import com.p1nero.smc.SkilletManCoreMod;
-import com.p1nero.smc.item.SMCItems;
+import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
-import com.p1nero.smc.worldgen.dimension.SMCDimension;
 import dev.xkmc.cuisinedelight.init.registrate.CDItems;
 import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.*;
@@ -12,12 +11,13 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeAdvancementProvider;
 import org.jetbrains.annotations.NotNull;
-import yesman.epicfight.world.item.EpicFightItems;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -25,15 +25,16 @@ import java.util.function.Consumer;
 
 public class SMCAdvancementData extends ForgeAdvancementProvider {
     public SMCAdvancementData(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper helper) {
-        super(output, registries, helper, List.of(new DOTEAdvancements()));
+        super(output, registries, helper, List.of(new SMCAdvancements()));
 
     }
 
-    public static class DOTEAdvancements implements AdvancementGenerator {
+    public static class SMCAdvancements implements AdvancementGenerator {
 
         public final String pre = "advancement." + SkilletManCoreMod.MOD_ID + ".";
         private Consumer<Advancement> consumer;
         private ExistingFileHelper helper;
+
         @SuppressWarnings("unused")
         @Override
         public void generate(HolderLookup.@NotNull Provider provider, @NotNull Consumer<Advancement> consumer, @NotNull ExistingFileHelper existingFileHelper) {
@@ -44,31 +45,18 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                     .display(CDItems.SKILLET.asItem(),
                             Component.translatable(pre + SkilletManCoreMod.MOD_ID),
                             Component.translatable(pre + SkilletManCoreMod.MOD_ID + ".desc"),
-                            new ResourceLocation( "textures/block/bricks.png"),
+                            new ResourceLocation("textures/block/bricks.png"),
                             FrameType.TASK, false, false, false)
                     .addCriterion(SkilletManCoreMod.MOD_ID, new ImpossibleTrigger.TriggerInstance())
                     .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID), existingFileHelper);
 
-//            //打boss的成就
-            Advancement no_your_power = registerAdvancement(root, "no_your_power", FrameType.TASK, Blocks.BARRIER);
-            Advancement first_5star_skillet = registerAdvancement(root, "first_5star_skillet", FrameType.TASK, SMCRegistrateItems.IRON_SKILLET_LEVEL5.get());
-//            Advancement core = registerAdvancement(seed, "core", FrameType.TASK, DOTEItems.CORE_OF_HELL.get());
-//            Advancement goldenFlame = registerAdvancement(seed, "golden_flame", FrameType.TASK, DOTEItems.WITHERC.get());
-//            Advancement end = registerAdvancement(goldenFlame, "book", FrameType.TASK, DOTEItems.BOOK_OF_ENDING.get());
-//
-//            //骑士线
-//            Advancement knight = registerAdvancement(core, "knight", FrameType.TASK, DOTEItems.ROT_GREATSWORD.get());
-//            Advancement loyal = registerAdvancement(knight, "loyal", FrameType.TASK, DOTEItems.WKNIGHT_CHESTPLATE.get());
-//
-//            //一般结局
-//            Advancement unfinished = registerAdvancement(knight, "unfinished", FrameType.TASK, DOTEItems.ADGRAIN.get());
-//
-//            //终焉线
-//            Advancement star = registerAdvancement(end, "star", FrameType.TASK, Items.NETHER_STAR);
+            Advancement noYourPower = registerAdvancement(root, "no_your_power", FrameType.TASK, Blocks.BARRIER);
+            Advancement first5StarSkillet = registerAdvancement(root, "first_5star_skillet", FrameType.TASK, SMCRegistrateItems.IRON_SKILLET_LEVEL5.get());
+            Advancement fakeSleep = registerAdvancement(root, "fake_sleep", FrameType.TASK, Items.RED_BED);
 
         }
 
-        public Advancement registerAdvancement(Advancement parent, String name, FrameType type, ItemLike display, boolean showToast, boolean announceToChat, boolean hidden){
+        public Advancement registerAdvancement(Advancement parent, String name, FrameType type, ItemLike display, boolean showToast, boolean announceToChat, boolean hidden) {
             return Advancement.Builder.advancement()
                     .parent(parent)
                     .display(display,
@@ -80,7 +68,7 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                     .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, name), helper);
         }
 
-        public Advancement registerAdvancement(Advancement parent, String name, FrameType type, ItemLike display, boolean showToast, boolean announceToChat, boolean hidden, CriterionTriggerInstance instance){
+        public Advancement registerAdvancement(Advancement parent, String name, FrameType type, ItemLike display, boolean showToast, boolean announceToChat, boolean hidden, CriterionTriggerInstance instance) {
             return Advancement.Builder.advancement()
                     .parent(parent)
                     .display(display,
@@ -92,33 +80,43 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                     .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, name), helper);
         }
 
-        public Advancement registerAdvancement(Advancement parent, String name, FrameType type, ItemLike display){
+        public Advancement registerAdvancement(Advancement parent, String name, FrameType type, ItemLike display) {
             return registerAdvancement(parent, name, type, display, true, true, true);
         }
 
-
     }
 
-    public static void getAdvancement(String name, ServerPlayer serverPlayer){
-        Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(new ResourceLocation(SkilletManCoreMod.MOD_ID,name));
-        if(advancement == null){
+    public static void finishAdvancement(Advancement advancement, ServerPlayer serverPlayer) {
+        AdvancementProgress progress = serverPlayer.getAdvancements().getOrStartProgress(advancement);
+        if (!progress.isDone()) {
+            for (String criteria : progress.getRemainingCriteria()) {
+                SMCPlayer.addMoney(200, serverPlayer);
+                serverPlayer.playSound(SoundEvents.PLAYER_LEVELUP);
+                serverPlayer.getAdvancements().award(advancement, criteria);
+            }
+        }
+    }
+
+    public static void finishAdvancement(String name, ServerPlayer serverPlayer) {
+        Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(new ResourceLocation(SkilletManCoreMod.MOD_ID, name));
+        if (advancement == null) {
             SkilletManCoreMod.LOGGER.info("advancement:\"" + name + "\" is null!");
             return;
         }
-        AdvancementProgress progress = serverPlayer.getAdvancements().getOrStartProgress(advancement);
-        if (!progress.isDone()) {
-            for (String criteria : progress.getRemainingCriteria())
-                serverPlayer.getAdvancements().award(advancement, criteria);
-        }
+        finishAdvancement(advancement, serverPlayer);
     }
 
-    public static boolean isDone(String name, ServerPlayer serverPlayer){
-        Advancement _adv = serverPlayer.server.getAdvancements().getAdvancement(new ResourceLocation(SkilletManCoreMod.MOD_ID,name));
-        if(_adv == null){
-            SkilletManCoreMod.LOGGER.info("advancement:\""+name+"\" is null!");
+    public static boolean isDone(String name, ServerPlayer serverPlayer) {
+        Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(new ResourceLocation(SkilletManCoreMod.MOD_ID, name));
+        if (advancement == null) {
+            SkilletManCoreMod.LOGGER.info("advancement:\"" + name + "\" is null!");
             return false;
         }
-        AdvancementProgress advancementProgress = serverPlayer.getAdvancements().getOrStartProgress(_adv);
+        return isDone(advancement, serverPlayer);
+    }
+
+    public static boolean isDone(Advancement advancement, ServerPlayer serverPlayer) {
+        AdvancementProgress advancementProgress = serverPlayer.getAdvancements().getOrStartProgress(advancement);
         return advancementProgress.isDone();
     }
 

@@ -1,8 +1,9 @@
 package com.p1nero.smc.util;
 
 import com.google.common.collect.ImmutableList;
-import com.p1nero.smc.DOTEConfig;
+import com.p1nero.smc.SMCConfig;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -74,7 +75,7 @@ public class ItemUtil {
      * 是否是需要加倍翻倍的奖励
      */
     public static void addItem(Player player, Item item, int count, boolean isImportantLoot){
-        if(isImportantLoot && DOTEConfig.BOSS_HEALTH_AND_LOOT_MULTIPLE.get() && player.level() instanceof ServerLevel serverLevel){
+        if(isImportantLoot && SMCConfig.BOSS_HEALTH_AND_LOOT_MULTIPLE.get() && player.level() instanceof ServerLevel serverLevel){
             addItem(player, item, serverLevel.getPlayers((serverPlayer -> true)).size() * count);
         }
     }
@@ -88,7 +89,10 @@ public class ItemUtil {
         ItemEntity itemEntity = new ItemEntity(spawnOn.level(), spawnOn.getX(), spawnOn.getY(), spawnOn.getZ(), item);
         spawnOn.level().addFreshEntity(itemEntity);
     }
-
+    public static void addItemEntity(ServerLevel level, BlockPos pos, ItemStack item){
+        ItemEntity itemEntity = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), item);
+        level.addFreshEntity(itemEntity);
+    }
     public static void addItemEntity(ServerLevel level, double x, double y, double z, ItemStack item){
         ItemEntity itemEntity = new ItemEntity(level, x, y, z, item);
         level.addFreshEntity(itemEntity);

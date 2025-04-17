@@ -16,12 +16,12 @@ public class NPCDialogueTask extends Behavior<Mob> {
     }
 
     @Override
-    protected boolean checkExtraStartConditions(@NotNull ServerLevel p_22538_, @NotNull Mob mob) {
+    protected boolean checkExtraStartConditions(@NotNull ServerLevel serverLevel, @NotNull Mob mob) {
         return check(mob);
     }
 
     @Override
-    protected boolean canStillUse(@NotNull ServerLevel p_22545_, @NotNull Mob mob, long p_22547_) {
+    protected boolean canStillUse(@NotNull ServerLevel serverLevel, @NotNull Mob mob, long p_22547_) {
         return check(mob);
     }
 

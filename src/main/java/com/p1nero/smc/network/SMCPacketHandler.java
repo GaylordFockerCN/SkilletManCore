@@ -23,6 +23,8 @@ public class SMCPacketHandler {
     public static synchronized void register() {
         // 发给客户端
         register(NPCDialoguePacket.class, NPCDialoguePacket::decode);
+        register(NPCBlockDialoguePacket.class, NPCBlockDialoguePacket::decode);
+        register(SyncSMCPlayerPacket.class, SyncSMCPlayerPacket::decode);
         register(PersistentBoolDataSyncPacket.class, PersistentBoolDataSyncPacket::decode);
         register(PersistentDoubleDataSyncPacket.class, PersistentDoubleDataSyncPacket::decode);
         register(PersistentStringDataSyncPacket.class, PersistentStringDataSyncPacket::decode);
@@ -36,6 +38,7 @@ public class SMCPacketHandler {
         register(RequestExitSpectatorPacket.class, RequestExitSpectatorPacket::decode);
         register(AddDialogPacket.class, AddDialogPacket::decode);
         register(NpcPlayerInteractPacket.class, NpcPlayerInteractPacket::decode);
+        register(NpcBlockPlayerInteractPacket.class, NpcBlockPlayerInteractPacket::decode);
 
         //双端
         register(SyncArchivePacket.class, SyncArchivePacket::decode);

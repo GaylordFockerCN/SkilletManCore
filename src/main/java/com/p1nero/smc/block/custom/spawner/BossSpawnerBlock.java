@@ -1,15 +1,7 @@
 package com.p1nero.smc.block.custom.spawner;
 
-import com.p1nero.smc.DOTEConfig;
-import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.block.entity.spawner.BossSpawnerBlockEntity;
-import com.p1nero.smc.client.SMCSounds;
-import com.p1nero.smc.entity.custom.SMCMonster;
-import com.p1nero.smc.item.SMCItems;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -21,7 +13,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.*;
 import org.jetbrains.annotations.NotNull;

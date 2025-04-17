@@ -2,7 +2,7 @@ package com.p1nero.smc;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
-public class DOTEConfig {
+public class SMCConfig {
     public static final ForgeConfigSpec.IntValue MIN_CHUNK_BETWEEN_STRUCTURE;
 //    public static final ForgeConfigSpec.BooleanValue NO_PLOT_MODE;
     public static final ForgeConfigSpec.BooleanValue ALLOW_BVB;
@@ -27,7 +27,7 @@ public class DOTEConfig {
     public static final ForgeConfigSpec.IntValue TYPEWRITER_EFFECT_INTERVAL;
     public static final ForgeConfigSpec.BooleanValue SHOW_BOSS_HEALTH;
     public static final ForgeConfigSpec.BooleanValue RENDER_CUSTOM_GUI;
-    public static final ForgeConfigSpec.DoubleValue TASK_X, TASK_Y, TASK_SIZE;
+    public static final ForgeConfigSpec.DoubleValue INFO_X, INFO_Y, TASK_SIZE;
     public static final ForgeConfigSpec.IntValue INTERVAL;
     public static final ForgeConfigSpec CLIENT_SPEC;
 
@@ -72,8 +72,8 @@ public class DOTEConfig {
         TYPEWRITER_EFFECT_INTERVAL = createInt(clientBuilder, "typewriter_effect_interval", 2, 1, "打字机效果打字间隔");
         SHOW_BOSS_HEALTH = createBool(clientBuilder, "show_boss_health", true, "是否显示Boss血量");
         RENDER_CUSTOM_GUI = createBool(clientBuilder, "render_custom_gui", false, "是否显示自定义GUI（可通过快捷键设置，具体看按键绑定）");
-        TASK_X = createDouble(clientBuilder, "task_x", 0.8, 0, "任务提示框的x屏幕位置占比");
-        TASK_Y = createDouble(clientBuilder, "task_y", 0.1, 0, "任务提示框的y屏幕位置占比");
+        INFO_X = createDouble(clientBuilder, "info_x", 0.95, 0, "任务提示框的x屏幕位置占比");
+        INFO_Y = createDouble(clientBuilder, "info_y", 0.1, 0, "任务提示框的y屏幕位置占比");
         INTERVAL = createInt(clientBuilder, "task_interval", 12, 1, "任务提示框的各任务间隔");
         TASK_SIZE = createDouble(clientBuilder, "task_size", 100, 0, "占据宽度");
 

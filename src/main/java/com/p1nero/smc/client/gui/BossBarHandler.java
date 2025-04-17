@@ -1,6 +1,6 @@
 package com.p1nero.smc.client.gui;
 
-import com.p1nero.smc.DOTEConfig;
+import com.p1nero.smc.SMCConfig;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.entity.custom.boss.SMCBoss;
 import com.p1nero.smc.entity.custom.boss.goldenflame.GoldenFlame;
@@ -46,7 +46,7 @@ public class BossBarHandler {
         int textX = Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2 - textWidth / 2;
         int textY = y - 9;
         guiGraphics.drawString(Minecraft.getInstance().font, component, textX, textY, 16777215);
-        if(DOTEConfig.SHOW_BOSS_HEALTH.get()){
+        if(SMCConfig.SHOW_BOSS_HEALTH.get()){
             int textWidth2 = Minecraft.getInstance().font.width(health);
             int textX2 = Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2 - textWidth2 / 2;
             guiGraphics.drawString(Minecraft.getInstance().font, health, textX2, y, 16777215);

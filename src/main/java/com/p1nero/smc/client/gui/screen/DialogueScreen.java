@@ -1,6 +1,6 @@
 package com.p1nero.smc.client.gui.screen;
 
-import com.p1nero.smc.DOTEConfig;
+import com.p1nero.smc.SMCConfig;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.client.gui.screen.component.DialogueAnswerComponent;
 import com.p1nero.smc.client.gui.screen.component.DialogueChoiceComponent;
@@ -14,14 +14,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.client.event.ScreenEvent;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,7 +35,10 @@ public class DialogueScreen extends Screen {
     public static final ResourceLocation MY_BACKGROUND_LOCATION = new ResourceLocation(SkilletManCoreMod.MOD_ID,"textures/gui/background.png");
     protected final DialogueAnswerComponent dialogueAnswer;
     @Nullable
-    protected final Entity entity;
+    protected Entity entity;
+
+    @Nullable
+    protected BlockPos pos;
     public final int typewriterInterval;
     private int typewriterTimer = 0;
     @Nullable
@@ -43,7 +46,7 @@ public class DialogueScreen extends Screen {
 
     public DialogueScreen(@NotNull Entity entity) {
         super(entity.getDisplayName());
-        typewriterInterval = DOTEConfig.TYPEWRITER_EFFECT_INTERVAL.get();
+        typewriterInterval = SMCConfig.TYPEWRITER_EFFECT_INTERVAL.get();
         this.dialogueAnswer = new DialogueAnswerComponent(this.buildDialogueAnswerName(entity.getDisplayName().copy().withStyle(ChatFormatting.YELLOW)).append(": "));
         this.entity = entity;
         this.entityType = entity.getType();
@@ -51,12 +54,19 @@ public class DialogueScreen extends Screen {
 
     public DialogueScreen(Component name, @Nullable Entity entity) {
         super(name);
-        typewriterInterval = DOTEConfig.TYPEWRITER_EFFECT_INTERVAL.get();
+        typewriterInterval = SMCConfig.TYPEWRITER_EFFECT_INTERVAL.get();
         this.dialogueAnswer = new DialogueAnswerComponent(name);
         this.entity = entity;
         if(entity != null) {
             this.entityType = entity.getType();
         }
+    }
+
+    public DialogueScreen(BlockEntity blockEntity) {
+        super(blockEntity.getBlockState().getBlock().getName());
+        typewriterInterval = SMCConfig.TYPEWRITER_EFFECT_INTERVAL.get();
+        this.dialogueAnswer = new DialogueAnswerComponent(blockEntity.getBlockState().getBlock().getName());
+        this.pos = blockEntity.getBlockPos();
     }
 
     /**
@@ -99,7 +109,7 @@ public class DialogueScreen extends Screen {
      */
     protected void setDialogueAnswer(Component component) {
         PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new AddDialogPacket(entity == null ? title : entity.getDisplayName(), component, true));
-        if(DOTEConfig.ENABLE_TYPEWRITER_EFFECT.get()){
+        if(SMCConfig.ENABLE_TYPEWRITER_EFFECT.get()){
             this.dialogueAnswer.updateTypewriterDialogue(component);
         }else {
             this.dialogueAnswer.updateDialogue(component);
@@ -126,6 +136,9 @@ public class DialogueScreen extends Screen {
      * @see NpcPlayerInteractPacket
      */
     protected void finishChat(byte interactionID) {
+        if(pos != null) {
+
+        }
         PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new NpcPlayerInteractPacket(this.entity == null ? -1 :this.entity.getId(), interactionID));
         super.onClose();
     }
@@ -134,7 +147,7 @@ public class DialogueScreen extends Screen {
      * 发包但不关闭窗口
     * */
     protected void execute(byte interactionID) {
-        PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new NpcPlayerInteractPacket(this.entity.getId(), interactionID));
+        PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new NpcPlayerInteractPacket(this.entity == null ? -1 :this.entity.getId(), interactionID));
     }
 
     @Override
@@ -142,7 +155,7 @@ public class DialogueScreen extends Screen {
         this.renderBackground(guiGraphics);
         //guiGraphics.blit(MY_BACKGROUND_LOCATION, this.width/2 - 214/2, this.height/2 - 252/2, 0, 0, 214, 252);
 
-        if(DOTEConfig.ENABLE_TYPEWRITER_EFFECT.get() && typewriterTimer < 0) {
+        if(SMCConfig.ENABLE_TYPEWRITER_EFFECT.get() && typewriterTimer < 0) {
             this.dialogueAnswer.updateTypewriterDialogue();
             positionDialogue();
             typewriterTimer = typewriterInterval;

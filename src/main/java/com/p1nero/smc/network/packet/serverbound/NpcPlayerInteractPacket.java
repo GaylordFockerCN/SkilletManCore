@@ -3,6 +3,7 @@ package com.p1nero.smc.network.packet.serverbound;
 import com.p1nero.smc.entity.api.NpcDialogue;
 import com.p1nero.smc.network.packet.BasePacket;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
@@ -25,23 +26,15 @@ public record NpcPlayerInteractPacket(int entityID, byte interactionID) implemen
 
     @Override
     public void execute(@Nullable Player playerEntity) {
-        if (playerEntity != null && playerEntity.getServer() != null) {
-
-            if(entityID == -1) {
-                //来自非人
-
+        if (playerEntity instanceof ServerPlayer serverPlayer) {
+            Entity entity = playerEntity.level().getEntity(this.entityID());
+            if (entity instanceof NpcDialogue npc){
+                npc.handleNpcInteraction(serverPlayer, this.interactionID());
             } else {
+                //普通村民的对话统一在此处理
+                if(entity instanceof Villager villager){
 
-                Entity entity = playerEntity.level().getEntity(this.entityID());
-                if (entity instanceof NpcDialogue npc){
-                    npc.handleNpcInteraction(playerEntity, this.interactionID());
-                } else {
-                    //普通村民的对话统一在此处理
-                    if(entity instanceof Villager villager){
-
-                    }
                 }
-
             }
         }
     }

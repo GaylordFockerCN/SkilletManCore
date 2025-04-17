@@ -4,6 +4,7 @@ import com.p1nero.smc.SkilletManCoreMod;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.*;
@@ -23,9 +24,9 @@ public class SMCCapabilityProvider implements ICapabilityProvider, INBTSerializa
 
     private SMCPlayer SMCPlayer = null;
     
-    private final LazyOptional<SMCPlayer> optional = LazyOptional.of(this::createTCRPlayer);
+    private final LazyOptional<SMCPlayer> optional = LazyOptional.of(this::createSMCPlayer);
 
-    private SMCPlayer createTCRPlayer() {
+    private SMCPlayer createSMCPlayer() {
         if(this.SMCPlayer == null){
             this.SMCPlayer = new SMCPlayer();
         }
@@ -45,31 +46,32 @@ public class SMCCapabilityProvider implements ICapabilityProvider, INBTSerializa
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
-        createTCRPlayer().saveNBTData(tag);
+        createSMCPlayer().saveNBTData(tag);
         return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
-        createTCRPlayer().loadNBTData(tag);
+        createSMCPlayer().loadNBTData(tag);
     }
 
     @SubscribeEvent
     public static void attachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
-        if (event.getObject() instanceof Player) {
-            if(!event.getObject().getCapability(SMCCapabilityProvider.SMC_PLAYER).isPresent()){
-                event.addCapability(new ResourceLocation(SkilletManCoreMod.MOD_ID, "tcr_player"), new SMCCapabilityProvider());
+        if (event.getObject() instanceof Player player) {
+            if(!player.getCapability(SMCCapabilityProvider.SMC_PLAYER).isPresent()){
+                event.addCapability(new ResourceLocation(SkilletManCoreMod.MOD_ID, "smc_player"), new SMCCapabilityProvider());
             }
         }
     }
 
     @SubscribeEvent
     public static void onPlayerCloned(PlayerEvent.Clone event) {
-        event.getOriginal().reviveCaps();//。。。怎么之前没加这个也可以，现在没加不行
+        event.getOriginal().reviveCaps();
         if(event.isWasDeath()) {
             event.getOriginal().getCapability(SMCCapabilityProvider.SMC_PLAYER).ifPresent(oldStore -> {
                 event.getEntity().getCapability(SMCCapabilityProvider.SMC_PLAYER).ifPresent(newStore -> {
                     newStore.copyFrom(oldStore);
+                    newStore.syncToClient(((ServerPlayer) event.getEntity()));
                 });
             });
         }
@@ -82,6 +84,10 @@ public class SMCCapabilityProvider implements ICapabilityProvider, INBTSerializa
 
     public static SMCPlayer getSMCPlayer(Player player) {
         return player.getCapability(SMCCapabilityProvider.SMC_PLAYER).orElse(new SMCPlayer());
+    }
+
+    public static void syncPlayerDataToClient(ServerPlayer serverPlayer) {
+        getSMCPlayer(serverPlayer).syncToClient(serverPlayer);
     }
 
 }

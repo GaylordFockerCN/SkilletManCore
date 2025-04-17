@@ -1,8 +1,7 @@
 package com.p1nero.smc.entity.custom.boss.goldenflame;
 
-import com.p1nero.smc.DOTEConfig;
+import com.p1nero.smc.SMCConfig;
 import com.p1nero.smc.archive.SMCArchiveManager;
-import com.p1nero.smc.client.SMCSounds;
 import com.p1nero.smc.client.gui.DialogueComponentBuilder;
 import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.effect.SMCEffects;
@@ -10,7 +9,6 @@ import com.p1nero.smc.entity.api.IWanderableEntity;
 import com.p1nero.smc.entity.ai.epicfight.api.TimeStampedEvent;
 import com.p1nero.smc.entity.ai.goal.CustomWanderGoal;
 import com.p1nero.smc.entity.custom.boss.SMCBoss;
-import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.util.EntityUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -313,7 +311,7 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity {
     @Override
     public boolean hurt(@NotNull DamageSource source, float value) {
         //为了bvb
-        if(DOTEConfig.ALLOW_BVB.get() && (source.getEntity() instanceof LivingEntity) && !source.isIndirect()){
+        if(SMCConfig.ALLOW_BVB.get() && (source.getEntity() instanceof LivingEntity) && !source.isIndirect()){
             return super.hurt(source, value);
         }
         //防止雷劈火烧等bug，以及免疫所有远程，别想逃课！
@@ -333,26 +331,7 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity {
     @Override
     public void die(@NotNull DamageSource source) {
         level().playSound(null, getX(), getY(), getZ(), SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.BLOCKS, 1, 1);
-        if (source.getEntity() instanceof ServerPlayer player) {
-            DialogueComponentBuilder builder = new DialogueComponentBuilder(this);
-            switch (SMCArchiveManager.getWorldLevel()) {
-                case 0:
-                    player.displayClientMessage(builder.buildDialogue(this, builder.buildDialogueAnswer(0)), false);
-                    break;
-                case 1:
-                    player.displayClientMessage(builder.buildDialogue(this, builder.buildDialogueAnswer(1)), false);
-                    break;
-                default:
-                    player.displayClientMessage(builder.buildDialogue(this, builder.buildDialogueAnswer(2)), false);
-            }
-            SMCArchiveManager.BIOME_PROGRESS_DATA.setGoldenFlameFought(true);
-            if (SMCArchiveManager.BIOME_PROGRESS_DATA.isSenbaiFought()) {
-                SMCAdvancementData.getAdvancement("golden_flame", player);
-            }
-            if (!SMCArchiveManager.BIOME_PROGRESS_DATA.isBoss2fought()) {
 
-            }
-        }
         super.die(source);
     }
 

@@ -27,31 +27,31 @@ public class DataManager {
     public static BoolData firstJoint =  new BoolData("first_joint",false);
     public static BoolData firstGiftGot =  new BoolData("first_gift_got",false);
     public static void putData(Player player, String key, double value) {
-        getDOTEPlayer(player).putDouble(key, value);
+        getSMCPlayer(player).putDouble(key, value);
     }
 
     public static void putData(Player player, String key, String value) {
-        getDOTEPlayer(player).putString(key, value);
+        getSMCPlayer(player).putString(key, value);
     }
 
     public static void putData(Player player, String key, boolean value) {
-        getDOTEPlayer(player).putBoolean(key, value);
+        getSMCPlayer(player).putBoolean(key, value);
     }
 
     public static boolean getBool(Player player, String key) {
-        return getDOTEPlayer(player).getBoolean(key);
+        return getSMCPlayer(player).getBoolean(key);
     }
 
     public static double getDouble(Player player, String key) {
-        return getDOTEPlayer(player).getDouble(key);
+        return getSMCPlayer(player).getDouble(key);
     }
 
     public static String getString(Player player, String key) {
-        return getDOTEPlayer(player).getString(key);
+        return getSMCPlayer(player).getString(key);
     }
 
-    public static SMCPlayer getDOTEPlayer(Player player) {
-        return player.getCapability(SMCCapabilityProvider.SMC_PLAYER).orElseThrow(() -> new IllegalStateException("Player " + player.getName().getContents() + " has no DOTE Player Capability!"));
+    public static SMCPlayer getSMCPlayer(Player player) {
+        return player.getCapability(SMCCapabilityProvider.SMC_PLAYER).orElseThrow(() -> new IllegalStateException("Player " + player.getName().getContents() + " has no SMC Player Capability!"));
     }
 
 
@@ -69,12 +69,12 @@ public class DataManager {
         }
 
         public void init(Player player){
-            isLocked = getDOTEPlayer(player).getBoolean(key+"isLocked");
+            isLocked = getSMCPlayer(player).getBoolean(key+"isLocked");
 
         }
 
         public boolean isLocked(Player player) {
-            return getDOTEPlayer(player).getBoolean(key+"isLocked");
+            return getSMCPlayer(player).getBoolean(key+"isLocked");
         }
 
         public boolean isLocked(CompoundTag playerData) {
@@ -82,12 +82,12 @@ public class DataManager {
         }
 
         public void lock(Player player) {
-            getDOTEPlayer(player).putBoolean(key+"isLocked",true);
+            getSMCPlayer(player).putBoolean(key+"isLocked",true);
             isLocked = true;
         }
 
         public void unLock(Player player) {
-            getDOTEPlayer(player).putBoolean(key+"isLocked",false);
+            getSMCPlayer(player).putBoolean(key+"isLocked",false);
             LocalPlayer localPlayer = Minecraft.getInstance().player;
             isLocked = false;
         }
@@ -115,7 +115,7 @@ public class DataManager {
         @Override
         public void put(Player player, String value) {
             if(!isLocked(player)){
-                getDOTEPlayer(player).putString(key, value);
+                getSMCPlayer(player).putString(key, value);
                 if(player instanceof ServerPlayer serverPlayer){
                     PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new PersistentStringDataSyncPacket(key, isLocked, value),serverPlayer);
                 }
@@ -124,7 +124,7 @@ public class DataManager {
 
         @Override
         public String get(Player player){
-            return getDOTEPlayer(player).getString(key);
+            return getSMCPlayer(player).getString(key);
         }
 
         public String get(CompoundTag playerData){
@@ -142,14 +142,14 @@ public class DataManager {
         }
 
         public void init(Player player){
-            isLocked = getDOTEPlayer(player).getBoolean(key+"isLocked");
+            isLocked = getSMCPlayer(player).getBoolean(key+"isLocked");
             put(player, defaultValue);
         }
 
         @Override
         public void put(Player player, Double value) {
             if(!isLocked(player)){
-                getDOTEPlayer(player).putDouble(key, value);
+                getSMCPlayer(player).putDouble(key, value);
                 if(player instanceof ServerPlayer serverPlayer){
                     PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new PersistentDoubleDataSyncPacket(key, isLocked, value),serverPlayer);
                 }
@@ -158,7 +158,7 @@ public class DataManager {
 
         @Override
         public Double get(Player player){
-            return getDOTEPlayer(player).getDouble(key);
+            return getSMCPlayer(player).getDouble(key);
         }
 
         public double get(CompoundTag playerData){
@@ -175,7 +175,7 @@ public class DataManager {
         }
 
         public void init(Player player){
-            isLocked = getDOTEPlayer(player).getBoolean(key+"isLocked");
+            isLocked = getSMCPlayer(player).getBoolean(key+"isLocked");
             put(player,defaultBool);
         }
 
@@ -184,7 +184,7 @@ public class DataManager {
             if(isLocked(player))
                 return;
 
-            getDOTEPlayer(player).putBoolean(key, value);
+            getSMCPlayer(player).putBoolean(key, value);
             if(player instanceof ServerPlayer serverPlayer){
                 PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new PersistentBoolDataSyncPacket(key, isLocked, value),serverPlayer);
             }
@@ -192,7 +192,7 @@ public class DataManager {
 
         @Override
         public Boolean get(Player player){
-            return getDOTEPlayer(player).getBoolean(key);
+            return getSMCPlayer(player).getBoolean(key);
         }
 
         public boolean get(CompoundTag playerData){

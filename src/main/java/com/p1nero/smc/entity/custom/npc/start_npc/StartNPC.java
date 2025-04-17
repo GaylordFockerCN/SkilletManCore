@@ -1,12 +1,13 @@
 package com.p1nero.smc.entity.custom.npc.start_npc;
 
-import com.mojang.serialization.Dynamic;
+import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.DialogueComponentBuilder;
 import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
-import com.p1nero.smc.entity.ai.behavior.VillagerTasks;
+import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.entity.custom.npc.SMCNpc;
 import com.p1nero.smc.util.ItemUtil;
 import dev.xkmc.cuisinedelight.init.registrate.CDItems;
@@ -18,31 +19,40 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.Brain;
-import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * 凝渊人，引导的npc
  */
 public class StartNPC extends SMCNpc {
     protected static final EntityDataAccessor<Integer> INCOME = SynchedEntityData.defineId(StartNPC.class, EntityDataSerializers.INT);//收入
-    protected static final EntityDataAccessor<Integer> INCOME_SPEED = SynchedEntityData.defineId(StartNPC.class, EntityDataSerializers.INT);//收入速度
+    protected static final EntityDataAccessor<Integer> INCOME_SPEED = SynchedEntityData.defineId(StartNPC.class, EntityDataSerializers.INT);//收入速度 / 店铺等级
     protected static final EntityDataAccessor<Integer> STATE = SynchedEntityData.defineId(StartNPC.class, EntityDataSerializers.INT);//状态
+    protected static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(StartNPC.class, EntityDataSerializers.OPTIONAL_UUID);//状态
     public static final int EMPTY = 0;
     public static final int HIRED = 1;
     public static final int GUIDER = 2;
     private final Component name;
+    public final String totalSleepingString = "Zzz.......";
+    private String currentSleepingString = "";
 
     public StartNPC(EntityType<? extends StartNPC> entityType, Level level) {
         super(entityType, level);
-        name = Component.translatable(this.getType().getDescriptionId()).withStyle(ChatFormatting.YELLOW);
+        name = Component.translatable(this.getType().getDescriptionId());
     }
 
     @Override
@@ -51,6 +61,35 @@ public class StartNPC extends SMCNpc {
         this.getEntityData().define(INCOME, 0);
         this.getEntityData().define(INCOME_SPEED, 1);
         this.getEntityData().define(STATE, 0);
+        this.entityData.define(OWNER_UUID, Optional.empty());
+    }
+
+    @Nullable
+    public UUID getOwnerUUID() {
+        return this.entityData.get(OWNER_UUID).orElse(null);
+    }
+    @Nullable
+    public LivingEntity getOwner() {
+        try {
+            UUID uuid = this.getOwnerUUID();
+            if(uuid != null){
+                Player player = this.level().getPlayerByUUID(uuid);
+                if(player == null){
+                    if(this.level() instanceof ServerLevel serverLevel){
+                        return serverLevel.getEntity(uuid) instanceof LivingEntity livingEntity ? livingEntity : null;
+                    }
+                } else {
+                    return player;
+                }
+            }
+            return null;
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    public void setOwnerUUID(@Nullable UUID pUuid) {
+        this.entityData.set(OWNER_UUID, Optional.ofNullable(pUuid));
     }
 
     @Override
@@ -59,6 +98,9 @@ public class StartNPC extends SMCNpc {
         this.getEntityData().set(INCOME, tag.getInt("income"));
         this.getEntityData().set(INCOME_SPEED, tag.getInt("income_speed"));
         this.getEntityData().set(STATE, tag.getInt("shop_state"));
+        if (tag.hasUUID("owner_uuid")) {
+            this.setOwnerUUID(tag.getUUID("owner_uuid"));
+        }
     }
 
     @Override
@@ -67,24 +109,9 @@ public class StartNPC extends SMCNpc {
         tag.putInt("income", this.getEntityData().get(INCOME));
         tag.putInt("income_speed", this.getEntityData().get(INCOME_SPEED));
         tag.putInt("shop_state", this.getEntityData().get(STATE));
-    }
-
-    protected @NotNull Brain<?> makeBrain(@NotNull Dynamic<?> dynamic) {
-        Brain<Villager> brain = this.brainProvider().makeBrain(dynamic);
-        this.registerBrainGoals(brain);
-        return brain;
-    }
-
-    public void refreshBrain(@NotNull ServerLevel serverLevel) {
-        Brain<Villager> brain = this.getBrain();
-        brain.stopAll(serverLevel, this);
-        this.brain = brain.copyWithoutBehaviors();
-        this.registerBrainGoals(this.getBrain());
-    }
-
-    private void registerBrainGoals(Brain<Villager> villagerBrain) {
-        villagerBrain.addActivity(Activity.CORE, VillagerTasks.getSMCVillagerCorePackage());
-        villagerBrain.updateActivityFromSchedule(this.level().getDayTime(), this.level().getGameTime());
+        if (this.getOwnerUUID() != null) {
+            tag.putUUID("owner_uuid", this.getOwnerUUID());
+        }
     }
 
     public boolean isHired() {
@@ -94,9 +121,20 @@ public class StartNPC extends SMCNpc {
     public boolean isGuider() {
         return this.getEntityData().get(STATE) == GUIDER;
     }
+    public void setState(int state) {
+        this.getEntityData().set(STATE, state);
+    }
 
     public int getIncome() {
         return this.getEntityData().get(INCOME);
+    }
+
+    public int getIncomeSpeed() {
+        return this.getEntityData().get(INCOME_SPEED);
+    }
+
+    public void setIncomeSpeed(int incomeSpeed) {
+        this.getEntityData().set(INCOME_SPEED, incomeSpeed);
     }
 
     /**
@@ -113,12 +151,50 @@ public class StartNPC extends SMCNpc {
         }
     }
 
-    @Override
-    public void tick() {
-        super.tick();
-        if (!level().isClientSide) {
-            this.getEntityData().set(INCOME, this.getIncome() + 1);
+    public int takeAllIncome() {
+        return takeIncome(getIncome());
+    }
+
+    public void onSecond() {
+        long currentTime = this.level().getDayTime();
+        if(!level().isClientSide && this.isHired() && currentTime > 600 && currentTime < 12700){
+            this.getEntityData().set(INCOME, this.getIncome() + this.getIncomeSpeed());
         }
+
+        currentSleepingString = totalSleepingString.substring(0, (this.tickCount / 20) % totalSleepingString.length());
+    }
+
+    public boolean isWorkingTime() {
+        long currentTime = this.level().getDayTime();
+        return currentTime > 600 && currentTime < 12700;
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return null;
+    }
+
+    @Override
+    protected CompoundTag getDialogData(CompoundTag compoundTag, ServerPlayer serverPlayer) {
+        compoundTag = super.getDialogData(compoundTag, serverPlayer);
+        compoundTag.putBoolean("first_gift_got", DataManager.firstGiftGot.get(serverPlayer));
+        return compoundTag;
+    }
+
+    public int getUpgradeNeed() {
+        return (int) (5000 * Math.pow(1.1, this.getIncomeSpeed()));
+    }
+
+    @Override
+    public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
+        if(this.getEntityData().get(STATE) != EMPTY) {
+            if(!player.getUUID().equals(this.getOwnerUUID())) {
+                player.displayClientMessage(SkilletManCoreMod.getInfo("already_has_owner"), true);
+                return InteractionResult.FAIL;
+            }
+        }
+        return super.mobInteract(player, hand);
     }
 
     /**
@@ -126,37 +202,50 @@ public class StartNPC extends SMCNpc {
      */
     @Override
     public void openDialogueScreen(CompoundTag senderData) {
-        LinkListStreamDialogueScreenBuilder builder = new LinkListStreamDialogueScreenBuilder(this, name);
+        LinkListStreamDialogueScreenBuilder builder = new LinkListStreamDialogueScreenBuilder(this, name.copy().append(": "));
 
         DialogueComponentBuilder choiceBuilder = new DialogueComponentBuilder(this);
 
         if (isHired()) {
-            TreeNode takeMoney = new TreeNode(choiceBuilder.buildDialogueAnswer(3), choiceBuilder.buildDialogueOption(5));
-            TreeNode main = new TreeNode(choiceBuilder.buildDialogueAnswer(1), choiceBuilder.buildDialogueOption(7))
-                    .addChild(takeMoney)
-                    .addLeaf(choiceBuilder.buildDialogueOption(6), (byte) 5)//升级
-                    .addLeaf(choiceBuilder.buildDialogueOption(2), (byte) 3);//告辞
-            takeMoney.addChild(main);
-            builder.setAnswerRoot(main);//告辞
+
+            if(isWorkingTime()) {
+                TreeNode takeMoney = new TreeNode(choiceBuilder.buildDialogueAnswer(3), choiceBuilder.buildDialogueOption(5))
+                        .execute((byte) 4);
+                TreeNode main = new TreeNode(choiceBuilder.buildDialogueAnswer(1), choiceBuilder.buildDialogueOption(7))
+                        .addChild(takeMoney)//全部取出
+                        .addLeaf(choiceBuilder.buildDialogueOption(6, this.getUpgradeNeed()), (byte) 5)//升级
+                        .addLeaf(choiceBuilder.buildDialogueOption(2), (byte) 3);//告辞
+                takeMoney.addChild(main);
+                builder.setAnswerRoot(main);//告辞
+            } else {
+                builder.setAnswerRoot(new TreeNode(choiceBuilder.buildDialogueAnswer(8))
+                        .addLeaf(choiceBuilder.buildDialogueOption(9), (byte) 3)
+                        .addLeaf(choiceBuilder.buildDialogueOption(10), (byte) 7));
+            }
+
         } else if (isGuider()) {
             //入职给予新手福利，锅铲和锅，建筑方块，初始食材订购机等等
             if (senderData.getBoolean("first_gift_got")) {
                 builder.setAnswerRoot(new TreeNode(choiceBuilder.buildDialogueAnswer(1))
-                        .addLeaf(choiceBuilder.buildDialogueOption(4), (byte) 2) //询问
+                        // 新手帮助
+                        .addChild(new TreeNode(choiceBuilder.buildDialogueAnswer(6), choiceBuilder.buildDialogueOption(4))
+                                .addChild(new TreeNode(choiceBuilder.buildDialogueAnswer(7), choiceBuilder.buildDialogueOption(8))
+                                        .addLeaf(choiceBuilder.buildDialogueOption(2), (byte) 3)))
                         .addLeaf(choiceBuilder.buildDialogueOption(2), (byte) 3)); //告辞
             } else {
                 builder.setAnswerRoot(new TreeNode(choiceBuilder.buildDialogueAnswer(1))
                         .addLeaf(choiceBuilder.buildDialogueOption(3), (byte) 6) //新手福利
-                        // 询问 TODO 补全对话
-                        .addChild(new TreeNode(choiceBuilder.buildDialogueAnswer(666), choiceBuilder.buildDialogueOption(2))
-                                .addChild(choiceBuilder.buildDialogueAnswer(666), choiceBuilder.buildDialogueOption(2)))
+                        // 新手帮助
+                        .addChild(new TreeNode(choiceBuilder.buildDialogueAnswer(6), choiceBuilder.buildDialogueOption(4))
+                                .addChild(new TreeNode(choiceBuilder.buildDialogueAnswer(7), choiceBuilder.buildDialogueOption(8))
+                                        .addLeaf(choiceBuilder.buildDialogueOption(2), (byte) 3)))
                         .addLeaf(choiceBuilder.buildDialogueOption(2), (byte) 3)); //告辞
             }
         } else {
             //初始态
             builder.setAnswerRoot(new TreeNode(choiceBuilder.buildDialogueAnswer(0))
-                    .addLeaf(choiceBuilder.buildDialogueOption(0), (byte) 1) //入职
-                    .addLeaf(choiceBuilder.buildDialogueOption(1), (byte) 2) //雇佣
+                    .addLeaf(choiceBuilder.buildDialogueOption(0, 100), (byte) 1) //入职
+                    .addLeaf(choiceBuilder.buildDialogueOption(1, 1000), (byte) 2) //雇佣
                     .addLeaf(choiceBuilder.buildDialogueOption(2), (byte) 3)); //告辞
         }
 
@@ -169,49 +258,75 @@ public class StartNPC extends SMCNpc {
      * 初始奖励
      */
     @Override
-    public void handleNpcInteraction(Player player, byte interactionID) {
+    public void handleNpcInteraction(ServerPlayer player, byte interactionID) {
         DialogueComponentBuilder answerBuilder = new DialogueComponentBuilder(this);
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
         //购买
         if (interactionID == 1) {
             if (smcPlayer.getMoneyCount() < 100) {
                 this.playSound(SoundEvents.VILLAGER_NO);
+                player.displayClientMessage(SkilletManCoreMod.getInfo("no_enough_money"), true);
             } else {
-                //TODO 扣钱
-                this.playSound(SoundEvents.VILLAGER_TRADE);
+                SMCPlayer.consumeMoney(100, player);
+                this.setState(GUIDER);
+                this.setOwnerUUID(player.getUUID());
+                this.playSound(SoundEvents.VILLAGER_CELEBRATE);
                 player.displayClientMessage(answerBuilder.buildEntityAnswer(2), false);
             }
         }
 
         //雇佣
         if (interactionID == 2) {
-            if (smcPlayer.getMoneyCount() < 10000) {
+            if (smcPlayer.getMoneyCount() < getUpgradeNeed()) {
                 this.playSound(SoundEvents.VILLAGER_NO);
+                player.displayClientMessage(SkilletManCoreMod.getInfo("no_enough_money"), true);
             } else {
-                //TODO 扣钱
-                this.playSound(SoundEvents.VILLAGER_TRADE);
+                SMCPlayer.consumeMoney(getUpgradeNeed(), player);
+                this.setState(HIRED);
+                this.setOwnerUUID(player.getUUID());
+                this.setIncomeSpeed(1);
+                this.playSound(SoundEvents.VILLAGER_CELEBRATE);
                 player.displayClientMessage(answerBuilder.buildEntityAnswer(2), false);
             }
         }
 
         //全部取出
         if (interactionID == 4) {
-
+            SMCPlayer.addMoney(this.takeAllIncome(), player);
+            return;
         }
 
         //升级
         if (interactionID == 5) {
-
+            if (smcPlayer.getMoneyCount() < getUpgradeNeed()) {
+                this.playSound(SoundEvents.VILLAGER_NO);
+                player.displayClientMessage(SkilletManCoreMod.getInfo("no_enough_money"), true);
+            } else {
+                this.setIncomeSpeed(this.getIncomeSpeed() + 1);
+                SMCPlayer.consumeMoney(getUpgradeNeed(), player);
+                this.playSound(SoundEvents.VILLAGER_CELEBRATE);
+                player.displayClientMessage(SkilletManCoreMod.getInfo("shop_upgrade", this.getIncomeSpeed()), false);
+            }
         }
 
         if(interactionID == 6) {
+            DataManager.firstGiftGot.put(player, true);
             player.displayClientMessage(answerBuilder.buildEntityAnswer(5), false);
-            //TODO 给予初始物品
-
             ItemUtil.addItem(player, CDItems.SKILLET.asItem(), 1);
             ItemUtil.addItem(player, CDItems.SPATULA.asItem(), 1);
+            ItemUtil.addItem(player, Blocks.CRAFTING_TABLE.asItem(), 1);
+            ItemUtil.addItem(player, Blocks.JUKEBOX.asItem(), 1);
+            ItemUtil.addItem(player, Blocks.OAK_WOOD.asItem(), 64);
+            ItemUtil.addItem(player, Blocks.STONE.asItem().asItem(), 64);
+            ItemUtil.addItem(player, Blocks.COBBLESTONE.asItem().asItem(), 64);
+            ItemUtil.addItem(player, Blocks.BRICKS.asItem().asItem(), 64);
 
             player.playSound(SoundEvents.PLAYER_LEVELUP);
+        }
+
+        if(interactionID == 7) {
+            player.displayClientMessage(Component.literal("[").append(name.copy().withStyle(ChatFormatting.YELLOW)).append(Component.literal("]: Zzz....Zzz...Zzz...")), false);
+            SMCAdvancementData.finishAdvancement("fake_sleep", player);
         }
 
         this.setConversingPlayer(null);
@@ -231,7 +346,7 @@ public class StartNPC extends SMCNpc {
     @Override
     public @NotNull Component getName() {
         if (isHired()) {
-            return Component.translatable(this.getType().getDescriptionId() + "_hired");
+            return Component.translatable(this.getType().getDescriptionId() + "_hired", getIncome(), isWorkingTime() ? getIncomeSpeed() : currentSleepingString);
         } else if (isGuider()) {
             return Component.translatable(this.getType().getDescriptionId() + "_guider");
         }

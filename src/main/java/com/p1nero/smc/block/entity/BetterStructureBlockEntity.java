@@ -1,6 +1,6 @@
 package com.p1nero.smc.block.entity;
 
-import com.p1nero.smc.DOTEConfig;
+import com.p1nero.smc.SMCConfig;
 import com.p1nero.smc.block.SMCBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -36,7 +36,7 @@ public class BetterStructureBlockEntity extends StructureBlockEntity {
      */
     @Override
     public boolean loadStructure(@NotNull ServerLevel level, boolean p_59849_, @NotNull StructureTemplate template) {
-        if(DOTEConfig.ENABLE_BETTER_STRUCTURE_BLOCK_LOAD.get()){
+        if(SMCConfig.ENABLE_BETTER_STRUCTURE_BLOCK_LOAD.get()){
             if(!IS_LOADING){
                 IS_LOADING = true;
                 if(super.loadStructure(level, p_59849_, template)){
@@ -78,7 +78,7 @@ public class BetterStructureBlockEntity extends StructureBlockEntity {
         this.updateBlockState();
 
         //客户端保险
-        if(this.level != null && DOTEConfig.ENABLE_BETTER_STRUCTURE_BLOCK_LOAD.get()){
+        if(this.level != null && SMCConfig.ENABLE_BETTER_STRUCTURE_BLOCK_LOAD.get()){
             if(this.level.isClientSide){
                 HandleStructureBlockLoad.load(this);
             }

@@ -1,7 +1,9 @@
 package com.p1nero.smc.entity.custom.npc;
 
+import com.mojang.serialization.Dynamic;
 import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.archive.SMCArchiveManager;
+import com.p1nero.smc.entity.ai.behavior.VillagerTasks;
 import com.p1nero.smc.entity.ai.goal.NpcDialogueGoal;
 import com.p1nero.smc.entity.api.HomePointEntity;
 import com.p1nero.smc.entity.api.NpcDialogue;
@@ -14,6 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -22,6 +25,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -29,6 +33,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.Merchant;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -68,6 +73,24 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
         tag.putInt("home_pos_z", this.getEntityData().get(HOME_POS).getZ());
     }
 
+    protected @NotNull Brain<?> makeBrain(@NotNull Dynamic<?> dynamic) {
+        Brain<Villager> brain = this.brainProvider().makeBrain(dynamic);
+        this.registerBrainGoals(brain);
+        return brain;
+    }
+
+    public void refreshBrain(@NotNull ServerLevel serverLevel) {
+        Brain<Villager> brain = this.getBrain();
+        brain.stopAll(serverLevel, this);
+        this.brain = brain.copyWithoutBehaviors();
+        this.registerBrainGoals(this.getBrain());
+    }
+
+    private void registerBrainGoals(Brain<Villager> villagerBrain) {
+        villagerBrain.addActivity(Activity.CORE, VillagerTasks.getSMCVillagerCorePackage(this));
+        villagerBrain.updateActivityFromSchedule(this.level().getDayTime(), this.level().getGameTime());
+    }
+
     @Override
     public void setHomePos(BlockPos homePos) {
         getEntityData().set(HOME_POS, homePos);
@@ -89,17 +112,34 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        if(tickCount % 20 == 0){
+            this.onSecond();
+        }
+    }
+
+    public void onSecond() {
+
+    }
+
+    @Override
     public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
+        this.playSound(SoundEvents.VILLAGER_AMBIENT);
         if (player instanceof ServerPlayer serverPlayer) {
             this.lookAt(player, 180.0F, 180.0F);
             if (this.getConversingPlayer() == null) {
                 CompoundTag compoundTag = new CompoundTag();
-                compoundTag.putBoolean("first_gift_got", DataManager.firstGiftGot.get(player));
-                PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCDialoguePacket(this.getId(), SMCArchiveManager.BIOME_PROGRESS_DATA.toNbt(compoundTag)), serverPlayer);
+                SMCArchiveManager.BIOME_PROGRESS_DATA.toNbt(compoundTag);
+                PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCDialoguePacket(this.getId(), getDialogData(compoundTag, serverPlayer)), serverPlayer);
                 this.setConversingPlayer(serverPlayer);
             }
         }
         return InteractionResult.sidedSuccess(level().isClientSide);
+    }
+
+    protected CompoundTag getDialogData(CompoundTag compoundTag, ServerPlayer serverPlayer) {
+        return compoundTag;
     }
 
     @Override
@@ -139,7 +179,7 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
      * 默认不做处理
      */
     @Override
-    public void handleNpcInteraction(Player player, byte interactionID) {
+    public void handleNpcInteraction(ServerPlayer player, byte interactionID) {
         setConversingPlayer(null);
     }
 

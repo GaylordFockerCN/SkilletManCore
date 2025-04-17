@@ -1,7 +1,7 @@
 package com.p1nero.smc.entity.api;
 
 import com.p1nero.smc.SkilletManCoreMod;
-import com.p1nero.smc.DOTEConfig;
+import com.p1nero.smc.SMCConfig;
 import com.p1nero.smc.util.EntityUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,7 +22,7 @@ public interface MultiPlayerBoostEntity {
             float healthOrdinal = entity.getHealth();
             float maxHealthOrdinal = entity.getMaxHealth();
             int playerCount = EntityUtil.getPlayerCount(serverLevel);
-            for(int i = 1; i <= DOTEConfig.BOSS_HEALTH_AND_LOOT_MULTIPLE_MAX.get(); i++){
+            for(int i = 1; i <= SMCConfig.BOSS_HEALTH_AND_LOOT_MULTIPLE_MAX.get(); i++){
                 AttributeModifier modifier = new AttributeModifier(UUID.fromString("d2d110cc-f22f-11ed-a05b-1212bb11451"+i), "health_modify_in_multi_player", i - 1, AttributeModifier.Operation.MULTIPLY_TOTAL);
                 AttributeInstance instance = entity.getAttribute(Attributes.MAX_HEALTH);
                 if(instance != null){

@@ -13,7 +13,7 @@ public class SMCCommands {
     public static void registerCommands(RegisterCommandsEvent event) {
         CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
         SMCSetConfigCommand.register(dispatcher);
-        SMCSetWorldLevelCommand.register(dispatcher);
+        SMCSetPlayerDataCommand.register(dispatcher);
 //        SMCTimeCommand.register(dispatcher);
     }
 }

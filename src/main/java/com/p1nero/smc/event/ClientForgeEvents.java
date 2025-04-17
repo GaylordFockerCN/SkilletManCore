@@ -1,6 +1,6 @@
 package com.p1nero.smc.event;
 
-import com.p1nero.smc.DOTEConfig;
+import com.p1nero.smc.SMCConfig;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.client.gui.BossBarHandler;
 import com.p1nero.smc.client.gui.CustomGuiHandler;
@@ -27,9 +27,7 @@ public class ClientForgeEvents {
     @SubscribeEvent
     public static void onRenderGui(RenderGuiEvent event) {
         GuiGraphics guiGraphics = event.getGuiGraphics();
-        if(DOTEConfig.RENDER_CUSTOM_GUI.get()){
-            CustomGuiHandler.renderCustomGui(guiGraphics);
-        }
+        CustomGuiHandler.renderCustomGui(guiGraphics);
     }
 
 }
