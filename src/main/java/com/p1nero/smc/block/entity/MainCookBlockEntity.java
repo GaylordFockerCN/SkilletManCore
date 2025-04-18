@@ -11,15 +11,16 @@ import com.p1nero.smc.entity.custom.npc.start_npc.StartNPC;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.NPCBlockDialoguePacket;
-import dev.xkmc.cuisinedelight.content.item.CuisineSkilletItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
@@ -27,19 +28,24 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBlock {
     @Nullable
     private StartNPC startNPC;
     private boolean isWorking;
-    private final int workingRadius = 5;
-    private List<Customer> customers;
+    public static final int WORKING_RADIUS = 8;
+    private final List<Customer> customers = new ArrayList<>();
 
     public MainCookBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(SMCBlockEntities.MAIN_COOK_BLOCK_ENTITY.get(), blockPos, blockState);
@@ -67,26 +73,86 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             if (mainCookBlockEntity.startNPC != null && mainCookBlockEntity.startNPC.isGuider()) {
                 LivingEntity owner = mainCookBlockEntity.startNPC.getOwner();
                 if (owner instanceof ServerPlayer serverPlayer && owner.isAlive()) {
-                    mainCookBlockEntity.isWorking = mainCookBlockEntity.checkWorking();
-                    if (mainCookBlockEntity.isWorking) {
-                        SMCPlayer.updateWorkingState(true, serverPlayer);
-                        //抓回来上班
-                        if(pos.getCenter().distanceTo(serverPlayer.position()) > mainCookBlockEntity.workingRadius && !mainCookBlockEntity.canPlayerLeave(serverPlayer)) {
-                            serverPlayer.teleportTo(mainCookBlockEntity.startNPC.getX(), mainCookBlockEntity.startNPC.getY(), mainCookBlockEntity.startNPC.getZ());
-                            serverPlayer.playSound(SoundEvents.VILLAGER_NO);
-                            CompoundTag tag = new CompoundTag();
-                            tag.putBoolean("is_catching_escaping_player", true);
-                            PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCBlockDialoguePacket(pos, tag), serverPlayer);
-                        }
-                        //生成客户 TODO
-
-
-                    } else {
-                        SMCPlayer.updateWorkingState(false, serverPlayer);
+                    if(mainCookBlockEntity.isWorking) {
+                        mainCookBlockEntity.workingTick(serverPlayer);
+                        mainCookBlockEntity.isWorking = mainCookBlockEntity.checkWorkingTime();
+                        mainCookBlockEntity.updateWorkingState(serverPlayer);
                     }
                 }
             }
         }
+    }
+
+    @Override
+    protected void saveAdditional(@NotNull CompoundTag compoundTag) {
+        super.saveAdditional(compoundTag);
+        compoundTag.putBoolean("isWorking", isWorking);
+    }
+
+    @Override
+    public void load(@NotNull CompoundTag compoundTag) {
+        super.load(compoundTag);
+        isWorking = compoundTag.getBoolean("isWorking");
+    }
+
+    public void updateWorkingState(ServerPlayer serverPlayer) {
+        if (this.isWorking) {
+            SMCPlayer.updateWorkingState(true, serverPlayer);
+        } else {
+            SMCPlayer.updateWorkingState(false, serverPlayer);
+            this.clearCustomers();
+        }
+    }
+
+    public void workingTick(ServerPlayer owner){
+        //抓回来上班
+        if(this.getBlockPos().getCenter().distanceTo(owner.position()) > WORKING_RADIUS && !this.canPlayerLeave(owner) && this.startNPC != null) {
+            owner.teleportTo(startNPC.getX(), startNPC.getY(), startNPC.getZ());
+            owner.playSound(SoundEvents.VILLAGER_NO);
+            CompoundTag tag = new CompoundTag();
+            tag.putBoolean("is_catching_escaping_player", true);
+            PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCBlockDialoguePacket(this.getBlockPos(), tag), owner);
+        }
+
+        //生成顾客，3s一只，最多10只
+        this.customers.removeIf(customer -> customer == null || customer.isRemoved() || !customer.isAlive());
+        if(this.customers.size() < 10 && owner.tickCount % 60 == 0) {
+            BlockPos centerPos = this.getBlockPos();
+            double centerX = centerPos.getX() + 0.5;
+            double centerY = centerPos.getY() + 1.0;
+            double centerZ = centerPos.getZ() + 0.5;
+            double spawnRadius = 10.0;
+
+            double angle = Math.random() * 2 * Math.PI;
+            double radius = spawnRadius * Math.random();
+
+            double spawnX = centerX + Math.cos(angle) * radius;
+            double spawnZ = centerZ + Math.sin(angle) * radius;
+
+            Vec3 spawnPos = new Vec3(spawnX, centerY, spawnZ);
+            Customer customer = new Customer(owner.level(), spawnPos);
+            customer.setHomePos(this.getBlockPos());
+
+            customer.getNavigation().moveTo(customer.getNavigation().createPath(this.getBlockPos(), 3), 1.0);
+            this.customers.add(customer);
+            owner.serverLevel().addFreshEntity(customer);
+        }
+    }
+
+    public void clearCustomers(){
+        customers.forEach(Entity::discard);
+        Iterator<Customer> iterator = customers.iterator();
+        while (iterator.hasNext()) {
+            iterator.next().discard();
+            iterator.remove();
+        }
+    }
+
+    public void summonRaidFor(ServerPlayer serverPlayer){
+        clearCustomers();
+        CommandSourceStack commandSourceStack = serverPlayer.createCommandSourceStack();
+        Objects.requireNonNull(serverPlayer.getServer()).getCommands().performPrefixedCommand(commandSourceStack, "s");
+
     }
 
     /**
@@ -103,18 +169,43 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         this.customers.remove(customer);
     }
 
+    public void onSkilletPlace(ServerPlayer serverPlayer) {
+        if(this.startNPC == null) {
+            return;
+        }
+        if(!serverPlayer.getUUID().equals(this.startNPC.getOwnerUUID())) {
+            SMCPlayer.updateWorkingState(false, serverPlayer);
+            this.clearCustomers();
+            serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("already_has_owner"), true);
+            return;
+        }
+        this.isWorking = true;
+    }
+
+    public boolean tryBreakSkillet(ServerPlayer serverPlayer) {
+        if(this.startNPC == null) {
+            return true;
+        }
+        if(!serverPlayer.getUUID().equals(this.startNPC.getOwnerUUID())) {
+            SMCPlayer.updateWorkingState(false, serverPlayer);
+            this.clearCustomers();
+            serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("already_has_owner"), true);
+            return false;
+        }
+        this.isWorking = false;
+        this.updateWorkingState(serverPlayer);
+        return true;
+    }
+
     /**
      * 判断是否开始营业
      */
-    public boolean checkWorking() {
+    public boolean checkWorkingTime() {
         if (this.level == null) {
             return false;
         }
         long currentTime = this.level.getDayTime();
-        if(currentTime > 600 && currentTime < 12700) {
-            return this.level.getBlockState(this.getBlockPos().above()).is(ModBlocks.STOVE.get()) && this.level.getBlockState(this.getBlockPos().above(2)).getBlock().asItem() instanceof CuisineSkilletItem;
-        }
-        return false;
+        return currentTime > 600 && currentTime < 12700;
     }
 
     public boolean canPlayerLeave(ServerPlayer serverPlayer) {
@@ -131,6 +222,13 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             builder.start(SkilletManCoreMod.getInfo("cannot_left_customers"))
                     .addFinalChoice(SkilletManCoreMod.getInfo("alr"), (byte) 0)
                     .addFinalChoice(SkilletManCoreMod.getInfo("god_stove_talk"), (byte) 0);
+        }
+
+        if(senderData.getBoolean("is_first_food_bad")) {
+            //第一次炒糊了
+            builder.start(SkilletManCoreMod.getInfo("first_food_bad"))
+                    .addFinalChoice(SkilletManCoreMod.getInfo("sorry"), (byte) 0)
+                    .addFinalChoice(SkilletManCoreMod.getInfo("give_me_another_chance"), (byte) 0);
         }
 
         if(!builder.isEmpty()){

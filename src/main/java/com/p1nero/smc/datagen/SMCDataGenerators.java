@@ -5,6 +5,7 @@ import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.datagen.loot.SMCLootTableProvider;
 import com.p1nero.smc.datagen.sound.SMCSoundGenerator;
 import com.p1nero.smc.datagen.tags.*;
+import hungteen.htlib.data.HTDatapackEntriesGen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -42,10 +43,14 @@ public class SMCDataGenerators {
         generator.addProvider(event.includeServer(), new SMCItemTagGenerator(output, lookupProvider, blockTagGenerator.contentsGetter(), helper));
         generator.addProvider(event.includeServer(), new SMCPoiTypeTagsProvider(output, lookupProvider, helper));
 
+        //生成袭击
+        generator.addProvider(event.includeServer(), new SMCRaidDatapackEntriesGen(output, lookupProvider));
         //应该不需要维度
 //        DatapackBuiltinEntriesProvider datapackProvider = new SMCWorldGenProvider(output, lookupProvider);
 //        CompletableFuture<HolderLookup.Provider> provider = datapackProvider.getRegistryProvider();
 //        generator.addProvider(event.includeServer(), new SMCBiomeTagGenerator(output, provider, helper));
 //        generator.addProvider(event.includeServer(), datapackProvider);
+
+
     }
 }

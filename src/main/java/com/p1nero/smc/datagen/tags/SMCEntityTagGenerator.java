@@ -31,7 +31,7 @@ public class SMCEntityTagGenerator extends EntityTypeTagsProvider {
     }
     @Override
     public @NotNull String getName() {
-        return "Duel Of The End Entity Tags";
+        return "SMC Entity Tags";
     }
 
 }

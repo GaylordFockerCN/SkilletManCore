@@ -54,6 +54,8 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement first5StarSkillet = registerAdvancement(root, "first_5star_skillet", FrameType.TASK, SMCRegistrateItems.IRON_SKILLET_LEVEL5.get());
             Advancement fakeSleep = registerAdvancement(root, "fake_sleep", FrameType.TASK, Items.RED_BED);
             Advancement tryPush = registerAdvancement(root, "try_push", FrameType.TASK, Blocks.PISTON);
+            Advancement noMoney = registerAdvancement(root, "no_money", FrameType.TASK, Blocks.PISTON);
+            Advancement selfEat = registerAdvancement(root, "self_eat", FrameType.TASK, Blocks.PISTON);
 
         }
 

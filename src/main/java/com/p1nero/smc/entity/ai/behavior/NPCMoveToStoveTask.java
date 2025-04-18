@@ -30,7 +30,12 @@ public class NPCMoveToStoveTask extends Behavior<Mob> {
     }
 
     @Override
+    protected void start(@NotNull ServerLevel serverLevel, @NotNull Mob customer, long p_22542_) {
+        customer.getNavigation().moveTo(customer.getNavigation().createPath(((Customer) customer).isTraded() ? ((Customer) customer).getSpawnPos() : ((Customer) customer).getHomePos(), ((int) ((Customer) customer).getDistance())), 4);
+    }
+
+    @Override
     protected void tick(@NotNull ServerLevel level, @NotNull Mob customer, long p_22553_) {
-        customer.getNavigation().moveTo(customer.getNavigation().createPath(((Customer) customer).isTraded() ? ((Customer) customer).getSpawnPos() : ((Customer) customer).getHomePos(), ((int) ((Customer) customer).getDistance())), 1);
+        customer.getNavigation().moveTo(customer.getNavigation().createPath(((Customer) customer).isTraded() ? ((Customer) customer).getSpawnPos() : ((Customer) customer).getHomePos(), ((int) ((Customer) customer).getDistance())), 4);
     }
 }

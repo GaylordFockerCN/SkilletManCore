@@ -24,6 +24,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -42,13 +43,14 @@ public class StartNPC extends SMCNpc {
     protected static final EntityDataAccessor<Integer> INCOME = SynchedEntityData.defineId(StartNPC.class, EntityDataSerializers.INT);//收入
     protected static final EntityDataAccessor<Integer> INCOME_SPEED = SynchedEntityData.defineId(StartNPC.class, EntityDataSerializers.INT);//收入速度 / 店铺等级
     protected static final EntityDataAccessor<Integer> STATE = SynchedEntityData.defineId(StartNPC.class, EntityDataSerializers.INT);//状态
-    protected static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(StartNPC.class, EntityDataSerializers.OPTIONAL_UUID);//状态
     public static final int EMPTY = 0;
     public static final int HIRED = 1;
     public static final int GUIDER = 2;
     private final Component name;
     public final String totalSleepingString = "Zzz.......";
     private String currentSleepingString = "";
+    @Nullable
+    private ServerPlayer lastPushPlayer;
 
     public StartNPC(EntityType<? extends StartNPC> entityType, Level level) {
         super(entityType, level);
@@ -61,35 +63,6 @@ public class StartNPC extends SMCNpc {
         this.getEntityData().define(INCOME, 0);
         this.getEntityData().define(INCOME_SPEED, 1);
         this.getEntityData().define(STATE, 0);
-        this.entityData.define(OWNER_UUID, Optional.empty());
-    }
-
-    @Nullable
-    public UUID getOwnerUUID() {
-        return this.entityData.get(OWNER_UUID).orElse(null);
-    }
-    @Nullable
-    public LivingEntity getOwner() {
-        try {
-            UUID uuid = this.getOwnerUUID();
-            if(uuid != null){
-                Player player = this.level().getPlayerByUUID(uuid);
-                if(player == null){
-                    if(this.level() instanceof ServerLevel serverLevel){
-                        return serverLevel.getEntity(uuid) instanceof LivingEntity livingEntity ? livingEntity : null;
-                    }
-                } else {
-                    return player;
-                }
-            }
-            return null;
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-    }
-
-    public void setOwnerUUID(@Nullable UUID pUuid) {
-        this.entityData.set(OWNER_UUID, Optional.ofNullable(pUuid));
     }
 
     @Override
@@ -98,9 +71,6 @@ public class StartNPC extends SMCNpc {
         this.getEntityData().set(INCOME, tag.getInt("income"));
         this.getEntityData().set(INCOME_SPEED, tag.getInt("income_speed"));
         this.getEntityData().set(STATE, tag.getInt("shop_state"));
-        if (tag.hasUUID("owner_uuid")) {
-            this.setOwnerUUID(tag.getUUID("owner_uuid"));
-        }
     }
 
     @Override
@@ -109,9 +79,6 @@ public class StartNPC extends SMCNpc {
         tag.putInt("income", this.getEntityData().get(INCOME));
         tag.putInt("income_speed", this.getEntityData().get(INCOME_SPEED));
         tag.putInt("shop_state", this.getEntityData().get(STATE));
-        if (this.getOwnerUUID() != null) {
-            tag.putUUID("owner_uuid", this.getOwnerUUID());
-        }
     }
 
     public boolean isHired() {
@@ -158,7 +125,10 @@ public class StartNPC extends SMCNpc {
     public void onSecond() {
 
         if(this.position().distanceTo(this.getHomePos().getCenter()) > 2.9) {
-            this.setPos(this.getHomePos().getCenter());
+            this.setPos(this.getSpawnPos().getCenter());
+            if(lastPushPlayer != null) {
+                SMCAdvancementData.finishAdvancement("try_push", lastPushPlayer);
+            }
         }
 
         long currentTime = this.level().getDayTime();
@@ -223,7 +193,7 @@ public class StartNPC extends SMCNpc {
                 takeMoney.addChild(main);
                 builder.setAnswerRoot(main);//告辞
             } else {
-                builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(8))
+                builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(9))
                         .addLeaf(dialogueComponentBuilder.buildDialogueOption(9), (byte) 3)
                         .addLeaf(dialogueComponentBuilder.buildDialogueOption(10), (byte) 7));
             }
@@ -234,8 +204,10 @@ public class StartNPC extends SMCNpc {
                 builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(1))
                         // 新手帮助
                         .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(6), dialogueComponentBuilder.buildDialogueOption(4))
-                                .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(7), dialogueComponentBuilder.buildDialogueOption(8))
-                                        .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3)))
+                                .addChild(
+                                        new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(7), dialogueComponentBuilder.buildDialogueOption(8))
+                                                .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(8), dialogueComponentBuilder.buildDialogueOption(8))
+                                                        .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3))))
                         .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3)); //告辞
             } else {
                 builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(1))
@@ -325,6 +297,9 @@ public class StartNPC extends SMCNpc {
             ItemUtil.addItem(player, Blocks.STONE.asItem().asItem(), 64);
             ItemUtil.addItem(player, Blocks.COBBLESTONE.asItem().asItem(), 64);
             ItemUtil.addItem(player, Blocks.BRICKS.asItem().asItem(), 64);
+            ItemUtil.addItem(player, CDItems.PLATE.asItem().asItem(), 64);
+            ItemUtil.addItem(player, CDItems.PLATE.asItem().asItem(), 64);
+            ItemUtil.addItem(player, CDItems.PLATE.asItem().asItem(), 64);
 
             player.playSound(SoundEvents.PLAYER_LEVELUP);
         }
@@ -367,4 +342,11 @@ public class StartNPC extends SMCNpc {
         return this.position().distanceTo(this.getHomePos().getCenter()) < 3.5;
     }
 
+    @Override
+    public void push(@NotNull Entity entity) {
+        super.push(entity);
+        if(entity instanceof ServerPlayer player) {
+            lastPushPlayer = player;
+        }
+    }
 }

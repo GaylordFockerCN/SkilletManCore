@@ -16,8 +16,10 @@ import com.p1nero.smc.network.packet.clientbound.SyncUuidPacket;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
 import dev.xkmc.cuisinedelight.content.item.CuisineSkilletItem;
 import dev.xkmc.cuisinedelight.content.item.SpatulaItem;
+import dev.xkmc.cuisinedelight.events.FoodEatenEvent;
 import net.blay09.mods.waystones.block.ModBlocks;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -29,6 +31,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 
@@ -78,10 +81,14 @@ public class PlayerEventListener {
             ItemStack mainHandItem = event.player.getMainHandItem();
             if(!EpicFightCapabilities.getItemStackCapability(mainHandItem).isEmpty() && !event.player.isCreative() && EpicFightCapabilities.getEntityPatch(event.player, PlayerPatch.class).isBattleMode()) {
                 if(!(mainHandItem.getItem() instanceof CuisineSkilletItem || mainHandItem.getItem() instanceof SpatulaItem)) {
-                    event.player.drop(mainHandItem.copy(), true);
-                    mainHandItem.shrink(1);
-                    event.player.displayClientMessage(SkilletManCoreMod.getInfo("no_your_power"), true);
-                    SMCAdvancementData.finishAdvancement("no_your_power", ((ServerPlayer) event.player));
+                    SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(event.player);
+                    //stage3才解禁
+                    if(smcPlayer.getLevel() < SMCPlayer.STAGE3_REQUIRE) {
+                        event.player.drop(mainHandItem.copy(), true);
+                        mainHandItem.shrink(1);
+                        event.player.displayClientMessage(SkilletManCoreMod.getInfo("no_your_power"), true);
+                        SMCAdvancementData.finishAdvancement("no_your_power", ((ServerPlayer) event.player));
+                    }
                 }
             }
         }
@@ -115,6 +122,14 @@ public class PlayerEventListener {
                     mainCookBlockEntity.onClickStove(serverPlayer, event.getPos().below(), event.getFace(), event.getHand());
                 }
             }
+        }
+    }
+
+
+    @SubscribeEvent
+    public static void onPlayerEatFood(FoodEatenEvent event){
+        if(event.player instanceof ServerPlayer serverPlayer) {
+            SMCAdvancementData.finishAdvancement("self_eat", serverPlayer);
         }
     }
 

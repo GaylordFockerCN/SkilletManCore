@@ -7,6 +7,7 @@ import com.p1nero.smc.entity.ai.behavior.VillagerTasks;
 import com.p1nero.smc.entity.ai.goal.NpcDialogueGoal;
 import com.p1nero.smc.entity.api.HomePointEntity;
 import com.p1nero.smc.entity.api.NpcDialogue;
+import com.p1nero.smc.entity.custom.npc.start_npc.StartNPC;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.packet.clientbound.NPCDialoguePacket;
@@ -24,6 +25,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -42,27 +44,74 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+import java.util.UUID;
+
 public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDialogue, Merchant {
     @Nullable
     private Player conversingPlayer;
     @Nullable
     private Player tradingPlayer;
+
+    protected BlockPos spawnPos;
     protected static final EntityDataAccessor<BlockPos> HOME_POS = SynchedEntityData.defineId(SMCNpc.class, EntityDataSerializers.BLOCK_POS);
+    protected static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(SMCNpc.class, EntityDataSerializers.OPTIONAL_UUID);//服务的玩家
     public SMCNpc(EntityType<? extends Villager> entityType, Level level) {
         super(entityType, level);
+        spawnPos = this.getOnPos();
         setHomePos(getOnPos());
+    }
+
+    public BlockPos getSpawnPos() {
+        if(this.spawnPos.getCenter().distanceTo(this.getHomePos().getCenter()) > 2.9) {
+            this.spawnPos = this.getHomePos().above(3);
+        }
+        return spawnPos;
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         getEntityData().define(HOME_POS, getOnPos());
+        this.entityData.define(OWNER_UUID, Optional.empty());
+    }
+
+
+    @Nullable
+    public UUID getOwnerUUID() {
+        return this.entityData.get(OWNER_UUID).orElse(null);
+    }
+    @Nullable
+    public LivingEntity getOwner() {
+        try {
+            UUID uuid = this.getOwnerUUID();
+            if(uuid != null){
+                Player player = this.level().getPlayerByUUID(uuid);
+                if(player == null){
+                    if(this.level() instanceof ServerLevel serverLevel){
+                        return serverLevel.getEntity(uuid) instanceof LivingEntity livingEntity ? livingEntity : null;
+                    }
+                } else {
+                    return player;
+                }
+            }
+            return null;
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    public void setOwnerUUID(@Nullable UUID pUuid) {
+        this.entityData.set(OWNER_UUID, Optional.ofNullable(pUuid));
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         this.getEntityData().set(HOME_POS, new BlockPos(tag.getInt("home_pos_x"), tag.getInt("home_pos_y"), tag.getInt("home_pos_z")));
+        if (tag.hasUUID("owner_uuid")) {
+            this.setOwnerUUID(tag.getUUID("owner_uuid"));
+        }
     }
 
     @Override
@@ -71,6 +120,9 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
         tag.putInt("home_pos_x", this.getEntityData().get(HOME_POS).getX());
         tag.putInt("home_pos_y", this.getEntityData().get(HOME_POS).getY());
         tag.putInt("home_pos_z", this.getEntityData().get(HOME_POS).getZ());
+        if (this.getOwnerUUID() != null) {
+            tag.putUUID("owner_uuid", this.getOwnerUUID());
+        }
     }
 
     protected @NotNull Brain<?> makeBrain(@NotNull Dynamic<?> dynamic) {
@@ -148,8 +200,8 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
     }
 
     @Override
-    public boolean hurt(@NotNull DamageSource source, float p_21017_) {
-        return false;
+    public boolean hurt(@NotNull DamageSource source, float value) {
+        return source.getEntity() instanceof Player player && player.isCreative();
     }
 
     @Override

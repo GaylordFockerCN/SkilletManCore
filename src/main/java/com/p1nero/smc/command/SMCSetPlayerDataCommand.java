@@ -6,6 +6,7 @@ import com.p1nero.smc.archive.SMCArchiveManager;
 import com.p1nero.smc.capability.SMCPlayer;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 
 public class SMCSetPlayerDataCommand {
@@ -37,6 +38,12 @@ public class SMCSetPlayerDataCommand {
                                     }
                                     return 0;
                                 })
+                                .then(Commands.argument("player", EntityArgument.player())
+                                        .executes((context) -> {
+                                            SMCPlayer.addMoney(IntegerArgumentType.getInteger(context, "value"), EntityArgument.getPlayer(context, "player"));
+                                            return 0;
+                                        })
+                                )
                         )
                 )
                 .then(Commands.literal("consumeMoney").requires((commandSourceStack) -> commandSourceStack.hasPermission(2))
@@ -45,6 +52,21 @@ public class SMCSetPlayerDataCommand {
                                     if(context.getSource().getPlayer() != null){
                                         SMCPlayer.consumeMoney(IntegerArgumentType.getInteger(context, "value"), context.getSource().getPlayer());
                                     }
+                                    return 0;
+                                })
+                                .then(Commands.argument("player", EntityArgument.player())
+                                        .executes((context) -> {
+                                            SMCPlayer.consumeMoney(IntegerArgumentType.getInteger(context, "value"), EntityArgument.getPlayer(context, "player"));
+                                            return 0;
+                                        })
+                                )
+                        )
+                )
+
+                .then(Commands.literal("stageUp").requires((commandSourceStack) -> commandSourceStack.hasPermission(2))
+                        .then(Commands.argument("player", EntityArgument.player())
+                                .executes((context) -> {
+                                    SMCPlayer.stageUp(EntityArgument.getPlayer(context, "player"));
                                     return 0;
                                 })
                         )

@@ -32,10 +32,10 @@ public class SMCEntities {
 	public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, SkilletManCoreMod.MOD_ID);
 
 	public static final RegistryObject<EntityType<StartNPC>> START_NPC = register("start_npc",
-			EntityType.Builder.of(StartNPC::new, MobCategory.CREATURE).sized(0.6f, 1.9f));
+			EntityType.Builder.of(StartNPC::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
 
 	public static final RegistryObject<EntityType<Customer>> CUSTOMER = register("customer",
-			EntityType.Builder.of(Customer::new, MobCategory.CREATURE).sized(0.6f, 1.9f));
+			EntityType.Builder.<Customer>of(Customer::new, MobCategory.CREATURE).sized(0.6f, 1.9f).noSave().fireImmune());
 	public static final RegistryObject<EntityType<BlackHoleEntity>> BLACK_HOLE = register("black_hole",
 			EntityType.Builder.of(BlackHoleEntity::new, MobCategory.MISC).sized(1.0f, 1.0f));
 	public static final RegistryObject<EntityType<FlameCircleEntity>> FLAME_CIRCLE = register("flame_circle",
@@ -73,11 +73,14 @@ public class SMCEntities {
 
 		//NPC
 		event.put(START_NPC.get(), StartNPC.setAttributes());
+		event.put(CUSTOMER.get(), StartNPC.setAttributes());
 	}
 
 	@SubscribeEvent
 	public static void entitySpawnRestriction(SpawnPlacementRegisterEvent event) {
 		event.register(START_NPC.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+				StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
+		event.register(CUSTOMER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 				StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
 	}
 

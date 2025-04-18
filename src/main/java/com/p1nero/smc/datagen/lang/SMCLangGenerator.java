@@ -21,10 +21,15 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("start_work", "§a上班！");
         this.addInfo("end_work", "§c下班！");
 
+        this.addInfo("first_food_bad", "\n §e胡来！胡来！这样的菜怎么能给客人吃！速速找NPC再去学习一番怎么做菜！！再有下次，一次扣你100！");
+        this.addInfo("sorry", "呜呜呜我错了灶王爷我下次再也不敢了！");
+        this.addInfo("give_me_another_chance", "伟大的炉神啊！再赐予我一次机会吧！");
         this.addInfo("cannot_left_customers", "\n §e嘿小子，你不能丢下你的顾客不管！");
         this.addInfo("alr", "好好好");
         this.addInfo("god_stove_talk", "我去！灶王公说话了！");
 
+        this.addInfo("unlock_new_order", "§a客户解锁了新的需求！ 当前可能的请求");
+        this.addInfo("already_has_owner", "§c时间太久，顾客离开了一位。。");
         this.addInfo("already_has_owner", "§c本店铺已经有主人了！");
         this.addInfo("please_in_battle_mode", "§c请打开战斗模式！！");
         this.addInfo("no_enough_money", "§c余额不足！！");
@@ -44,6 +49,8 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("first_5star_skillet", "第一个五星锅！", "将一把平底锅升到五星");
         this.addAdvancement("fake_sleep", "睡觉时间到！", "企图唤醒你的员工，但你永远无法唤醒一个正在装睡的人。");
         this.addAdvancement("try_push", "碰碰车", "企图推开核心NPC，太可恶了！");
+        this.addAdvancement("no_money", "亿万负翁", "钱达到负数（到底是怎么做到的。。。）");
+        this.addAdvancement("self_eat", "自产自销", "吃下自己做的食物");
 
         this.add(SMCRegistrateItems.SPATULA_V2.get(), "锅铲");
         this.add(SMCRegistrateItems.SPATULA_V3.get(), "锅铲");
@@ -77,13 +84,13 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialog(SMCEntities.START_NPC, 2, "本店亏损已久，承蒙恩公相助！");
         this.addDialog(SMCEntities.START_NPC, 3, "§a已全部取出！");
         this.addDialog(SMCEntities.START_NPC, 4, "§a已升级！");
-        this.addDialog(SMCEntities.START_NPC, 5, "准备好开业了吗！§6[由于作者没有建筑水平，因此还特地补偿了一些建筑方块]");
-        this.addDialog(SMCEntities.START_NPC, 6, "将§6炒锅§r摆上§6炉灶§r以开始营业，右键顾客以查看所需食材，烹饪完成后§6将食材放至主手§r，再次对话以交付食材。根据食材的品质将获得不同奖励。而夜晚可能会有袭击事件，拿起平底锅保卫村庄！");
-        this.addDialog(SMCEntities.START_NPC, 7, "每接待一位顾客将提升一次店铺等级，随着等级提升将解锁新的资源和玩法。到一定等级时将开启§6突破试炼§r，若试炼成功则可获得大量奖励并且进入下一游戏阶段。不用担心，§a流程不肝不长！§r");
-        this.addDialog(SMCEntities.START_NPC, 8, "Zzz...Zzz...Zzz... (忙碌了一天的员工睡得正香，此刻也许你会好奇它为什么能够站着睡着。平底锅侠的世界就是如此奇妙，无需那么多为什么。)");
+        this.addDialog(SMCEntities.START_NPC, 5, "准备好开业了吗！§6（由于作者没有建筑水平，因此还特地补偿了一些建筑方块。当然，这些盘子你用到通关了也花不完。就算花完了拿木板就可以做。）");
+        this.addDialog(SMCEntities.START_NPC, 6, "将§6炒锅§r摆上§6炉灶§r以开始营业，右键顾客以查看所需食材，烹饪完成后§6将食材放至主手，再次对话以交付食材。§r根据食材的品质将获得不同奖励。而夜晚可能会有§4袭击事件§r，拿起平底锅保卫村庄！");
+        this.addDialog(SMCEntities.START_NPC, 7, "炒菜时，把对应的食材丢入锅中，用锅铲即可翻炒。左边的仪表盘提示食物是否烧焦，请在合适的时候将其取出！使用JEI可查看料理配方。");
+        this.addDialog(SMCEntities.START_NPC, 8, "每接待一位顾客将提升一次店铺等级，随着等级提升将解锁新的资源和玩法。到一定等级时将开启§6突破试炼§r，若试炼成功则可获得大量奖励并且进入下一游戏阶段。不用担心，§a流程不肝不长！§r");
+        this.addDialog(SMCEntities.START_NPC, 9, "Zzz...Zzz...Zzz... (忙碌了一天的员工睡得正香，此刻也许你会好奇它为什么能够站着睡着。平底锅侠的世界就是如此奇妙，无需那么多为什么。)");
 
         add(SMCEntities.CUSTOMER.get(), "§e人畜无害的顾客§r");
-        this.addDialog(SMCEntities.CUSTOMER, -1, "（你感受到面前的这位客人有一股强大的气场）");
 
         Customer.customers.forEach(customerData -> customerData.generateTranslation(this));
         Customer.specialCustomers.forEach(customerData -> customerData.generateTranslation(this));

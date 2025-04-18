@@ -1,6 +1,7 @@
 package com.p1nero.smc.event;
 
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerPlayer;
@@ -83,6 +84,11 @@ public class LivingEntityListener {
 
     @SubscribeEvent
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
+
+        if(event.getEntity() instanceof ServerPlayer serverPlayer) {
+            SMCCapabilityProvider.syncPlayerDataToClient(serverPlayer);
+        }
+
         if(weapons.isEmpty()) {
             weapons.add(Items.IRON_SWORD.getDefaultInstance());
             weapons.add(Items.IRON_AXE.getDefaultInstance());
