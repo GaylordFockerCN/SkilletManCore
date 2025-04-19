@@ -12,6 +12,7 @@
     "HumanoidMobPatchMixin",
     "MainFrameAnimationMixin",
     "ServerGamePacketListenerImplMixin",
+    "VillagerMixin",
     "WOMAnimationsMixin",
     "WorldOptionsMixin"
   ],

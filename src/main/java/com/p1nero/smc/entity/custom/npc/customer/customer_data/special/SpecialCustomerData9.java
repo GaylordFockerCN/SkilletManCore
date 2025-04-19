@@ -21,48 +21,25 @@ public class SpecialCustomerData9 extends SpecialCustomerData {
     }
 
     public void generateTranslation(SMCLangGenerator generator) {
-        generator.add(nameTranslationKey, "冷若冰霜的客户");
-        generator.add(answerPre(-2), "（桌面瞬间结霜）你当本宫会碰这些腌臜之物？");
-        generator.add(choicePre(-2), "哈着白雾后退");
-        generator.add(answerPre(-1), "（雪狐裘衣领间隐约露出寒玉项链）");
-        generator.add(choicePre(-1), "仙子需要冰镇仙露吗？");
-        generator.add(answerPre(0), "极北寒渊千年不化的%s，取来");
-        generator.add(choicePre(0), "戴上玄冰手套呈递");
-        generator.add(answerPre(1), "（周遭飘起雪霰）七成雪魄精元尚存，这卷 秘笈 赏你");
-        generator.add(choicePre(1), "收下");
-        generator.add(answerPre(2), "（茶盏冻裂）火毒未除尽");
-        generator.add(choicePre(2), "下次一定");
-        generator.add(answerPre(3), "（冰锥突刺而来）你想让本宫走火入魔？");
-        generator.add(choicePre(3), "不敢！不敢！");
-    }
+        generator.add(nameTranslationKey, "冷漠的村民");
+        generator.add(choicePre(-3), "马上做！");
+        generator.add(answerPre(-2), "（简短而不耐烦地）不是我要的。别浪费时间。");
+        generator.add(choicePre(-2), "重新准备");
 
-    @Override
-    protected void append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodScore) {
-        if (!canSubmit) {
-            root.addChild(new TreeNode(answer(0), choice(-1))
-                    .addChild(new TreeNode(answer(-2, serverData.get("food_name")), choice(0))
-                            .addLeaf(choice(-2), (byte) -3)));
-        } else {
-            switch (foodScore) {
-                case BEST:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(1), choice(0))
-                                    .addLeaf(choice(1), BEST)));
-                    break;
-                case MIDDLE:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(2), choice(0))
-                                    .addLeaf(choice(2), MIDDLE)));
-                    break;
-                default:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(3), choice(0))
-                                    .addLeaf(choice(3), BAD)));
-            }
-        }
+        generator.add(answerPre(-1), "（这位村民眼神空洞，仿佛对周围一切毫无兴趣）");
+        generator.add(choicePre(-1), "需要我为您准备什么吗？");
+
+        generator.add(answerPre(0), "要吃就来点能一眼看出价值的 %s 。");
+        generator.add(choicePre(0), "即刻奉上");
+
+        generator.add(answerPre(1), "（微微点头）还算合格。此秘籍送你。用处不大但比你强。");
+        generator.add(choicePre(1), "收下，多谢");
+
+        generator.add(answerPre(2), "（不屑一顾）勉勉强强。");
+        generator.add(choicePre(2), "告退");
+
+        generator.add(answerPre(3), "（冷哼一声）废物。别让我再看见这种东西。");
+        generator.add(choicePre(3), "不敢，就此别过。");
     }
 
     @Override

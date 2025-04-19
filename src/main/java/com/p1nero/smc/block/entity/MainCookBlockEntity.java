@@ -8,9 +8,11 @@ import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.start_npc.StartNPC;
+import com.p1nero.smc.event.ServerEvents;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.NPCBlockDialoguePacket;
+import dev.xkmc.cuisinedelight.content.item.CuisineSkilletItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSourceStack;
@@ -20,9 +22,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -31,6 +34,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
@@ -46,6 +50,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
     private boolean isWorking;
     public static final int WORKING_RADIUS = 8;
     private final List<Customer> customers = new ArrayList<>();
+    private static final List<VillagerProfession> PROFESSION_LIST = ForgeRegistries.VILLAGER_PROFESSIONS.getValues().stream().toList();
 
     public MainCookBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(SMCBlockEntities.MAIN_COOK_BLOCK_ENTITY.get(), blockPos, blockState);
@@ -77,6 +82,11 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
                         mainCookBlockEntity.workingTick(serverPlayer);
                         mainCookBlockEntity.isWorking = mainCookBlockEntity.checkWorkingTime();
                         mainCookBlockEntity.updateWorkingState(serverPlayer);
+                    } else {
+                        //检查上班时间
+                        if(owner.level().getDayTime() >= 0 && owner.level().getBlockState(pos.above(2)).is(ModBlocks.STOVE.get()) && owner.level().getBlockState(pos.above(2)).getBlock().asItem() instanceof CuisineSkilletItem) {
+                            mainCookBlockEntity.isWorking = true;
+                        }
                     }
                 }
             }
@@ -114,36 +124,35 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCBlockDialoguePacket(this.getBlockPos(), tag), owner);
         }
 
-        //生成顾客，3s一只，最多10只
+        //生成顾客，20s一只，最多6只
         this.customers.removeIf(customer -> customer == null || customer.isRemoved() || !customer.isAlive());
-        if(this.customers.size() < 10 && owner.tickCount % 60 == 0) {
+        if(this.customers.size() < 6 && owner.tickCount % 300 == 0) {
             BlockPos centerPos = this.getBlockPos();
             double centerX = centerPos.getX() + 0.5;
-            double centerY = centerPos.getY() + 1.0;
             double centerZ = centerPos.getZ() + 0.5;
-            double spawnRadius = 10.0;
 
             double angle = Math.random() * 2 * Math.PI;
-            double radius = spawnRadius * Math.random();
+            double radius = owner.getRandom().nextInt(15, 20);
 
             double spawnX = centerX + Math.cos(angle) * radius;
             double spawnZ = centerZ + Math.sin(angle) * radius;
 
-            Vec3 spawnPos = new Vec3(spawnX, centerY, spawnZ);
-            Customer customer = new Customer(owner.level(), spawnPos);
+            BlockPos spawnPos = ServerEvents.getSurfaceBlockPos(owner.serverLevel(), (int) spawnX, (int) spawnZ);
+            Customer customer = new Customer(owner, spawnPos.getCenter());
             customer.setHomePos(this.getBlockPos());
-
+            customer.setSpawnPos(spawnPos);
             customer.getNavigation().moveTo(customer.getNavigation().createPath(this.getBlockPos(), 3), 1.0);
+            VillagerProfession profession = PROFESSION_LIST.get(customer.getRandom().nextInt(PROFESSION_LIST.size()));//随机抽个职业，换皮肤好看
+            customer.setVillagerData(customer.getVillagerData().setType(VillagerType.byBiome(owner.serverLevel().getBiome(this.getBlockPos()))).setProfession(profession));
             this.customers.add(customer);
             owner.serverLevel().addFreshEntity(customer);
         }
     }
 
     public void clearCustomers(){
-        customers.forEach(Entity::discard);
         Iterator<Customer> iterator = customers.iterator();
         while (iterator.hasNext()) {
-            iterator.next().discard();
+            iterator.next().setTraded(true);//遣散
             iterator.remove();
         }
     }
@@ -205,7 +214,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             return false;
         }
         long currentTime = this.level.getDayTime();
-        return currentTime > 600 && currentTime < 12700;
+        return currentTime > 0 && currentTime < 12700;
     }
 
     public boolean canPlayerLeave(ServerPlayer serverPlayer) {

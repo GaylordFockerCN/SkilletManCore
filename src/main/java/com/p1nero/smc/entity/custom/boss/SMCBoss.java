@@ -2,7 +2,7 @@ package com.p1nero.smc.entity.custom.boss;
 
 import com.p1nero.smc.SMCConfig;
 import com.p1nero.smc.block.entity.spawner.BossSpawnerBlockEntity;
-import com.p1nero.smc.client.BossMusicPlayer;
+import com.p1nero.smc.client.sound.player.BossMusicPlayer;
 import com.p1nero.smc.entity.ai.goal.AttemptToGoHomeGoal;
 import com.p1nero.smc.entity.api.HomePointEntity;
 import com.p1nero.smc.entity.api.IWanderableEntity;

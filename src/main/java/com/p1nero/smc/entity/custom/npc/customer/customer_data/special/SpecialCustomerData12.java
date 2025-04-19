@@ -8,7 +8,11 @@ import com.p1nero.smc.entity.custom.npc.customer.customer_data.SpecialCustomerDa
 import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.util.ItemUtil;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.IntTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public class SpecialCustomerData12 extends SpecialCustomerData {
@@ -17,55 +21,52 @@ public class SpecialCustomerData12 extends SpecialCustomerData {
         super(12);
     }
 
-    public void generateTranslation(SMCLangGenerator generator) {
-        generator.add(nameTranslationKey, "病弱的客户");
-        generator.add(answerPre(-2), "（剧烈咳嗽）咳咳...这...这不是《食经》记载之物...");
-        generator.add(choicePre(-2), "轻拍后背顺气");
-        generator.add(answerPre(-1), "（青白手指正颤抖着翻阅药膳典籍）");
-        generator.add(choicePre(-1), "公子需要药引调理？");
-        generator.add(answerPre(0), "按岐黄之术...需以%s佐三钱晨露煎服... （这真的是治病的吗= =）");
-        generator.add(choicePre(0), "呈上“药”");
-        generator.add(answerPre(1), "（面现红晕）此物正合阴阳五行！这方祖传药赠予你！");
-        generator.add(choicePre(1), "收下");
-        generator.add(answerPre(2), "（吐血染红绢帕）火候...有违...《本草纲目》...");
-        generator.add(choicePre(2), "低头送客");
-        generator.add(answerPre(3), "（突然昏厥）庸医...害命...");
-        generator.add(choicePre(3), "是不是该去请大夫...");
-    }
+    public void generateTranslation(SMCLangGenerator generator) {// 健忘村民
+        generator.add(nameTranslationKey, "健忘的村民");
+        generator.add(choicePre(-3), "马上做！");
+        generator.add(answerPre(-2), "（挠头）这个...是不是...（突然拍脑袋）啊！又忘了！麻烦重来。");
+        generator.add(choicePre(-2), "（这人能记住自己叫啥吗）重新准备。");
 
-    @Override
-    protected void append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodScore) {
-        if (!canSubmit) {
-            root.addChild(new TreeNode(answer(0), choice(-1))
-                    .addChild(new TreeNode(answer(-2, serverData.get("food_name")), choice(0))
-                            .addLeaf(choice(-2), (byte) -3)));
-        } else {
-            switch (foodScore) {
-                case BEST:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(1), choice(0))
-                                    .addLeaf(choice(1), BEST)));
-                    break;
-                case MIDDLE:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(2), choice(0))
-                                    .addLeaf(choice(2), MIDDLE)));
-                    break;
-                default:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(3), choice(0))
-                                    .addLeaf(choice(3), BAD)));
-            }
-        }
+        generator.add(answerPre(-1), "（眼前这个村民欲言又止，似乎脑子不太好使）");
+        generator.add(choicePre(-1), "客官要点啥？");
+
+        generator.add(answerPre(0), "有没有...（看纸条） %s ？（突然又忘）啊对，就是这个...");
+        generator.add(choicePre(0), "提交");
+
+        generator.add(answerPre(1), "（突然眼睛一亮）哦！对了！我要送你什么来着...但是我忘了 （此时你发现他的小本本留在了店里，你忍不住捡起来看）");
+        generator.add(choicePre(1), "告辞！（快走！我要偷窥小本本！）");
+
+        generator.add(answerPre(2), "（看纸条）好像...差点意思...（突然忘）啊对，差点意思...");
+        generator.add(choicePre(2), "下次一定改进！");
+
+        generator.add(answerPre(3), "（惊慌）啊！这是什么？！（突然又忘）啊对，这是...");
+        generator.add(choicePre(3), "（无奈）送客，下次一定。");
     }
 
     @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, Items.ENCHANTED_GOLDEN_APPLE, 32);
+        ItemUtil.addItem(serverPlayer, SMCItems.SKILL_BOOK_RAFFLE_TICKET.get().getDefaultInstance());
+
+        ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
+        ListTag bookPages = new ListTag();
+
+        bookPages.add(StringTag.valueOf("早上去找铁匠铺磨刀 ：上周砍树时刀卷了，铁匠铺在村子东边？还是西边来着......（此处有地图涂鸦，但画得像个烤肠）"));
+        bookPages.add(StringTag.valueOf("早上去还图书给村民 A ：从他那儿借了本《如何不迷路》"));
+        bookPages.add(StringTag.valueOf("中午去收集野花给村民 B ：她说想要红、黄、蓝三种颜色的花，我得去花丛那（花丛在村子北边？还是南边......），等等，我是不是已经采过了。"));
+        bookPages.add(StringTag.valueOf("中午去面包房买面包 需要 2 个"));
+        bookPages.add(StringTag.valueOf("傍晚去去农田帮村民 C 收麦子 收完麦子还要帮着堆草垛"));
+        bookPages.add(StringTag.valueOf("傍晚去村子中央广场集合 ：村长说有要事宣布。"));
+        bookPages.add(StringTag.valueOf("傍晚去河边钓鱼 ：带好鱼竿（鱼竿在床底下？还是院外......），顺便洗衣服。"));
+        bookPages.add(StringTag.valueOf("晚上回家做饭 ：看看菜园里有啥能吃的（菜园里长着草和几株野花，我摘了野花煮汤，拉肚子了）。"));
+
+        book.addTagElement("pages", bookPages);//页数
+        book.addTagElement("generation", IntTag.valueOf(1));//破损度
+        book.addTagElement("author", StringTag.valueOf("健忘的村民"));
+        book.addTagElement("title", StringTag.valueOf("记事本"));
+
+        ItemUtil.addItem(serverPlayer, book);
+
     }
 
     @Override

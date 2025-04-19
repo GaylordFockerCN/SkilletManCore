@@ -9,6 +9,7 @@ import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.util.ItemUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Items;
 import yesman.epicfight.gameasset.EpicFightSounds;
 
 public class SpecialCustomerData4 extends SpecialCustomerData {
@@ -19,54 +20,27 @@ public class SpecialCustomerData4 extends SpecialCustomerData {
 
     public void generateTranslation(SMCLangGenerator generator) {
         super.generateTranslation(generator);
-        generator.add(nameTranslationKey, "异域的客户");
-        generator.add(answerPre(-2), "（摸着弯刀柄微笑）中原人总是搞不清饭前点心与正餐的区别");
-        generator.add(choicePre(-2), "行抚胸礼");
-        generator.add(answerPre(-1), "（琉璃盏中的香料正冒出蛇形青烟）");
-        generator.add(choicePre(-1), "远方来的贵客想要什么珍馐？");
-        generator.add(answerPre(0), "以真主之名，可有散发着沙漠热风的%s？");
-        generator.add(choicePre(0), "撒入金色香料");
-        generator.add(answerPre(1), "（展开镶金边的卷轴）此物当记录在《东方见闻录》中，这 神兵 便赠与你作为见证吧");
-        generator.add(choicePre(1), "收下");
-        generator.add(answerPre(2), "（皱眉）驼铃之城三岁孩童做得比这好");
-        generator.add(choicePre(2), "低头送客");
-        generator.add(answerPre(3), "（突然用陌生语言咒骂）卡菲勒！");
-        generator.add(choicePre(3), "低头送客");
-    }
-
-    @Override
-    protected void append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodScore) {
-        if (!canSubmit) {
-            root.addChild(new TreeNode(answer(0), choice(-1))
-                    .addChild(new TreeNode(answer(-2, serverData.get("food_name")), choice(0))
-                            .addLeaf(choice(-2), (byte) -3)));
-        } else {
-            switch (foodScore) {
-                case BEST:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(1), choice(0))
-                                    .addLeaf(choice(1), BEST)));
-                    break;
-                case MIDDLE:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(2), choice(0))
-                                    .addLeaf(choice(2), MIDDLE)));
-                    break;
-                default:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(3), choice(0))
-                                    .addLeaf(choice(3), BAD)));
-            }
-        }
+        generator.add(nameTranslationKey, "充满智慧的村民");
+        generator.add(answerPre(-2), "未完成的答案如同半部残卷。（智慧的村民一下子就识破了你的诡计，看来得认真对待）");
+        generator.add(choicePre(-2), "抱歉，抱歉！");
+        generator.add(choicePre(-3), "这就去！");
+        generator.add(answerPre(-1), "（眼前这位村民眼神深邃，充满了智慧，你感受到对方没有那么好忽悠）");
+        generator.add(choicePre(-1), "客官想品尝何物？");
+        generator.add(answerPre(0), "老夫苦思冥想多日，可有启迪心智的 %s ？");
+        generator.add(choicePre(0), "恭敬献上");
+        generator.add(answerPre(1), "妙哉！此食如智慧之光！知识，与你分享！");
+        generator.add(choicePre(1), "收下秘籍");
+        generator.add(answerPre(2), "（轻叹）似懂非懂，还需细细琢磨。");
+        generator.add(choicePre(2), "告退");
+        generator.add(answerPre(3), "此等粗鄙之物，怎入得了智者之口？");
+        generator.add(choicePre(3), "在下无知，请恕罪！");
     }
 
     @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, SMCItems.WEAPON_RAFFLE_TICKET.get().getDefaultInstance());
+        ItemUtil.addItem(serverPlayer, Items.KNOWLEDGE_BOOK.getDefaultInstance());
+        ItemUtil.addItem(serverPlayer, SMCItems.SKILL_BOOK_RAFFLE_TICKET.get().getDefaultInstance());
 
     }
 

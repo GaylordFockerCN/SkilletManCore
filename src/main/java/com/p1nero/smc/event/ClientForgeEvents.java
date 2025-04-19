@@ -1,9 +1,8 @@
 package com.p1nero.smc.event;
 
-import com.p1nero.smc.SMCConfig;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.client.gui.BossBarHandler;
-import com.p1nero.smc.client.gui.CustomGuiHandler;
+import com.p1nero.smc.client.gui.CustomGuiRenderer;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
@@ -27,7 +26,7 @@ public class ClientForgeEvents {
     @SubscribeEvent
     public static void onRenderGui(RenderGuiEvent event) {
         GuiGraphics guiGraphics = event.getGuiGraphics();
-        CustomGuiHandler.renderCustomGui(guiGraphics);
+        CustomGuiRenderer.renderCustomGui(guiGraphics);
     }
 
 }

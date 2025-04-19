@@ -1,18 +1,12 @@
 package com.p1nero.smc.entity.custom.npc.customer.customer_data.special;
 
-import com.p1nero.smc.client.gui.DialogueComponentBuilder;
-import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.customer.customer_data.SpecialCustomerData;
 import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.util.ItemUtil;
-import net.minecraft.client.resources.language.I18n;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class SpecialCustomerData1 extends SpecialCustomerData {
 
@@ -23,7 +17,7 @@ public class SpecialCustomerData1 extends SpecialCustomerData {
     @Override
     public void generateTranslation(SMCLangGenerator generator) {
         super.generateTranslation(generator);
-        generator.add(nameTranslationKey, "内力雄厚的客户");//客户名称，统一用XXX的客户，XXX可以代表性格外貌等等
+        generator.add(nameTranslationKey, "内力雄厚的村民");//客户名称，统一用XXX的客户，XXX可以代表性格外貌等等
         generator.add(answerPre(-2), "（你的菜还没有做好，如果胡乱呈上的话怕不是惹不起这位高人...还是先做菜吧）");//企图提交其他物品时的对话
         generator.add(choicePre(-2), "好吧");//企图提交其他物品时的对话的回答
         generator.add(choicePre(-3), "这就去！");//企图提交其他物品时的对话的回答
@@ -40,41 +34,9 @@ public class SpecialCustomerData1 extends SpecialCustomerData {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
-    protected void append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodScore) {
-        if (!canSubmit) {
-            root.addChild(new TreeNode(answer(0), choice(-1))
-                    .addChild(new TreeNode(answer(-2, I18n.get(serverData.getString("food_name"))), choice(0))
-                            .addLeaf(choice(-2), (byte) -3)))
-                    .addLeaf(choice(-3), (byte) -3);
-        } else {
-            switch (foodScore) {
-                case BEST:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(1), choice(0))
-                                    .addLeaf(choice(1), BEST)))
-                            .addLeaf(choice(-3), (byte) -3);
-                    break;
-                case MIDDLE:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .addChild(new TreeNode(answer(2), choice(0))
-                                    .addLeaf(choice(2), MIDDLE)))
-                            .addLeaf(choice(-3), (byte) -3);
-                    break;
-                default:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .addChild(new TreeNode(answer(3), choice(0))
-                                    .addLeaf(choice(3), BAD)))
-                            .addLeaf(choice(-3), (byte) -3);
-            }
-        }
-    }
-
-    @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, SMCItems.SKILL_BOOK_RAFFLE_TICKET.get().getDefaultInstance());
+        ItemUtil.addItem(serverPlayer, SMCItems.SKILL_BOOK_RAFFLE_TICKET.get(), 3);
 
     }
 

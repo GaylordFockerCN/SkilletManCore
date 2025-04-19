@@ -5,11 +5,10 @@ import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.customer.customer_data.SpecialCustomerData;
-import com.p1nero.smc.util.ItemUtil;
+import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.Items;
-import reascer.wom.world.item.WOMItems;
 
 public class SpecialCustomerData18 extends SpecialCustomerData {
 
@@ -18,19 +17,22 @@ public class SpecialCustomerData18 extends SpecialCustomerData {
     }
 
     public void generateTranslation(SMCLangGenerator generator) {
-        generator.add(nameTranslationKey, "铸剑大师的客户");
-        generator.add(answerPre(-2), "（铁锤砸出火星）凡铁也配入我剑庐？");
-        generator.add(choicePre(-2), "掩耳退避");
-        generator.add(answerPre(-1), "（独眼罩反射着剑胚红光）");
-        generator.add(choicePre(-1), "宗师要试剑粮？");
-        generator.add(answerPre(0), "淬火需%s——要如干将泣血般炽烈的！（为什么淬火还需要食物...此刻你不得不怀疑作者较劲了脑汁，已经开始瞎写文案来凑数了）");
-        generator.add(choicePre(0), "拉动巨型风箱");
-        generator.add(answerPre(1), "（剑鸣穿云）好个焚天热意！这柄断龙匕赠你切肉！（虽然50级才能在战斗模式下使用非平底锅武器，但是还是先留着吧）");
-        generator.add(choicePre(1), "接下神兵");
-        generator.add(answerPre(2), "滋味一般。");
-        generator.add(choicePre(2), "捶胸送客");
-        generator.add(answerPre(3), "（钳碎铁块）连马蹄铁都不如！");
-        generator.add(choicePre(3), "试图跳入水槽避险");
+        generator.add(nameTranslationKey, "挑剔的村民");
+        generator.add(answerPre(-2), "（皱眉，挑剔地）这个？颜色不行，摆盘不行，味道更不行。重做。（突然又补充）您这手艺得好好打磨打磨，像我这种美食家可不好糊弄。（突然又压低声音）您别觉得我苛刻，我只是对美食有追求。");
+        generator.add(choicePre(-2), "好的，这就重做");
+
+        generator.add(answerPre(-1), "（眼前这位村民眼神高傲，仿佛在审视艺术品，看来不好对付）");
+        generator.add(choicePre(-1), "客官您看要些什么？");
+
+        generator.add(answerPre(0), "要吃就来点...（挑眉）能符合我审美标准的 %s 。");
+        generator.add(choicePre(0), "呈上");
+
+        generator.add(answerPre(1), "（摇头晃脑）这是什么垃圾！火候、刀工、调味，全都不行...您不会是故意糊弄我吧？上周在东街碰到个厨子，做的菜比您这个也好不到哪儿去，结果被老板当场解雇...您说这是不是个教训？我有个私人厨师，他做出来的菜比您这个好多了。不过他有个毛病，就是太爱加盐...（突然又警觉）您别误会，我不是在贬低您，只是实话实说。");
+        generator.add(choicePre(1), "下次一定改进！");
+        generator.add(choicePre(2), "揍他一顿（难得有这个选项，真的不选吗！）");
+
+        generator.add(answerPre(2), "哎哎哎！杀人啦！杀人啦！");
+
     }
 
     @Override
@@ -40,32 +42,19 @@ public class SpecialCustomerData18 extends SpecialCustomerData {
                     .addChild(new TreeNode(answer(-2, serverData.get("food_name")), choice(0))
                             .addLeaf(choice(-2), (byte) -3)));
         } else {
-            switch (foodScore) {
-                case BEST:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(1), choice(0))
-                                    .addLeaf(choice(1), BEST)));
-                    break;
-                case MIDDLE:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(2), choice(0))
-                                    .addLeaf(choice(2), MIDDLE)));
-                    break;
-                default:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(3), choice(0))
-                                    .addLeaf(choice(3), BAD)));
-            }
+            root.addChild(new TreeNode(answer(0), choice(-1))
+                    .execute(SUBMIT_FOOD)
+                    .addChild(new TreeNode(answer(1), choice(0))
+                            .addLeaf(choice(1), BAD)
+                            .addLeaf(choice(2), BEST)));
         }
     }
 
     @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, WOMItems.MOONLESS.get().getDefaultInstance());
+        serverPlayer.displayClientMessage(Component.literal("[").append(this.getTranslation().copy().withStyle(ChatFormatting.YELLOW)).append("] :").append(answer(2)), false);
+        self.hurt(serverPlayer.damageSources().playerAttack(serverPlayer), 1145);
     }
 
 }

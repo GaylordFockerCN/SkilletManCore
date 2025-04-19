@@ -27,48 +27,25 @@ public class SpecialCustomerData8 extends SpecialCustomerData {
     }
 
     public void generateTranslation(SMCLangGenerator generator) {
-        generator.add(nameTranslationKey, "醉眼朦胧的客户");
-        generator.add(answerPre(-2), "（酒葫芦咚地砸在案上）老子要下酒菜...嗝...这玩意能配竹叶青？");
-        generator.add(choicePre(-2), "（失算，竟然被识破了）");
-        generator.add(answerPre(-1), "（浑身酒气的剑客正用筷子敲击《将进酒》节拍）");
-        generator.add(choicePre(-1), "剑仙要来点醒酒汤么？");
-        generator.add(answerPre(0), "听闻...你们有能化酒为剑气的%s？");
-        generator.add(choicePre(0), "揭开乾坤食盒");
-        generator.add(answerPre(1), "（突然舞剑）十步杀一人的剑意都在此中了！这柄利器送你切肉");
-        generator.add(choicePre(1), "收下");
-        generator.add(answerPre(2), "（醉卧柜台）比起杜康阁还差...三十杯...");
-        generator.add(choicePre(2), "送客");
-        generator.add(answerPre(3), "（剑气劈开房梁）这是给毛贼吃的断头饭！");
-        generator.add(choicePre(3), "（抱头钻到八仙桌下）饶命！饶命！");
-    }
+        generator.add(nameTranslationKey, "社交恐惧的村民");
+        generator.add(choicePre(-3), "马上做！");
+        generator.add(answerPre(-2), "（结结巴巴）这、这个...不、不是我要的...（后退两步）");
+        generator.add(choicePre(-2), "那我重新准备。");
 
-    @Override
-    protected void append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodScore) {
-        if (!canSubmit) {
-            root.addChild(new TreeNode(answer(0), choice(-1))
-                    .addChild(new TreeNode(answer(-2, serverData.get("food_name")), choice(0))
-                            .addLeaf(choice(-2), (byte) -3)));
-        } else {
-            switch (foodScore) {
-                case BEST:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(1), choice(0))
-                                    .addLeaf(choice(1), BEST)));
-                    break;
-                case MIDDLE:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(2), choice(0))
-                                    .addLeaf(choice(2), MIDDLE)));
-                    break;
-                default:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(3), choice(0))
-                                    .addLeaf(choice(3), BAD)));
-            }
-        }
+        generator.add(answerPre(-1), "（这位村民瑟瑟发抖，眼神惊恐四顾，似乎周围随时有僵尸出现）");
+        generator.add(choicePre(-1), "小朋友别怕，想吃点什么？");
+
+        generator.add(answerPre(0), "能、能来点看着就、就安心的 %s 吗？（声音颤抖）");
+        generator.add(choicePre(0), "安心呈上");
+
+        generator.add(answerPre(1), "（放松下来）这、这个...真、真的不错！（从怀中掏出一本旧书）这、这本送你，谢、谢谢了！");
+        generator.add(choicePre(1), "多谢，告辞");
+
+        generator.add(answerPre(2), "不、不够好...我、我先走了...（转身欲逃）");
+        generator.add(choicePre(2), "告辞，下次再见。");
+
+        generator.add(answerPre(3), "（惊恐大叫）啊！怪物！（转身就跑）（你无奈摇头）");
+        generator.add(choicePre(3), "罢了，送客。");
     }
 
     @Override

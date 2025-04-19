@@ -2,6 +2,7 @@ package com.p1nero.smc.event;
 
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
+import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerPlayer;
@@ -33,17 +34,11 @@ public class LivingEntityListener {
 
     public static List<ItemStack> weapons = new ArrayList<>();
 
-
     /**
      * 穿盔甲加效果
      */
     @SubscribeEvent
     public static void onEntityUpdate(LivingEvent.LivingTickEvent event) {
-
-    }
-
-    @SubscribeEvent
-    public static void onEntityDie(LivingDeathEvent event) {
 
     }
 
@@ -74,12 +69,19 @@ public class LivingEntityListener {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onEntityHurt(LivingHurtEvent event) {
-        if(event.getEntity() instanceof Villager && event.getSource().getEntity() instanceof Player player) {
+        if(event.getEntity() instanceof Villager && event.getSource().getEntity() instanceof ServerPlayer player) {
             event.setAmount(0);
             event.setCanceled(true);
             player.displayClientMessage(SkilletManCoreMod.getInfo("customer_is_first").withStyle(ChatFormatting.RED), true);
+            SMCPlayer.consumeMoney(10, player);
         }
+    }
 
+    @SubscribeEvent
+    public static void onEntityDie(LivingDeathEvent event) {
+        if(event.getEntity() instanceof Monster monster && event.getSource().getEntity() instanceof ServerPlayer player) {
+            SMCPlayer.addMoney((int) monster.getMaxHealth(), player);//击杀奖励
+        }
     }
 
     @SubscribeEvent

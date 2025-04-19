@@ -3,7 +3,7 @@ package com.p1nero.smc;
 import com.mojang.logging.LogUtils;
 import com.p1nero.smc.block.SMCBlockEntities;
 import com.p1nero.smc.block.SMCBlocks;
-import com.p1nero.smc.client.SMCSounds;
+import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.effect.SMCEffects;
 import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.SMCVillagers;

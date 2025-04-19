@@ -62,10 +62,19 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
         setHomePos(getOnPos());
     }
 
-    public BlockPos getSpawnPos() {
-        if(this.spawnPos.getCenter().distanceTo(this.getHomePos().getCenter()) > 2.9) {
-            this.spawnPos = this.getHomePos().above(3);
+    public void setSpawnPos(BlockPos spawnPos) {
+        this.spawnPos = spawnPos;
+    }
+
+    @Override
+    public void setPos(double x, double y, double z) {
+        super.setPos(x, y, z);
+        if(this.spawnPos == null) {
+            this.spawnPos = new BlockPos((int) x, (int) y, (int) z);
         }
+    }
+
+    public BlockPos getSpawnPos() {
         return spawnPos;
     }
 
@@ -201,6 +210,9 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
 
     @Override
     public boolean hurt(@NotNull DamageSource source, float value) {
+        if(value == 1145) {
+            return super.hurt(source, 1);
+        }
         return source.getEntity() instanceof Player player && player.isCreative();
     }
 

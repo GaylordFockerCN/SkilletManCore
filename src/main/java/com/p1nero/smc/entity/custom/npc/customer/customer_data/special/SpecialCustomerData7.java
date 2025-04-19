@@ -11,6 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.Items;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -22,61 +23,39 @@ public class SpecialCustomerData7 extends SpecialCustomerData {
     }
 
     public void generateTranslation(SMCLangGenerator generator) {
-        generator.add(nameTranslationKey, "修道院的客户");
-        generator.add(answerPre(-2), "（念珠突然发烫）迷途的孩子，这不是斋戒日该出现之物");
-        generator.add(choicePre(-2), "在胸前画十字");
-        generator.add(answerPre(-1), "（粗麻袍袖中隐约露出带血痕的苦修带）");
-        generator.add(choicePre(-1), "姊妹需要怎样的虔敬之食？");
-        generator.add(answerPre(0), "按《圣本笃训规》第59章，请奉上能使灵魂轻盈的%s");
-        generator.add(choicePre(0), "洒圣盐祝福");
-        generator.add(answerPre(1), "（浮现圣痕）这纯净度堪比约旦河水！收下这片真十字架碎片！");
-        generator.add(choicePre(1), "收下");
-        generator.add(answerPre(2), "（烛光变成幽蓝色）里面掺杂了堕落的念头");
-        generator.add(choicePre(2), "默念忏悔经");
-        generator.add(answerPre(3), "（地面裂开硫磺坑）你被七宗罪侵蚀了！（最大生命-2");
-        generator.add(choicePre(3), "？？？");
-    }
+        generator.add(nameTranslationKey, "愚蠢的村民");
+        generator.add(choicePre(-3), "马上做！");
+        generator.add(answerPre(-2), "（挠头困惑）这个...这个不是我要的...我要的是...");
+        generator.add(choicePre(-2), "好的，我再去弄。");
 
-    @Override
-    protected void append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodScore) {
-        if (!canSubmit) {
-            root.addChild(new TreeNode(answer(0), choice(-1))
-                    .addChild(new TreeNode(answer(-2, serverData.get("food_name")), choice(0))
-                            .addLeaf(choice(-2), (byte) -3)));
-        } else {
-            switch (foodScore) {
-                case BEST:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(1), choice(0))
-                                    .addLeaf(choice(1), BEST)));
-                    break;
-                case MIDDLE:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(2), choice(0))
-                                    .addLeaf(choice(2), MIDDLE)));
-                    break;
-                default:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(3), choice(0))
-                                    .addLeaf(choice(3), BAD)));
-            }
-        }
-    }
+        generator.add(answerPre(-1), "（这位村民眼神迷离，仿佛在注视着遥远的神秘事物）");
+        generator.add(choicePre(-1), "这位客官想要啥呢？");
 
-    @Override
-    protected void onBest(ServerPlayer serverPlayer, Customer self) {
-        super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, SMCItems.SKILL_BOOK_RAFFLE_TICKET.get().getDefaultInstance());
+        generator.add(answerPre(0), "我听说有一种超级大大的 %s ？");
+        generator.add(choicePre(0), "递上食物");
+
+
+        generator.add(answerPre(1), "（惊恐后退）啊！怪物食物！你当我傻呢！（你赶忙解释安抚）");
+        generator.add(choicePre(1), "别怕别怕！");
+
+        generator.add(answerPre(2), "（困惑挠头）嗯...不太对...");
+        generator.add(choicePre(2), "对的对的，再见！");
+
+        generator.add(answerPre(3), "（突然欢呼）哇哦！好吃好吃！这个金闪闪之物送你！这是我最宝贵的东西！");
+        generator.add(choicePre(3), "微笑着收下");
     }
 
     @Override
     protected void onBad(ServerPlayer serverPlayer, Customer self) {
+        //反过来
+        super.onBest(serverPlayer, self);
+        ItemUtil.addItem(serverPlayer, Items.STONE.getDefaultInstance());
+    }
+
+    @Override
+    protected void onBest(ServerPlayer serverPlayer, Customer self) {
+        //反过来
         super.onBad(serverPlayer, self);
-        serverPlayer.hurt(serverPlayer.damageSources().magic(), 0.5F);
-        Objects.requireNonNull(serverPlayer.getAttribute(Attributes.MAX_HEALTH)).addPermanentModifier(new AttributeModifier(UUID.randomUUID(), "触怒圣女，该罚！", -2, AttributeModifier.Operation.ADDITION));
     }
 
 }

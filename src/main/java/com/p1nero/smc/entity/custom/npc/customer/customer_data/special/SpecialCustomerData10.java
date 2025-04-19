@@ -8,7 +8,12 @@ import com.p1nero.smc.entity.custom.npc.customer.customer_data.SpecialCustomerDa
 import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.util.ItemUtil;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.IntTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public class SpecialCustomerData10 extends SpecialCustomerData {
 
@@ -17,54 +22,44 @@ public class SpecialCustomerData10 extends SpecialCustomerData {
     }
 
     public void generateTranslation(SMCLangGenerator generator) {
-        generator.add(nameTranslationKey, "笑里藏刀的客户");
-        generator.add(answerPre(-2), "（折扇轻点你手背）小哥~呈错东西会掉手指头的哟~");
-        generator.add(choicePre(-2), "冷汗浸透后背");
-        generator.add(answerPre(-1), "（绣金扇面隐约露出唐门标记）");
-        generator.add(choicePre(-1), "贵客想尝点新奇滋味？");
-        generator.add(answerPre(0), "奴家最爱那入口封喉的%s呢~");
-        generator.add(choicePre(0), "用银针试毒后奉上");
-        generator.add(answerPre(1), "（朱唇勾起）这酥麻感正合适~送你件 神兵 把玩吧");
-        generator.add(choicePre(1), "收下");
-        generator.add(answerPre(2), "（捏碎瓷勺）连五毒教的药人都毒不倒");
-        generator.add(choicePre(2), "息怒！息怒！");
-        generator.add(answerPre(3), "竟敢拿糖水糊弄我！");
-        generator.add(choicePre(3), "息怒！息怒！");
-    }
+        generator.add(nameTranslationKey, "守财的村民");
+        generator.add(choicePre(-3), "马上做！");
 
-    @Override
-    protected void append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodScore) {
-        if (!canSubmit) {
-            root.addChild(new TreeNode(answer(0), choice(-1))
-                    .addChild(new TreeNode(answer(-2, serverData.get("food_name")), choice(0))
-                            .addLeaf(choice(-2), (byte) -3)));
-        } else {
-            switch (foodScore) {
-                case BEST:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(1), choice(0))
-                                    .addLeaf(choice(1), BEST)));
-                    break;
-                case MIDDLE:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(2), choice(0))
-                                    .addLeaf(choice(2), MIDDLE)));
-                    break;
-                default:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(3), choice(0))
-                                    .addLeaf(choice(3), BAD)));
-            }
-        }
+        generator.add(answerPre(-2), "（推推眼镜，精打细算地）这个？不不不，这个太浪费了！要节约，节约...");
+        generator.add(choicePre(-2), "（这老头比我还抠）");
+
+        generator.add(answerPre(-1), "（紧紧抱着钱袋，眼神警惕，看起来很怕你的食物夺走了他的财产。）");
+        generator.add(choicePre(-1), "客官要看菜单吗？");
+
+        generator.add(answerPre(0), "有没有...（压低声音）能用最少食材做出最多食物的 %s ？");
+        generator.add(choicePre(0), "提交");
+
+        generator.add(answerPre(1), "（眼镜闪过精光）嗯，还算可以接受...（从怀里掏出一本破旧的省钱秘籍）送你这个，《节俭之道》，好好学学。");
+        generator.add(choicePre(1), "（表面道谢，内心吐槽）多谢，告辞。");
+
+        generator.add(answerPre(2), "（皱眉）浪费，太浪费了...食材没利用好...");
+        generator.add(choicePre(2), "下次一定改进");
+
+        generator.add(answerPre(3), "（暴跳如雷）你这是在浪费粮食！你知道这能做多少便宜料理吗？！（你慌忙道歉）");
+        generator.add(choicePre(3), "（心虚）下次一定注意，告辞。");
     }
 
     @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, SMCItems.WEAPON_RAFFLE_TICKET.get().getDefaultInstance());
+        ItemUtil.addItem(serverPlayer, SMCItems.SKILL_BOOK_RAFFLE_TICKET.get().getDefaultInstance());
+
+        ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
+        ListTag bookPages = new ListTag();
+
+        bookPages.add(StringTag.valueOf("节俭的首要在于节约墨水，"));
+
+        book.addTagElement("pages", bookPages);//页数
+        book.addTagElement("generation", IntTag.valueOf(3));//破损度
+        book.addTagElement("author", StringTag.valueOf("节俭的村民"));
+        book.addTagElement("title", StringTag.valueOf("节俭之道"));
+
+        ItemUtil.addItem(serverPlayer, book);
     }
 
     @Override

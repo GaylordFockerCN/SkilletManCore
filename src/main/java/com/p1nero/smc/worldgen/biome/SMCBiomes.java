@@ -1,7 +1,6 @@
 package com.p1nero.smc.worldgen.biome;
 
 import com.p1nero.smc.SkilletManCoreMod;
-import com.p1nero.smc.client.SMCSounds;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;

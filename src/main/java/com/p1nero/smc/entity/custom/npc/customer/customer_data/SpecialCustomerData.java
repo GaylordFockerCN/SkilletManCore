@@ -6,6 +6,7 @@ import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,9 +21,14 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
 
     protected final String nameTranslationKey;
 
-    public SpecialCustomerData(int smcId){
+    public SpecialCustomerData(int smcId) {
         this.smcId = smcId;
         this.nameTranslationKey = "special_customer_" + smcId;
+    }
+
+    @Override
+    public void onInteract(ServerPlayer player, Customer self) {
+
     }
 
     @Override
@@ -59,7 +65,39 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
         return Component.translatable(choicePre(id), objects);
     }
 
-    protected abstract void append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodLevel);
+    protected void append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodScore) {
+        if (!canSubmit) {
+            root.addChild(new TreeNode(answer(0, "§6" + I18n.get(serverData.getString("food_name") + "§r")), choice(-1))
+                    .addChild(new TreeNode(answer(-2), choice(0))
+                            .addLeaf(choice(-2), (byte) -3)
+                    )
+                    .addLeaf(choice(-3), (byte) -3)
+            );
+        } else {
+            switch (foodScore) {
+                case BEST:
+                    root.addChild(new TreeNode(answer(0), choice(-1))
+                                    .execute(SUBMIT_FOOD)
+                                    .addChild(new TreeNode(answer(1), choice(0))
+                                            .addLeaf(choice(1), BEST)))
+                            .addLeaf(choice(-3), (byte) -3);
+                    break;
+                case MIDDLE:
+                    root.addChild(new TreeNode(answer(0), choice(-1))
+                                    .execute(SUBMIT_FOOD)
+                                    .addChild(new TreeNode(answer(2), choice(0))
+                                            .addLeaf(choice(2), MIDDLE)))
+                            .addLeaf(choice(-3), (byte) -3);
+                    break;
+                default:
+                    root.addChild(new TreeNode(answer(0), choice(-1))
+                                    .execute(SUBMIT_FOOD)
+                                    .addChild(new TreeNode(answer(3), choice(0))
+                                            .addLeaf(choice(3), BAD)))
+                            .addLeaf(choice(-3), (byte) -3);
+            }
+        }
+    }
 
     @Override
     public void handle(ServerPlayer serverPlayer, Customer self, byte interactId) {
@@ -75,20 +113,20 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
         }
     }
 
-    protected void onBest(ServerPlayer serverPlayer, Customer self){
+    protected void onBest(ServerPlayer serverPlayer, Customer self) {
         SMCPlayer.addMoney(200, serverPlayer);
         serverPlayer.playSound(SoundEvents.VILLAGER_CELEBRATE);
-        self.level().broadcastEntityEvent(self, (byte)14);//播放开心的粒子
+        self.level().broadcastEntityEvent(self, (byte) 14);//播放开心的粒子
     }
 
 
-    protected void onMiddle(ServerPlayer serverPlayer, Customer self){
+    protected void onMiddle(ServerPlayer serverPlayer, Customer self) {
         SMCPlayer.addMoney(100, serverPlayer);
         serverPlayer.playSound(SoundEvents.VILLAGER_TRADE);
     }
 
 
-    protected void onBad(ServerPlayer serverPlayer, Customer self){
+    protected void onBad(ServerPlayer serverPlayer, Customer self) {
         SMCPlayer.consumeMoney(200, serverPlayer);
         serverPlayer.playSound(SoundEvents.VILLAGER_NO);
         self.setUnhappyCounter(40);

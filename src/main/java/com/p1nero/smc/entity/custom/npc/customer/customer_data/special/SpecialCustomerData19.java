@@ -8,7 +8,12 @@ import com.p1nero.smc.entity.custom.npc.customer.customer_data.SpecialCustomerDa
 import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.util.ItemUtil;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.IntTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import reascer.wom.world.item.WOMItems;
 
 public class SpecialCustomerData19 extends SpecialCustomerData {
@@ -18,55 +23,61 @@ public class SpecialCustomerData19 extends SpecialCustomerData {
     }
 
     public void generateTranslation(SMCLangGenerator generator) {
-        generator.add(nameTranslationKey, "丐帮长老的客户");
-        generator.add(answerPre(-2), "（打狗棒横挡柜台）叫花子也分得清残羹剩饭！");
-        generator.add(choicePre(-2), "抱棍退避");
-        generator.add(answerPre(-1), "（九袋破袍上油光发亮）");
-        generator.add(choicePre(-1), "长老要验验新乞食？");
-        generator.add(answerPre(0), "降龙掌练到紧要处，需带刚猛气的%s！");
-        generator.add(choicePre(0), "掀开泥壳");
-        generator.add(answerPre(1), "（龙吟隐隐）痛快！这秘笈与神棍予你防身");
-        generator.add(choicePre(1), "褡裢收钱");
-        generator.add(answerPre(2), "（敲碎陶碗）比马厩草料还糙");
-        generator.add(choicePre(2), "打躬送客");
-        generator.add(answerPre(3), "（突然摆出打狗阵）欺我丐帮无人？！");
+        generator.add(nameTranslationKey, "穿着破烂的村民");
+        generator.add(choicePre(-3), "马上做！");
+        generator.add(answerPre(-2), "叫花子也分得清残羹剩饭！");
+        generator.add(choicePre(-2), "替换正确的物品");
+        generator.add(answerPre(-1), "（面前这位村民衣冠不整，穿着十分破烂。但似乎有种强大的气场，还是认真对待吧）");
+        generator.add(choicePre(-1), "客官要来些什么？");
+        generator.add(answerPre(0), "最近练功到紧要处，需带刚猛气的 %s 补补身子！（怎么mc的世界还有习武的村民...）");
+        generator.add(choicePre(0), "呈上");
+        generator.add(answerPre(1), "（龙吟隐隐）痛快！这秘笈与予你防身！");
+        generator.add(choicePre(1), "小的有眼不识泰山！");
+        generator.add(answerPre(2), "比马厩草料还糙！");
+        generator.add(choicePre(2), "抱歉抱歉！");
+        generator.add(answerPre(3), "欺我帮无人？！做这等狗食！");
         generator.add(choicePre(3), "饶命！饶命！");
-    }
-
-    @Override
-    protected void append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodScore) {
-        if (!canSubmit) {
-            root.addChild(new TreeNode(answer(0), choice(-1))
-                    .addChild(new TreeNode(answer(-2, serverData.get("food_name")), choice(0))
-                            .addLeaf(choice(-2), (byte) -3)));
-        } else {
-            switch (foodScore) {
-                case BEST:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(1), choice(0))
-                                    .addLeaf(choice(1), BEST)));
-                    break;
-                case MIDDLE:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(2), choice(0))
-                                    .addLeaf(choice(2), MIDDLE)));
-                    break;
-                default:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(3), choice(0))
-                                    .addLeaf(choice(3), BAD)));
-            }
-        }
     }
 
     @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, SMCItems.SKILL_BOOK_RAFFLE_TICKET.get().getDefaultInstance());
-        ItemUtil.addItem(serverPlayer, SMCItems.WEAPON_RAFFLE_TICKET.get().getDefaultInstance());
+        ItemUtil.addItem(serverPlayer, SMCItems.SKILL_BOOK_RAFFLE_TICKET.get(), 4);
+
+        ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
+        ListTag bookPages = new ListTag();
+
+        bookPages.add(StringTag.valueOf("""
+                第一式: 见龙在田
+                   /\\_/\\
+                  ( o.o )\s
+                ==>===|~"""));
+        bookPages.add(StringTag.valueOf("""
+                第二式: 飞龙在天
+                    ^
+                   / \\
+                ~O=====>
+                  \\_/"""));
+
+        bookPages.add(StringTag.valueOf("""
+                第三式: 龙战于野
+                  <><>\s
+                 {|==|}  ~~~*
+                  </\\>"""));
+        bookPages.add(StringTag.valueOf("""
+                收势: 神龙摆尾
+                  \\||/
+                  ~@~
+                 --<~~*\s"""));
+        bookPages.add(StringTag.valueOf("版权所有，盗版必究！"));
+
+        book.addTagElement("pages", bookPages);//页数
+        book.addTagElement("generation", IntTag.valueOf(3));//破损度
+        book.addTagElement("author", StringTag.valueOf("洪七"));
+        book.addTagElement("title", StringTag.valueOf("降龙十八掌"));
+
+        ItemUtil.addItem(serverPlayer, book);
+
     }
 
 }

@@ -23,10 +23,10 @@ public abstract class SMCSoundProvider extends SoundDefinitionsProvider {
         SoundDefinition definition = SoundDefinition.definition();
         if (subtitle) {
             String[] splitSoundName = event.getId().getPath().split("\\.", 3);
-            definition.subtitle("subtitles."+ SkilletManCoreMod.MOD_ID+"." + splitSoundName[0] + "." + splitSoundName[2]);
+            definition.subtitle("subtitles." + SkilletManCoreMod.MOD_ID + "." + splitSoundName[0] + "." + splitSoundName[2]);
         }
         for (int i = 1; i <= numberOfSounds; i++) {
-            definition.with(SoundDefinition.Sound.sound(new ResourceLocation(SkilletManCoreMod.MOD_ID, baseSoundDirectory + (numberOfSounds > 1 ? "_"+i : "")), SoundDefinition.SoundType.SOUND));
+            definition.with(SoundDefinition.Sound.sound(new ResourceLocation(SkilletManCoreMod.MOD_ID, baseSoundDirectory + (numberOfSounds > 1 ? "_" + i : "")), SoundDefinition.SoundType.SOUND));
         }
         this.add(event, definition);
     }
@@ -35,7 +35,7 @@ public abstract class SMCSoundProvider extends SoundDefinitionsProvider {
         SoundDefinition definition = SoundDefinition.definition();
         if (subtitle) {
             String[] splitSoundName = event.getId().getPath().split("\\.", 3);
-            definition.subtitle("subtitles."+ SkilletManCoreMod.MOD_ID+"." + splitSoundName[0] + "." + splitSoundName[2]);
+            definition.subtitle("subtitles." + SkilletManCoreMod.MOD_ID + "." + splitSoundName[0] + "." + splitSoundName[2]);
         }
         for (int i = 1; i <= numberOfSounds; i++) {
             definition.with(SoundDefinition.Sound.sound(new ResourceLocation(baseSoundDirectory + (numberOfSounds > 1 ? i : "")), SoundDefinition.SoundType.SOUND));
@@ -57,7 +57,7 @@ public abstract class SMCSoundProvider extends SoundDefinitionsProvider {
         SoundDefinition definition = SoundDefinition.definition();
         if (subtitle) {
             String[] splitSoundName = event.getId().getPath().split("\\.", 3);
-            definition.subtitle("subtitles."+ SkilletManCoreMod.MOD_ID+"." + splitSoundName[0] + "." + splitSoundName[2]);
+            definition.subtitle("subtitles." + SkilletManCoreMod.MOD_ID + "." + splitSoundName[0] + "." + splitSoundName[2]);
         }
         this.add(event, definition
                 .with(SoundDefinition.Sound.sound(referencedSound.getLocation(), SoundDefinition.SoundType.EVENT)));
@@ -78,7 +78,7 @@ public abstract class SMCSoundProvider extends SoundDefinitionsProvider {
     public void generateParrotSound(RegistryObject<SoundEvent> event, SoundEvent referencedSound) {
         SoundDefinition definition = SoundDefinition.definition();
         String[] splitSoundName = event.getId().getPath().split("\\.", 3);
-        definition.subtitle("subtitles."+ SkilletManCoreMod.MOD_ID+"." + splitSoundName[0] + "." + splitSoundName[2]);
+        definition.subtitle("subtitles." + SkilletManCoreMod.MOD_ID + "." + splitSoundName[0] + "." + splitSoundName[2]);
 
         this.add(event, definition
                 .with(SoundDefinition.Sound.sound(referencedSound.getLocation(), SoundDefinition.SoundType.EVENT).pitch(1.8F).volume(0.6F)));

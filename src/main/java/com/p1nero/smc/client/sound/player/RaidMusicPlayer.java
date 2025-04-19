@@ -1,4 +1,4 @@
-package com.p1nero.smc.client;
+package com.p1nero.smc.client.sound.player;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Player;
 /**
  * 靠近就播放boss战斗bgm
  */
-public class BossMusicPlayer {
+public class RaidMusicPlayer {
 
     private static BossMusic music;
 
@@ -20,7 +20,7 @@ public class BossMusicPlayer {
         Player player = Minecraft.getInstance().player;
         if (player != null && bgm != null && entity.isAlive()) {
             if (music != null) {
-                if (Minecraft.getInstance().options.getSoundSourceVolume(SoundSource.MUSIC) <= 0) {
+                if (Minecraft.getInstance().options.getSoundSourceVolume(SoundSource.RECORDS) <= 0) {
                     music = null;
                 } else
                 if (music.boss == entity && entity.distanceTo(player) > dis) {
@@ -66,7 +66,7 @@ public class BossMusicPlayer {
         }
 
         public boolean canPlaySound() {
-            return BossMusicPlayer.music == this;
+            return RaidMusicPlayer.music == this;
         }
 
         public void tick() {
@@ -75,7 +75,7 @@ public class BossMusicPlayer {
                 if (volume >= 0) {
                     volume -= 0.03F;
                 } else {
-                    BossMusicPlayer.music = null;
+                    RaidMusicPlayer.music = null;
                 }
             }
 

@@ -17,54 +17,35 @@ public class SpecialCustomerData16 extends SpecialCustomerData {
     }
 
     public void generateTranslation(SMCLangGenerator generator) {
-        generator.add(nameTranslationKey, "说书先生模样的客户");
-        generator.add(answerPre(-2), "（惊堂木震落灰尘）这桥段早被《江湖异闻录》写烂了！");
-        generator.add(choicePre(-2), "拱手退场");
-        generator.add(answerPre(-1), "（折扇上墨迹未干的《十二楼台》新章）");
-        generator.add(choicePre(-1), "先生要润喉茶点？");
-        generator.add(answerPre(0), "下回分解需佐%s——要有侠客夜行的意境！");
-        generator.add(choicePre(0), "以剑风切片");
-        generator.add(answerPre(1), "（抚掌大笑）此味当入武林野史！这残卷《葵花录》赠你");
-        generator.add(choicePre(1), "郑重收下");
-        generator.add(answerPre(2), "（撕稿纸）比村口货郎的故事还寡淡");
-        generator.add(choicePre(2), "躬身送客");
-        generator.add(answerPre(3), "（突然摔碎茶碗）当我三岁小儿糊弄？！");
-        generator.add(choicePre(3), "疾退三步闭柜");
-    }
+        generator.add(nameTranslationKey, "多疑的村民");
+        generator.add(answerPre(-2), "（眼神飘忽，凑近食物嗅了嗅）这东西...您确定没在里面放奇怪的草药？（突然又后退两步，眼神警惕）我上周在草药师那儿听到，有种草药能让人失忆！您不会想对我做什么吧？");
+        generator.add(choicePre(-2), "重新选择正确食物");
+        generator.add(choicePre(-3), "这就去！");
 
-    @Override
-    protected void append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodScore) {
-        if (!canSubmit) {
-            root.addChild(new TreeNode(answer(0), choice(-1))
-                    .addChild(new TreeNode(answer(-2, serverData.get("food_name")), choice(0))
-                            .addLeaf(choice(-2), (byte) -3)));
-        } else {
-            switch (foodScore) {
-                case BEST:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(1), choice(0))
-                                    .addLeaf(choice(1), BEST)));
-                    break;
-                case MIDDLE:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(2), choice(0))
-                                    .addLeaf(choice(2), MIDDLE)));
-                    break;
-                default:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(3), choice(0))
-                                    .addLeaf(choice(3), BAD)));
-            }
-        }
+        generator.add(answerPre(-1), "（眼前这位村民一直偷偷观察你的动作，仿佛你是个大盗）");
+        generator.add(choicePre(-1), "客官要点啥？");
+
+        generator.add(answerPre(0), "有没有...（环顾四周，压低声音）吃了不会被人下毒的 %s ？我上次在酒馆就中了招...（突然警觉地环顾四周）您说这是不是有人在暗中监视我？");
+        generator.add(choicePre(0), "呈上");
+
+        generator.add(answerPre(1), "（突然警惕地观察四周）嗯...还行吧...送你这个，保个平安。");
+        generator.add(choicePre(1), "（无语）多谢，告辞。");
+
+        generator.add(answerPre(2), "（皱眉）这东西...（又凑近闻了闻）感觉不太对劲...你确定没放奇怪的东西？我上周在东街看到个流浪汉，吃了不知道哪儿来的食物，结果在街边跳了一下午的舞！（突然警觉地环顾四周）您说这是不是有人故意为之？");
+        generator.add(choicePre(2), "下次一定改进");
+
+        generator.add(answerPre(3), "（突然暴跳如雷）你这厨子是不是有病？！（突然又警惕地环顾四周）你不会联合我家那位村民来陷害我吧？！走也走也！（夺门而出）");
+        generator.add(choicePre(3), "慢走慢走！我不是故意做那么难吃的！");
     }
 
     @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, SMCItems.SKILL_BOOK_RAFFLE_TICKET.get().getDefaultInstance());
+        ItemUtil.addItem(serverPlayer, SMCItems.SKILL_BOOK_RAFFLE_TICKET.get(), 5);
     }
 
+    @Override
+    protected void onBad(ServerPlayer serverPlayer, Customer self) {
+        super.onBad(serverPlayer, self);
+    }
 }

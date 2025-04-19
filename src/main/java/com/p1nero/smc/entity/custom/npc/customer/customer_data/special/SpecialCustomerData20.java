@@ -17,13 +17,13 @@ public class SpecialCustomerData20 extends SpecialCustomerData {
     }
 
     public void generateTranslation(SMCLangGenerator generator) {
-        generator.add(nameTranslationKey, "不是很友善的客户");
-        generator.add(answerPre(0), "（你感到很不安，这客户似乎有点问题）");
+        generator.add(nameTranslationKey, "不是很友善的村民");
+        generator.add(answerPre(0), "（你感到很不安，这村民似乎有点问题）");
         generator.add(choicePre(0), "这位怕不是坏人");
-        generator.add(answerPre(1), "没错！你猜中了！老子就是20位特殊顾客中唯一的反派角色！");
+        generator.add(answerPre(1), "没错！你猜中了！老子就是20位特殊顾客中唯二的反派角色！终于出场了！嚯嚯嚯哈哈哈哈哈哈哈！");
         generator.add(choicePre(1), "所以..?你要吃点什么吗反派先生");
-        generator.add(answerPre(2), "吃个锤子！老子今天就要砸了你的店！接招吧！");
-        generator.add(choicePre(2), "嚯嚯嚯哈哈哈！终于遇到个能打的客户了！");
+        generator.add(answerPre(2), "吃你奶奶！老子今天就要砸了你的店！接招吧！纳命来！嚯嚯嚯哈哈哈！桀桀桀！");
+        generator.add(choicePre(2), "嚯嚯嚯哈哈哈！忍了那么久终于遇到个能打的客户了！");
     }
 
 

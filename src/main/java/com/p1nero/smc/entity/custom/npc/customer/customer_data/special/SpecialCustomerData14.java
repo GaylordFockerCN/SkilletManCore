@@ -1,5 +1,6 @@
 package com.p1nero.smc.entity.custom.npc.customer.customer_data.special;
 
+import com.github.ysbbbbbb.kaleidoscopedoll.init.ModItems;
 import com.p1nero.smc.client.gui.DialogueComponentBuilder;
 import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
@@ -18,60 +19,38 @@ public class SpecialCustomerData14 extends SpecialCustomerData {
     }
 
     public void generateTranslation(SMCLangGenerator generator) {
-        generator.add(nameTranslationKey, "当铺朝奉的客户");
-        generator.add(answerPre(-2), "（放大镜映出寒光）赝品也敢拿来充数？");
-        generator.add(choicePre(-2), "躬身退下");
-        generator.add(answerPre(-1), "（翡翠扳指正在掐算时辰）");
-        generator.add(choicePre(-1), "掌柜要鉴些珍奇食材？");
-        generator.add(answerPre(0), "上月收的百年%s需验成色，呈来");
-        generator.add(choicePre(0), "捧出紫檀食盒");
-        generator.add(answerPre(1), "（冷笑）倒是看走眼了，这枚错金铜权予你当彩头");
-        generator.add(choicePre(1), "双手托接");
-        generator.add(answerPre(2), "（摔账本）市井粗食也敢充贡品！");
-        generator.add(choicePre(2), "低头送客");
-        generator.add(answerPre(3), "（突然敲响惊堂木）好大的做局胆子！");
-        generator.add(choicePre(3), "疾退三步闭柜");
-    }
+        generator.add(nameTranslationKey, "爱哭的村民");
+        generator.add(choicePre(-3), "马上做！");
 
-    @Override
-    protected void append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodScore) {
-        if (!canSubmit) {
-            root.addChild(new TreeNode(answer(0), choice(-1))
-                    .addChild(new TreeNode(answer(-2, serverData.get("food_name")), choice(0))
-                            .addLeaf(choice(-2), (byte) -3)));
-        } else {
-            switch (foodScore) {
-                case BEST:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(1), choice(0))
-                                    .addLeaf(choice(1), BEST)));
-                    break;
-                case MIDDLE:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(2), choice(0))
-                                    .addLeaf(choice(2), MIDDLE)));
-                    break;
-                default:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(3), choice(0))
-                                    .addLeaf(choice(3), BAD)));
-            }
-        }
+        generator.add(answerPre(-2), "（眼眶瞬间泛红）这个不是我要的...（眼泪在眼眶打转）我想要的不是这个...");
+        generator.add(choicePre(-2), "（这玻璃心咋办，赶紧选择正确的食材吧！）");
+
+        generator.add(answerPre(-1), "（眼前这位村民眼神水汪汪，随时准备哭出来的样子）");
+        generator.add(choicePre(-1), "客官别哭，我这儿有美食可选。");
+
+        generator.add(answerPre(0), "能不能...（快哭出来）给我来点...（抽泣）能让我开心的 %s ...");
+        generator.add(choicePre(0), "提交");
+
+        generator.add(answerPre(1), "（破涕为笑）真的吗？！好开心！送你这个，谢谢！（不是爱哭的村民吗，怎么马上就笑起来了...）");
+        generator.add(choicePre(1), "（笑着收下）多谢，告辞！");
+
+        generator.add(answerPre(2), "（眼泪汪汪）不够好...我好难过...（抽泣）");
+        generator.add(choicePre(2), "下次一定！");
+
+        generator.add(answerPre(3), "（哇的一声大哭）这是什么呀！（你赶忙递纸巾）");
+        generator.add(choicePre(3), "（无奈）别哭了，别哭了，我错了！");
     }
 
     @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
         ItemUtil.addItem(serverPlayer, SMCItems.WEAPON_RAFFLE_TICKET.get().getDefaultInstance());
+        ItemUtil.addItem(serverPlayer, ModItems.PURPLE_DOLL_GIFT_BOX.get().getDefaultInstance());
     }
 
     @Override
     protected void onBad(ServerPlayer serverPlayer, Customer self) {
-        super.onBad(serverPlayer, self);
-        serverPlayer.hurt(serverPlayer.damageSources().magic(), 0.5F);
+
     }
 
 }

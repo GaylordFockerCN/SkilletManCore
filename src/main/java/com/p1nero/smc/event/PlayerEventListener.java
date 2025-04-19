@@ -19,7 +19,6 @@ import dev.xkmc.cuisinedelight.content.item.SpatulaItem;
 import dev.xkmc.cuisinedelight.events.FoodEatenEvent;
 import net.blay09.mods.waystones.block.ModBlocks;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -31,7 +30,6 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 
@@ -56,6 +54,8 @@ public class PlayerEventListener {
             //防止重进后boss的uuid不同
             SMCBoss.SERVER_BOSSES.forEach(((uuid, integer) -> PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new SyncUuidPacket(uuid, integer), serverPlayer)));
             SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID, serverPlayer);
+
+            SMCPlayer.updateWorkingState(false, serverPlayer);//重置上班状态，防止假性上班（
 
             if(!DataManager.firstJoint.get(serverPlayer)) {
                 SMCPlayer.addMoney(500, serverPlayer);
@@ -108,7 +108,7 @@ public class PlayerEventListener {
     }
 
     @SubscribeEvent
-    public static void onPlayerClickBlock(PlayerInteractEvent event){
+    public static void onPlayerInteract(PlayerInteractEvent event){
         if(event.getEntity() instanceof ServerPlayer serverPlayer) {
             //传送石就是重生点
             if(event.getLevel().getBlockState(event.getPos()).is(ModBlocks.waystone)){

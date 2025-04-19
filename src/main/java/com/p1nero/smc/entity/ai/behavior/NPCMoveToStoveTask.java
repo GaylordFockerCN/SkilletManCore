@@ -8,7 +8,7 @@ import net.minecraft.world.entity.ai.behavior.Behavior;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * 往炉子移动
+ * 往炉子移动 （不知为何要bug，因此直接换tick里写
  */
 public class NPCMoveToStoveTask extends Behavior<Mob> {
     public NPCMoveToStoveTask() {
@@ -29,13 +29,4 @@ public class NPCMoveToStoveTask extends Behavior<Mob> {
         return ((Customer) customer).getConversingPlayer() == null;
     }
 
-    @Override
-    protected void start(@NotNull ServerLevel serverLevel, @NotNull Mob customer, long p_22542_) {
-        customer.getNavigation().moveTo(customer.getNavigation().createPath(((Customer) customer).isTraded() ? ((Customer) customer).getSpawnPos() : ((Customer) customer).getHomePos(), ((int) ((Customer) customer).getDistance())), 4);
-    }
-
-    @Override
-    protected void tick(@NotNull ServerLevel level, @NotNull Mob customer, long p_22553_) {
-        customer.getNavigation().moveTo(customer.getNavigation().createPath(((Customer) customer).isTraded() ? ((Customer) customer).getSpawnPos() : ((Customer) customer).getHomePos(), ((int) ((Customer) customer).getDistance())), 4);
-    }
 }

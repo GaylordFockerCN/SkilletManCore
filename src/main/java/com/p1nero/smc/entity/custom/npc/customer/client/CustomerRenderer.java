@@ -22,9 +22,11 @@ public class CustomerRenderer extends VillagerRenderer {
     @Override
     protected void renderNameTag(@NotNull Villager villager, @NotNull Component component, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int p_114502_) {
         super.renderNameTag(villager, component, poseStack, bufferSource, p_114502_);
-        if(villager instanceof Customer customer && !customer.getOrder().isEmpty()) {
+        if(villager instanceof Customer customer && customer.isAlive() && !customer.getOrder().isEmpty() && customer.getCustomerData() != null && !customer.isTraded()) {
             poseStack.pushPose();
-            poseStack.translate(0, 0.5, 0);
+            poseStack.translate(0.0F, villager.getBbHeight() + 1, 0.0F);
+            poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
+            poseStack.scale(0.7F, 0.7F, 0.7F);
             BakedModel model = Minecraft.getInstance().getItemRenderer().getItemModelShaper().getItemModel(customer.getOrder());
             Minecraft.getInstance().getItemRenderer().render(customer.getOrder(), ItemDisplayContext.GUI, false, poseStack, bufferSource, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, model);
             poseStack.popPose();

@@ -138,7 +138,11 @@ dependencies {
     implementation fg.deobf("curse.maven:epic-fight-invincible-1184379:6373264")
     implementation fg.deobf("curse.maven:spice-of-life-carrot-edition-277616:4888575")
     implementation fg.deobf("curse.maven:kaleidoscope-doll-1233277:6373592")
-    implementation fg.deobf("libs:htlib:1.0.2")
+    implementation fg.deobf("curse.maven:hungteens-lib-794622:5782587")
+    implementation fg.deobf("curse.maven:embeddium-908741:5681725")
+    implementation fg.deobf("curse.maven:oculus-581495:6020952")
+//    implementation fg.deobf("curse.maven:distant-horizons-508933:6387680")
+    implementation fg.deobf("curse.maven:epic-terrain-compatible-1137535:6439744")
 
     compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
     runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))

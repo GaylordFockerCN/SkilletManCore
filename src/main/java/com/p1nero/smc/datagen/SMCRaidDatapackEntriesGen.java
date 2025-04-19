@@ -36,6 +36,6 @@ public class SMCRaidDatapackEntriesGen extends DatapackBuiltinEntriesProvider {
     }
 
     public @NotNull String getName() {
-        return this.modId + " datapack raid entries";
+        return this.modId + " raid entries";
     }
 }

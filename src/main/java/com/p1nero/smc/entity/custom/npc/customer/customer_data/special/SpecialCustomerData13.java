@@ -5,6 +5,7 @@ import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.customer.customer_data.SpecialCustomerData;
+import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.util.ItemUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,57 +18,26 @@ public class SpecialCustomerData13 extends SpecialCustomerData {
     }
 
     public void generateTranslation(SMCLangGenerator generator) {
-        generator.add(nameTranslationKey, "走镖的客户");
-        generator.add(answerPre(-2), "（红缨枪往地上一顿）道上规矩，非镖物不接！");
-        generator.add(choicePre(-2), "抱拳退下");
-        generator.add(answerPre(-1), "（牛皮护腕上还带着狼牙划痕）");
-        generator.add(choicePre(-1), "镖头要补些硬菜？");
-        generator.add(answerPre(0), "这趟暗镖凶险，需能壮胆的%s压阵！");
-        generator.add(choicePre(0), "拍开酒坛泥封");
-        generator.add(answerPre(1), "（掷出飞镖钉中梁柱）痛快！这金丝软甲赠你防身！");
-        generator.add(choicePre(1), "躬身接过");
-        generator.add(answerPre(2), "（摇头）比黑风寨的伙食还软三分");
-        generator.add(choicePre(2), "抱拳送客");
-        generator.add(answerPre(3), "（突然吹响警哨）莫非是劫镖的探子？！");
-        generator.add(choicePre(3), "连声道歉闭门");
-    }
-
-    @Override
-    protected void append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodScore) {
-        if (!canSubmit) {
-            root.addChild(new TreeNode(answer(0), choice(-1))
-                    .addChild(new TreeNode(answer(-2, serverData.get("food_name")), choice(0))
-                            .addLeaf(choice(-2), (byte) -3)));
-        } else {
-            switch (foodScore) {
-                case BEST:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(1), choice(0))
-                                    .addLeaf(choice(1), BEST)));
-                    break;
-                case MIDDLE:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(2), choice(0))
-                                    .addLeaf(choice(2), MIDDLE)));
-                    break;
-                default:
-                    root.addChild(new TreeNode(answer(0), choice(-1))
-                            .execute(SUBMIT_FOOD)
-                            .addChild(new TreeNode(answer(3), choice(0))
-                                    .addLeaf(choice(3), BAD)));
-            }
-        }
+        generator.add(nameTranslationKey, "阴阳怪气的村民");
+        generator.add(answerPre(-2), "（拖长音调）哎哟～咱们大厨今天手滑了不是～");//(嘲讽MAX)
+        generator.add(choicePre(-2), "假笑退下");
+        generator.add(choicePre(-3), "马上做！");
+        generator.add(answerPre(-1), "（来者不是很友善）");
+        generator.add(choicePre(-1), "客官有何需求？");
+        generator.add(answerPre(0), "劳驾来份%s——（突然轻笑）不会连这都做不好吧？");//(激将法)
+        generator.add(choicePre(0), "冷着脸端上");
+        generator.add(answerPre(1), "（假意鼓掌）太阳打西边出来啰～ 赏你的～");//(连秘籍都带刺)
+        generator.add(choicePre(1), "呵呵");
+        generator.add(answerPre(2), "（啧啧摇头）果然和我预想的一样平庸～");//(早有准备式嘲讽)
+        generator.add(choicePre(2), "呵呵");
+        generator.add(answerPre(3), "（尖笑）这就是传说中的狗都不吃？（甩袖形成小型龙卷风）");//(武力吐槽)
+        generator.add(choicePre(3), "呵呵");
     }
 
     @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, Items.GOLDEN_HELMET, 1);
-        ItemUtil.addItem(serverPlayer, Items.GOLDEN_CHESTPLATE, 1);
-        ItemUtil.addItem(serverPlayer, Items.GOLDEN_LEGGINGS, 1);
-        ItemUtil.addItem(serverPlayer, Items.GOLDEN_BOOTS, 1);
+        ItemUtil.addItem(serverPlayer, SMCItems.SKILL_BOOK_RAFFLE_TICKET.get(), 4);
     }
 
 }

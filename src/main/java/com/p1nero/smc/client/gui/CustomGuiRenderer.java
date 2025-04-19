@@ -13,7 +13,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
 
-public class CustomGuiHandler {
+public class CustomGuiRenderer {
     public static final ResourceLocation SPATULA_TEXTURE = new ResourceLocation(CuisineDelight.MODID, "textures/item/spatula.png");
     public static final ResourceLocation MONEY_TEXTURE = new ResourceLocation("textures/item/emerald.png");
 

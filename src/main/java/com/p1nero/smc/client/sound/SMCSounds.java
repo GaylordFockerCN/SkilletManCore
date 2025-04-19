@@ -1,4 +1,4 @@
-package com.p1nero.smc.client;
+package com.p1nero.smc.client.sound;
 
 import com.p1nero.smc.SkilletManCoreMod;
 import net.minecraft.sounds.SoundEvent;
@@ -9,6 +9,8 @@ import net.minecraftforge.registries.RegistryObject;
 public final class SMCSounds {
 
 	public static final DeferredRegister<SoundEvent> REGISTRY = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, SkilletManCoreMod.MOD_ID);
+
+	public static final RegistryObject<SoundEvent> WORKING_BGM = createEvent("bgm.smc.working_bgm");
 	private static RegistryObject<SoundEvent> createEvent(String sound) {
 		return REGISTRY.register(sound, () -> SoundEvent.createVariableRangeEvent(SkilletManCoreMod.prefix(sound)));
 	}

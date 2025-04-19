@@ -22,6 +22,8 @@ public class SMCConfig {
     public static final ForgeConfigSpec.BooleanValue FAST_BOSS_FIGHT;
     public static final ForgeConfigSpec SPEC;
 
+    public static final ForgeConfigSpec.BooleanValue ENABLE_WORKING_BGM;
+    public static final ForgeConfigSpec.BooleanValue ENABLE_RAID_BGM;
     public static final ForgeConfigSpec.BooleanValue ENABLE_TYPEWRITER_EFFECT;
     public static final ForgeConfigSpec.IntValue TYPEWRITER_EFFECT_SPEED;
     public static final ForgeConfigSpec.IntValue TYPEWRITER_EFFECT_INTERVAL;
@@ -35,26 +37,26 @@ public class SMCConfig {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
 
         builder.push("Game Setting");
-        MIN_CHUNK_BETWEEN_STRUCTURE = createInt(builder, "min_chunk_between_structure", 3, 0, "小建筑和主建筑的最小区块间距");
-        GIVE_M_KEY = createBool(builder, "give_m_key", true, "是否在进入游戏时直接给予玩家维度传送钥匙以及进入维度后给新手奖励");
-        HEALTH_CHECK = createDouble(builder, "health_check", 25, 1, "允许进入维度的玩家血量范围");
-        ALLOW_BVB = createBool(builder, "allow_bvb", false,  "是否允许bvb 开启后boss可离开祭坛活动");
+        MIN_CHUNK_BETWEEN_STRUCTURE = createInt(builder, "min_chunk_between_structure", 3, 0, "小建筑和主建筑的最小区块间距（过时）");
+        GIVE_M_KEY = createBool(builder, "give_m_key", true, "是否在进入游戏时直接给予玩家维度传送钥匙以及进入维度后给新手奖励（过时）");
+        HEALTH_CHECK = createDouble(builder, "health_check", 25, 1, "允许进入维度的玩家血量范围（过时）");
+        ALLOW_BVB = createBool(builder, "allow_bvb", false,  "是否允许bvb 开启后boss可离开祭坛活动（过时）");
 //        NO_PLOT_MODE = createBool(builder, "no_plot_mode", false, "！！在此config下启动的存档将无法重新开启主线剧情！！", "无剧情模式：设为true后将简化流程，没有剧情及任务。但仍可获得任务奖励。");
-        BROADCAST_DIALOG = createBool(builder, "broadcast_dialog", true, "是否全局广播剧情对话");
-        BROADCAST_DISTANCE = createDouble(builder, "broadcast_distance", 50, 1, "广播范围");
+        BROADCAST_DIALOG = createBool(builder, "broadcast_dialog", true, "是否全局广播剧情对话（过时）");
+        BROADCAST_DISTANCE = createDouble(builder, "broadcast_distance", 50, 1, "广播范围（过时）");
         builder.pop();
 
         builder.push("Attribute Value");
 
         builder.pop();
         builder.push("Monster Setting");
-        MOB_MULTIPLIER_WHEN_WORLD_LEVEL_UP = createDouble(builder, "mob_multiplier_when_world_level_up", 1.414, 1.0, "世界等级提升时怪物的属性提升倍数");
-        MOB_SPAWN_DISTANCE = createDouble(builder, "mob_spawn_distance", 20, 1.0, "怪物生成间距");
-        ELITE_MOB_HEALTH_MULTIPLIER = createDouble(builder, "elite_mob_health_multiplier", 3.0, 1.0, "精英怪的血量加倍");
-        ELITE_MOB_DAMAGE_MULTIPLIER = createDouble(builder, "elite_mob_damage_multiplier", 1.5, 1.0, "精英怪的伤害加倍");
+        MOB_MULTIPLIER_WHEN_WORLD_LEVEL_UP = createDouble(builder, "mob_multiplier_when_world_level_up", 1.414, 1.0, "世界等级提升时怪物的属性提升倍数（过时）");
+        MOB_SPAWN_DISTANCE = createDouble(builder, "mob_spawn_distance", 20, 1.0, "怪物生成间距（过时）");
+        ELITE_MOB_HEALTH_MULTIPLIER = createDouble(builder, "elite_mob_health_multiplier", 3.0, 1.0, "精英怪的血量加倍（过时）");
+        ELITE_MOB_DAMAGE_MULTIPLIER = createDouble(builder, "elite_mob_damage_multiplier", 1.5, 1.0, "精英怪的伤害加倍（过时）");
         BOSS_HEALTH_AND_LOOT_MULTIPLE = createBool(builder, "boss_health_and_loot_multiple", true, "是否在多人模式下boss血量增加");
         BOSS_HEALTH_AND_LOOT_MULTIPLE_MAX = createInt(builder, "boss_health_and_loot_multiple_max", 5, 1, "多人模式下boss血量增加的最大倍数");
-        SPAWNER_BLOCK_PROTECT_RADIUS = createInt(builder, "spawner_block_protect_radius", 20, 1, "默认决斗范围");
+        SPAWNER_BLOCK_PROTECT_RADIUS = createInt(builder, "spawner_block_protect_radius", 20, 1, "默认决斗范围（过时）");
         builder.pop();
 
         builder.push("Test");
@@ -67,6 +69,8 @@ public class SMCConfig {
         SPEC = builder.build();
 
         ForgeConfigSpec.Builder clientBuilder = new ForgeConfigSpec.Builder();
+        ENABLE_WORKING_BGM = createBool(clientBuilder, "enable_working_bgm", true, "是否启用经营时的bgm，不会被唱片覆盖");
+        ENABLE_RAID_BGM = createBool(clientBuilder, "enable_raid_bgm", true, "是否启用袭击时的bgm，不会被唱片覆盖");
         ENABLE_TYPEWRITER_EFFECT = createBool(clientBuilder, "enable_typewriter_effect", true, "剧情对话是否使用打字机效果");
         TYPEWRITER_EFFECT_SPEED = createInt(clientBuilder, "typewriter_effect_speed", 2, 1, "打字机效果打字速度");
         TYPEWRITER_EFFECT_INTERVAL = createInt(clientBuilder, "typewriter_effect_interval", 2, 1, "打字机效果打字间隔");

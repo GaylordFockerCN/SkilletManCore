@@ -1,5 +1,6 @@
 package com.p1nero.smc.datagen;
 
+import com.github.ysbbbbbb.kaleidoscopedoll.init.ModItems;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
@@ -17,9 +18,11 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeAdvancementProvider;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -54,8 +57,11 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement first5StarSkillet = registerAdvancement(root, "first_5star_skillet", FrameType.TASK, SMCRegistrateItems.IRON_SKILLET_LEVEL5.get());
             Advancement fakeSleep = registerAdvancement(root, "fake_sleep", FrameType.TASK, Items.RED_BED);
             Advancement tryPush = registerAdvancement(root, "try_push", FrameType.TASK, Blocks.PISTON);
-            Advancement noMoney = registerAdvancement(root, "no_money", FrameType.TASK, Blocks.PISTON);
-            Advancement selfEat = registerAdvancement(root, "self_eat", FrameType.TASK, Blocks.PISTON);
+            Advancement noMoney = registerAdvancement(root, "no_money", FrameType.TASK, Items.EMERALD);
+            Advancement selfEat = registerAdvancement(root, "self_eat", FrameType.TASK, Items.BREAD);
+            Advancement tooManyMouth = registerAdvancement(root, "too_many_mouth", FrameType.TASK, ModItems.DOLL_ICON.get());
+
+            Advancement makeCustomerCry = registerAdvancement(root, "got_fox", FrameType.TASK, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_45"))));
 
         }
 
