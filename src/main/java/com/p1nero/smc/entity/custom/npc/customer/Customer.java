@@ -8,6 +8,7 @@ import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.DialogueComponentBuilder;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
+import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.ai.behavior.VillagerTasks;
@@ -38,6 +39,7 @@ import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -48,7 +50,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Supplier;
 
 public class Customer extends SMCNpc {
 
@@ -56,40 +61,38 @@ public class Customer extends SMCNpc {
     protected static final EntityDataAccessor<Boolean> IS_SPECIAL = SynchedEntityData.defineId(Customer.class, EntityDataSerializers.BOOLEAN);//是否是隐士，可以给予武林秘籍
     protected static final EntityDataAccessor<Integer> SMC_ID = SynchedEntityData.defineId(Customer.class, EntityDataSerializers.INT);//村民编号，用于区别对话
     protected static final EntityDataAccessor<ItemStack> ORDER = SynchedEntityData.defineId(Customer.class, EntityDataSerializers.ITEM_STACK);//请求的食物
-
     public static final int MAX_CUSTOMER_TYPE = 26;
-
-    public static final List<CustomerData> customers = new ArrayList<>();
-    public static final List<CustomerData> specialCustomers = new ArrayList<>();
+    public static final List<CustomerData> CUSTOMERS = new ArrayList<>();
+    public static final List<CustomerData> SPECIAL_CUSTOMERS = new ArrayList<>();
 
     static {
-        specialCustomers.add(new SpecialCustomerData1());
-        specialCustomers.add(new SpecialCustomerData2());
-        specialCustomers.add(new SpecialCustomerData3());
-        specialCustomers.add(new SpecialCustomerData4());
-        specialCustomers.add(new SpecialCustomerData5());
-        specialCustomers.add(new SpecialCustomerData6());
-        specialCustomers.add(new SpecialCustomerData7());
-        specialCustomers.add(new SpecialCustomerData8());
-        specialCustomers.add(new SpecialCustomerData9());
-        specialCustomers.add(new SpecialCustomerData10());
-        specialCustomers.add(new SpecialCustomerData11());
-        specialCustomers.add(new SpecialCustomerData12());
-        specialCustomers.add(new SpecialCustomerData13());
-        specialCustomers.add(new SpecialCustomerData14());
-        specialCustomers.add(new SpecialCustomerData15());
-        specialCustomers.add(new SpecialCustomerData16());
-        specialCustomers.add(new SpecialCustomerData17());
-        specialCustomers.add(new SpecialCustomerData18());
-        specialCustomers.add(new SpecialCustomerData19());
-        specialCustomers.add(new SpecialCustomerData20());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData1());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData2());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData3());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData4());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData5());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData6());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData7());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData8());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData9());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData10());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData11());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData12());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData13());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData14());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData15());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData16());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData17());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData18());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData19());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData20());
 
-        customers.add(new NormalCustomerData1());
-        customers.add(new NormalCustomerData2());
-        customers.add(new NormalCustomerData3());
-        customers.add(new NormalCustomerData4());
-        customers.add(new NormalCustomerData5());
-        customers.add(new NormalCustomerData6());
+        CUSTOMERS.add(new NormalCustomerData1());
+        CUSTOMERS.add(new NormalCustomerData2());
+        CUSTOMERS.add(new NormalCustomerData3());
+        CUSTOMERS.add(new NormalCustomerData4());
+        CUSTOMERS.add(new NormalCustomerData5());
+        CUSTOMERS.add(new NormalCustomerData6());
     }
 
     @Nullable
@@ -141,7 +144,7 @@ public class Customer extends SMCNpc {
     @Override
     public int getTeamColor() {
         if(isSpecial()) {
-            return this.tickCount % 0xFFFFFF;//会五颜六色吗
+            return 0xfff66d;//金色传说！
         }
         return super.getTeamColor();
     }
@@ -230,7 +233,7 @@ public class Customer extends SMCNpc {
             }
         }
 
-        if(this.tickCount > 3600) {
+        if(this.tickCount > 3600 && !this.isTraded()) {
             if(this.getOwner() instanceof ServerPlayer serverPlayer) {
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("customer_left"), false);
                 if(this.isSpecial()) {
@@ -249,6 +252,11 @@ public class Customer extends SMCNpc {
 
     @Override
     public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
+
+        if(player instanceof ServerPlayer serverPlayer && this.getOwner() != null && !player.getUUID().equals(this.getOwnerUUID())) {
+            SMCAdvancementData.finishAdvancement("hijack_customer", serverPlayer);
+        }
+
         if(this.getOrder().is(player.getMainHandItem().getItem())) {
             CookedFoodData cookedFoodData = BaseFoodItem.getData(player.getMainHandItem());
             if(cookedFoodData != null){
@@ -266,18 +274,19 @@ public class Customer extends SMCNpc {
                 }
             }
         }
-        //双端
-        if(customerData == null) {
-            //每五级随机一个神人
-            SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
-            if(smcPlayer.getLevel() % 5 == 0 && smcPlayer.getLevel() > 0 && !smcPlayer.isSpecialAlive()) {
-                customerData = specialCustomers.get(this.getSMCId() % specialCustomers.size());
-                this.setSpecial(true);
-                smcPlayer.setSpecialAlive(true);
-            } else {
-                customerData = customers.get(this.getSMCId() % customers.size());
-            }
-        }
+//        //双端
+//        if(customerData == null) {
+//            //每五级随机一个神人
+//            SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
+//            if(smcPlayer.getLevel() % 5 == 0 && smcPlayer.getLevel() > 0 && !smcPlayer.isSpecialAlive()) {
+//                customerData = SPECIAL_CUSTOMERS.get(this.getSMCId() % SPECIAL_CUSTOMERS.size());
+//                this.setSpecial(true);
+//                smcPlayer.setSpecialAlive(true);
+//            } else {
+//                customerData = CUSTOMERS.get(this.getSMCId() % CUSTOMERS.size());
+//            }
+//        }
+        customerData = SPECIAL_CUSTOMERS.get(this.getSMCId() % SPECIAL_CUSTOMERS.size());
         return super.mobInteract(player, hand);
     }
 
@@ -327,18 +336,19 @@ public class Customer extends SMCNpc {
         }
 
         if(interactionID == CustomerData.BEST || interactionID == CustomerData.MIDDLE) {
-            SMCPlayer.upgradePlayer(player);//能吃就能升级
+            SMCPlayer.finishTransaction(player);//能吃就能升级
             this.setTraded(true);//离去
         }
 
         if(interactionID == CustomerData.SUBMIT_FOOD) {
             //提交食物专用的代码
-            player.getMainHandItem().shrink(1);
+            player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
             ItemUtil.addItem(player, SMCRegistrateItems.DIRT_PLATE.asItem(), 1);
             return;
-        } else {
+        } else if(this.customerData != null){
             this.customerData.handle(player, this, interactionID);
         }
+
         this.setConversingPlayer(null);
     }
 
@@ -367,8 +377,8 @@ public class Customer extends SMCNpc {
         protected static final byte BEST = 3;
         protected static final byte MIDDLE = 2;
         protected static final byte BAD = 1;
-        protected static final byte NO_FOOD = 0;
-        protected static final byte SUBMIT_FOOD = -1;
+        protected static final byte NO_FOOD = -1;
+        protected static final byte SUBMIT_FOOD = 114;
 
         public abstract void generateTranslation(SMCLangGenerator generator);
         public abstract void onInteract(ServerPlayer player, Customer self);

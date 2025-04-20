@@ -3,7 +3,7 @@
     "common": {
       "max_strikes": 3,
       "damage_bonus": 1,
-      "speed_bonus": -2.0
+      "speed_bonus": -3.0
     }
   },
   "type": "skillet_man_core:iron_spatula_v1"

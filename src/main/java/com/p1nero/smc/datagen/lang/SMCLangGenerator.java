@@ -33,18 +33,41 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("please_in_battle_mode", "§c请打开战斗模式！！");
         this.addInfo("no_enough_money", "§c余额不足！！");
         this.addInfo("shop_upgrade", "§a店铺已升至 %d §a级！");
-        this.addInfo("unlock_game_stage", "§a游戏阶段提升！现在等级上限已提升至： %d §a！解锁新的订购列表，并且客户需求种类增加！");
+        this.addInfo("seafood_available", "村民订购解锁 §a海鲜大礼包§r ！");
+        this.addInfo("meat_available", "村民订购解锁 §a肉类大礼包§r ！");
+        this.addInfo("unlock_game_stage", "§6游戏阶段提升！现在等级上限已提升至： %d §6！§r解锁新的订购列表，并且客户需求种类增加！");
         this.addInfo("working", "营业中");
         this.addInfo("resting", "休息中");
         this.addInfo("all_taken", "已全部取出！");
         this.addInfo("customer_is_first", "§c顾客就是上帝！");
         this.addInfo("no_your_power", "Oh 不, 这份力量并不属于你...设定上你只能使用平底锅");
 
+        this.addScreenName("start_guide", "背景故事");
+        this.addScreenAns("start_guide", 0, "你是一个来自天外的旅人，受§4『终界』§r侵扰，你失去了力量。因此你暂居此处，白天做饭维生，夜里抵御来自§4『终界』§r的袭击，保卫村庄。你在做菜的时候，不断从翻炒中领悟武学之道，同时可能邂逅神秘村民，传授你§e『秘笈』§r或§b『神兵』§r。");
+        this.addScreenOpt("start_guide", 0, "继续");
+        this.addScreenOpt("start_guide", 1, "跳过");
+        this.addScreenAns("start_guide", 1, "有朝一日，你觉得力量渐渐回来了，准备进军§4『终界』§r，击败恶龙，夺回属于你的力量，换得主世界永恒的安宁。最终将成为一代宗师，村民们因此称你为——§e平 底 锅 侠§r。");
+        this.addScreenOpt("start_guide", 2, "平底锅侠...好俗的名字...");
+        this.addScreenOpt("start_guide", 3, "这像是作者一拍大腿就想出来的整合包");
+        this.addScreenAns("start_guide", 2, "没错。这个整合包就是作者一拍大腿想出来的。但这一拍大腿就换来了一个月的爆肝...建议给作者三连。废话少说，快去村庄里寻找落脚点吧！");
+        this.addScreenOpt("start_guide", 4, "我去，还能吐槽");
+        this.addScreenAns("start_guide", 3, "你确定要跳过这么精彩的对话吗？一旦跳过或按ECS退出后，将只有重建存档才会弹出本对话哦~");
+        this.addScreenOpt("start_guide", 5, "确定");
+        this.addScreenOpt("start_guide", 6, "取消");
+        this.addScreenAns("start_guide", 4, "哈哈，还想再看一遍？想得美，自己在村子里逛逛吧。");
+        this.addScreenOpt("start_guide", 7, "...");
+
         this.addEffect(SMCEffects.BURNT, "灼伤");
 
         this.addSkill("better_dodge_display", "完美闪避显示", "成功闪避将留下残影和播放音效，并额外恢复一点耐力");
 
         this.addAdvancement(SkilletManCoreMod.MOD_ID, "临村怀梦", "平底锅侠传奇的一生即将开始");
+        this.addAdvancement("dirt_plate", "节俭之星", "使用脏盘子盛菜，节俭是一种美德，但是你的顾客可能不会这么想。");
+        this.addAdvancement("start_work", "新的开始", "接手一家店铺并开始经营");
+        this.addAdvancement("money1000", "一千富翁", "持有 1,000 绿宝石");
+        this.addAdvancement("money1000000", "百万富翁", "持有 1,000,000 绿宝石");
+        this.addAdvancement("money1000000000", "一个小目标", "持有 1,000,000,000 绿宝石（你真的没有开挂吗）");
+        this.addAdvancement("hijack_customer", "拐走！", "抢走其他玩家的顾客");
         this.addAdvancement("no_your_power", "忠于平底锅", "企图使用其他武器的力量");
         this.addAdvancement("first_5star_skillet", "第一个五星锅！", "将一把平底锅升到五星");
         this.addAdvancement("fake_sleep", "睡觉时间到！", "企图唤醒你的员工，但你永远无法唤醒一个正在装睡的人。");
@@ -52,12 +75,15 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("no_money", "亿万负翁", "钱达到负数（到底是怎么做到的。。。）");
         this.addAdvancement("self_eat", "自产自销", "吃下自己做的食物");
         this.addAdvancement("too_many_mouth", "工伤请求", "接待话很多的村民");
-        this.addAdvancement("got_fox", "小狐狸", "从村民处获得可爱的狐狸玩偶");
+        this.addAdvancement("pre_cook", "预制菜", "在大晚上的做菜卖给谁呢？");
+        this.addAdvancement("end", "结束了？", "击败最终boss");
 
         this.add(SMCRegistrateItems.SPATULA_V2.get(), "锅铲");
         this.add(SMCRegistrateItems.SPATULA_V3.get(), "锅铲");
         this.add(SMCRegistrateItems.SPATULA_V4.get(), "锅铲");
         this.add(SMCRegistrateItems.SPATULA_V5.get(), "锅铲");
+        this.add(SMCRegistrateItems.DIRT_PLATE.get(), "脏盘子");
+        this.add(SMCRegistrateItems.DIRT_PLATE.get().getDescriptionId() + ".disc", "上面充满了油渍，对着水右键可以洗干净。或许也可以重复使用？");
         this.add(SMCBlocks.MAIN_COOK_BLOCK.get(), "核心方块");
 
         this.addBiome(SMCBiomes.AIR, "虚空");
@@ -70,7 +96,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add(SMCEntities.START_NPC.get() + "_empty", "§e⬇对话以开始经营⬇");
         this.add(SMCEntities.START_NPC.get().getDescriptionId() + "_hired", "§a收入：%d §e| §a速度 %s");
         this. add(SMCEntities.START_NPC.get().getDescriptionId() + "_guider", "§b人畜无害的村民");
-        this.addDialog(SMCEntities.START_NPC, 0, "客官可是要在此地歇一歇因果？");
+        this.addDialog(SMCEntities.START_NPC, 0, "准备好开始游戏了吗？");
         this.addDialogChoice(SMCEntities.START_NPC, 0, "入职 §a花费 %d 绿宝石");
         this.addDialogChoice(SMCEntities.START_NPC, 1, "雇佣 §a花费 %d 绿宝石");
         this.addDialogChoice(SMCEntities.START_NPC, 2, "告辞");
@@ -84,28 +110,29 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialogChoice(SMCEntities.START_NPC, 10, "醒醒！Go work！");
 
         this.addDialogChoice(SMCEntities.START_NPC, 11, "订购");
-        this.addDialogChoice(SMCEntities.START_NPC, 12, "订购 米面大礼包 §a花费 50 绿宝石");
-        this.addDialogChoice(SMCEntities.START_NPC, 13, "订购 蘑菇大礼包 §a花费 10 绿宝石");
-        this.addDialogChoice(SMCEntities.START_NPC, 14, "订购 果蔬大礼包 §a花费 50 绿宝石");
-        this.addDialogChoice(SMCEntities.START_NPC, 15, "订购 肉类大礼包 §a花费 200 绿宝石");
-        this.addDialogChoice(SMCEntities.START_NPC, 16, "订购 海鲜大礼包 §a花费 500 绿宝石");
+        this.addDialogChoice(SMCEntities.START_NPC, 12, "订购 主食大礼包 §a花费 100 绿宝石");
+        this.addDialogChoice(SMCEntities.START_NPC, 13, "订购 果蔬大礼包 §a花费 100 绿宝石");
+        this.addDialogChoice(SMCEntities.START_NPC, 14, "订购 肉类大礼包 §a花费 200 绿宝石");
+        this.addDialogChoice(SMCEntities.START_NPC, 15, "订购 海鲜大礼包 §a花费 500 绿宝石");
 
-        this.addDialog(SMCEntities.START_NPC, 1, "恩公有何贵干？");
-        this.addDialog(SMCEntities.START_NPC, 2, "本店亏损已久，承蒙恩公相助！");
+        this.addDialog(SMCEntities.START_NPC, 1, "今天要做些什么呢？");
+        this.addDialog(SMCEntities.START_NPC, 2, "本店亏损已久，承蒙大侠相助！");
         this.addDialog(SMCEntities.START_NPC, 3, "§a已全部取出！");
         this.addDialog(SMCEntities.START_NPC, 4, "§a已升级！");
-        this.addDialog(SMCEntities.START_NPC, 5, "准备好开业了吗！§6（由于作者没有建筑水平，因此还特地补偿了一些建筑方块。至于这些盘子，你用到通关了也花不完。就算花完了拿木板就可以做。）");
-        this.addDialog(SMCEntities.START_NPC, 6, "将§6炒锅§r摆上§6炉灶§r以开始营业，右键顾客以查看所需食材，烹饪完成后§6将食材放至主手，再次对话以交付食材。§r根据食材的品质将获得不同奖励。而夜晚可能会有§4袭击事件§r，拿起平底锅保卫村庄！");
-        this.addDialog(SMCEntities.START_NPC, 7, "炒菜时，把对应的食材丢入锅中，用锅铲即可翻炒。左边的仪表盘提示食物是否烧焦，请在合适的时候将其取出！使用JEI可查看料理配方。食材不足可找村民购买，等级达到一定程度时候，订购机将解锁新的食材。");
-        this.addDialog(SMCEntities.START_NPC, 8, "每接待一位顾客将提升一次店铺等级，随着等级提升将解锁新的资源和玩法。到一定等级时将开启§6突破试炼§r，若试炼成功则可获得大量奖励并且进入下一游戏阶段。不用担心，§a流程不肝不长！§r");
+        this.addDialog(SMCEntities.START_NPC, 5, "准备好开业了吗！§6（由于作者没有建筑水平，因此还特地补偿了一些建筑方块，快去装饰你的店铺吧！至于这些盘子，你用到通关了也花不完。就算花完了拿木板就可以做。）");
+        this.addDialog(SMCEntities.START_NPC, 6, "将§6炒锅§r摆上§6炉灶§r以开始营业，右键顾客以查看所需食材，烹饪完成后将食材放至§6主手§r，再次对话以交付食材。根据食材的品质将获得不同奖励。而夜晚可能会有§4袭击事件§r，拿起平底锅保卫村庄！");
+        this.addDialog(SMCEntities.START_NPC, 7, "炒菜时，把对应的食材丢入锅中，用§6锅铲§r即可翻炒。左边的仪表盘提示食物是否烧焦，请在合适的时候将其取出！使用§aJEI§r可查看料理配方。食材不足可找村民购买或找我订购。如果手忙脚乱，§6预制菜§r是一个不错的选择。");
+        this.addDialog(SMCEntities.START_NPC, 8, "接待足够多的村民将提升一次店铺等级，随着等级提升将解锁新的资源和玩法。到一定等级时将开启§6突破试炼§r，若试炼成功则可获得大量奖励并且进入下一游戏阶段。");
         this.addDialog(SMCEntities.START_NPC, 9, "Zzz...Zzz...Zzz... (忙碌了一天的员工睡得正香，此刻也许你会好奇它为什么能够站着睡着。平底锅侠的世界就是如此奇妙，无需那么多为什么。)");
 
         this.addDialog(SMCEntities.START_NPC, 10, "这是目前可以订购的食材大礼包的列表，本列表将随着游戏阶段的提升而增加。");
 
         this.add(SMCEntities.CUSTOMER.get(), "§e人畜无害的村民§r");
 
-        Customer.customers.forEach(customerData -> customerData.generateTranslation(this));
-        Customer.specialCustomers.forEach(customerData -> customerData.generateTranslation(this));
+        Customer.CUSTOMERS.forEach(customerData -> customerData.generateTranslation(this));
+        Customer.SPECIAL_CUSTOMERS.forEach(customerData -> customerData.generateTranslation(this));
+
+
 
     }
 }

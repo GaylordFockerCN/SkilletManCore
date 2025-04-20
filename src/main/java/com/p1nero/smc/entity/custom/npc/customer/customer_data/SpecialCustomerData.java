@@ -66,8 +66,9 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
     }
 
     protected void append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodScore) {
+        String foodName = "§6" + I18n.get(serverData.getString("food_name")) + "§r";
         if (!canSubmit) {
-            root.addChild(new TreeNode(answer(0, "§6" + I18n.get(serverData.getString("food_name") + "§r")), choice(-1))
+            root.addChild(new TreeNode(answer(0, foodName), choice(-1))
                     .addChild(new TreeNode(answer(-2), choice(0))
                             .addLeaf(choice(-2), (byte) -3)
                     )

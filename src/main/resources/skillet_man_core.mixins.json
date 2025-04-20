@@ -11,6 +11,7 @@
     "CuisineSkilletItemMixin",
     "HumanoidMobPatchMixin",
     "MainFrameAnimationMixin",
+    "PlateItemMixin",
     "ServerGamePacketListenerImplMixin",
     "VillagerMixin",
     "WOMAnimationsMixin",

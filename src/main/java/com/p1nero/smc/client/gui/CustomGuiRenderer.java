@@ -5,6 +5,7 @@ import com.p1nero.smc.SMCConfig;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
+import com.p1nero.smc.client.gui.screen.DialogueScreen;
 import dev.xkmc.cuisinedelight.init.CuisineDelight;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -17,8 +18,15 @@ public class CustomGuiRenderer {
     public static final ResourceLocation SPATULA_TEXTURE = new ResourceLocation(CuisineDelight.MODID, "textures/item/spatula.png");
     public static final ResourceLocation MONEY_TEXTURE = new ResourceLocation("textures/item/emerald.png");
 
+    public static boolean shouldRender(){
+        if(Minecraft.getInstance().screen instanceof DialogueScreen) {
+            return true;
+        }
+        return Minecraft.getInstance().screen == null;
+    }
+
     public static void renderCustomGui(GuiGraphics guiGraphics){
-        if(Minecraft.getInstance().screen != null) {
+        if(!shouldRender()) {
             return;
         }
 

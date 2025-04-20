@@ -10,6 +10,8 @@ import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
 import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.entity.custom.npc.SMCNpc;
 import com.p1nero.smc.util.ItemUtil;
+import dev.xkmc.cuisinedelight.content.logic.FoodType;
+import dev.xkmc.cuisinedelight.content.logic.IngredientConfig;
 import dev.xkmc.cuisinedelight.init.registrate.CDItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -19,7 +21,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -27,8 +28,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
@@ -36,8 +37,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 凝渊人，引导的npc
@@ -46,6 +46,19 @@ public class StartNPC extends SMCNpc {
     protected static final EntityDataAccessor<Integer> INCOME = SynchedEntityData.defineId(StartNPC.class, EntityDataSerializers.INT);//收入
     protected static final EntityDataAccessor<Integer> INCOME_SPEED = SynchedEntityData.defineId(StartNPC.class, EntityDataSerializers.INT);//收入速度 / 店铺等级
     protected static final EntityDataAccessor<Integer> STATE = SynchedEntityData.defineId(StartNPC.class, EntityDataSerializers.INT);//状态
+
+    public static final Set<ItemStack> STAPLE_SET = new HashSet<>();
+    public static final Set<ItemStack> VEG_SET = new HashSet<>();
+    public static final Set<ItemStack> MEAT_SET = new HashSet<>();
+    public static final Set<ItemStack> SEAFOOD_SET = new HashSet<>();
+
+    public static void initIngredients(){
+        Collections.addAll(STAPLE_SET, IngredientConfig.get().getAll(FoodType.CARB));
+        Collections.addAll(VEG_SET, IngredientConfig.get().getAll(FoodType.VEG));
+        Collections.addAll(MEAT_SET, IngredientConfig.get().getAll(FoodType.MEAT));
+        Collections.addAll(SEAFOOD_SET, IngredientConfig.get().getAll(FoodType.SEAFOOD));
+    }
+
     public static final int EMPTY = 0;
     public static final int HIRED = 1;
     public static final int GUIDER = 2;
@@ -217,16 +230,15 @@ public class StartNPC extends SMCNpc {
 
             TreeNode foodBuyer = new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(10), dialogueComponentBuilder.buildDialogueOption(11))
                     .addLeaf(dialogueComponentBuilder.buildDialogueOption(12), (byte) 12)
-                    .addLeaf(dialogueComponentBuilder.buildDialogueOption(13), (byte) 13)
-                    .addLeaf(dialogueComponentBuilder.buildDialogueOption(14), (byte) 14);
+                    .addLeaf(dialogueComponentBuilder.buildDialogueOption(13), (byte) 13);
             int stage = senderData.getInt("player_stage");
 
             if (stage > 1) {
-                foodBuyer.addLeaf(dialogueComponentBuilder.buildDialogueOption(15), (byte) 15);
+                foodBuyer.addLeaf(dialogueComponentBuilder.buildDialogueOption(14), (byte) 14);
             }
 
             if (stage > 2) {
-                foodBuyer.addLeaf(dialogueComponentBuilder.buildDialogueOption(16), (byte) 16);
+                foodBuyer.addLeaf(dialogueComponentBuilder.buildDialogueOption(15), (byte) 15);
             }
 
             //入职给予新手福利，锅铲和锅，建筑方块，初始食材订购机等等
@@ -279,6 +291,7 @@ public class StartNPC extends SMCNpc {
                 SMCPlayer.consumeMoney(100, player);
                 this.setState(GUIDER);
                 this.setOwnerUUID(player.getUUID());
+                SMCAdvancementData.finishAdvancement("start_work", player);
                 this.playSound(SoundEvents.VILLAGER_CELEBRATE);
                 player.displayClientMessage(dialogueComponentBuilder.buildEntityAnswer(2), false);
             }
@@ -341,63 +354,42 @@ public class StartNPC extends SMCNpc {
             SMCAdvancementData.finishAdvancement("fake_sleep", player);
         }
 
-        //米面大礼包
+        //主食大礼包
         if (interactionID == 12) {
-            if (smcPlayer.getMoneyCount() < 50) {
-                this.playSound(SoundEvents.VILLAGER_NO);
-                player.displayClientMessage(SkilletManCoreMod.getInfo("no_enough_money"), true);
-            } else {
-                SMCPlayer.consumeMoney(50, player);
-                this.playSound(SoundEvents.VILLAGER_CELEBRATE);
-                //TODO 给蘑菇
-            }
-        }
-        //蘑菇大礼包
-        if (interactionID == 13) {
-            if (smcPlayer.getMoneyCount() < 10) {
-                this.playSound(SoundEvents.VILLAGER_NO);
-                player.displayClientMessage(SkilletManCoreMod.getInfo("no_enough_money"), true);
-            } else {
-                SMCPlayer.consumeMoney(10, player);
-                this.playSound(SoundEvents.VILLAGER_CELEBRATE);
-                //TODO 给蘑菇
-            }
+            addIngredient(smcPlayer, player, STAPLE_SET, 100,10);
         }
         //果蔬大礼包
-        if (interactionID == 14) {
-            if (smcPlayer.getMoneyCount() < 50) {
-                this.playSound(SoundEvents.VILLAGER_NO);
-                player.displayClientMessage(SkilletManCoreMod.getInfo("no_enough_money"), true);
-            } else {
-                SMCPlayer.consumeMoney(50, player);
-                this.playSound(SoundEvents.VILLAGER_CELEBRATE);
-                //TODO 给蘑菇
-            }
+        if (interactionID == 13) {
+            addIngredient(smcPlayer, player, VEG_SET, 100, 10);
         }
         //肉类大礼包
-        if (interactionID == 15) {
-            if (smcPlayer.getMoneyCount() < 200) {
-                this.playSound(SoundEvents.VILLAGER_NO);
-                player.displayClientMessage(SkilletManCoreMod.getInfo("no_enough_money"), true);
-            } else {
-                SMCPlayer.consumeMoney(200, player);
-                this.playSound(SoundEvents.VILLAGER_CELEBRATE);
-                //TODO 给蘑菇
-            }
+        if (interactionID == 14) {
+            addIngredient(smcPlayer, player, MEAT_SET, 1000, 20);
         }
         //海鲜大礼包
-        if (interactionID == 16) {
-            if (smcPlayer.getMoneyCount() < 500) {
-                this.playSound(SoundEvents.VILLAGER_NO);
-                player.displayClientMessage(SkilletManCoreMod.getInfo("no_enough_money"), true);
-            } else {
-                SMCPlayer.consumeMoney(500, player);
-                this.playSound(SoundEvents.VILLAGER_CELEBRATE);
-                //TODO 给蘑菇
-            }
+        if (interactionID == 15) {
+            addIngredient(smcPlayer, player, SEAFOOD_SET, 5000, 20);
         }
 
         this.setConversingPlayer(null);
+    }
+
+    public void addIngredient(SMCPlayer smcPlayer, ServerPlayer player, Set<ItemStack> itemStackSet, int moneyNeed, int foodCount) {
+        if (smcPlayer.getMoneyCount() < moneyNeed) {
+            this.playSound(SoundEvents.VILLAGER_NO);
+            player.displayClientMessage(SkilletManCoreMod.getInfo("no_enough_money"), true);
+        } else {
+            SMCPlayer.consumeMoney(moneyNeed, player);
+            this.playSound(SoundEvents.VILLAGER_CELEBRATE);
+            List<ItemStack> itemList = new ArrayList<>(itemStackSet);
+            List<ItemStack> applyItems = new ArrayList<>();
+            for (int i = 0; i < foodCount; i++) {
+                applyItems.add(itemList.get(random.nextInt(itemList.size())));
+            }
+            for(ItemStack itemStack : applyItems) {
+                ItemUtil.addItemEntity(player, itemStack);
+            }
+        }
     }
 
     @Override

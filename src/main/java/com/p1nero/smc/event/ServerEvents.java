@@ -2,6 +2,7 @@ package com.p1nero.smc.event;
 
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.archive.SMCArchiveManager;
+import com.p1nero.smc.entity.custom.npc.start_npc.StartNPC;
 import com.p1nero.smc.worldgen.biome.SMCBiomeProvider;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
@@ -54,6 +55,7 @@ public class ServerEvents {
      */
     @SubscribeEvent
     public static void onServerAboutToStart(ServerAboutToStartEvent event){
+        StartNPC.initIngredients();
         //服务端读取，客户端从Mixin读
         if(event.getServer().isDedicatedServer()){
             if(SMCBiomeProvider.worldName.isEmpty()){

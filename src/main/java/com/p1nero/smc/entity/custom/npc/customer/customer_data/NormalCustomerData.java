@@ -67,16 +67,18 @@ public abstract class NormalCustomerData extends Customer.CustomerData {
         } else {
             root = switch (foodLevel) {
                 case BEST -> new TreeNode(answer(0, I18n.get(serverData.getString("food_name"))))
-                        .execute(SUBMIT_FOOD)
                         .addChild(new TreeNode(answer(1), choice(0))
+                                .execute(SUBMIT_FOOD)
                                 .addLeaf(choice(1), BEST))
                         .addLeaf(choice(-2), (byte) -3);
                 case MIDDLE -> new TreeNode(answer(0, I18n.get(serverData.getString("food_name"))))
                         .addChild(new TreeNode(answer(2), choice(0))
+                                .execute(SUBMIT_FOOD)
                                 .addLeaf(choice(2), MIDDLE))
                         .addLeaf(choice(-2), (byte) -3);
                 default -> new TreeNode(answer(0, I18n.get(serverData.getString("food_name"))))
                         .addChild(new TreeNode(answer(3), choice(0))
+                                .execute(SUBMIT_FOOD)
                                 .addLeaf(choice(3), BAD))
                         .addLeaf(choice(-2), (byte) -3);
             };

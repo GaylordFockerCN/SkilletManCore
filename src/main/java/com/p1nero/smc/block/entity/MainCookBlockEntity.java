@@ -225,7 +225,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
     @Override
     @OnlyIn(Dist.CLIENT)
     public void openDialogueScreen(CompoundTag senderData) {
-        LinkListStreamDialogueScreenBuilder builder = new LinkListStreamDialogueScreenBuilder(null, ModBlocks.STOVE.get().getName().withStyle(ChatFormatting.YELLOW));
+        LinkListStreamDialogueScreenBuilder builder = new LinkListStreamDialogueScreenBuilder(null, ModBlocks.STOVE.get().getName().withStyle(ChatFormatting.AQUA));
 
         if(senderData.getBoolean("is_catching_escaping_player")) {
             builder.start(SkilletManCoreMod.getInfo("cannot_left_customers"))

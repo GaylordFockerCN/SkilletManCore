@@ -1,13 +1,13 @@
 package com.p1nero.smc.client.gui.screen;
 
 import com.p1nero.smc.SMCConfig;
-import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.client.gui.screen.component.DialogueAnswerComponent;
 import com.p1nero.smc.client.gui.screen.component.DialogueChoiceComponent;
 import com.p1nero.smc.entity.api.NpcDialogue;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.packet.serverbound.AddDialogPacket;
+import com.p1nero.smc.network.packet.serverbound.NpcBlockPlayerInteractPacket;
 import com.p1nero.smc.network.packet.serverbound.NpcPlayerInteractPacket;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -17,7 +17,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -25,14 +24,15 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 改编自theAether 的 ValkyrieQueenDialogueScreen
  * 搬运了相关类
  */
 public class DialogueScreen extends Screen {
-    public static final ResourceLocation MY_BACKGROUND_LOCATION = new ResourceLocation(SkilletManCoreMod.MOD_ID,"textures/gui/background.png");
     protected final DialogueAnswerComponent dialogueAnswer;
     @Nullable
     protected Entity entity;
@@ -137,9 +137,9 @@ public class DialogueScreen extends Screen {
      */
     protected void finishChat(byte interactionID) {
         if(pos != null) {
-
+            PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new NpcBlockPlayerInteractPacket(pos, interactionID));
         }
-        PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new NpcPlayerInteractPacket(this.entity == null ? -1 :this.entity.getId(), interactionID));
+        PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new NpcPlayerInteractPacket(this.entity == null ? NpcPlayerInteractPacket.NO_ENTITY :this.entity.getId(), interactionID));
         super.onClose();
     }
 
@@ -147,7 +147,7 @@ public class DialogueScreen extends Screen {
      * 发包但不关闭窗口
     * */
     protected void execute(byte interactionID) {
-        PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new NpcPlayerInteractPacket(this.entity == null ? -1 :this.entity.getId(), interactionID));
+        PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new NpcPlayerInteractPacket(this.entity == null ? NpcPlayerInteractPacket.NO_ENTITY :this.entity.getId(), interactionID));
     }
 
     @Override
@@ -199,5 +199,54 @@ public class DialogueScreen extends Screen {
     public void onClose() {
         this.finishChat((byte) 0);
     }
+
+    public static Component screen(String name) {
+        return Component.translatable("screen.smc." + name);
+    }
+
+    public static Component screenAns(String name, int id) {
+        return Component.translatable("screen.smc.ans." + name + "_" + id);
+    }
+    public static Component screenOpt(String name, int id) {
+        return Component.translatable("screen.smc.opt." + name + "_" + id);
+    }
+
+    public static class ScreenDialogueBuilder{
+        private final String name;
+        private final Set<ChatFormatting> defaultAnsFormats = new HashSet<>();
+        private final Set<ChatFormatting> defaultOptFormats = new HashSet<>();
+        public ScreenDialogueBuilder(String name){
+            this.name = name;
+        }
+
+        public void setDefaultAnsFormat(ChatFormatting... formatting) {
+            defaultAnsFormats.addAll(List.of(formatting));
+        }
+        public void setDefaultOptFormat(ChatFormatting... formatting) {
+            defaultOptFormats.addAll(List.of(formatting));
+        }
+
+        public Component ans(int id) {
+            Component ans = DialogueScreen.screenAns(name, id);
+            if(!defaultAnsFormats.isEmpty()) {
+                return ans.copy().withStyle(defaultAnsFormats.toArray(new ChatFormatting[]{}));
+            }
+            return ans;
+        }
+
+        public Component opt(int id) {
+            Component opt = DialogueScreen.screenOpt(name, id);
+            if(!defaultOptFormats.isEmpty()){
+                return opt.copy().withStyle(defaultOptFormats.toArray(new ChatFormatting[]{}));
+            }
+            return opt;
+        }
+
+        public Component name(){
+            return DialogueScreen.screen(name);
+        }
+
+    }
+
 
 }

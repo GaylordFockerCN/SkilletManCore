@@ -1,6 +1,7 @@
 package com.p1nero.smc.registrate;
 
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.item.custom.DirtPlateItem;
 import com.p1nero.smc.item.custom.skillets.SkilletV2;
 import com.p1nero.smc.item.custom.skillets.SkilletV3;
 import com.p1nero.smc.item.custom.skillets.SkilletV4;
@@ -12,15 +13,10 @@ import com.p1nero.smc.item.custom.spatulas.SpatulaV5;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
-import dev.xkmc.cuisinedelight.content.item.PlateItem;
-import dev.xkmc.cuisinedelight.content.item.SpatulaItem;
-import dev.xkmc.cuisinedelight.init.CuisineDelight;
 import dev.xkmc.cuisinedelight.init.data.TagGen;
 import dev.xkmc.cuisinedelight.init.registrate.CDBlocks;
 import net.minecraft.MethodsReturnNonnullByDefault;
-import net.minecraft.tags.TagKey;
 import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.common.Tags;
 
 @MethodsReturnNonnullByDefault
 public class SMCRegistrateItems {
@@ -54,10 +50,9 @@ public class SMCRegistrateItems {
             .tag(TagGen.UTENSILS)
             .model((ctx, pvd) -> pvd.getBuilder(ctx.getName()).parent(new ModelFile.UncheckedModelFile("cuisinedelight:item/spatula")))
             .defaultLang().register();
-    //TODO 脏盘子，可重复利用，遇水变干净，弹成就
-    public static final ItemEntry<PlateItem> DIRT_PLATE = SkilletManCoreMod.REGISTRATE.item("spatula_v5", p -> new PlateItem(p.stacksTo(1)))
+    public static final ItemEntry<DirtPlateItem> DIRT_PLATE = SkilletManCoreMod.REGISTRATE.item("dirt_plate", DirtPlateItem::new)
+            .defaultModel()
             .tag(TagGen.UTENSILS)
-            .model((ctx, pvd) -> pvd.getBuilder(ctx.getName()).parent(new ModelFile.UncheckedModelFile("cuisinedelight:item/spatula")))
             .defaultLang().register();
 
     public static void register() {

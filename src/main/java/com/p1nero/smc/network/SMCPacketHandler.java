@@ -32,6 +32,7 @@ public class SMCPacketHandler {
         register(SyncPos0Packet.class, SyncPos0Packet::decode);
         register(BroadcastMessagePacket.class, BroadcastMessagePacket::decode);
         register(OpenEndScreenPacket.class, OpenEndScreenPacket::decode);
+        register(OpenStartGuideScreenPacket.class, OpenStartGuideScreenPacket::decode);
         register(AddEntityAfterImageParticle.class, AddEntityAfterImageParticle::decode);
 
         // 发给服务端

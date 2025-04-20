@@ -331,7 +331,7 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity {
     @Override
     public void die(@NotNull DamageSource source) {
         level().playSound(null, getX(), getY(), getZ(), SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.BLOCKS, 1, 1);
-
+        //TODO 通关动画
         super.die(source);
     }
 

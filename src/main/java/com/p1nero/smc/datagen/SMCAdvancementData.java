@@ -5,6 +5,7 @@ import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import dev.xkmc.cuisinedelight.init.registrate.CDItems;
+import dev.xkmc.cuisinedelight.init.registrate.PlateFood;
 import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.HolderLookup;
@@ -53,15 +54,23 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                     .addCriterion(SkilletManCoreMod.MOD_ID, new ImpossibleTrigger.TriggerInstance())
                     .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID), existingFileHelper);
 
+            Advancement startWork = registerAdvancement(root, "start_work", FrameType.TASK, SMCRegistrateItems.SPATULA_V5, true, true, false);
+            Advancement money1000 = registerAdvancement(startWork, "money1000", FrameType.TASK, Items.DIAMOND);
+            Advancement money1000000 = registerAdvancement(money1000, "money1000000", FrameType.TASK, Items.EMERALD);
+            Advancement money1000000000 = registerAdvancement(money1000000, "money1000000000", FrameType.TASK, Items.EMERALD_BLOCK);
+            Advancement hijackCustomer = registerAdvancement(startWork, "hijack_customer", FrameType.TASK, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_30"))));
+            Advancement dirtPlate = registerAdvancement(startWork, "dirt_plate", FrameType.TASK, SMCRegistrateItems.DIRT_PLATE);
+
             Advancement noYourPower = registerAdvancement(root, "no_your_power", FrameType.TASK, Blocks.BARRIER);
-            Advancement first5StarSkillet = registerAdvancement(root, "first_5star_skillet", FrameType.TASK, SMCRegistrateItems.IRON_SKILLET_LEVEL5.get());
+            Advancement first5StarSkillet = registerAdvancement(root, "first_5star_skillet", FrameType.TASK, SMCRegistrateItems.IRON_SKILLET_LEVEL5);
             Advancement fakeSleep = registerAdvancement(root, "fake_sleep", FrameType.TASK, Items.RED_BED);
             Advancement tryPush = registerAdvancement(root, "try_push", FrameType.TASK, Blocks.PISTON);
             Advancement noMoney = registerAdvancement(root, "no_money", FrameType.TASK, Items.EMERALD);
             Advancement selfEat = registerAdvancement(root, "self_eat", FrameType.TASK, Items.BREAD);
             Advancement tooManyMouth = registerAdvancement(root, "too_many_mouth", FrameType.TASK, ModItems.DOLL_ICON.get());
-
             Advancement makeCustomerCry = registerAdvancement(root, "got_fox", FrameType.TASK, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_45"))));
+            Advancement preCook = registerAdvancement(startWork, "pre_cook", FrameType.TASK, PlateFood.FRIED_RICE.item);
+            Advancement end = registerAdvancement(root, "end", FrameType.TASK, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_3"))));
 
         }
 
@@ -99,8 +108,6 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
         AdvancementProgress progress = serverPlayer.getAdvancements().getOrStartProgress(advancement);
         if (!progress.isDone()) {
             for (String criteria : progress.getRemainingCriteria()) {
-                SMCPlayer.addMoney(200, serverPlayer);
-                serverPlayer.playSound(SoundEvents.PLAYER_LEVELUP);
                 serverPlayer.getAdvancements().award(advancement, criteria);
             }
         }
@@ -109,7 +116,7 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
     public static void finishAdvancement(String name, ServerPlayer serverPlayer) {
         Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(new ResourceLocation(SkilletManCoreMod.MOD_ID, name));
         if (advancement == null) {
-            SkilletManCoreMod.LOGGER.info("advancement:\"" + name + "\" is null!");
+            SkilletManCoreMod.LOGGER.error("advancement:\"" + name + "\" is null!");
             return;
         }
         finishAdvancement(advancement, serverPlayer);

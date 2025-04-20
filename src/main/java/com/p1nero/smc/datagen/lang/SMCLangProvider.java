@@ -6,6 +6,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
@@ -148,6 +149,22 @@ public abstract class SMCLangProvider extends LanguageProvider {
 
     public void addVillagerChat(RegistryObject<? extends EntityType<?>> villager, int index, boolean isFWord, String text) {
         this.add(villager.get()+(isFWord?".fuck_chat":".chat")+index, text);
+    }
+
+    public void addScreenName(String key, String name) {
+        this.add("screen.smc." + key, name);
+    }
+
+    public void addScreenAns(String key, int id, String text) {
+        this.add("screen.smc.ans." + key + "_" + id, text);
+    }
+
+    public void addScreenOpt(String key, int id, String text) {
+        this.add("screen.smc.opt." + key + "_" + id, text);
+    }
+
+    public void addVillagerDialog(VillagerProfession profession, int id, String text) {
+
     }
 
     public void addDialog(RegistryObject<? extends EntityType<?>> entity, int i, String text) {

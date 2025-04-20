@@ -1,6 +1,7 @@
 package com.p1nero.smc.capability;
 
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.SyncSMCPlayerPacket;
@@ -85,10 +86,6 @@ public class SMCPlayer {
         return isWorking;
     }
 
-    public static void upgradePlayer(ServerPlayer serverPlayer) {
-        //TODO 升级到一定等级解锁新阶段，并且获得对应奖励
-    }
-
     public static void levelUPPlayer(ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         int currentLevel = smcPlayer.level;
@@ -105,7 +102,6 @@ public class SMCPlayer {
         int currentLevel = smcPlayer.level;
         if(currentLevel == STAGE1_REQUIRE || currentLevel == STAGE2_REQUIRE || currentLevel == STAGE3_REQUIRE) {
             smcPlayer.setLevel(currentLevel + 1);
-            serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("shop_upgrade", smcPlayer.level), false);
 
             if(currentLevel == STAGE1_REQUIRE) {
                 smcPlayer.unlockStage1(serverPlayer);
@@ -116,21 +112,29 @@ public class SMCPlayer {
             if(currentLevel == STAGE3_REQUIRE) {
                 smcPlayer.unlockStage3(serverPlayer);
             }
-            smcPlayer.syncToClient(serverPlayer);
         }
     }
 
     public void unlockStage1(ServerPlayer serverPlayer) {
         this.stage = 1;
+        addMoney(1000, serverPlayer);
+        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("unlock_game_stage", STAGE2_REQUIRE), false);
+        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("meat_available"), false);
 
     }
 
     public void unlockStage2(ServerPlayer serverPlayer) {
         this.stage = 2;
+        addMoney(5000, serverPlayer);
+        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("unlock_game_stage", STAGE3_REQUIRE), false);
+        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("seafood_available"), false);
+        //TODO 解锁最终boss战
     }
 
     public void unlockStage3(ServerPlayer serverPlayer) {
         this.stage = 3;
+        addMoney(20000, serverPlayer);
+        //TODO 弹对话
     }
 
     public List<PlateFood> getOrderList() {
@@ -170,6 +174,15 @@ public class SMCPlayer {
         smcPlayer.moneyCount += count;
         serverPlayer.displayClientMessage(Component.literal("+" + count).withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN), false);
         smcPlayer.syncToClient(serverPlayer);
+        if(smcPlayer.moneyCount > 1000) {
+            SMCAdvancementData.finishAdvancement("money1000", serverPlayer);
+        }
+        if(smcPlayer.moneyCount > 1000000){
+            SMCAdvancementData.finishAdvancement("money1000000", serverPlayer);
+        }
+        if(smcPlayer.moneyCount > 1000000000){
+            SMCAdvancementData.finishAdvancement("money1000000000", serverPlayer);
+        }
     }
 
     public void setStage(int stage) {

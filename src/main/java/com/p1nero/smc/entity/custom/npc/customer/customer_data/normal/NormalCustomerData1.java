@@ -18,10 +18,10 @@ public class NormalCustomerData1 extends NormalCustomerData {
     public void generateTranslation(SMCLangGenerator generator) {
         super.generateTranslation(generator);
         generator.add(nameTranslationKey, "非常普通的村民");
-        generator.add(answerPre(-1), "（的村民看着你，投来疑惑的眼神。看来不是所有村民都是绿袍尊者，请提交正确的菜品）");
+        generator.add(answerPre(-1), "（村民看着你，投来疑惑的眼神。看来不是所有村民都是绿袍尊者，请提交正确的菜品）");
         generator.add(choicePre(-1), "好吧");
         generator.add(choicePre(-2), "离开");
-        generator.add(answerPre(0), "%s？（客户向你发出请求，但作者已经懒得花时间在普通客户上写文案了）");//顾客的请求，一定要保留%s，不能带有具体食物，只能带修饰词。
+        generator.add(answerPre(0), "%s？（客户向你发出言简意赅的请求，看得出来作者懒得花时间在普通客户上写文案了）");//顾客的请求，一定要保留%s，不能带有具体食物，只能带修饰词。
         generator.add(choicePre(0), "交之");//玩家的提交选项
         generator.add(answerPre(1), "？！");//高品质的时候顾客的回答。赠礼可以是秘笈或神兵
         generator.add(choicePre(1), "再见~");//高品质的时候顾客回答后 的玩家选项
