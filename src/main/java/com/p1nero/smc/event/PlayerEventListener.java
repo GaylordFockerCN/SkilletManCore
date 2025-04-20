@@ -43,6 +43,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.Objects;
 
@@ -94,7 +95,8 @@ public class PlayerEventListener {
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (!event.player.level().isClientSide) {
             ItemStack mainHandItem = event.player.getMainHandItem();
-            if (!EpicFightCapabilities.getItemStackCapability(mainHandItem).isEmpty() && !event.player.isCreative() && EpicFightCapabilities.getEntityPatch(event.player, PlayerPatch.class).isBattleMode()) {
+            ServerPlayerPatch serverPlayerPatch = EpicFightCapabilities.getEntityPatch(event.player, ServerPlayerPatch.class);
+            if (!EpicFightCapabilities.getItemStackCapability(mainHandItem).isEmpty() && !event.player.isCreative() && serverPlayerPatch != null && serverPlayerPatch.isBattleMode()) {
                 if (!(mainHandItem.getItem() instanceof CuisineSkilletItem || mainHandItem.getItem() instanceof SpatulaItem)) {
                     SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(event.player);
                     //stage3才解禁

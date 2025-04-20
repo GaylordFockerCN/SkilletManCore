@@ -2,12 +2,14 @@ package com.p1nero.smc.entity.custom.npc.start_npc;
 
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.archive.DataManager;
+import com.p1nero.smc.block.entity.MainCookBlockEntity;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.DialogueComponentBuilder;
 import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
 import com.p1nero.smc.datagen.SMCAdvancementData;
+import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.custom.npc.SMCNpc;
 import com.p1nero.smc.util.ItemUtil;
 import dev.xkmc.cuisinedelight.content.logic.FoodType;
@@ -21,6 +23,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -52,7 +55,7 @@ public class StartNPC extends SMCNpc {
     public static final Set<ItemStack> MEAT_SET = new HashSet<>();
     public static final Set<ItemStack> SEAFOOD_SET = new HashSet<>();
 
-    public static void initIngredients(){
+    public static void initIngredients() {
         Collections.addAll(STAPLE_SET, IngredientConfig.get().getAll(FoodType.CARB));
         Collections.addAll(VEG_SET, IngredientConfig.get().getAll(FoodType.VEG));
         Collections.addAll(MEAT_SET, IngredientConfig.get().getAll(FoodType.MEAT));
@@ -73,12 +76,10 @@ public class StartNPC extends SMCNpc {
         name = Component.translatable(this.getType().getDescriptionId());
     }
 
-    @Override
-    public BlockPos getSpawnPos() {
-        if (this.spawnPos.getCenter().distanceTo(this.getHomePos().getCenter()) > 2.9) {
-            this.spawnPos = this.getHomePos().above(3);
-        }
-        return spawnPos;
+    public StartNPC(ServerLevel level, BlockPos pos) {
+        this(SMCEntities.START_NPC.get(), level);
+        this.setPos(pos.getX(), pos.getY(), pos.getZ());
+        this.setSpawnPos(pos);
     }
 
     @Override
@@ -149,10 +150,20 @@ public class StartNPC extends SMCNpc {
 
     public void onSecond() {
 
-        if (this.position().distanceTo(this.getHomePos().getCenter()) > 2.9) {
-            this.setPos(this.getSpawnPos().getCenter());
-            if (lastPushPlayer != null) {
-                SMCAdvancementData.finishAdvancement("try_push", lastPushPlayer);
+        if (!level().isClientSide) {
+            if (level().getBlockEntity(this.getHomePos()) instanceof MainCookBlockEntity mainCookBlockEntity) {
+                if (mainCookBlockEntity.getStartNPC() != null && !mainCookBlockEntity.getStartNPC().is(this)) {
+                    this.discard();
+                }
+            } else {
+                this.discard();
+            }
+
+            if (this.position().distanceTo(this.getHomePos().getCenter()) > 2.9) {
+                this.setPos(this.getSpawnPos().getCenter());
+                if (lastPushPlayer != null) {
+                    SMCAdvancementData.finishAdvancement("try_push", lastPushPlayer);
+                }
             }
         }
 
@@ -248,8 +259,8 @@ public class StartNPC extends SMCNpc {
                         // 新手帮助
                         .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(6), dialogueComponentBuilder.buildDialogueOption(4))
                                 .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(7), dialogueComponentBuilder.buildDialogueOption(8))
-                                                .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(8), dialogueComponentBuilder.buildDialogueOption(8))
-                                                        .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3))))
+                                        .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(8), dialogueComponentBuilder.buildDialogueOption(8))
+                                                .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3))))
                         .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3)); //告辞
             } else {
                 builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(1))
@@ -258,8 +269,8 @@ public class StartNPC extends SMCNpc {
                         // 新手帮助
                         .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(6), dialogueComponentBuilder.buildDialogueOption(4))
                                 .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(7), dialogueComponentBuilder.buildDialogueOption(8))
-                                                .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(8), dialogueComponentBuilder.buildDialogueOption(8))
-                                                        .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3))))
+                                        .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(8), dialogueComponentBuilder.buildDialogueOption(8))
+                                                .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3))))
                         .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3)); //告辞
             }
         } else {
@@ -342,9 +353,7 @@ public class StartNPC extends SMCNpc {
             ItemUtil.addItem(player, Blocks.STONE.asItem().asItem(), 64);
             ItemUtil.addItem(player, Blocks.COBBLESTONE.asItem().asItem(), 64);
             ItemUtil.addItem(player, Blocks.BRICKS.asItem().asItem(), 64);
-            ItemUtil.addItem(player, CDItems.PLATE.asItem().asItem(), 64);
-            ItemUtil.addItem(player, CDItems.PLATE.asItem().asItem(), 64);
-            ItemUtil.addItem(player, CDItems.PLATE.asItem().asItem(), 64);
+            ItemUtil.addItem(player, CDItems.PLATE.asItem().asItem(), 10);
 
             player.playSound(SoundEvents.PLAYER_LEVELUP);
         }
@@ -356,7 +365,7 @@ public class StartNPC extends SMCNpc {
 
         //主食大礼包
         if (interactionID == 12) {
-            addIngredient(smcPlayer, player, STAPLE_SET, 100,10);
+            addIngredient(smcPlayer, player, STAPLE_SET, 100, 10);
         }
         //果蔬大礼包
         if (interactionID == 13) {
@@ -364,7 +373,7 @@ public class StartNPC extends SMCNpc {
         }
         //肉类大礼包
         if (interactionID == 14) {
-            addIngredient(smcPlayer, player, MEAT_SET, 1000, 20);
+            addIngredient(smcPlayer, player, MEAT_SET, 2000, 20);
         }
         //海鲜大礼包
         if (interactionID == 15) {
@@ -386,7 +395,7 @@ public class StartNPC extends SMCNpc {
             for (int i = 0; i < foodCount; i++) {
                 applyItems.add(itemList.get(random.nextInt(itemList.size())));
             }
-            for(ItemStack itemStack : applyItems) {
+            for (ItemStack itemStack : applyItems) {
                 ItemUtil.addItemEntity(player, itemStack);
             }
         }

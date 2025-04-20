@@ -18,7 +18,7 @@ public class WorkingMusicPlayer {
 
     private static WorkingMusic music;
 
-    public static void playBossMusic() {
+    public static void playWorkingMusic() {
         Player player = Minecraft.getInstance().player;
         if (player != null && SMCSounds.WORKING_BGM != null && player.isAlive()) {
             SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
@@ -49,8 +49,8 @@ public class WorkingMusicPlayer {
         }
     }
 
-    public static void stopBossMusic(Player player) {
-        if (music != null && music.player == player) {
+    public static void stopMusic() {
+        if (music != null) {
             music.player = null;
         }
     }
@@ -60,13 +60,13 @@ public class WorkingMusicPlayer {
         public final SoundEvent soundEvent;
 
         public WorkingMusic(SoundEvent bgm, Player player, RandomSource random) {
-            super(bgm, SoundSource.RECORDS, random);
+            super(bgm, SoundSource.MUSIC, random);
             this.player = player;
             this.soundEvent = bgm;
             this.attenuation = Attenuation.NONE;
             this.looping = true;
             this.delay = 0;
-            this.volume = 4.5F;
+            this.volume = 1.0F;
             this.x = player.getX();
             this.y = player.getY();
             this.z = player.getZ();
@@ -77,10 +77,10 @@ public class WorkingMusicPlayer {
         }
 
         public void tick() {
-            if (player == null || !player.isAlive() || player.isSilent()) {
+            if (player == null || !SMCCapabilityProvider.getSMCPlayer(player).isWorking()) {
                 player = null;
                 if (volume >= 0) {
-                    volume -= 0.03F;
+                    volume -= 0.01F;
                 } else {
                     WorkingMusicPlayer.music = null;
                 }

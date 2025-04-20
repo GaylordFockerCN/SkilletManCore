@@ -12,6 +12,8 @@ public class SMCSoundGenerator extends SMCSoundProvider {
 
     @Override
     public void registerSounds() {
-        generateNewSoundWithSubtitle(SMCSounds.WORKING_BGM, "working_bgm", 2);
+        generateNewSoundWithSubtitle(SMCSounds.VILLAGER_YES, "villager_yes", 1);
+        generateNewSoundWithSubtitle(SMCSounds.EARN_MONEY, "earn_money", 1);
+        generateNewSoundWithSubtitle(SMCSounds.WORKING_BGM, "bgm/working_bgm", 2);
     }
 }

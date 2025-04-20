@@ -6,6 +6,7 @@ import com.p1nero.smc.block.custom.INpcDialogueBlock;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
+import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.start_npc.StartNPC;
 import com.p1nero.smc.event.ServerEvents;
@@ -19,6 +20,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -56,6 +58,10 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         super(SMCBlockEntities.MAIN_COOK_BLOCK_ENTITY.get(), blockPos, blockState);
     }
 
+    public @Nullable StartNPC getStartNPC() {
+        return startNPC;
+    }
+
     public boolean isWorking() {
         return isWorking;
     }
@@ -66,16 +72,24 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         }
         if (t instanceof MainCookBlockEntity mainCookBlockEntity) {
             if (mainCookBlockEntity.startNPC == null) {
+                //优先附近找，找不到再生一只。
                 int offset = 3;
                 StartNPC startNPC = level.getNearestEntity(StartNPC.class, TargetingConditions.DEFAULT, null, pos.getX(), pos.getY(), pos.getZ(), new AABB(pos.offset(offset, offset, offset), pos.offset(-offset, -offset, -offset)));
                 if (startNPC != null) {
                     //互相通知
                     mainCookBlockEntity.startNPC = startNPC;
                     startNPC.setHomePos(pos);
+                } else {
+                    StartNPC startNPC1 = new StartNPC(((ServerLevel) level), pos.above(3));
+                    //互相通知
+                    mainCookBlockEntity.startNPC = startNPC1;
+                    startNPC1.setHomePos(pos);
+                    startNPC1.setVillagerData(startNPC1.getVillagerData().setType(VillagerType.byBiome(startNPC1.level().getBiome(pos))));
+                    level.addFreshEntity(startNPC1);
                 }
             }
 
-            if (mainCookBlockEntity.startNPC != null && mainCookBlockEntity.startNPC.isGuider()) {
+            if (mainCookBlockEntity.startNPC.isGuider()) {
                 LivingEntity owner = mainCookBlockEntity.startNPC.getOwner();
                 if (owner instanceof ServerPlayer serverPlayer && owner.isAlive()) {
                     if(mainCookBlockEntity.isWorking) {
@@ -84,8 +98,9 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
                         mainCookBlockEntity.updateWorkingState(serverPlayer);
                     } else {
                         //检查上班时间
-                        if(owner.level().getDayTime() >= 0 && owner.level().getBlockState(pos.above(2)).is(ModBlocks.STOVE.get()) && owner.level().getBlockState(pos.above(2)).getBlock().asItem() instanceof CuisineSkilletItem) {
+                        if(mainCookBlockEntity.checkWorkingTime() && owner.level().getBlockState(pos.above(1)).is(ModBlocks.STOVE.get()) && owner.level().getBlockState(pos.above(2)).getBlock().asItem() instanceof CuisineSkilletItem) {
                             mainCookBlockEntity.isWorking = true;
+                            mainCookBlockEntity.updateWorkingState(serverPlayer);
                         }
                     }
                 }
@@ -117,11 +132,13 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
     public void workingTick(ServerPlayer owner){
         //抓回来上班
         if(this.getBlockPos().getCenter().distanceTo(owner.position()) > WORKING_RADIUS && !this.canPlayerLeave(owner) && this.startNPC != null) {
-            owner.teleportTo(startNPC.getX(), startNPC.getY(), startNPC.getZ());
+            Vec3 targetPos = startNPC.getSpawnPos().getCenter();
+            owner.teleportTo(targetPos.x, targetPos.y, targetPos.z);
             owner.playSound(SoundEvents.VILLAGER_NO);
             CompoundTag tag = new CompoundTag();
             tag.putBoolean("is_catching_escaping_player", true);
             PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCBlockDialoguePacket(this.getBlockPos(), tag), owner);
+            owner.serverLevel().playSound(null, owner.getX(), owner.getY(), owner.getZ(), SoundEvents.VILLAGER_NO, owner.getSoundSource(), 1.0F, 1.0F);
         }
 
         //生成顾客，20s一只，最多6只

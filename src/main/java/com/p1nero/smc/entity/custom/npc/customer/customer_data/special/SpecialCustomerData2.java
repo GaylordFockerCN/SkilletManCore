@@ -25,7 +25,7 @@ public class SpecialCustomerData2 extends SpecialCustomerData {
     @Override
     public void onInteract(ServerPlayer player, Customer self) {
         super.onInteract(player, self);
-        self.setBaby(true);
+        self.setAge(-114514);
     }
 
     public void generateTranslation(SMCLangGenerator generator) {
@@ -34,7 +34,7 @@ public class SpecialCustomerData2 extends SpecialCustomerData {
         generator.add(answerPre(-2), "（小姑娘踮脚看了看你的托盘）这个不能当点心吃的呀");
         generator.add(choicePre(-2), "吐舌头");
         generator.add(choicePre(-3), "这就去！");
-        generator.add(answerPre(-1), "（眼前这位村民看起来很娇俏可爱，虽然是突然变小的） §6（有一说一，我很难想象面前这个大鼻子村民是小萝莉...或许以后可以给它换个模型） ");
+        generator.add(answerPre(-1), "（眼前这位村民看起来很娇俏可爱，虽然是突然变小的）§6（有一说一，很难想象面前  这个大鼻子村民是小萝莉...或许以后可以给它换个模型） ");
         generator.add(choicePre(-1), "小妹妹要尝尝新点心吗？");
         generator.add(answerPre(0), "听说你们有甜滋滋的 %s ？");
         generator.add(choicePre(0), "端上");

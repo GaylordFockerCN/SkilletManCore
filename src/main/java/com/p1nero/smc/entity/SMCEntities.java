@@ -32,7 +32,7 @@ public class SMCEntities {
 	public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, SkilletManCoreMod.MOD_ID);
 
 	public static final RegistryObject<EntityType<StartNPC>> START_NPC = register("start_npc",
-			EntityType.Builder.of(StartNPC::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
+			EntityType.Builder.<StartNPC>of(StartNPC::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
 
 	public static final RegistryObject<EntityType<Customer>> CUSTOMER = register("customer",
 			EntityType.Builder.<Customer>of(Customer::new, MobCategory.CREATURE).sized(0.6f, 1.9f).noSave().fireImmune());

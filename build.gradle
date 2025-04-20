@@ -144,6 +144,9 @@ dependencies {
 //    implementation fg.deobf("curse.maven:distant-horizons-508933:6387680")
     implementation fg.deobf("curse.maven:epic-terrain-compatible-1137535:6439744")
 
+//    implementation fg.deobf("curse.maven:leawind-third-person-930880:5961735")
+//    implementation fg.deobf("libs:eflw:20.9.0")
+
     compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
     runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
 

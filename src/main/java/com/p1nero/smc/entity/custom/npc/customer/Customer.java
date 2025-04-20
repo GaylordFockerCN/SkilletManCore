@@ -214,7 +214,7 @@ public class Customer extends SMCNpc {
         }
 
         if(this.getConversingPlayer() == null) {
-            this.getNavigation().moveTo(this.getNavigation().createPath(this.isTraded() ? this.getSpawnPos() : this.getHomePos(), 2), 1.0F);
+            this.getNavigation().moveTo(this.getNavigation().createPath(this.isTraded() ? this.getSpawnPos() : this.getHomePos(), 3), 1.0F);
         }
 
         if(!this.isTraded() && this.getOwner() != null) {
@@ -252,7 +252,9 @@ public class Customer extends SMCNpc {
 
     @Override
     public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
-
+        if(this.isTraded()) {
+            return InteractionResult.FAIL;
+        }
         if(player instanceof ServerPlayer serverPlayer && this.getOwner() != null && !player.getUUID().equals(this.getOwnerUUID())) {
             SMCAdvancementData.finishAdvancement("hijack_customer", serverPlayer);
         }
@@ -274,19 +276,19 @@ public class Customer extends SMCNpc {
                 }
             }
         }
-//        //双端
-//        if(customerData == null) {
-//            //每五级随机一个神人
-//            SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
-//            if(smcPlayer.getLevel() % 5 == 0 && smcPlayer.getLevel() > 0 && !smcPlayer.isSpecialAlive()) {
-//                customerData = SPECIAL_CUSTOMERS.get(this.getSMCId() % SPECIAL_CUSTOMERS.size());
-//                this.setSpecial(true);
-//                smcPlayer.setSpecialAlive(true);
-//            } else {
-//                customerData = CUSTOMERS.get(this.getSMCId() % CUSTOMERS.size());
-//            }
-//        }
-        customerData = SPECIAL_CUSTOMERS.get(this.getSMCId() % SPECIAL_CUSTOMERS.size());
+        //双端
+        if(customerData == null) {
+            //每五级随机一个神人
+            SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
+            if(smcPlayer.getLevel() % 5 == 0 && smcPlayer.getLevel() > 0 && !smcPlayer.isSpecialAlive()) {
+                customerData = SPECIAL_CUSTOMERS.get(this.getSMCId() % SPECIAL_CUSTOMERS.size());
+                this.setSpecial(true);
+                smcPlayer.setSpecialAlive(true);
+            } else {
+                customerData = CUSTOMERS.get(this.getSMCId() % CUSTOMERS.size());
+            }
+        }
+//        customerData = SPECIAL_CUSTOMERS.get(this.getSMCId() % SPECIAL_CUSTOMERS.size());
         return super.mobInteract(player, hand);
     }
 

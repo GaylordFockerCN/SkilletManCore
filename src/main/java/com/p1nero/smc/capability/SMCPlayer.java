@@ -1,6 +1,8 @@
 package com.p1nero.smc.capability;
 
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.client.sound.SMCSounds;
+import com.p1nero.smc.client.sound.player.WorkingMusicPlayer;
 import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
@@ -12,7 +14,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -150,9 +151,11 @@ public class SMCPlayer {
         if (smcPlayer.isWorking != isWorking) {
             smcPlayer.isWorking = isWorking;
             if (isWorking) {
-                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("start_work"), true);
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("start_work").withStyle(ChatFormatting.BOLD), true);
+                serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
             } else {
-                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("end_work"), true);
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("end_work").withStyle(ChatFormatting.BOLD), true);
+                serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
             }
             smcPlayer.syncToClient(serverPlayer);
         }
@@ -183,6 +186,7 @@ public class SMCPlayer {
         if(smcPlayer.moneyCount > 1000000000){
             SMCAdvancementData.finishAdvancement("money1000000000", serverPlayer);
         }
+        serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.EARN_MONEY.get(), serverPlayer.getSoundSource(), 0.4F, 1.0F);
     }
 
     public void setStage(int stage) {
@@ -287,9 +291,17 @@ public class SMCPlayer {
     }
 
     public void tick(Player player) {
-        if (this.currentTalkingEntity != null && this.currentTalkingEntity.isAlive()) {
-            this.currentTalkingEntity.getLookControl().setLookAt(player);
-            this.currentTalkingEntity.getNavigation().stop();
+        if(player.level().isClientSide){
+            if(isWorking) {
+                WorkingMusicPlayer.playWorkingMusic();
+            } else {
+                WorkingMusicPlayer.stopMusic();
+            }
+        } else {
+            if (this.currentTalkingEntity != null && this.currentTalkingEntity.isAlive()) {
+                this.currentTalkingEntity.getLookControl().setLookAt(player);
+                this.currentTalkingEntity.getNavigation().stop();
+            }
         }
     }
 

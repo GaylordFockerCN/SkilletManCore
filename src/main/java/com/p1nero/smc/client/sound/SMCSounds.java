@@ -10,6 +10,8 @@ public final class SMCSounds {
 
 	public static final DeferredRegister<SoundEvent> REGISTRY = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, SkilletManCoreMod.MOD_ID);
 
+	public static final RegistryObject<SoundEvent> VILLAGER_YES = createEvent("sound.smc.villager_yes");
+	public static final RegistryObject<SoundEvent> EARN_MONEY = createEvent("sound.smc.earn_money");
 	public static final RegistryObject<SoundEvent> WORKING_BGM = createEvent("bgm.smc.working_bgm");
 	private static RegistryObject<SoundEvent> createEvent(String sound) {
 		return REGISTRY.register(sound, () -> SoundEvent.createVariableRangeEvent(SkilletManCoreMod.prefix(sound)));

@@ -8,6 +8,7 @@ import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.worldgen.biome.SMCBiomes;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.entity.npc.VillagerProfession;
 
 public class SMCLangGenerator extends SMCLangProvider {
     public SMCLangGenerator(PackOutput output) {
@@ -38,6 +39,9 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("unlock_game_stage", "§6游戏阶段提升！现在等级上限已提升至： %d §6！§r解锁新的订购列表，并且客户需求种类增加！");
         this.addInfo("working", "营业中");
         this.addInfo("resting", "休息中");
+        this.addInfo("seafood_mul", "海鲜加成！× %.1f");
+        this.addInfo("meat_mul", "肉类加成！× %.1f");
+        this.addInfo("type_mul", "品种加成！× %.1f");
         this.addInfo("all_taken", "已全部取出！");
         this.addInfo("customer_is_first", "§c顾客就是上帝！");
         this.addInfo("no_your_power", "Oh 不, 这份力量并不属于你...设定上你只能使用平底锅");
@@ -112,18 +116,18 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialogChoice(SMCEntities.START_NPC, 11, "订购");
         this.addDialogChoice(SMCEntities.START_NPC, 12, "订购 主食大礼包 §a花费 100 绿宝石");
         this.addDialogChoice(SMCEntities.START_NPC, 13, "订购 果蔬大礼包 §a花费 100 绿宝石");
-        this.addDialogChoice(SMCEntities.START_NPC, 14, "订购 肉类大礼包 §a花费 200 绿宝石");
-        this.addDialogChoice(SMCEntities.START_NPC, 15, "订购 海鲜大礼包 §a花费 500 绿宝石");
+        this.addDialogChoice(SMCEntities.START_NPC, 14, "订购 肉类大礼包 §a花费 2000 绿宝石");
+        this.addDialogChoice(SMCEntities.START_NPC, 15, "订购 海鲜大礼包 §a花费 5000 绿宝石");
 
         this.addDialog(SMCEntities.START_NPC, 1, "今天要做些什么呢？");
         this.addDialog(SMCEntities.START_NPC, 2, "本店亏损已久，承蒙大侠相助！");
         this.addDialog(SMCEntities.START_NPC, 3, "§a已全部取出！");
         this.addDialog(SMCEntities.START_NPC, 4, "§a已升级！");
-        this.addDialog(SMCEntities.START_NPC, 5, "准备好开业了吗！§6（由于作者没有建筑水平，因此还特地补偿了一些建筑方块，快去装饰你的店铺吧！至于这些盘子，你用到通关了也花不完。就算花完了拿木板就可以做。）");
+        this.addDialog(SMCEntities.START_NPC, 5, "准备好开业了吗！§6（由于作者没有建筑水平，因此还特地补偿了一些建筑方块，快去装饰你的店铺吧！§r§4建筑时记得给村民留交易窗口！村民将从四面八方生成！）");
         this.addDialog(SMCEntities.START_NPC, 6, "将§6炒锅§r摆上§6炉灶§r以开始营业，右键顾客以查看所需食材，烹饪完成后将食材放至§6主手§r，再次对话以交付食材。根据食材的品质将获得不同奖励。而夜晚可能会有§4袭击事件§r，拿起平底锅保卫村庄！");
-        this.addDialog(SMCEntities.START_NPC, 7, "炒菜时，把对应的食材丢入锅中，用§6锅铲§r即可翻炒。左边的仪表盘提示食物是否烧焦，请在合适的时候将其取出！使用§aJEI§r可查看料理配方。食材不足可找村民购买或找我订购。如果手忙脚乱，§6预制菜§r是一个不错的选择。");
+        this.addDialog(SMCEntities.START_NPC, 7, "炒菜时，把对应的食材丢入锅中，用§6锅铲§r即可翻炒。左边的仪表盘提示食物是否烧焦，请在合适的时候将其取出！使用§aJEI§r可查看料理配方。用到的§6食材越高级，奖励越丰富！§r如果手忙脚乱，§6预制菜§r是一个不错的选择。");
         this.addDialog(SMCEntities.START_NPC, 8, "接待足够多的村民将提升一次店铺等级，随着等级提升将解锁新的资源和玩法。到一定等级时将开启§6突破试炼§r，若试炼成功则可获得大量奖励并且进入下一游戏阶段。");
-        this.addDialog(SMCEntities.START_NPC, 9, "Zzz...Zzz...Zzz... (忙碌了一天的员工睡得正香，此刻也许你会好奇它为什么能够站着睡着。平底锅侠的世界就是如此奇妙，无需那么多为什么。)");
+        this.addDialog(SMCEntities.START_NPC, 9, "Zzz...Zzz...Zzz...(忙碌了一天的员工睡得正香，  此刻也许你会好奇它为什么能够站着睡着。平底锅侠的世界就是如此奇妙，无需那么多为什么。)");
 
         this.addDialog(SMCEntities.START_NPC, 10, "这是目前可以订购的食材大礼包的列表，本列表将随着游戏阶段的提升而增加。");
 
@@ -132,7 +136,17 @@ public class SMCLangGenerator extends SMCLangProvider {
         Customer.CUSTOMERS.forEach(customerData -> customerData.generateTranslation(this));
         Customer.SPECIAL_CUSTOMERS.forEach(customerData -> customerData.generateTranslation(this));
 
+        this.addVillagerName(VillagerProfession.NITWIT, "绿袍尊者");
+        this.addVillagerName(VillagerProfession.NONE, "无业游民");
+        this.addVillagerAns(VillagerProfession.NONE, 0, "（别看它叫无业游民，其实找不找得到工作取决于你）");
+        this.addVillagerOpt(VillagerProfession.NONE, 0, "闲聊");
+        this.addVillagerAns(VillagerProfession.NONE, 1, "上天啊！赐予我一个工作方块吧！ （提醒你一下，如果你赐予它工作方块，它并不会记得本次的对话）");
+        this.addVillagerOpt(VillagerProfession.NONE, 2, "人为什么要工作");
 
+        this.addVillagerName(VillagerProfession.FARMER, "农民");
+        this.addVillagerAns(VillagerProfession.FARMER, 0, "锄禾日当午，汗滴禾下土，谁知我农民的苦。（虽然它此刻并没有在劳作，  因为作者懒得读取村民工作状态，那成本可太高了，我们是《平底锅侠》，并不是MCA）");
+        this.addVillagerOpt(VillagerProfession.FARMER, 0, "购买");
+        this.addVillagerOpt(VillagerProfession.FARMER, 1, "离开");
 
     }
 }

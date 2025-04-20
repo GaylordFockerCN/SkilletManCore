@@ -9,6 +9,7 @@ import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.util.ItemUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.Items;
 import yesman.epicfight.gameasset.EpicFightSounds;
 
@@ -16,6 +17,12 @@ public class SpecialCustomerData4 extends SpecialCustomerData {
 
     public SpecialCustomerData4() {
         super(4);
+    }
+    
+    @Override
+    public void onInteract(ServerPlayer player, Customer self) {
+        super.onInteract(player, self);
+        self.setVillagerData(self.getVillagerData().setProfession(VillagerProfession.NITWIT));
     }
 
     public void generateTranslation(SMCLangGenerator generator) {

@@ -15,6 +15,7 @@ import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.text.WordUtils;
 
+import java.util.Locale;
 import java.util.function.Supplier;
 
 public abstract class SMCLangProvider extends LanguageProvider {
@@ -147,10 +148,6 @@ public abstract class SMCLangProvider extends LanguageProvider {
         add(key.get().getDescriptionId()+i, name);
     }
 
-    public void addVillagerChat(RegistryObject<? extends EntityType<?>> villager, int index, boolean isFWord, String text) {
-        this.add(villager.get()+(isFWord?".fuck_chat":".chat")+index, text);
-    }
-
     public void addScreenName(String key, String name) {
         this.add("screen.smc." + key, name);
     }
@@ -162,9 +159,15 @@ public abstract class SMCLangProvider extends LanguageProvider {
     public void addScreenOpt(String key, int id, String text) {
         this.add("screen.smc.opt." + key + "_" + id, text);
     }
+    public void addVillagerName(VillagerProfession profession, String text) {
+        this.add("villager.smc." + profession.name().toLowerCase(Locale.ROOT) + ".name", text);
+    }
+    public void addVillagerAns(VillagerProfession profession, int id, String text) {
+        this.add("villager.smc." + profession.name().toLowerCase(Locale.ROOT) + ".ans." + id, text);
+    }
 
-    public void addVillagerDialog(VillagerProfession profession, int id, String text) {
-
+    public void addVillagerOpt(VillagerProfession profession, int id, String text) {
+        this.add("villager.smc." + profession.name().toLowerCase(Locale.ROOT) + ".opt." + id, text);
     }
 
     public void addDialog(RegistryObject<? extends EntityType<?>> entity, int i, String text) {
@@ -177,13 +180,6 @@ public abstract class SMCLangProvider extends LanguageProvider {
 
     public void addDialogChoice(RegistryObject<? extends EntityType<?>> entity, int i, String text) {
         this.add(entity.get()+".choice" + i, text);
-    }
-
-    public void addVillagerDialog(RegistryObject<? extends EntityType<?>> entity, int skinID, int i, String text) {
-        this.add(entity.get()+".dialog" + skinID + "_"+ i, text);
-    }
-    public void addVillagerDialogChoice(RegistryObject<? extends EntityType<?>> entity,int skinID, int i, String text) {
-        this.add(entity.get()+".choice" + skinID + "_"+ i, text);
     }
 
     public void addDialogChoice(RegistryObject<? extends EntityType<?>> entity, String choice, String text) {

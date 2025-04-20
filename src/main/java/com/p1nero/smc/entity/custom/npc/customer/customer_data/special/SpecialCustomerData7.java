@@ -11,6 +11,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.item.Items;
 
 import java.util.Objects;
@@ -20,6 +22,12 @@ public class SpecialCustomerData7 extends SpecialCustomerData {
 
     public SpecialCustomerData7() {
         super(7);
+    }
+
+    @Override
+    public void onInteract(ServerPlayer player, Customer self) {
+        super.onInteract(player, self);
+        self.setVillagerData(self.getVillagerData().setProfession(VillagerProfession.NITWIT));
     }
 
     public void generateTranslation(SMCLangGenerator generator) {

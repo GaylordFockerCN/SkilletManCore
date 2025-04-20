@@ -6,6 +6,7 @@ import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.customer.customer_data.SpecialCustomerData;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -37,9 +38,10 @@ public class SpecialCustomerData18 extends SpecialCustomerData {
 
     @Override
     protected void append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodScore) {
+        String foodName = "§6" + I18n.get(serverData.getString("food_name")) + "§r";
         if (!canSubmit) {
             root.addChild(new TreeNode(answer(0), choice(-1))
-                    .addChild(new TreeNode(answer(-2, serverData.get("food_name")), choice(0))
+                    .addChild(new TreeNode(answer(-2, foodName), choice(0))
                             .addLeaf(choice(-2), (byte) -3)));
         } else {
             root.addChild(new TreeNode(answer(0), choice(-1))

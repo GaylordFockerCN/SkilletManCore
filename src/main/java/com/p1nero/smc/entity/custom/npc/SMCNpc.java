@@ -53,35 +53,27 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
     @Nullable
     private Player tradingPlayer;
 
-    protected BlockPos spawnPos;
     protected static final EntityDataAccessor<BlockPos> HOME_POS = SynchedEntityData.defineId(SMCNpc.class, EntityDataSerializers.BLOCK_POS);
+    protected static final EntityDataAccessor<BlockPos> SPAWN_POS = SynchedEntityData.defineId(SMCNpc.class, EntityDataSerializers.BLOCK_POS);
     protected static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(SMCNpc.class, EntityDataSerializers.OPTIONAL_UUID);//服务的玩家
     public SMCNpc(EntityType<? extends Villager> entityType, Level level) {
         super(entityType, level);
-        spawnPos = this.getOnPos();
         setHomePos(getOnPos());
     }
 
-    public void setSpawnPos(BlockPos spawnPos) {
-        this.spawnPos = spawnPos;
-    }
-
-    @Override
-    public void setPos(double x, double y, double z) {
-        super.setPos(x, y, z);
-        if(this.spawnPos == null) {
-            this.spawnPos = new BlockPos((int) x, (int) y, (int) z);
-        }
+    public void setSpawnPos(BlockPos pos) {
+        getEntityData().set(SPAWN_POS, pos);
     }
 
     public BlockPos getSpawnPos() {
-        return spawnPos;
+        return getEntityData().get(SPAWN_POS);
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         getEntityData().define(HOME_POS, getOnPos());
+        getEntityData().define(SPAWN_POS, getOnPos());
         this.entityData.define(OWNER_UUID, Optional.empty());
     }
 
@@ -118,6 +110,7 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
     public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         this.getEntityData().set(HOME_POS, new BlockPos(tag.getInt("home_pos_x"), tag.getInt("home_pos_y"), tag.getInt("home_pos_z")));
+        this.getEntityData().set(SPAWN_POS, new BlockPos(tag.getInt("spawn_pos_x"), tag.getInt("spawn_pos_y"), tag.getInt("spawn_pos_z")));
         if (tag.hasUUID("owner_uuid")) {
             this.setOwnerUUID(tag.getUUID("owner_uuid"));
         }
@@ -129,6 +122,9 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
         tag.putInt("home_pos_x", this.getEntityData().get(HOME_POS).getX());
         tag.putInt("home_pos_y", this.getEntityData().get(HOME_POS).getY());
         tag.putInt("home_pos_z", this.getEntityData().get(HOME_POS).getZ());
+        tag.putInt("spawn_pos_x", this.getEntityData().get(SPAWN_POS).getX());
+        tag.putInt("spawn_pos_y", this.getEntityData().get(SPAWN_POS).getY());
+        tag.putInt("spawn_pos_z", this.getEntityData().get(SPAWN_POS).getZ());
         if (this.getOwnerUUID() != null) {
             tag.putUUID("owner_uuid", this.getOwnerUUID());
         }
@@ -293,11 +289,6 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
     }
 
     @Override
-    public void overrideXp(int i) {
-
-    }
-
-    @Override
     public boolean showProgressBar() {
         return false;
     }
@@ -307,13 +298,4 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
         return SoundEvents.EXPERIENCE_ORB_PICKUP;
     }
 
-    @Override
-    public boolean isClientSide() {
-        return level().isClientSide;
-    }
-
-    @Override
-    public boolean removeWhenFarAway(double p_21542_) {
-        return false;
-    }
 }
