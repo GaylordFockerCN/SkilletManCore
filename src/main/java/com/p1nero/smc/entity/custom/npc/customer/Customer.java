@@ -32,6 +32,8 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -276,6 +278,22 @@ public class Customer extends SMCNpc {
                 }
             }
         }
+        if(this.foodLevel == CustomerData.BAD) {
+            if(player instanceof ServerPlayer serverPlayer) {
+                if(!DataManager.firstFoodBad.get(player)){
+                    //灶王爷不乐意了
+                    CompoundTag tag = new CompoundTag();
+                    tag.putBoolean("is_first_food_bad", true);
+                    PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCBlockDialoguePacket(this.getHomePos(), tag), serverPlayer);
+                    level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 3.0F, 1.0F);
+                    player.hurt(player.damageSources().magic(), 0.1F);
+                }
+            }
+            return InteractionResult.sidedSuccess(level().isClientSide);
+        } else {
+            DataManager.firstFoodBad.put(player, true);
+        }
+
         //双端
         if(customerData == null) {
             //每五级随机一个神人
@@ -327,13 +345,6 @@ public class Customer extends SMCNpc {
     @Override
     public void handleNpcInteraction(ServerPlayer player, byte interactionID) {
         if(interactionID == CustomerData.BAD) {
-            if(!DataManager.firstFoodBad.get(player)){
-                //灶王爷不乐意了
-                CompoundTag tag = new CompoundTag();
-                tag.putBoolean("is_first_food_bad", true);
-                PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCBlockDialoguePacket(this.getHomePos(), tag), player);
-                DataManager.firstFoodBad.put(player, true);
-            }
             this.setTraded(true);//离去
         }
 

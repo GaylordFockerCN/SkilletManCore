@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public class CustomGuiRenderer {
@@ -42,14 +43,20 @@ public class CustomGuiRenderer {
         int interval = SMCConfig.INTERVAL.get();
         int offsetX = font.width(": " + smcPlayer.getMoneyCount());
 
+        if(smcPlayer.isTrialRequired()) {
+            Component info = SkilletManCoreMod.getInfo("trial_required");
+            offsetX = font.width(info);
+            guiGraphics.drawString(font, info, x + 20 - offsetX, y - 20, 16777215, true);
+        } else {
+            int stageColor = switch (smcPlayer.getStage()) {
+                case 1 -> 0x84fbff;
+                case 2 -> 0x40ff5f;
+                case 3 -> 0xfb4ee9;
+                default -> 16777215;
+            };
+            guiGraphics.drawString(font, ": " + smcPlayer.getLevel(), x + 20 - offsetX, y - 20, stageColor, true);
+        }
         guiGraphics.blit(SPATULA_TEXTURE, x - offsetX, y - 25, 20, 20, 0.0F, 0.0F, 1, 1, 1, 1);
-        int stageColor = switch (smcPlayer.getStage()) {
-            case 1 -> 0x84fbff;
-            case 2 -> 0x40ff5f;
-            case 3 -> 0xfb4ee9;
-            default -> 16777215;
-        };
-        guiGraphics.drawString(font, ": " + smcPlayer.getLevel(), x + 20 - offsetX, y - 20, stageColor, true);
 
         guiGraphics.blit(MONEY_TEXTURE, x - offsetX, y, 20, 20, 0.0F, 0.0F, 1, 1, 1, 1);
         guiGraphics.drawString(font, ": " + smcPlayer.getMoneyCount(), x + 20 - offsetX, y + 5, 16777215, true);

@@ -40,11 +40,16 @@ public class TreeNode {
         this.options = new ArrayList<>();
     }
 
-    /**
-     * 返回自己以方便构造
-     * */
     public TreeNode addLeaf(Component option, byte returnValue) {
         options.add(new TreeNode.FinalNode(option, returnValue));
+        return this;
+    }
+
+    /**
+     * 默认的情况。负数不会被处理
+     */
+    public TreeNode addLeaf(Component option) {
+        options.add(new TreeNode.FinalNode(option, (byte) -1));
         return this;
     }
 

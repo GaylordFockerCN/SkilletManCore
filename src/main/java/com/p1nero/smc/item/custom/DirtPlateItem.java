@@ -39,6 +39,12 @@ public class DirtPlateItem extends PlateItem {
     private void giveBack(ItemStack foodStack, CookedFoodData food, ReturnTarget target) {
         target.addItem(foodStack);
         target.addExp(food.score * food.size / 100);
+        if(target instanceof PlateItem.PlayerTarget playerTarget && playerTarget.player() instanceof ServerPlayer serverPlayer) {
+            long currentTime = serverPlayer.serverLevel().getDayTime();
+            if(currentTime > 12700) {
+                SMCAdvancementData.finishAdvancement("pre_cook", serverPlayer);
+            }
+        }
     }
 
     @Override

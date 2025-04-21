@@ -60,6 +60,9 @@ public class PlayerEventListener {
     @SubscribeEvent
     public static void onPlayerAdvancementEarn(AdvancementEvent.AdvancementEarnEvent event) {
         if(event.getEntity() instanceof ServerPlayer serverPlayer && event.getAdvancement().getId().getNamespace().equals(SkilletManCoreMod.MOD_ID)) {
+            if(!event.getAdvancement().getId().getPath().contains("recipe")) {
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("advancement_look_tip"), false);
+            }
             SMCPlayer.addMoney(200, serverPlayer);
             serverPlayer.level().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SoundEvents.VILLAGER_CELEBRATE, serverPlayer.getSoundSource(), 1.0F, 1.0F);
         }

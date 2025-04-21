@@ -55,12 +55,22 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                     .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID), existingFileHelper);
 
             Advancement startWork = registerAdvancement(root, "start_work", FrameType.TASK, SMCRegistrateItems.SPATULA_V5, true, true, false);
-            Advancement money1000 = registerAdvancement(startWork, "money1000", FrameType.TASK, Items.DIAMOND);
-            Advancement money1000000 = registerAdvancement(money1000, "money1000000", FrameType.TASK, Items.EMERALD);
-            Advancement money1000000000 = registerAdvancement(money1000000, "money1000000000", FrameType.TASK, Items.EMERALD_BLOCK);
+            Advancement money1000 = registerAdvancement(startWork, "money1000", FrameType.TASK, Items.DIAMOND, true, true, false);
+            Advancement money1000000 = registerAdvancement(money1000, "money1000000", FrameType.TASK, Items.EMERALD, true, true, false);
+            Advancement money1000000000 = registerAdvancement(money1000000, "money1000000000", FrameType.TASK, Items.EMERALD_BLOCK, true, true, false);
             Advancement hijackCustomer = registerAdvancement(startWork, "hijack_customer", FrameType.TASK, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_30"))));
             Advancement dirtPlate = registerAdvancement(startWork, "dirt_plate", FrameType.TASK, SMCRegistrateItems.DIRT_PLATE);
 
+            Advancement startFight = registerAdvancement(root, "start_fight", FrameType.TASK, Items.IRON_SWORD, true, true, false);
+            Advancement dodgeMaster = registerAdvancement(startFight, "dodge_master", FrameType.TASK, SMCRegistrateItems.DODGE_ICON, true, true, false);//闪避10次， 100次， 1000次
+            Advancement parryMaster = registerAdvancement(startFight, "parry_master", FrameType.TASK, SMCRegistrateItems.PARRY_ICON, true, true, false);//招架10次， 100次， 1000次
+            Advancement dodgeMaster2 = registerAdvancement(dodgeMaster, "dodge_master2", FrameType.TASK, SMCRegistrateItems.DODGE_ICON, true, true, false);//闪避10次， 100次， 1000次
+            Advancement parryMaster2 = registerAdvancement(parryMaster, "parry_master2", FrameType.TASK, SMCRegistrateItems.PARRY_ICON, true, true, false);//招架10次， 100次， 1000次
+            Advancement dodgeMaster3 = registerAdvancement(dodgeMaster2, "dodge_master3", FrameType.TASK, SMCRegistrateItems.DODGE_ICON, true, true, false);//闪避10次， 100次， 1000次
+            Advancement parryMaster3 = registerAdvancement(parryMaster2, "parry_master3", FrameType.TASK, SMCRegistrateItems.PARRY_ICON, true, true, false);//招架10次， 100次， 1000次
+            Advancement end = registerAdvancement(startFight, "end", FrameType.CHALLENGE, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_3"))), true, true, false);
+
+            Advancement dogNoEat = registerAdvancement(root, "dog_no_eat", FrameType.TASK, Items.BONE);
             Advancement noYourPower = registerAdvancement(root, "no_your_power", FrameType.TASK, Blocks.BARRIER);
             Advancement first5StarSkillet = registerAdvancement(root, "first_5star_skillet", FrameType.TASK, SMCRegistrateItems.IRON_SKILLET_LEVEL5);
             Advancement fakeSleep = registerAdvancement(root, "fake_sleep", FrameType.TASK, Items.RED_BED);
@@ -70,7 +80,6 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement tooManyMouth = registerAdvancement(root, "too_many_mouth", FrameType.TASK, ModItems.DOLL_ICON.get());
             Advancement makeCustomerCry = registerAdvancement(root, "got_fox", FrameType.TASK, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_45"))));
             Advancement preCook = registerAdvancement(startWork, "pre_cook", FrameType.TASK, PlateFood.FRIED_RICE.item);
-            Advancement end = registerAdvancement(root, "end", FrameType.TASK, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_3"))));
 
         }
 

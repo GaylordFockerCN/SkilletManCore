@@ -10,10 +10,13 @@
     "BasicMultipleAttackAnimationMixin",
     "CuisineSkilletItemMixin",
     "HumanoidMobPatchMixin",
+    "HurtEventMixin",
     "MainFrameAnimationMixin",
     "PlateItemMixin",
     "ServerGamePacketListenerImplMixin",
+    "ServerPlayerPatchMixin",
     "VillagerMixin",
+    "WolfMixin",
     "WOMAnimationsMixin",
     "WorldOptionsMixin"
   ],

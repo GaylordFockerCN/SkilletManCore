@@ -1,10 +1,12 @@
 package com.p1nero.smc.network.packet.serverbound;
 
+import com.p1nero.smc.client.gui.screen.entity_dialog.VillagerDialogScreenHandler;
 import com.p1nero.smc.entity.api.NpcDialogue;
 import com.p1nero.smc.network.packet.BasePacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 
@@ -35,8 +37,13 @@ public record NpcPlayerInteractPacket(int entityID, byte interactionID) implemen
             } else {
                 //普通村民的对话统一在此处理
                 if(entity instanceof Villager villager){
+                    VillagerDialogScreenHandler.handle(serverPlayer, villager, interactionID);
+                }
+
+                if(entity instanceof Pig pig) {
 
                 }
+
             }
         }
         if(this.entityID == NO_ENTITY) {

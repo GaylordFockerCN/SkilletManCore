@@ -2,12 +2,14 @@ package com.p1nero.smc.datagen.lang;
 
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.block.SMCBlocks;
+import com.p1nero.smc.client.gui.screen.entity_dialog.VillagerDialogScreenHandler;
 import com.p1nero.smc.effect.SMCEffects;
 import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.worldgen.biome.SMCBiomes;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.VillagerProfession;
 
 public class SMCLangGenerator extends SMCLangProvider {
@@ -21,13 +23,16 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("start_work", "§a上班！");
         this.addInfo("end_work", "§c下班！");
 
-        this.addInfo("first_food_bad", "\n §e胡来！胡来！这样的菜怎么能给客人吃！速速找NPC再去学习一番怎么做菜！！再有下次，一次扣你100！");
+        this.addInfo("first_food_bad", "\n §e胡来！胡来！这样的菜怎么能给客人吃！速速找NPC再去学习一番怎么做菜！！！第一道菜就这么烂，怎么行！");
         this.addInfo("sorry", "呜呜呜我错了灶王爷我下次再也不敢了！");
         this.addInfo("give_me_another_chance", "伟大的炉神啊！再赐予我一次机会吧！");
         this.addInfo("cannot_left_customers", "\n §e嘿小子，你不能丢下你的顾客不管！");
         this.addInfo("alr", "好好好");
         this.addInfo("god_stove_talk", "我去！灶王公说话了！");
 
+        this.addInfo("trial_required", ": §6寻找牧师通过试炼以突破世界等级限制！");
+        this.addInfo("add_item_tip", "§a获得新物品：");
+        this.addInfo("advancement_look_tip", "§a不知道做什么时，可以查看一下进度（默认按 L ）");
         this.addInfo("unlock_new_order", "§a客户解锁了新的需求！ 当前可能的请求");
         this.addInfo("customer_left", "§c时间太久，顾客离开了一位。。");
         this.addInfo("already_has_owner", "§c本店铺已经有主人了！");
@@ -71,6 +76,15 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("money1000", "一千富翁", "持有 1,000 绿宝石");
         this.addAdvancement("money1000000", "百万富翁", "持有 1,000,000 绿宝石");
         this.addAdvancement("money1000000000", "一个小目标", "持有 1,000,000,000 绿宝石（你真的没有开挂吗）");
+
+        this.addAdvancement("start_fight", "战斗之路", "第一次成功抵御袭击");
+        this.addAdvancement("dodge_master", "闪避大师", "完美闪避10次");
+        this.addAdvancement("dodge_master2", "闪避大师2", "完美闪避100次");
+        this.addAdvancement("dodge_master3", "闪避大师3", "完美闪避1000次");
+        this.addAdvancement("parry_master", "招架大师", "完美招架10次");
+        this.addAdvancement("parry_master2", "招架大师2", "完美招架100次");
+        this.addAdvancement("parry_master3", "招架大师3", "完美招架1000次");
+
         this.addAdvancement("hijack_customer", "拐走！", "抢走其他玩家的顾客");
         this.addAdvancement("no_your_power", "忠于平底锅", "企图使用其他武器的力量");
         this.addAdvancement("first_5star_skillet", "第一个五星锅！", "将一把平底锅升到五星");
@@ -80,6 +94,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("self_eat", "自产自销", "吃下自己做的食物");
         this.addAdvancement("too_many_mouth", "工伤请求", "接待话很多的村民");
         this.addAdvancement("pre_cook", "预制菜", "在大晚上的做菜卖给谁呢？");
+        this.addAdvancement("dog_no_eat", "狗都不吃", "企图给狗吃做坏的食材。");
         this.addAdvancement("end", "结束了？", "击败最终boss");
 
         this.add(SMCRegistrateItems.SPATULA_V2.get(), "锅铲");
@@ -89,6 +104,11 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add(SMCRegistrateItems.DIRT_PLATE.get(), "脏盘子");
         this.add(SMCRegistrateItems.DIRT_PLATE.get().getDescriptionId() + ".disc", "上面充满了油渍，对着水右键可以洗干净。或许也可以重复使用？");
         this.add(SMCBlocks.MAIN_COOK_BLOCK.get(), "核心方块");
+
+        this.add(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.get(), "技能书抽奖券");
+        this.addItemUsageInfo(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asItem(), "可以在图书管理员处抽取技能书。（不知为何，它看起来似乎有些眼熟）");
+        this.add(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.get(), "武器抽奖券");
+        this.addItemUsageInfo(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asItem(), "可以在武器匠处抽取技能书。（不知为何，它看起来似乎有些眼熟）");
 
         this.addBiome(SMCBiomes.AIR, "虚空");
 
@@ -136,17 +156,19 @@ public class SMCLangGenerator extends SMCLangProvider {
         Customer.CUSTOMERS.forEach(customerData -> customerData.generateTranslation(this));
         Customer.SPECIAL_CUSTOMERS.forEach(customerData -> customerData.generateTranslation(this));
 
-        this.addVillagerName(VillagerProfession.NITWIT, "绿袍尊者");
-        this.addVillagerName(VillagerProfession.NONE, "无业游民");
-        this.addVillagerAns(VillagerProfession.NONE, 0, "（别看它叫无业游民，其实找不找得到工作取决于你）");
-        this.addVillagerOpt(VillagerProfession.NONE, 0, "闲聊");
-        this.addVillagerAns(VillagerProfession.NONE, 1, "上天啊！赐予我一个工作方块吧！ （提醒你一下，如果你赐予它工作方块，它并不会记得本次的对话）");
-        this.addVillagerOpt(VillagerProfession.NONE, 2, "人为什么要工作");
+        VillagerDialogScreenHandler.onLanguageGen(this);
 
-        this.addVillagerName(VillagerProfession.FARMER, "农民");
-        this.addVillagerAns(VillagerProfession.FARMER, 0, "锄禾日当午，汗滴禾下土，谁知我农民的苦。（虽然它此刻并没有在劳作，  因为作者懒得读取村民工作状态，那成本可太高了，我们是《平底锅侠》，并不是MCA）");
-        this.addVillagerOpt(VillagerProfession.FARMER, 0, "购买");
-        this.addVillagerOpt(VillagerProfession.FARMER, 1, "离开");
+        this.addDialog(EntityType.VILLAGER, 0, "（村民看着你，似乎要说些什么的样子。很明显作者目前没有给眼前这种职业的村民添加对话，因为他认为他的交易项在这整合包里没有意义。他甚至不愿意加点闲聊增加沉浸感）");
+        this.addDialogChoice(EntityType.VILLAGER, 0, "离去");
+
+        this.addDialogEntityName(EntityType.PIG, "一只平凡的猪");
+        this.addDialog(EntityType.PIG, -1, "哼哼哼，哼哼（猪叫，看来作者真的没有给猪做对话...）");
+        this.addDialog(EntityType.PIG, 0, "（我大抵是疯了，竟然想和一头猪对话）");
+        this.addDialogChoice(EntityType.PIG, 0, "离开");
+        this.addDialog(EntityType.PIG, 1, "哼，等等！哼，为什么你觉得在这个整合包里猪不会说话？难道你不想和我说话吗？（猪猪君看透了你的心思）");
+        this.addDialogChoice(EntityType.PIG, 1, "你会突然站起来变成苦力怕吗");
+        this.addDialogChoice(EntityType.PIG, 2, "尝试 \\TOT/\\TOT/\\TOT/");
+        this.addDialogChoice(EntityType.PIG, 3, "对着它唱歌");
 
     }
 }

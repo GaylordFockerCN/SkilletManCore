@@ -12,11 +12,4 @@ import net.minecraftforge.registries.RegistryObject;
 public class SMCItems {
 	public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, SkilletManCoreMod.MOD_ID);
 
-	public static final RegistryObject<Item> SKILL_BOOK_RAFFLE_TICKET = REGISTRY.register("skill_book_raffle_ticket", () ->
-			new Item(new Item.Properties().rarity(Rarity.EPIC).fireResistant().food(Foods.APPLE)));
-	public static final RegistryObject<Item> WEAPON_RAFFLE_TICKET = REGISTRY.register("weapon_raffle_ticket", () ->
-			new Item(new Item.Properties().rarity(Rarity.EPIC).fireResistant().food(Foods.APPLE)));
-	public static final RegistryObject<Item> DISK_RAFFLE_TICKET = REGISTRY.register("disk_raffle_ticket", () ->
-			new Item(new Item.Properties().rarity(Rarity.EPIC).fireResistant().food(Foods.APPLE)));
-
 }

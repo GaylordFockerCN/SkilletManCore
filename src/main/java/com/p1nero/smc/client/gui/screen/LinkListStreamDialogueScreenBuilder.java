@@ -41,6 +41,10 @@ public class LinkListStreamDialogueScreenBuilder {
         screen = new DialogueScreen(entity);
         this.entityType = entity.getType();
         init();
+    }public LinkListStreamDialogueScreenBuilder(EntityType<?> entityType) {
+        screen = new DialogueScreen(entityType.getDescription(), null);
+        this.entityType = entityType;
+        init();
     }
 
     public boolean isEmpty() {

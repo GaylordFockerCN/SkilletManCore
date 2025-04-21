@@ -6,6 +6,7 @@ import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.customer.customer_data.SpecialCustomerData;
 import com.p1nero.smc.item.SMCItems;
+import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
@@ -35,14 +36,14 @@ public class SpecialCustomerData19 extends SpecialCustomerData {
         generator.add(choicePre(1), "小的有眼不识泰山！");
         generator.add(answerPre(2), "比马厩草料还糙！");
         generator.add(choicePre(2), "抱歉抱歉！");
-        generator.add(answerPre(3), "欺我帮无人？！做这等狗食！");
+        generator.add(answerPre(3), "欺我帮无人？！做这等狗食！（看来你做的十分难吃，其实狗都不食，不信你可以喂看看）");
         generator.add(choicePre(3), "饶命！饶命！");
     }
 
     @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, SMCItems.SKILL_BOOK_RAFFLE_TICKET.get(), 4);
+        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.get(), 4);
 
         ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
         ListTag bookPages = new ListTag();
@@ -80,4 +81,9 @@ public class SpecialCustomerData19 extends SpecialCustomerData {
 
     }
 
+    @Override
+    protected void onBad(ServerPlayer serverPlayer, Customer self) {
+        super.onBad(serverPlayer, self);
+        ItemUtil.addItem(serverPlayer, Items.WOLF_SPAWN_EGG.getDefaultInstance(), true);
+    }
 }

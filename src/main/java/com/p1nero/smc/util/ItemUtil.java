@@ -2,23 +2,50 @@ package com.p1nero.smc.util;
 
 import com.google.common.collect.ImmutableList;
 import com.p1nero.smc.SMCConfig;
+import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.capability.SMCCapabilityProvider;
+import com.p1nero.smc.capability.SMCPlayer;
+import com.p1nero.smc.client.sound.SMCSounds;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
- * @author LZY
+ * @author P1nero
  * 做一些通用的物品栏处理
 */
 public class ItemUtil {
+
+    public static void tryAddIngredient(ServerPlayer serverPlayer, Set<ItemStack> itemStackSet, int moneyNeed, int foodCount) {
+        SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+        if (smcPlayer.getMoneyCount() < moneyNeed) {
+            serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SoundEvents.VILLAGER_NO, serverPlayer.getSoundSource(), 1.0F, 1.0F);
+            serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("no_enough_money"), true);
+        } else {
+            SMCPlayer.consumeMoney(moneyNeed, serverPlayer);
+            serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
+            List<ItemStack> itemList = new ArrayList<>(itemStackSet);
+            List<ItemStack> applyItems = new ArrayList<>();
+            for (int i = 0; i < foodCount; i++) {
+                applyItems.add(itemList.get(serverPlayer.getRandom().nextInt(itemList.size())));
+            }
+            for (ItemStack itemStack : applyItems) {
+                ItemUtil.addItemEntity(serverPlayer, itemStack);
+            }
+        }
+    }
 
     public static List<NonNullList<ItemStack>> getCompartments(Player player){
         return ImmutableList.of(player.getInventory().items, player.getInventory().armor, player.getInventory().offhand);
@@ -64,10 +91,16 @@ public class ItemUtil {
             }
         }
     }
-
     public static void addItem(Player player, ItemStack item){
+        addItem(player, item, false);
+    }
+    public static void addItem(Player player, ItemStack item, boolean showTip){
         if(!player.addItem(item)){
             addItemEntity(player, item);
+        }
+        if(showTip) {
+            player.displayClientMessage(SkilletManCoreMod.getInfo("add_item_tip").append(item.getDisplayName()).append(" × " + item.getCount()), false);
+            player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_PICKUP, player.getSoundSource(), 1.0F, 1.0F);
         }
     }
 

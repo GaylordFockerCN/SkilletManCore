@@ -1,7 +1,11 @@
 package com.p1nero.smc.entity.custom.npc.customer.customer_data.normal;
 
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
+import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.customer.customer_data.NormalCustomerData;
+import com.p1nero.smc.util.ItemUtil;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Items;
 
 public class NormalCustomerData2 extends NormalCustomerData {
 
@@ -12,7 +16,7 @@ public class NormalCustomerData2 extends NormalCustomerData {
     @Override
     public void generateTranslation(SMCLangGenerator generator) {
         super.generateTranslation(generator);
-        generator.add(nameTranslationKey, "非常普通的村民");
+        generator.add(nameTranslationKey, "十分平凡的村民");
         generator.add(answerPre(-1), "（村民看着你，投来疑惑的眼神。看来不是所有村民都是绿袍尊者，请提交正确的菜品）");
         generator.add(choicePre(-1), "好吧");
         generator.add(choicePre(-2), "离开");
@@ -23,7 +27,7 @@ public class NormalCustomerData2 extends NormalCustomerData {
         generator.add(answerPre(2), "一般");//中品质的时候顾客的回答
         generator.add(choicePre(2), "谢之");//中品质的时候顾客回答后 的玩家选项
         generator.add(answerPre(3), "狗食");//低品质的时候顾客的回答
-        generator.add(choicePre(3), "其实狗都不食");//低品质的时候顾客回答后 的玩家选项
+        generator.add(choicePre(3), "谢罪之");//低品质的时候顾客回答后 的玩家选项
     }
 
 }

@@ -1,5 +1,6 @@
 package com.p1nero.smc.entity.custom.npc.start_npc;
 
+import com.cazsius.solcarrot.item.SOLCarrotItems;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.block.entity.MainCookBlockEntity;
@@ -8,6 +9,7 @@ import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.DialogueComponentBuilder;
 import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
+import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.custom.npc.SMCNpc;
@@ -39,6 +41,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import yesman.epicfight.gameasset.EpicFightSkills;
+import yesman.epicfight.world.item.EpicFightItems;
 
 import java.util.*;
 
@@ -345,15 +349,28 @@ public class StartNPC extends SMCNpc {
         if (interactionID == 6) {
             DataManager.firstGiftGot.put(player, true);
             player.displayClientMessage(dialogueComponentBuilder.buildEntityAnswer(5), false);
+            ItemUtil.addItem(player, SOLCarrotItems.FOOD_BOOK.get(), 1);
             ItemUtil.addItem(player, CDItems.SKILLET.asItem(), 1);
             ItemUtil.addItem(player, CDItems.SPATULA.asItem(), 1);
+            ItemUtil.addItem(player, CDItems.PLATE.asItem().asItem(), 10);
+            ItemStack step = new ItemStack(EpicFightItems.SKILLBOOK.get());
+            step.getOrCreateTag().putString("skill", EpicFightSkills.STEP.toString());
+            ItemStack parrying = new ItemStack(EpicFightItems.SKILLBOOK.get());
+            parrying.getOrCreateTag().putString("skill", EpicFightSkills.PARRYING.toString());
+            ItemStack technician = new ItemStack(EpicFightItems.SKILLBOOK.get());
+            technician.getOrCreateTag().putString("skill", EpicFightSkills.TECHNICIAN.toString());
+            ItemStack guard = new ItemStack(EpicFightItems.SKILLBOOK.get());
+            guard.getOrCreateTag().putString("skill", EpicFightSkills.GUARD.toString());
+            ItemUtil.addItem(player, step);
+            ItemUtil.addItem(player, guard);
+            ItemUtil.addItem(player, parrying);
+            ItemUtil.addItem(player, technician);
             ItemUtil.addItem(player, Blocks.CRAFTING_TABLE.asItem(), 1);
             ItemUtil.addItem(player, Blocks.JUKEBOX.asItem(), 1);
             ItemUtil.addItem(player, Blocks.OAK_WOOD.asItem(), 64);
             ItemUtil.addItem(player, Blocks.STONE.asItem().asItem(), 64);
             ItemUtil.addItem(player, Blocks.COBBLESTONE.asItem().asItem(), 64);
             ItemUtil.addItem(player, Blocks.BRICKS.asItem().asItem(), 64);
-            ItemUtil.addItem(player, CDItems.PLATE.asItem().asItem(), 10);
 
             player.playSound(SoundEvents.PLAYER_LEVELUP);
         }
@@ -389,7 +406,7 @@ public class StartNPC extends SMCNpc {
             player.displayClientMessage(SkilletManCoreMod.getInfo("no_enough_money"), true);
         } else {
             SMCPlayer.consumeMoney(moneyNeed, player);
-            this.playSound(SoundEvents.VILLAGER_CELEBRATE);
+            this.playSound(SMCSounds.VILLAGER_YES.get());
             List<ItemStack> itemList = new ArrayList<>(itemStackSet);
             List<ItemStack> applyItems = new ArrayList<>();
             for (int i = 0; i < foodCount; i++) {

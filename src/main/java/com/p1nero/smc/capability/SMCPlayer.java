@@ -32,6 +32,8 @@ public class SMCPlayer {
     private boolean isSpecialAlive;
     private int consumerLeft;
     private int levelUpLeft = 0;
+    private int dodgeCounter = 0;
+    private int parryCounter = 0;
     public static final int STAGE1_REQUIRE = 10;
     public static final int STAGE2_REQUIRE = 20;
     public static final int STAGE3_REQUIRE = 50;
@@ -86,11 +88,38 @@ public class SMCPlayer {
     public boolean isWorking() {
         return isWorking;
     }
+    public static void addParryCount(ServerPlayer serverPlayer) {
+        SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+        smcPlayer.parryCounter += 1;
+        if(smcPlayer.parryCounter > 10) {
+            SMCAdvancementData.finishAdvancement("dodge_master", serverPlayer);
+        }
+        if(smcPlayer.parryCounter > 100){
+            SMCAdvancementData.finishAdvancement("dodge_master2", serverPlayer);
+        }
+        if(smcPlayer.parryCounter > 1000){
+            SMCAdvancementData.finishAdvancement("dodge_master3", serverPlayer);
+        }
+    }
+
+    public static void addDodgeCount(ServerPlayer serverPlayer) {
+        SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+        smcPlayer.dodgeCounter += 1;
+        if(smcPlayer.dodgeCounter > 10) {
+            SMCAdvancementData.finishAdvancement("dodge_master", serverPlayer);
+        }
+        if(smcPlayer.dodgeCounter > 100){
+            SMCAdvancementData.finishAdvancement("dodge_master2", serverPlayer);
+        }
+        if(smcPlayer.dodgeCounter > 1000){
+            SMCAdvancementData.finishAdvancement("dodge_master3", serverPlayer);
+        }
+    }
 
     public static void levelUPPlayer(ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         int currentLevel = smcPlayer.level;
-        if(currentLevel == STAGE1_REQUIRE || currentLevel == STAGE2_REQUIRE || currentLevel == STAGE3_REQUIRE) {
+        if(smcPlayer.isTrialRequired()) {
             return;
         }
         smcPlayer.setLevel(currentLevel + 1);
@@ -198,15 +227,40 @@ public class SMCPlayer {
     }
 
     public void setLevel(int level) {
-        this.level = level;//TODO 双端
+        this.level = level;
     }
-
-    public void levelUp() {
-
+    public void setLevelSync(int level, ServerPlayer serverPlayer) {
+        if(level < 0) {
+            return;
+        }
+        if(this.level < level) {
+            this.level = level;
+            if(this.level < STAGE1_REQUIRE) {
+                setStage(0);
+            } else if(this.level < STAGE2_REQUIRE) {
+                setStage(1);
+            } else if(this.level < STAGE3_REQUIRE) {
+                setStage(2);
+            }
+        } else {
+            this.level = level;
+            if(this.level > STAGE3_REQUIRE) {
+                setStage(3);
+            } else if(this.level > STAGE2_REQUIRE) {
+                setStage(2);
+            } else if(this.level > STAGE1_REQUIRE) {
+                setStage(1);
+            }
+        }
+        this.syncToClient(serverPlayer);
     }
 
     public int getLevel() {
         return level;
+    }
+
+    public boolean isTrialRequired() {
+        return level == STAGE1_REQUIRE || level == STAGE2_REQUIRE || level == STAGE3_REQUIRE;
     }
 
     @Nullable
@@ -255,6 +309,8 @@ public class SMCPlayer {
     }
 
     public CompoundTag saveNBTData(CompoundTag tag) {
+        tag.putInt("dodgeCnt", dodgeCounter);
+        tag.putInt("parryCnt", parryCounter);
         tag.putInt("levelUpLeft", levelUpLeft);
         tag.putInt("tradeLevel", level);
         tag.putInt("tradeStage", stage);
@@ -266,6 +322,8 @@ public class SMCPlayer {
     }
 
     public void loadNBTData(CompoundTag tag) {
+        dodgeCounter = tag.getInt("dodgeCnt");
+        parryCounter = tag.getInt("parryCnt");
         level = tag.getInt("tradeLevel");
         levelUpLeft = tag.getInt("levelUpLeft");
         stage = tag.getInt("tradeStage");
@@ -277,6 +335,8 @@ public class SMCPlayer {
 
     public void copyFrom(SMCPlayer old) {
         this.data = old.data;
+        this.dodgeCounter = old.dodgeCounter;
+        this.parryCounter = old.parryCounter;
         this.levelUpLeft = old.levelUpLeft;
         this.level = old.level;
         this.stage = old.stage;
@@ -301,6 +361,9 @@ public class SMCPlayer {
             if (this.currentTalkingEntity != null && this.currentTalkingEntity.isAlive()) {
                 this.currentTalkingEntity.getLookControl().setLookAt(player);
                 this.currentTalkingEntity.getNavigation().stop();
+                if(this.currentTalkingEntity.distanceTo(player) > 8) {
+                    this.currentTalkingEntity = null;
+                }
             }
         }
     }

@@ -6,9 +6,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 
-/**
- * 不带SkinID的Packet
- */
 public record NPCDialoguePacket(int id, CompoundTag tag) implements BasePacket {
     @Override
     public void encode(FriendlyByteBuf buf) {

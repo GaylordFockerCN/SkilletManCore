@@ -3,11 +3,13 @@ package com.p1nero.smc.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.p1nero.smc.archive.SMCArchiveManager;
+import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 
 public class SMCSetPlayerDataCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -62,7 +64,23 @@ public class SMCSetPlayerDataCommand {
                                 )
                         )
                 )
-
+                .then(Commands.literal("setTradeLevel").requires((commandSourceStack) -> commandSourceStack.hasPermission(2))
+                        .then(Commands.argument("value", IntegerArgumentType.integer())
+                                .executes((context) -> {
+                                    if(context.getSource().getPlayer() != null){
+                                        SMCCapabilityProvider.getSMCPlayer(context.getSource().getPlayer()).setLevelSync(IntegerArgumentType.getInteger(context, "value"), context.getSource().getPlayer());
+                                    }
+                                    return 0;
+                                })
+                                .then(Commands.argument("player", EntityArgument.player())
+                                        .executes((context) -> {
+                                            ServerPlayer serverPlayer = EntityArgument.getPlayer(context, "player");
+                                            SMCCapabilityProvider.getSMCPlayer(serverPlayer).setLevelSync(IntegerArgumentType.getInteger(context, "value"), serverPlayer);
+                                            return 0;
+                                        })
+                                )
+                        )
+                )
                 .then(Commands.literal("stageUp").requires((commandSourceStack) -> commandSourceStack.hasPermission(2))
                         .then(Commands.argument("player", EntityArgument.player())
                                 .executes((context) -> {

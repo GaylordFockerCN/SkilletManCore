@@ -23,15 +23,15 @@ public abstract class SMCLangProvider extends LanguageProvider {
         super(output, SkilletManCoreMod.MOD_ID, "zh_cn");
     }
 
-    public void addKeyMapping(KeyMapping key, String name){
+    public void addKeyMapping(KeyMapping key, String name) {
         this.add(key.getName(), name);
     }
 
-    public void addInfo(String key, String content){
+    public void addInfo(String key, String content) {
         this.add("info.smc." + key, content);
     }
 
-    public void addTask(String key, String task, String content){
+    public void addTask(String key, String task, String content) {
         this.add("task." + SkilletManCoreMod.MOD_ID + "." + key, task);
         this.add("task_content." + SkilletManCoreMod.MOD_ID + "." + key, content);
     }
@@ -122,17 +122,17 @@ public abstract class SMCLangProvider extends LanguageProvider {
     }
 
     public void addStructure(ResourceKey<Structure> biome, String name) {
-        this.add("structure."+ SkilletManCoreMod.MOD_ID + "." + biome.location().getPath(), name);
+        this.add("structure." + SkilletManCoreMod.MOD_ID + "." + biome.location().getPath(), name);
     }
 
     public void addAdvancement(String key, String title, String desc) {
-        this.add("advancement."+ SkilletManCoreMod.MOD_ID + "." + key, title);
-        this.add("advancement."+ SkilletManCoreMod.MOD_ID + "." + key + ".desc", desc);
+        this.add("advancement." + SkilletManCoreMod.MOD_ID + "." + key, title);
+        this.add("advancement." + SkilletManCoreMod.MOD_ID + "." + key + ".desc", desc);
     }
 
     public void addEnchantment(String key, String title, String desc) {
-        this.add("enchantment."+ SkilletManCoreMod.MOD_ID + "." + key, title);
-        this.add("enchantment."+ SkilletManCoreMod.MOD_ID + "." + key + ".desc", desc);
+        this.add("enchantment." + SkilletManCoreMod.MOD_ID + "." + key, title);
+        this.add("enchantment." + SkilletManCoreMod.MOD_ID + "." + key + ".desc", desc);
     }
 
     public void addEntityAndEgg(RegistryObject<? extends EntityType<?>> entity, String name) {
@@ -141,11 +141,11 @@ public abstract class SMCLangProvider extends LanguageProvider {
     }
 
     public void addEntityShaderName(RegistryObject<? extends EntityType<?>> entity, String name) {
-        this.add(entity.get().getDescriptionId()+"_shader", name);
+        this.add(entity.get().getDescriptionId() + "_shader", name);
     }
 
     public void addEntityType(Supplier<? extends EntityType<?>> key, int i, String name) {
-        add(key.get().getDescriptionId()+i, name);
+        add(key.get().getDescriptionId() + i, name);
     }
 
     public void addScreenName(String key, String name) {
@@ -159,9 +159,11 @@ public abstract class SMCLangProvider extends LanguageProvider {
     public void addScreenOpt(String key, int id, String text) {
         this.add("screen.smc.opt." + key + "_" + id, text);
     }
+
     public void addVillagerName(VillagerProfession profession, String text) {
         this.add("villager.smc." + profession.name().toLowerCase(Locale.ROOT) + ".name", text);
     }
+
     public void addVillagerAns(VillagerProfession profession, int id, String text) {
         this.add("villager.smc." + profession.name().toLowerCase(Locale.ROOT) + ".ans." + id, text);
     }
@@ -170,37 +172,45 @@ public abstract class SMCLangProvider extends LanguageProvider {
         this.add("villager.smc." + profession.name().toLowerCase(Locale.ROOT) + ".opt." + id, text);
     }
 
+    public void addDialogEntityName(EntityType<?> entity, String text) {
+        this.add(entity + ".dialog_name", text);
+    }
+    public void addDialog(EntityType<?> entity, int i, String text) {
+        this.add(entity + ".dialog" + i, text);
+    }
     public void addDialog(RegistryObject<? extends EntityType<?>> entity, int i, String text) {
-        this.add(entity.get()+".dialog" + i, text);
+        this.add(entity.get() + ".dialog" + i, text);
     }
 
     public void addDialog(RegistryObject<? extends EntityType<?>> entity, String answer, String text) {
-        this.add(entity.get()+".dialog" + answer, text);
+        this.add(entity.get() + ".dialog" + answer, text);
     }
-
+    public void addDialogChoice(EntityType<?> entity, int i, String text) {
+        this.add(entity + ".choice" + i, text);
+    }
     public void addDialogChoice(RegistryObject<? extends EntityType<?>> entity, int i, String text) {
-        this.add(entity.get()+".choice" + i, text);
+        this.add(entity.get() + ".choice" + i, text);
     }
 
     public void addDialogChoice(RegistryObject<? extends EntityType<?>> entity, String choice, String text) {
-        this.add(entity.get()+".choice." + choice, text);
+        this.add(entity.get() + ".choice." + choice, text);
     }
 
     public void addSubtitle(RegistryObject<SoundEvent> sound, String name) {
-        String[] splitSoundName  = sound.getId().getPath().split("\\.", 3);
-        this.add("subtitles."+ SkilletManCoreMod.MOD_ID + "." + splitSoundName[0] + "." + splitSoundName[2], name);
+        String[] splitSoundName = sound.getId().getPath().split("\\.", 3);
+        this.add("subtitles." + SkilletManCoreMod.MOD_ID + "." + splitSoundName[0] + "." + splitSoundName[2], name);
     }
 
     public void addDeathMessage(String key, String name) {
-        this.add("death.attack."+ SkilletManCoreMod.MOD_ID + "." + key, name);
+        this.add("death.attack." + SkilletManCoreMod.MOD_ID + "." + key, name);
     }
 
     public void addStat(String key, String name) {
-        this.add("stat."+ SkilletManCoreMod.MOD_ID + "." + key, name);
+        this.add("stat." + SkilletManCoreMod.MOD_ID + "." + key, name);
     }
 
     public void addMessage(String key, String name) {
-        this.add("misc."+ SkilletManCoreMod.MOD_ID + "." + key, name);
+        this.add("misc." + SkilletManCoreMod.MOD_ID + "." + key, name);
     }
 
     public void addCommand(String key, String name) {
@@ -208,54 +218,56 @@ public abstract class SMCLangProvider extends LanguageProvider {
     }
 
     public void addTrim(String key, String name) {
-        this.add("trim_material."+ SkilletManCoreMod.MOD_ID + "." + key, name + " Material");
+        this.add("trim_material." + SkilletManCoreMod.MOD_ID + "." + key, name + " Material");
     }
 
     public void addBookAndContents(String bookKey, String bookTitle, String... pages) {
-        this.add(SkilletManCoreMod.MOD_ID+".book.author." + bookKey, "无名氏");
-        this.add(SkilletManCoreMod.MOD_ID+".book." + bookKey, bookTitle);
+        this.add(SkilletManCoreMod.MOD_ID + ".book.author." + bookKey, "无名氏");
+        this.add(SkilletManCoreMod.MOD_ID + ".book." + bookKey, bookTitle);
         int pageCount = 0;
         for (String page : pages) {
             pageCount++;
-            this.add(SkilletManCoreMod.MOD_ID+".book." + bookKey + "." + pageCount, page);
+            this.add(SkilletManCoreMod.MOD_ID + ".book." + bookKey + "." + pageCount, page);
         }
     }
 
     public void addBookAndAuthorAndContents(String bookKey, String author, String bookTitle, String... pages) {
-        this.add(SkilletManCoreMod.MOD_ID+".book.author." + bookKey, author);
-        this.add(SkilletManCoreMod.MOD_ID+".book." + bookKey, bookTitle);
+        this.add(SkilletManCoreMod.MOD_ID + ".book.author." + bookKey, author);
+        this.add(SkilletManCoreMod.MOD_ID + ".book." + bookKey, bookTitle);
         int pageCount = 0;
         for (String page : pages) {
             pageCount++;
-            this.add(SkilletManCoreMod.MOD_ID+".book." + bookKey + "." + pageCount, page);
+            this.add(SkilletManCoreMod.MOD_ID + ".book." + bookKey + "." + pageCount, page);
         }
     }
 
     public void addScreenMessage(String key, String name) {
-        this.add("gui."+ SkilletManCoreMod.MOD_ID + "." + key, name);
+        this.add("gui." + SkilletManCoreMod.MOD_ID + "." + key, name);
     }
 
     public void addConfig(String key, String name) {
-        this.add("config."+ SkilletManCoreMod.MOD_ID+".common." + key, name);
+        this.add("config." + SkilletManCoreMod.MOD_ID + ".common." + key, name);
     }
 
     public void addDrinkName(Item item, String name) {
-        this.add(item.getDescriptionId()+".effect.empty", name);
+        this.add(item.getDescriptionId() + ".effect.empty", name);
     }
-    public void addDrinkName(Item item, String effect,String name) {
-        this.add(item.getDescriptionId()+".effect."+effect, name);
+
+    public void addDrinkName(Item item, String effect, String name) {
+        this.add(item.getDescriptionId() + ".effect." + effect, name);
     }
 
 
     public void addItemInfo(Item item, String key, String name) {
-        this.add(item.getDescriptionId()+"." + key, name);
+        this.add(item.getDescriptionId() + "." + key, name);
     }
 
     public void addItemUsageInfo(Item item, String name) {
-        this.add(item.getDescriptionId()+".usage", name);
+        this.add(item.getDescriptionId() + ".usage", name);
     }
+
     public void addItemUsageInfo(Item item, String name, int index) {
-        this.add(item.getDescriptionId()+".usage"+index, name);
+        this.add(item.getDescriptionId() + ".usage" + index, name);
     }
 
 }

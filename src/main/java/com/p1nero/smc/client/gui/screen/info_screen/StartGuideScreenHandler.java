@@ -11,7 +11,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class StartGuideScreen {
+public class StartGuideScreenHandler {
     public static void addStartGuideScreen() {
         DialogueScreen.ScreenDialogueBuilder builder = new DialogueScreen.ScreenDialogueBuilder("start_guide");
 

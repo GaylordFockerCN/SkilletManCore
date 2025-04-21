@@ -2,6 +2,7 @@ package com.p1nero.smc.registrate;
 
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.item.custom.DirtPlateItem;
+import com.p1nero.smc.item.custom.SimpleDescriptionFoilItem;
 import com.p1nero.smc.item.custom.skillets.SkilletV2;
 import com.p1nero.smc.item.custom.skillets.SkilletV3;
 import com.p1nero.smc.item.custom.skillets.SkilletV4;
@@ -16,6 +17,8 @@ import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import dev.xkmc.cuisinedelight.init.data.TagGen;
 import dev.xkmc.cuisinedelight.init.registrate.CDBlocks;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.client.model.generators.ModelFile;
 
 @MethodsReturnNonnullByDefault
@@ -55,6 +58,29 @@ public class SMCRegistrateItems {
             .tag(TagGen.UTENSILS)
             .defaultLang().register();
 
+    public static final ItemEntry<Item> DODGE_ICON = SkilletManCoreMod.REGISTRATE.item("dodge_icon", Item::new)
+            .defaultModel()
+            .defaultLang().register();
+    public static final ItemEntry<Item> PARRY_ICON = SkilletManCoreMod.REGISTRATE.item("parry_icon", Item::new)
+            .defaultModel()
+            .defaultLang().register();
+    public static final ItemEntry<SimpleDescriptionFoilItem> WEAPON_RAFFLE_TICKET = SkilletManCoreMod.REGISTRATE.item("weapon_raffle_ticket", properties -> new SimpleDescriptionFoilItem(properties.fireResistant().rarity(Rarity.EPIC)))
+            .defaultModel()
+            .defaultLang().register();
+
+    public static final ItemEntry<SimpleDescriptionFoilItem> SKILL_BOOK_RAFFLE_TICKET = SkilletManCoreMod.REGISTRATE.item("skill_book_raffle_ticket", properties -> new SimpleDescriptionFoilItem(properties.fireResistant().rarity(Rarity.EPIC)))
+            .defaultModel()
+            .defaultLang().register();
+
+    public static final ItemEntry<SimpleDescriptionFoilItem> DISK_RAFFLE_TICKET = SkilletManCoreMod.REGISTRATE.item("disk_raffle_ticket", properties -> new SimpleDescriptionFoilItem(properties.fireResistant().rarity(Rarity.EPIC)))
+            .defaultModel()
+            .defaultLang().register();
+    public static final ItemEntry<SimpleDescriptionFoilItem> PET_RAFFLE_TICKET = SkilletManCoreMod.REGISTRATE.item("pet_raffle_ticket", properties -> new SimpleDescriptionFoilItem(properties.fireResistant().rarity(Rarity.EPIC)))
+            .defaultModel()
+            .defaultLang().register();
+    public static final ItemEntry<SimpleDescriptionFoilItem> DOLL_RAFFLE_TICKET = SkilletManCoreMod.REGISTRATE.item("doll_raffle_ticket", properties -> new SimpleDescriptionFoilItem(properties.fireResistant().rarity(Rarity.EPIC)))
+            .defaultModel()
+            .defaultLang().register();
     public static void register() {
     }
 
