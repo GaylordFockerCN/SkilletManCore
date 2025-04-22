@@ -33,8 +33,8 @@ public class FarmerDialogBuilder extends VillagerDialogScreenHandler.VillagerDia
         buy.addChild(new TreeNode(answer(2), choice(2))
                         .addChild(buy
                                 .addLeaf(choice(1))))
-                .addLeaf(choice(3, (byte) 3))
-                .addLeaf(choice(4, (byte) 4));
+                .addLeaf(choice(3), (byte) 3)
+                .addLeaf(choice(4), (byte) 4);
 
         builder.setAnswerRoot(root);
     }

@@ -9,6 +9,7 @@
     "AttributesMixin",
     "BasicMultipleAttackAnimationMixin",
     "CuisineSkilletItemMixin",
+    "FoodDataMixin",
     "HumanoidMobPatchMixin",
     "HurtEventMixin",
     "MainFrameAnimationMixin",
@@ -22,8 +23,8 @@
   ],
   "client": [
     "CreateWorldScreenMixin",
-    "WorldListEntryMixin",
-    "StepSkillMixin"
+    "StepSkillMixin",
+    "WorldListEntryMixin"
   ],
   "injectors": {
     "defaultRequire": 1

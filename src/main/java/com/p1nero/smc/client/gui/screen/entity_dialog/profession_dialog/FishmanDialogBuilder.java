@@ -27,12 +27,12 @@ public class FishmanDialogBuilder extends VillagerDialogScreenHandler.VillagerDi
     public void createDialog(LinkListStreamDialogueScreenBuilder builder, Villager self) {
         TreeNode root = new TreeNode(answer(0));
         TreeNode buy = new TreeNode(answer(1), choice(0));
+        buy.addChild(new TreeNode(answer(2), choice(2))
+                        .addChild(buy))
+                .addLeaf(choice(3), (byte) 3)
+                .addLeaf(choice(1));
         root.addChild(buy);
         root.addLeaf(choice(1));
-        buy.addChild(new TreeNode(answer(2), choice(2))
-                        .addChild(buy
-                                .addLeaf(choice(1))))
-                .addLeaf(choice(3, (byte) 3));
 
         builder.setAnswerRoot(root);
     }

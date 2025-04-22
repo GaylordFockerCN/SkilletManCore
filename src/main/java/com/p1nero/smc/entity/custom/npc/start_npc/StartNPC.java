@@ -14,6 +14,7 @@ import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.custom.npc.SMCNpc;
 import com.p1nero.smc.gameasset.skill.SMCSkills;
+import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
 import dev.xkmc.cuisinedelight.content.logic.FoodType;
 import dev.xkmc.cuisinedelight.content.logic.IngredientConfig;
@@ -245,6 +246,25 @@ public class StartNPC extends SMCNpc {
 
         } else if (isGuider()) {
 
+            //TODO 兑换抽奖券
+            TreeNode ticketExchange = new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(11), dialogueComponentBuilder.buildDialogueOption(16))
+                    .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(12), dialogueComponentBuilder.buildDialogueOption(17))
+                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(18, 160), (byte) 16)
+                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(19, 1599), (byte) 17))
+                    .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(12), dialogueComponentBuilder.buildDialogueOption(18))
+                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(18, 160), (byte) 18)
+                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(19, 1599), (byte) 19))
+                    .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(12), dialogueComponentBuilder.buildDialogueOption(19))
+                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(18, 1600), (byte) 20)
+                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(19, 16000), (byte) 21))
+                    .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(12), dialogueComponentBuilder.buildDialogueOption(20))
+                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(18, 1600), (byte) 22)
+                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(19, 16000), (byte) 23))
+                    .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(12), dialogueComponentBuilder.buildDialogueOption(21))
+                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(18,1600), (byte) 24)
+                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(19, 16000), (byte) 25));
+
+
             TreeNode foodBuyer = new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(10), dialogueComponentBuilder.buildDialogueOption(11))
                     .addLeaf(dialogueComponentBuilder.buildDialogueOption(12), (byte) 12)
                     .addLeaf(dialogueComponentBuilder.buildDialogueOption(13), (byte) 13);
@@ -400,6 +420,42 @@ public class StartNPC extends SMCNpc {
         //海鲜大礼包
         if (interactionID == 15) {
             addIngredient(smcPlayer, player, SEAFOOD_SET, 5000, 20);
+        }
+
+        //武器抽奖券 1
+        if(interactionID == 16) {
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asStack()), 160, 1);
+        }
+        if(interactionID == 17){
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asStack()), 1599, 10);
+        }
+        //技能书抽奖券
+        if(interactionID == 18) {
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asStack()), 160, 1);
+        }
+        if(interactionID == 19) {
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asStack()), 1599, 10);
+        }
+        //宠物
+        if(interactionID == 20) {
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.PET_RAFFLE_TICKET.asStack()), 1600, 1);
+        }
+        if(interactionID == 21) {
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.PET_RAFFLE_TICKET.asStack()), 16000, 10);
+        }
+        //碟
+        if(interactionID == 22) {
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.DISC_RAFFLE_TICKET.asStack()), 1600, 1);
+        }
+        if(interactionID == 23) {
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.DISC_RAFFLE_TICKET.asStack()), 16000, 10);
+        }
+        //玩偶
+        if(interactionID == 24) {
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.DOLL_RAFFLE_TICKET.asStack()), 1600, 1);
+        }
+        if(interactionID == 25) {
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.DOLL_RAFFLE_TICKET.asStack()), 16000, 10);
         }
 
         this.setConversingPlayer(null);

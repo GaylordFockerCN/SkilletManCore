@@ -1,4 +1,4 @@
-package com.p1nero.smc.client.gui;
+package com.p1nero.smc.client.gui.hud;
 
 import com.mojang.blaze3d.platform.Window;
 import com.p1nero.smc.SMCConfig;

@@ -54,4 +54,12 @@ public class BlockListener {
             }
         }
     }
+
+    @SubscribeEvent
+    public static void onPortalBlock(BlockEvent.PortalSpawnEvent event) {
+        event.setCanceled(true);
+        if(event.getLevel().isClientSide()) {
+
+        }
+    }
 }

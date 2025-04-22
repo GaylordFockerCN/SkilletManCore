@@ -106,15 +106,15 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add(SMCBlocks.MAIN_COOK_BLOCK.get(), "核心方块");
 
         this.add(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.get(), "技能书抽奖券");
-        this.addItemUsageInfo(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asItem(), "可以在图书管理员处抽取技能书。");
+        this.addItemUsageInfo(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asItem(), "可以在§6图书管理员§r处抽取技能书。");
         this.add(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.get(), "武器抽奖券");
-        this.addItemUsageInfo(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asItem(), "可以在武器匠处抽取武器。");
+        this.addItemUsageInfo(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asItem(), "可以在§6武器匠§r处抽取武器。");
         this.add(SMCRegistrateItems.DOLL_RAFFLE_TICKET.get(), "玩偶抽奖券");
-        this.addItemUsageInfo(SMCRegistrateItems.DOLL_RAFFLE_TICKET.asItem(), "可以在牧羊人处兑换玩偶盲盒。");
+        this.addItemUsageInfo(SMCRegistrateItems.DOLL_RAFFLE_TICKET.asItem(), "可以在§6牧羊人§r处兑换玩偶盲盒。");
         this.add(SMCRegistrateItems.PET_RAFFLE_TICKET.get(), "宠物抽奖券");
-        this.addItemUsageInfo(SMCRegistrateItems.PET_RAFFLE_TICKET.asItem(), "可以在牧羊人处抽取宠物。");
+        this.addItemUsageInfo(SMCRegistrateItems.PET_RAFFLE_TICKET.asItem(), "可以在§6牧羊人§r处抽取宠物。");
         this.add(SMCRegistrateItems.DISC_RAFFLE_TICKET.get(), "唱片抽奖券");
-        this.addItemUsageInfo(SMCRegistrateItems.DISC_RAFFLE_TICKET.asItem(), "可以在工具匠处抽取唱片。");
+        this.addItemUsageInfo(SMCRegistrateItems.DISC_RAFFLE_TICKET.asItem(), "可以在§6工具匠§r处抽取唱片。");
 
         this.addBiome(SMCBiomes.AIR, "虚空");
 
@@ -145,6 +145,15 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialogChoice(SMCEntities.START_NPC, 14, "订购 肉类大礼包 §a花费 2000 绿宝石");
         this.addDialogChoice(SMCEntities.START_NPC, 15, "订购 海鲜大礼包 §a花费 5000 绿宝石");
 
+        this.addDialogChoice(SMCEntities.START_NPC, 16, "兑换抽奖券");
+        this.addDialogChoice(SMCEntities.START_NPC, 17, "武器抽奖券");
+        this.addDialogChoice(SMCEntities.START_NPC, 18, "一张 需 %d 绿宝石");
+        this.addDialogChoice(SMCEntities.START_NPC, 19, "十张 需 %d 绿宝石");
+        this.addDialogChoice(SMCEntities.START_NPC, 20, "技能书抽奖券");
+        this.addDialogChoice(SMCEntities.START_NPC, 21, "宠物抽奖券");
+        this.addDialogChoice(SMCEntities.START_NPC, 22, "碟片抽奖券");
+        this.addDialogChoice(SMCEntities.START_NPC, 23, "玩偶抽奖券");
+
         this.addDialog(SMCEntities.START_NPC, 1, "今天要做些什么呢？");
         this.addDialog(SMCEntities.START_NPC, 2, "本店亏损已久，承蒙大侠相助！");
         this.addDialog(SMCEntities.START_NPC, 3, "§a已全部取出！");
@@ -156,6 +165,8 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialog(SMCEntities.START_NPC, 9, "Zzz...Zzz...Zzz...(忙碌了一天的员工睡得正香，  此刻也许你会好奇它为什么能够站着睡着。平底锅侠的世界就是如此奇妙，无需那么多为什么。)");
 
         this.addDialog(SMCEntities.START_NPC, 10, "这是目前可以订购的食材大礼包的列表，本列表将随着游戏阶段的提升而增加。");
+        this.addDialog(SMCEntities.START_NPC, 11, "要兑换哪种抽奖券呢？");
+        this.addDialog(SMCEntities.START_NPC, 12, "兑换几张呢？");
 
         this.add(SMCEntities.CUSTOMER.get(), "§e人畜无害的村民§r");
 
