@@ -24,7 +24,7 @@ public abstract class HurtEventMixin extends PlayerEvent<ServerPlayerPatch> {
 
     @Inject(method = "setParried", at = @At("HEAD"))
     private void smc$setParry(boolean parried, CallbackInfo ci){
-        if(!this.parried) {
+        if(!this.parried && parried) {
             SMCPlayer.addParryCount(this.getPlayerPatch().getOriginal());
         }
     }

@@ -138,13 +138,13 @@ public class SMCPlayer {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         smcPlayer.parryCounter += 1;
         if(smcPlayer.parryCounter > 10) {
-            SMCAdvancementData.finishAdvancement("dodge_master", serverPlayer);
+            SMCAdvancementData.finishAdvancement("parry_master", serverPlayer);
         }
         if(smcPlayer.parryCounter > 100){
-            SMCAdvancementData.finishAdvancement("dodge_master2", serverPlayer);
+            SMCAdvancementData.finishAdvancement("parry_master2", serverPlayer);
         }
         if(smcPlayer.parryCounter > 1000){
-            SMCAdvancementData.finishAdvancement("dodge_master3", serverPlayer);
+            SMCAdvancementData.finishAdvancement("parry_master3", serverPlayer);
         }
     }
 

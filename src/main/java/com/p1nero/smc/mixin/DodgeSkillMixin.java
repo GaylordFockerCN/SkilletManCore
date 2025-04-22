@@ -13,18 +13,26 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
 import yesman.epicfight.network.client.CPExecuteSkill;
+import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.SkillSlots;
-import yesman.epicfight.skill.dodge.StepSkill;
+import yesman.epicfight.skill.dodge.DodgeSkill;
 
 /**
  * 修复八向跨步
  */
-@Mixin(value = StepSkill.class, remap = false)
-public class StepSkillMixin {
+@Mixin(value = DodgeSkill.class, remap = false)
+public abstract class DodgeSkillMixin extends Skill {
+
+    public DodgeSkillMixin(Builder<? extends Skill> builder) {
+        super(builder);
+    }
 
     @OnlyIn(Dist.CLIENT)
     @Inject(method = "getExecutionPacket", at = @At("HEAD"), cancellable = true)
     private void smc$getExecutionPacket(LocalPlayerPatch executor, FriendlyByteBuf args, CallbackInfoReturnable<Object> cir) {
+        if (!this.getRegistryName().getPath().contains("step")) {
+            return;
+        }
         Input input = executor.getOriginal().input;
         float pulse = Mth.clamp(0.3F + EnchantmentHelper.getSneakingSpeedBonus(executor.getOriginal()), 0.0F, 1.0F);
         input.tick(false, pulse);

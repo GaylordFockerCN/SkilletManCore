@@ -112,7 +112,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add(SMCRegistrateItems.DOLL_RAFFLE_TICKET.get(), "玩偶抽奖券");
         this.addItemUsageInfo(SMCRegistrateItems.DOLL_RAFFLE_TICKET.asItem(), "可以在§6牧羊人§r处兑换玩偶盲盒。");
         this.add(SMCRegistrateItems.PET_RAFFLE_TICKET.get(), "宠物抽奖券");
-        this.addItemUsageInfo(SMCRegistrateItems.PET_RAFFLE_TICKET.asItem(), "可以在§6牧羊人§r处抽取宠物。");
+        this.addItemUsageInfo(SMCRegistrateItems.PET_RAFFLE_TICKET.asItem(), "可以在§6牧羊人§r处抽取宠物。 §b图标很可爱对吧(〃'▽'〃)");
         this.add(SMCRegistrateItems.DISC_RAFFLE_TICKET.get(), "唱片抽奖券");
         this.addItemUsageInfo(SMCRegistrateItems.DISC_RAFFLE_TICKET.asItem(), "可以在§6工具匠§r处抽取唱片。");
 

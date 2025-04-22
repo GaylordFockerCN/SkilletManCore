@@ -23,7 +23,7 @@
   ],
   "client": [
     "CreateWorldScreenMixin",
-    "StepSkillMixin",
+    "DodgeSkillMixin",
     "WorldListEntryMixin"
   ],
   "injectors": {
