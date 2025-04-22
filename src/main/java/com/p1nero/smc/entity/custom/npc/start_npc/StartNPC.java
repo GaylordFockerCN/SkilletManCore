@@ -13,6 +13,7 @@ import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.custom.npc.SMCNpc;
+import com.p1nero.smc.gameasset.skill.SMCSkills;
 import com.p1nero.smc.util.ItemUtil;
 import dev.xkmc.cuisinedelight.content.logic.FoodType;
 import dev.xkmc.cuisinedelight.content.logic.IngredientConfig;
@@ -216,6 +217,7 @@ public class StartNPC extends SMCNpc {
 
     /**
      * 入职或雇佣
+     * TODO 兑换各种抽奖券
      */
     @Override
     @OnlyIn(Dist.CLIENT)
@@ -359,12 +361,15 @@ public class StartNPC extends SMCNpc {
             parrying.getOrCreateTag().putString("skill", EpicFightSkills.PARRYING.toString());
             ItemStack technician = new ItemStack(EpicFightItems.SKILLBOOK.get());
             technician.getOrCreateTag().putString("skill", EpicFightSkills.TECHNICIAN.toString());
+            ItemStack dodgeDisplay = new ItemStack(EpicFightItems.SKILLBOOK.get());
+            dodgeDisplay.getOrCreateTag().putString("skill", SMCSkills.BETTER_DODGE_DISPLAY.toString());
             ItemStack guard = new ItemStack(EpicFightItems.SKILLBOOK.get());
             guard.getOrCreateTag().putString("skill", EpicFightSkills.GUARD.toString());
             ItemUtil.addItem(player, step);
+            ItemUtil.addItem(player, technician);
+            ItemUtil.addItem(player, dodgeDisplay);
             ItemUtil.addItem(player, guard);
             ItemUtil.addItem(player, parrying);
-            ItemUtil.addItem(player, technician);
             ItemUtil.addItem(player, Blocks.CRAFTING_TABLE.asItem(), 1);
             ItemUtil.addItem(player, Blocks.JUKEBOX.asItem(), 1);
             ItemUtil.addItem(player, Blocks.OAK_WOOD.asItem(), 64);

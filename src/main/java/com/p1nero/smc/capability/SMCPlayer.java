@@ -7,6 +7,8 @@ import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.SyncSMCPlayerPacket;
+import com.p1nero.smc.util.ItemUtil;
+import com.p1nero.smc.util.WeaponGachaSystem;
 import dev.xkmc.cuisinedelight.init.registrate.PlateFood;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -14,6 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -25,6 +28,49 @@ import java.util.function.Consumer;
  * 懒得换成DataKey了将就一下吧
  */
 public class SMCPlayer {
+    public static final List<ItemStack> WEAPON_3STAR_LIST = new ArrayList<>();
+    public static final List<ItemStack> WEAPON_4STAR_LIST = new ArrayList<>();
+    public static final List<ItemStack> WEAPON_5STAR_LIST = new ArrayList<>();
+
+    public static void initWeaponList(){
+
+    }
+
+    private int weaponGachaingCount;
+    private int weaponPity4Star;
+    private int weaponPity5Star;
+
+    public int getWeaponPity4Star() {
+        return weaponPity4Star;
+    }
+
+    public void setWeaponPity4Star(int weaponPity4Star) {
+        this.weaponPity4Star = weaponPity4Star;
+    }
+
+    public int getWeaponPity5Star() {
+        return weaponPity5Star;
+    }
+
+    public void setWeaponPity5Star(int weaponPity5Star) {
+        this.weaponPity5Star = weaponPity5Star;
+    }
+
+    public void incrementWeaponPity4Star() {
+        weaponPity4Star++;
+    }
+
+    public void incrementWeaponPity5Star() {
+        weaponPity5Star++;
+    }
+
+    public void resetWeaponPity4Star() {
+        weaponPity4Star = 0;
+    }
+
+    public void resetWeaponPity5Star() {
+        weaponPity5Star = 0;
+    }
     private int level;
     private int stage;
     private int moneyCount;
@@ -309,6 +355,8 @@ public class SMCPlayer {
     }
 
     public CompoundTag saveNBTData(CompoundTag tag) {
+        tag.putInt("weaponPity4Star", weaponPity4Star);
+        tag.putInt("weaponPity5Star", weaponPity5Star);
         tag.putInt("dodgeCnt", dodgeCounter);
         tag.putInt("parryCnt", parryCounter);
         tag.putInt("levelUpLeft", levelUpLeft);
@@ -322,6 +370,8 @@ public class SMCPlayer {
     }
 
     public void loadNBTData(CompoundTag tag) {
+        weaponPity4Star = tag.getInt("weaponPity4Star");
+        weaponPity5Star = tag.getInt("weaponPity5Star");
         dodgeCounter = tag.getInt("dodgeCnt");
         parryCounter = tag.getInt("parryCnt");
         level = tag.getInt("tradeLevel");
@@ -335,6 +385,8 @@ public class SMCPlayer {
 
     public void copyFrom(SMCPlayer old) {
         this.data = old.data;
+        this.weaponPity5Star = old.weaponPity5Star;
+        this.weaponPity4Star = old.weaponPity4Star;
         this.dodgeCounter = old.dodgeCounter;
         this.parryCounter = old.parryCounter;
         this.levelUpLeft = old.levelUpLeft;
@@ -365,6 +417,22 @@ public class SMCPlayer {
                     this.currentTalkingEntity = null;
                 }
             }
+
+            if(player.tickCount % 20 == 0) {
+                //1s抽出一个武器来
+                if(this.weaponGachaingCount > 0) {
+                    this.weaponGachaingCount--;
+                    ItemStack itemStack = WeaponGachaSystem.pull(WEAPON_3STAR_LIST, WEAPON_4STAR_LIST, WEAPON_5STAR_LIST, this);
+                    ItemUtil.addItemEntity(player, itemStack);
+                    //TODO 播报五星和四星，并播放粒子
+                    if(WEAPON_5STAR_LIST.contains(itemStack)) {
+
+                    } else if(WEAPON_4STAR_LIST.contains(itemStack)) {
+
+                    }
+                }
+            }
+
         }
     }
 

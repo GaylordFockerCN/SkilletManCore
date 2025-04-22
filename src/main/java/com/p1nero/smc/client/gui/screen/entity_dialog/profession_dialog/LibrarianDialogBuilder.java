@@ -30,7 +30,7 @@ public class LibrarianDialogBuilder extends VillagerDialogScreenHandler.Villager
 
     @Override
     public void onGenerateLang(SMCLangGenerator generator) {
-        generator.addVillagerName(this.profession, "平凡的图书管理员");
+        generator.addVillagerName(this.profession, "智慧的图书管理员");
         generator.addVillagerOpt(this.profession, -1, "离去");
         generator.addVillagerAns(this.profession, 0, "（图书管理员今日无事，正在闲逛。  要不找他问问有没有卖附魔书吧，刚好给我的锅和铲升升级！）");
         generator.addVillagerOpt(this.profession, 0, "购买附魔书");

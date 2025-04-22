@@ -64,7 +64,7 @@ public class NoneDialogBuilder extends VillagerDialogScreenHandler.VillagerDialo
         switch (interactionID) {
             case 4 -> villager.setVillagerData(villager.getVillagerData().setProfession(VillagerProfession.NITWIT));
             case 5 -> villager.setVillagerData(villager.getVillagerData().setProfession(VillagerProfession.BUTCHER).setLevel(2));//setLevel锁职业
-            case 6 -> villager.setVillagerData(villager.getVillagerData().setProfession(VillagerProfession.FARMER).setLevel(2));
+            case 6 -> villager.setVillagerData(villager.getVillagerData().setProfession(VillagerProfession.CLERIC).setLevel(2));
             case 7 -> villager.setVillagerData(villager.getVillagerData().setProfession(VillagerProfession.FISHERMAN).setLevel(2));
             case 8 -> {
                 Pig pig = new Pig(EntityType.PIG, serverPlayer.level());
@@ -103,7 +103,7 @@ public class NoneDialogBuilder extends VillagerDialogScreenHandler.VillagerDialo
         generator.addVillagerAns(this.profession, 4, "（你想将它变成什么职业？）");
         generator.addVillagerOpt(this.profession, 4, "绿袍尊者");
         generator.addVillagerOpt(this.profession, 5, "屠夫");
-        generator.addVillagerOpt(this.profession, 6, "农民");
+        generator.addVillagerOpt(this.profession, 6, "牧师§a（主线人物）");
         generator.addVillagerOpt(this.profession, 7, "渔夫");
         generator.addVillagerOpt(this.profession, 8, "猪");
         generator.addVillagerOpt(this.profession, 9, "随机职业");

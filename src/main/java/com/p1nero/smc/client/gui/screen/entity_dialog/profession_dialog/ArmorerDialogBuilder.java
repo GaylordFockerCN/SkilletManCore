@@ -23,7 +23,7 @@ public class ArmorerDialogBuilder extends VillagerDialogScreenHandler.VillagerDi
     public void handle(ServerPlayer serverPlayer, Villager villager, byte interactionID) {
         super.handle(serverPlayer, villager, interactionID);
         if (interactionID == 3) {
-            ItemUtil.tryAddIngredient(serverPlayer, StartNPC.MEAT_SET, 10000, 120);
+            ItemUtil.tryAddRandomItem(serverPlayer, StartNPC.MEAT_SET, 10000, 120);
         }
     }
 
@@ -43,7 +43,7 @@ public class ArmorerDialogBuilder extends VillagerDialogScreenHandler.VillagerDi
 
     @Override
     public void onGenerateLang(SMCLangGenerator generator) {
-        generator.addVillagerName(this.profession, "传奇盔甲匠");
+        generator.addVillagerName(this.profession, " §e传奇的盔甲匠§r ");
         generator.addVillagerAns(this.profession, 0, "（是看来）");
         generator.addVillagerOpt(this.profession, 0, "购买");
         generator.addVillagerOpt(this.profession, 1, "离开");

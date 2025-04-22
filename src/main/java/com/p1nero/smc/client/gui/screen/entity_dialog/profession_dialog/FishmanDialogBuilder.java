@@ -19,7 +19,7 @@ public class FishmanDialogBuilder extends VillagerDialogScreenHandler.VillagerDi
     public void handle(ServerPlayer serverPlayer, Villager villager, byte interactionID) {
         super.handle(serverPlayer, villager, interactionID);
         if (interactionID == 3) {
-            ItemUtil.tryAddIngredient(serverPlayer, StartNPC.SEAFOOD_SET, 50000, 220);
+            ItemUtil.tryAddRandomItem(serverPlayer, StartNPC.SEAFOOD_SET, 50000, 220);
         }
     }
 
@@ -39,7 +39,7 @@ public class FishmanDialogBuilder extends VillagerDialogScreenHandler.VillagerDi
 
     @Override
     public void onGenerateLang(SMCLangGenerator generator) {
-        generator.addVillagerName(this.profession, "平凡的渔夫");
+        generator.addVillagerName(this.profession, " §b友善的渔夫§r ");
         generator.addVillagerAns(this.profession, 0, "（村民并没有像你想的那样弹出交易窗口，取而代之的是对话框。你不禁有些担心交易系统会不会被作者给取代掉。）");
         generator.addVillagerOpt(this.profession, 0, "购买");
         generator.addVillagerOpt(this.profession, 1, "离开");

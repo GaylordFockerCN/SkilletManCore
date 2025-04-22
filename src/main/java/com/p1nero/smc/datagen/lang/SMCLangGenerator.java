@@ -10,7 +10,6 @@ import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.worldgen.biome.SMCBiomes;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.npc.VillagerProfession;
 
 public class SMCLangGenerator extends SMCLangProvider {
     public SMCLangGenerator(PackOutput output) {
@@ -30,7 +29,8 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("alr", "好好好");
         this.addInfo("god_stove_talk", "我去！灶王公说话了！");
 
-        this.addInfo("trial_required", ": §6寻找牧师通过试炼以突破世界等级限制！");
+        this.addInfo("someone_s_pet", " 的 ");
+        this.addInfo("trial_required", ": §e§l寻找牧师通过试炼以突破世界等级限制！");
         this.addInfo("add_item_tip", "§a获得新物品：");
         this.addInfo("advancement_look_tip", "§a不知道做什么时，可以查看一下进度（默认按 L ）");
         this.addInfo("unlock_new_order", "§a客户解锁了新的需求！ 当前可能的请求");
@@ -52,10 +52,10 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("no_your_power", "Oh 不, 这份力量并不属于你...设定上你只能使用平底锅");
 
         this.addScreenName("start_guide", "背景故事");
-        this.addScreenAns("start_guide", 0, "你是一个来自天外的旅人，受§4『终界』§r侵扰，你失去了力量。因此你暂居此处，白天做饭维生，夜里抵御来自§4『终界』§r的袭击，保卫村庄。你在做菜的时候，不断从翻炒中领悟武学之道，同时可能邂逅神秘村民，传授你§e『秘笈』§r或§b『神兵』§r。");
+        this.addScreenAns("start_guide", 0, "你是一个来自天外的旅人，受§c『终界』§r侵扰，你失去了力量。因此你暂居此处，白天做饭维生，夜里抵御来自§c『终界』§r的袭击，保卫村庄。你在做菜的时候，不断从翻炒中领悟武学之道，同时可能邂逅神秘村民，传授你§e『秘笈』§r或§b『神兵』§r。");
         this.addScreenOpt("start_guide", 0, "继续");
         this.addScreenOpt("start_guide", 1, "跳过");
-        this.addScreenAns("start_guide", 1, "有朝一日，你觉得力量渐渐回来了，准备进军§4『终界』§r，击败恶龙，夺回属于你的力量，换得主世界永恒的安宁。最终将成为一代宗师，村民们因此称你为——§e平 底 锅 侠§r。");
+        this.addScreenAns("start_guide", 1, "有朝一日，你觉得力量渐渐回来了，准备进军§c『终界』§r，击败恶龙，夺回属于你的力量，换得主世界永恒的安宁。最终将成为一代宗师，村民们因此称你为——§e平 底 锅 侠§r。");
         this.addScreenOpt("start_guide", 2, "平底锅侠...好俗的名字...");
         this.addScreenOpt("start_guide", 3, "这像是作者一拍大腿就想出来的整合包");
         this.addScreenAns("start_guide", 2, "没错。这个整合包就是作者一拍大腿想出来的。但这一拍大腿就换来了一个月的爆肝...建议给作者三连。废话少说，快去村庄里寻找落脚点吧！");
@@ -106,9 +106,15 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add(SMCBlocks.MAIN_COOK_BLOCK.get(), "核心方块");
 
         this.add(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.get(), "技能书抽奖券");
-        this.addItemUsageInfo(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asItem(), "可以在图书管理员处抽取技能书。（不知为何，它看起来似乎有些眼熟）");
+        this.addItemUsageInfo(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asItem(), "可以在图书管理员处抽取技能书。");
         this.add(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.get(), "武器抽奖券");
-        this.addItemUsageInfo(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asItem(), "可以在武器匠处抽取技能书。（不知为何，它看起来似乎有些眼熟）");
+        this.addItemUsageInfo(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asItem(), "可以在武器匠处抽取武器。");
+        this.add(SMCRegistrateItems.DOLL_RAFFLE_TICKET.get(), "玩偶抽奖券");
+        this.addItemUsageInfo(SMCRegistrateItems.DOLL_RAFFLE_TICKET.asItem(), "可以在牧羊人处兑换玩偶盲盒。");
+        this.add(SMCRegistrateItems.PET_RAFFLE_TICKET.get(), "宠物抽奖券");
+        this.addItemUsageInfo(SMCRegistrateItems.PET_RAFFLE_TICKET.asItem(), "可以在牧羊人处抽取宠物。");
+        this.add(SMCRegistrateItems.DISC_RAFFLE_TICKET.get(), "唱片抽奖券");
+        this.addItemUsageInfo(SMCRegistrateItems.DISC_RAFFLE_TICKET.asItem(), "可以在工具匠处抽取唱片。");
 
         this.addBiome(SMCBiomes.AIR, "虚空");
 
@@ -143,8 +149,8 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialog(SMCEntities.START_NPC, 2, "本店亏损已久，承蒙大侠相助！");
         this.addDialog(SMCEntities.START_NPC, 3, "§a已全部取出！");
         this.addDialog(SMCEntities.START_NPC, 4, "§a已升级！");
-        this.addDialog(SMCEntities.START_NPC, 5, "准备好开业了吗！§6（由于作者没有建筑水平，因此还特地补偿了一些建筑方块，快去装饰你的店铺吧！§r§4建筑时记得给村民留交易窗口！村民将从四面八方生成！）");
-        this.addDialog(SMCEntities.START_NPC, 6, "将§6炒锅§r摆上§6炉灶§r以开始营业，右键顾客以查看所需食材，烹饪完成后将食材放至§6主手§r，再次对话以交付食材。根据食材的品质将获得不同奖励。而夜晚可能会有§4袭击事件§r，拿起平底锅保卫村庄！");
+        this.addDialog(SMCEntities.START_NPC, 5, "准备好开业了吗！§6（由于作者没有建筑水平，因此还特地补偿了一些建筑方块，快去装饰你的店铺吧！§r§c建筑时记得给村民留交易窗口！村民将从四面八方生成！）");
+        this.addDialog(SMCEntities.START_NPC, 6, "将§6炒锅§r摆上§6炉灶§r以开始营业，右键顾客以查看所需食材，烹饪完成后将食材放至§6主手§r，再次对话以交付食材。根据食材的品质将获得不同奖励。而夜晚可能会有§c袭击事件§r，拿起平底锅保卫村庄！");
         this.addDialog(SMCEntities.START_NPC, 7, "炒菜时，把对应的食材丢入锅中，用§6锅铲§r即可翻炒。左边的仪表盘提示食物是否烧焦，请在合适的时候将其取出！使用§aJEI§r可查看料理配方。用到的§6食材越高级，奖励越丰富！§r如果手忙脚乱，§6预制菜§r是一个不错的选择。");
         this.addDialog(SMCEntities.START_NPC, 8, "接待足够多的村民将提升一次店铺等级，随着等级提升将解锁新的资源和玩法。到一定等级时将开启§6突破试炼§r，若试炼成功则可获得大量奖励并且进入下一游戏阶段。");
         this.addDialog(SMCEntities.START_NPC, 9, "Zzz...Zzz...Zzz...(忙碌了一天的员工睡得正香，  此刻也许你会好奇它为什么能够站着睡着。平底锅侠的世界就是如此奇妙，无需那么多为什么。)");

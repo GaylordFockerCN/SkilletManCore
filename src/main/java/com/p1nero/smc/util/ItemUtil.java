@@ -28,22 +28,27 @@ import java.util.Set;
 */
 public class ItemUtil {
 
-    public static void tryAddIngredient(ServerPlayer serverPlayer, Set<ItemStack> itemStackSet, int moneyNeed, int foodCount) {
+    public static boolean tryAddRandomItem(ServerPlayer serverPlayer, Set<ItemStack> itemStackSet, int moneyNeed, int need) {
+        return tryAddRandomItem(serverPlayer, new ArrayList<>(itemStackSet), moneyNeed, need);
+    }
+
+    public static boolean tryAddRandomItem(ServerPlayer serverPlayer, List<ItemStack> itemList, int moneyNeed, int need) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         if (smcPlayer.getMoneyCount() < moneyNeed) {
             serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SoundEvents.VILLAGER_NO, serverPlayer.getSoundSource(), 1.0F, 1.0F);
             serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("no_enough_money"), true);
+            return false;
         } else {
             SMCPlayer.consumeMoney(moneyNeed, serverPlayer);
             serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
-            List<ItemStack> itemList = new ArrayList<>(itemStackSet);
             List<ItemStack> applyItems = new ArrayList<>();
-            for (int i = 0; i < foodCount; i++) {
+            for (int i = 0; i < need; i++) {
                 applyItems.add(itemList.get(serverPlayer.getRandom().nextInt(itemList.size())));
             }
             for (ItemStack itemStack : applyItems) {
                 ItemUtil.addItemEntity(serverPlayer, itemStack);
             }
+            return true;
         }
     }
 

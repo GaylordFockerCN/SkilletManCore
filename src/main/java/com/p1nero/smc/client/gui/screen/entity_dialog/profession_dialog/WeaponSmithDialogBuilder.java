@@ -12,7 +12,7 @@ import net.minecraft.world.entity.npc.VillagerProfession;
  */
 public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.VillagerDialogBuilder {
     public WeaponSmithDialogBuilder() {
-        super(VillagerProfession.SHEPHERD);
+        super(VillagerProfession.WEAPONSMITH);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
 
     @Override
     public void onGenerateLang(SMCLangGenerator generator) {
-        generator.addVillagerName(this.profession, "平凡的牧羊人");
+        generator.addVillagerName(this.profession, "魁梧的武器匠");
         generator.addVillagerOpt(this.profession, -1, "离去");
         generator.addVillagerAns(this.profession, 0, "（图书管理员今日无事，正在闲逛。  要不找他问问有没有卖附魔书吧，刚好给我的锅和铲升升级！）");
         generator.addVillagerOpt(this.profession, 0, "购买附魔书");

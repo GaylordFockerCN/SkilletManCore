@@ -278,20 +278,17 @@ public class Customer extends SMCNpc {
                 }
             }
         }
-        if(this.foodLevel == CustomerData.BAD) {
+        if(this.foodLevel == CustomerData.BAD && !DataManager.firstFoodBad.get(player)) {
             if(player instanceof ServerPlayer serverPlayer) {
-                if(!DataManager.firstFoodBad.get(player)){
-                    //灶王爷不乐意了
-                    CompoundTag tag = new CompoundTag();
-                    tag.putBoolean("is_first_food_bad", true);
-                    PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCBlockDialoguePacket(this.getHomePos(), tag), serverPlayer);
-                    level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 3.0F, 1.0F);
-                    player.hurt(player.damageSources().magic(), 0.1F);
-                }
+                //灶王爷不乐意了
+                CompoundTag tag = new CompoundTag();
+                tag.putBoolean("is_first_food_bad", true);
+                PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCBlockDialoguePacket(this.getHomePos(), tag), serverPlayer);
+                level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 3.0F, 1.0F);
+                player.hurt(player.damageSources().magic(), 0.1F);
+                DataManager.firstFoodBad.put(player, true);
             }
             return InteractionResult.sidedSuccess(level().isClientSide);
-        } else {
-            DataManager.firstFoodBad.put(player, true);
         }
 
         //双端

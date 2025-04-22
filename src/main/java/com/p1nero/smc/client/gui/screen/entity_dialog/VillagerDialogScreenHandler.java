@@ -25,6 +25,8 @@ public class VillagerDialogScreenHandler {
         PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.put(VillagerProfession.FARMER, new FarmerDialogBuilder());
         PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.put(VillagerProfession.FISHERMAN, new FishmanDialogBuilder());
         PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.put(VillagerProfession.BUTCHER, new ButcherDialogBuilder());
+        PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.put(VillagerProfession.SHEPHERD, new ShepherdDialogBuilder());
+        PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.put(VillagerProfession.CARTOGRAPHER, new CartographerDialogBuilder());
 
     }
 
@@ -32,6 +34,7 @@ public class VillagerDialogScreenHandler {
         PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.forEach((profession, villagerDialogBuilder) -> villagerDialogBuilder.onGenerateLang(generator));
     }
 
+    @OnlyIn(Dist.CLIENT)
     public static void addDialogScreen(Villager villager) {
         LinkListStreamDialogueScreenBuilder screenBuilder;
         VillagerDialogBuilder villagerDialogBuilder = PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.get(villager.getVillagerData().getProfession());

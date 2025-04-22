@@ -22,7 +22,8 @@
   ],
   "client": [
     "CreateWorldScreenMixin",
-    "WorldListEntryMixin"
+    "WorldListEntryMixin",
+    "StepSkillMixin"
   ],
   "injectors": {
     "defaultRequire": 1

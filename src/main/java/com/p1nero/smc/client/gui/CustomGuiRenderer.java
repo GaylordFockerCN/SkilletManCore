@@ -45,8 +45,9 @@ public class CustomGuiRenderer {
 
         if(smcPlayer.isTrialRequired()) {
             Component info = SkilletManCoreMod.getInfo("trial_required");
-            offsetX = font.width(info);
-            guiGraphics.drawString(font, info, x + 20 - offsetX, y - 20, 16777215, true);
+            int offsetX2 = font.width(info);
+            guiGraphics.blit(SPATULA_TEXTURE, x - offsetX2, y - 25, 20, 20, 0.0F, 0.0F, 1, 1, 1, 1);
+            guiGraphics.drawString(font, info, x + 20 - offsetX2, y - 20, 16777215, true);
         } else {
             int stageColor = switch (smcPlayer.getStage()) {
                 case 1 -> 0x84fbff;
@@ -54,9 +55,9 @@ public class CustomGuiRenderer {
                 case 3 -> 0xfb4ee9;
                 default -> 16777215;
             };
+            guiGraphics.blit(SPATULA_TEXTURE, x - offsetX, y - 25, 20, 20, 0.0F, 0.0F, 1, 1, 1, 1);
             guiGraphics.drawString(font, ": " + smcPlayer.getLevel(), x + 20 - offsetX, y - 20, stageColor, true);
         }
-        guiGraphics.blit(SPATULA_TEXTURE, x - offsetX, y - 25, 20, 20, 0.0F, 0.0F, 1, 1, 1, 1);
 
         guiGraphics.blit(MONEY_TEXTURE, x - offsetX, y, 20, 20, 0.0F, 0.0F, 1, 1, 1, 1);
         guiGraphics.drawString(font, ": " + smcPlayer.getMoneyCount(), x + 20 - offsetX, y + 5, 16777215, true);

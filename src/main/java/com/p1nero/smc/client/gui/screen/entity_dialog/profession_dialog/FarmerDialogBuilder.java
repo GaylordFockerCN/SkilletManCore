@@ -19,8 +19,8 @@ public class FarmerDialogBuilder extends VillagerDialogScreenHandler.VillagerDia
     public void handle(ServerPlayer serverPlayer, Villager villager, byte interactionID) {
         super.handle(serverPlayer, villager, interactionID);
         switch (interactionID) {
-            case 3 -> ItemUtil.tryAddIngredient(serverPlayer, StartNPC.STAPLE_SET, 500, 100);
-            case 4 -> ItemUtil.tryAddIngredient(serverPlayer, StartNPC.VEG_SET, 500, 100);
+            case 3 -> ItemUtil.tryAddRandomItem(serverPlayer, StartNPC.STAPLE_SET, 500, 100);
+            case 4 -> ItemUtil.tryAddRandomItem(serverPlayer, StartNPC.VEG_SET, 500, 100);
         }
     }
 
@@ -41,7 +41,7 @@ public class FarmerDialogBuilder extends VillagerDialogScreenHandler.VillagerDia
 
     @Override
     public void onGenerateLang(SMCLangGenerator generator) {
-        generator.addVillagerName(this.profession, " §e平凡的农民§r ");
+        generator.addVillagerName(this.profession, " §e勤恳的农民§r ");
         generator.addVillagerAns(this.profession, 0, "锄禾日当午，汗滴禾下土，谁知我农民的苦。（虽然它此刻也许并没有在劳作，  因为作者懒得读取村民工作状态，那成本可太高了，我们是《平底锅侠》，并不是MCA）");
         generator.addVillagerOpt(this.profession, 0, "购买");
         generator.addVillagerOpt(this.profession, 1, "离开");
