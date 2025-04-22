@@ -99,6 +99,7 @@ public class PlayerEventListener {
                         event.player.drop(mainHandItem.copy(), true);
                         mainHandItem.shrink(1);
                         event.player.displayClientMessage(SkilletManCoreMod.getInfo("no_your_power"), true);
+                        event.player.displayClientMessage(SkilletManCoreMod.getInfo("no_your_power2"), false);
                         SMCAdvancementData.finishAdvancement("no_your_power", ((ServerPlayer) event.player));
                     }
                 }

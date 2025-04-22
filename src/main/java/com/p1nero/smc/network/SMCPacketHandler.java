@@ -32,9 +32,12 @@ public class SMCPacketHandler {
         register(SyncPos0Packet.class, SyncPos0Packet::decode);
         register(BroadcastMessagePacket.class, BroadcastMessagePacket::decode);
         register(OpenEndScreenPacket.class, OpenEndScreenPacket::decode);
+        register(AddEntityAfterImageParticle.class, AddEntityAfterImageParticle::decode);
+
         register(OpenStartGuideScreenPacket.class, OpenStartGuideScreenPacket::decode);
         register(OpenVillagerDialogPacket.class, OpenVillagerDialogPacket::decode);
-        register(AddEntityAfterImageParticle.class, AddEntityAfterImageParticle::decode);
+        register(OpenBanPortalScreenPacket.class, OpenBanPortalScreenPacket::decode);
+
 
         // 发给服务端
         register(RequestExitSpectatorPacket.class, RequestExitSpectatorPacket::decode);

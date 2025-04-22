@@ -6,6 +6,7 @@ import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.sound.SMCSounds;
+import com.p1nero.smc.entity.custom.CustomColorItemEntity;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -118,22 +119,30 @@ public class ItemUtil {
         }
     }
 
-    public static void addItemEntity(Entity spawnOn, Item item, int count){
-        ItemEntity itemEntity = new ItemEntity(spawnOn.level(), spawnOn.getX(), spawnOn.getY(), spawnOn.getZ(), item.getDefaultInstance().copyWithCount(count));
+    public static CustomColorItemEntity addItemEntity(Entity spawnOn, Item item, int count){
+        CustomColorItemEntity itemEntity = new CustomColorItemEntity(spawnOn.level(), spawnOn.getX(), spawnOn.getY(), spawnOn.getZ(), item.getDefaultInstance().copyWithCount(count));
+        itemEntity.setPickUpDelay(40);
         spawnOn.level().addFreshEntity(itemEntity);
+        return itemEntity;
     }
 
-    public static void addItemEntity(Entity spawnOn, ItemStack item){
-        ItemEntity itemEntity = new ItemEntity(spawnOn.level(), spawnOn.getX(), spawnOn.getY(), spawnOn.getZ(), item);
+    public static CustomColorItemEntity addItemEntity(Entity spawnOn, ItemStack item){
+        CustomColorItemEntity itemEntity = new CustomColorItemEntity(spawnOn.level(), spawnOn.getX(), spawnOn.getY(), spawnOn.getZ(), item);
+        itemEntity.setPickUpDelay(40);
         spawnOn.level().addFreshEntity(itemEntity);
+        return itemEntity;
     }
-    public static void addItemEntity(ServerLevel level, BlockPos pos, ItemStack item){
-        ItemEntity itemEntity = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), item);
+    public static CustomColorItemEntity addItemEntity(ServerLevel level, BlockPos pos, ItemStack item){
+        CustomColorItemEntity itemEntity = new CustomColorItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), item);
+        itemEntity.setPickUpDelay(40);
         level.addFreshEntity(itemEntity);
+        return itemEntity;
     }
-    public static void addItemEntity(ServerLevel level, double x, double y, double z, ItemStack item){
-        ItemEntity itemEntity = new ItemEntity(level, x, y, z, item);
+    public static CustomColorItemEntity addItemEntity(ServerLevel level, double x, double y, double z, ItemStack item){
+        CustomColorItemEntity itemEntity = new CustomColorItemEntity(level, x, y, z, item);
+        itemEntity.setPickUpDelay(40);
         level.addFreshEntity(itemEntity);
+        return itemEntity;
     }
 
     /**

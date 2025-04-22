@@ -3,6 +3,8 @@ package com.p1nero.smc.datagen.lang;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.block.SMCBlocks;
 import com.p1nero.smc.client.gui.screen.entity_dialog.VillagerDialogScreenHandler;
+import com.p1nero.smc.client.gui.screen.info_screen.BanPortalScreenHandler;
+import com.p1nero.smc.client.gui.screen.info_screen.StartGuideScreenHandler;
 import com.p1nero.smc.effect.SMCEffects;
 import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
@@ -39,8 +41,8 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("please_in_battle_mode", "§c请打开战斗模式！！");
         this.addInfo("no_enough_money", "§c余额不足！！");
         this.addInfo("shop_upgrade", "§a店铺已升至 %d §a级！");
-        this.addInfo("seafood_available", "村民订购解锁 §a海鲜大礼包§r ！");
-        this.addInfo("meat_available", "村民订购解锁 §a肉类大礼包§r ！");
+        this.addInfo("unlock_stage2_info", "村民订购解锁 [§a海鲜大礼包§r]！ 现在可以使用全部武器了！");
+        this.addInfo("meat_available", "村民订购解锁 [§a肉类大礼包§r]！");
         this.addInfo("unlock_game_stage", "§6游戏阶段提升！现在等级上限已提升至： %d §6！§r解锁新的订购列表，并且客户需求种类增加！");
         this.addInfo("working", "营业中");
         this.addInfo("resting", "休息中");
@@ -50,21 +52,10 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("all_taken", "已全部取出！");
         this.addInfo("customer_is_first", "§c顾客就是上帝！");
         this.addInfo("no_your_power", "Oh 不, 这份力量并不属于你...设定上你只能使用平底锅");
+        this.addInfo("no_your_power2", "关闭§6战斗模式§r以拾取被丢出的物品");
 
-        this.addScreenName("start_guide", "背景故事");
-        this.addScreenAns("start_guide", 0, "你是一个来自天外的旅人，受§c『终界』§r侵扰，你失去了力量。因此你暂居此处，白天做饭维生，夜里抵御来自§c『终界』§r的袭击，保卫村庄。你在做菜的时候，不断从翻炒中领悟武学之道，同时可能邂逅神秘村民，传授你§e『秘笈』§r或§b『神兵』§r。");
-        this.addScreenOpt("start_guide", 0, "继续");
-        this.addScreenOpt("start_guide", 1, "跳过");
-        this.addScreenAns("start_guide", 1, "有朝一日，你觉得力量渐渐回来了，准备进军§c『终界』§r，击败恶龙，夺回属于你的力量，换得主世界永恒的安宁。最终将成为一代宗师，村民们因此称你为——§e平 底 锅 侠§r。");
-        this.addScreenOpt("start_guide", 2, "平底锅侠...好俗的名字...");
-        this.addScreenOpt("start_guide", 3, "这像是作者一拍大腿就想出来的整合包");
-        this.addScreenAns("start_guide", 2, "没错。这个整合包就是作者一拍大腿想出来的。但这一拍大腿就换来了一个月的爆肝...建议给作者三连。废话少说，快去村庄里寻找落脚点吧！");
-        this.addScreenOpt("start_guide", 4, "我去，还能吐槽");
-        this.addScreenAns("start_guide", 3, "你确定要跳过这么精彩的对话吗？一旦跳过或按ECS退出后，将只有重建存档才会弹出本对话哦~");
-        this.addScreenOpt("start_guide", 5, "确定");
-        this.addScreenOpt("start_guide", 6, "取消");
-        this.addScreenAns("start_guide", 4, "哈哈，还想再看一遍？想得美，自己在村子里逛逛吧。");
-        this.addScreenOpt("start_guide", 7, "...");
+        StartGuideScreenHandler.onGenerate(this);
+        BanPortalScreenHandler.onGenerate(this);
 
         this.addEffect(SMCEffects.BURNT, "灼伤");
 
@@ -125,7 +116,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add(SMCEntities.START_NPC.get(), "§e人畜无害的村民§r");
         this.add(SMCEntities.START_NPC.get() + "_empty", "§e⬇对话以开始经营⬇");
         this.add(SMCEntities.START_NPC.get().getDescriptionId() + "_hired", "§a收入：%d §e| §a速度 %s");
-        this. add(SMCEntities.START_NPC.get().getDescriptionId() + "_guider", "§b人畜无害的村民");
+        this.add(SMCEntities.START_NPC.get().getDescriptionId() + "_guider", "§b人畜无害的村民");
         this.addDialog(SMCEntities.START_NPC, 0, "准备好开始游戏了吗？");
         this.addDialogChoice(SMCEntities.START_NPC, 0, "入职 §a花费 %d 绿宝石");
         this.addDialogChoice(SMCEntities.START_NPC, 1, "雇佣 §a花费 %d 绿宝石");

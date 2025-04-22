@@ -196,15 +196,14 @@ public class SMCPlayer {
         addMoney(1000, serverPlayer);
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("unlock_game_stage", STAGE2_REQUIRE), false);
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("meat_available"), false);
-
+        //TODO 解锁和牧师的对话，解锁最终boss战，弹窗引导对话
     }
 
     public void unlockStage2(ServerPlayer serverPlayer) {
         this.stage = 2;
         addMoney(5000, serverPlayer);
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("unlock_game_stage", STAGE3_REQUIRE), false);
-        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("seafood_available"), false);
-        //TODO 解锁最终boss战
+        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("unlock_stage2_info"), false);
     }
 
     public void unlockStage3(ServerPlayer serverPlayer) {

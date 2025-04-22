@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.entity.VillagerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.ItemDisplayContext;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +32,13 @@ public class CustomerRenderer extends VillagerRenderer {
             Minecraft.getInstance().getItemRenderer().render(customer.getOrder(), ItemDisplayContext.GUI, false, poseStack, bufferSource, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, model);
             poseStack.popPose();
         }
+    }
 
+    @Override
+    public @NotNull ResourceLocation getTextureLocation(@NotNull Villager villager) {
+        if(villager instanceof Customer customer) {
+
+        }
+        return super.getTextureLocation(villager);
     }
 }
