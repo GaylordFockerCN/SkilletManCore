@@ -17,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 public class WorkingMusicPlayer {
 
     private static WorkingMusic music;
+    private static boolean isRecordPlaying;
 
     public static void playWorkingMusic() {
         Player player = Minecraft.getInstance().player;
@@ -25,8 +26,7 @@ public class WorkingMusicPlayer {
             if (music != null) {
                 if (Minecraft.getInstance().options.getSoundSourceVolume(SoundSource.RECORDS) <= 0) {
                     music = null;
-                } else
-                if (!smcPlayer.isWorking()) {
+                } else if (!smcPlayer.isWorking()) {
                     music.player = null;
                 } else if (music.player == null && music.soundEvent == SMCSounds.WORKING_BGM.get()) {
                     music.player = player;
@@ -49,11 +49,24 @@ public class WorkingMusicPlayer {
         }
     }
 
+    public static boolean isPlaying() {
+        return music != null && music.player != null;
+    }
+
     public static void stopMusic() {
         if (music != null) {
             music.player = null;
         }
     }
+
+    public static boolean isRecordPlaying() {
+        return isRecordPlaying;
+    }
+
+    public static void setIsRecordPlaying(boolean isRecordPlaying) {
+        WorkingMusicPlayer.isRecordPlaying = isRecordPlaying;
+    }
+
     private static class WorkingMusic extends AbstractTickableSoundInstance {
         public Player player;
         private int ticksExisted = 0;
@@ -72,6 +85,7 @@ public class WorkingMusicPlayer {
             this.z = player.getZ();
         }
 
+        @Override
         public boolean canPlaySound() {
             return WorkingMusicPlayer.music == this;
         }

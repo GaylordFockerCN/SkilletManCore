@@ -1,4 +1,4 @@
-package com.p1nero.smc.client.gui.screen.entity_dialog;
+package com.p1nero.smc.client.gui.screen.entity_dialog.animal;
 
 import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.client.gui.screen.DialogueScreen;

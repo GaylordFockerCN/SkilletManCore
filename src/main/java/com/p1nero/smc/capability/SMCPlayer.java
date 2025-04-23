@@ -404,7 +404,9 @@ public class SMCPlayer {
     public void tick(Player player) {
         if(player.level().isClientSide){
             if(isWorking) {
-                WorkingMusicPlayer.playWorkingMusic();
+                if(!WorkingMusicPlayer.isRecordPlaying()) {
+                    WorkingMusicPlayer.playWorkingMusic();
+                }
             } else {
                 WorkingMusicPlayer.stopMusic();
             }

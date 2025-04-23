@@ -1,6 +1,7 @@
 package com.p1nero.smc.entity.custom.npc.customer.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
@@ -16,6 +17,8 @@ import net.minecraft.world.item.ItemDisplayContext;
 import org.jetbrains.annotations.NotNull;
 
 public class CustomerRenderer extends VillagerRenderer {
+    private static final ResourceLocation VILLAGER_UNHAPPY_SKIN = new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/entity/villager/villager_unhappy.png");
+    private static final ResourceLocation VILLAGER_HAPPY_SKIN = new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/entity/villager/villager_happy.png");
     public CustomerRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
@@ -37,7 +40,11 @@ public class CustomerRenderer extends VillagerRenderer {
     @Override
     public @NotNull ResourceLocation getTextureLocation(@NotNull Villager villager) {
         if(villager instanceof Customer customer) {
-
+            if(customer.getMoodAfterTrade() == Customer.HAPPY) {
+                return VILLAGER_HAPPY_SKIN;
+            } else if(customer.getMoodAfterTrade() == Customer.UN_HAPPY) {
+                return VILLAGER_UNHAPPY_SKIN;
+            }
         }
         return super.getTextureLocation(villager);
     }

@@ -43,10 +43,10 @@ public class ShepherdDialogBuilder extends VillagerDialogScreenHandler.VillagerD
     public void handle(ServerPlayer serverPlayer, Villager villager, byte interactionID) {
         super.handle(serverPlayer, villager, interactionID);
 
-        if(interactionID == 1) {
+        if (interactionID == 1) {
             int petTicketCnt = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.PET_RAFFLE_TICKET.asItem(), 1);
-            if(petTicketCnt == 0) {
-                if(ItemUtil.tryAddRandomItem(serverPlayer, List.of(Items.LEAD.getDefaultInstance()), 1600, 1)){
+            if (petTicketCnt == 0) {
+                if (ItemUtil.tryAddRandomItem(serverPlayer, List.of(Items.LEAD.getDefaultInstance()), 1600, 1)) {
                     getPet(serverPlayer, villager);
                 }
             } else {
@@ -54,12 +54,14 @@ public class ShepherdDialogBuilder extends VillagerDialogScreenHandler.VillagerD
             }
         }
 
-        if(interactionID == 2) {
+        if (interactionID == 2) {
             int dollTicketCnt = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.DOLL_RAFFLE_TICKET.asItem(), 1);
-            if(dollTicketCnt == 0){
+            if (dollTicketCnt == 0) {
                 ItemUtil.tryAddRandomItem(serverPlayer, List.of(ModItems.PURPLE_DOLL_GIFT_BOX.get().getDefaultInstance()), 1600, 1);
+                serverPlayer.serverLevel().sendParticles(ParticleTypes.TOTEM_OF_UNDYING, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), 50, 1.0, 1.0, 1.0, 0.2);
+                serverPlayer.serverLevel().playSound(null, serverPlayer.getOnPos(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 0.5F, 2.0F);
             } else {
-                BlockPos spawnPos = villager.getOnPos().above(4);
+                BlockPos spawnPos = serverPlayer.getOnPos().above(4);
                 ItemUtil.addItemEntity(serverPlayer.serverLevel(), spawnPos, ModItems.PURPLE_DOLL_GIFT_BOX.get().getDefaultInstance());
                 serverPlayer.serverLevel().sendParticles(ParticleTypes.TOTEM_OF_UNDYING, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 50, 1.0, 1.0, 1.0, 0.2);
                 serverPlayer.serverLevel().playSound(null, serverPlayer.getOnPos(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 0.5F, 2.0F);
@@ -71,17 +73,17 @@ public class ShepherdDialogBuilder extends VillagerDialogScreenHandler.VillagerD
     public void getPet(ServerPlayer serverPlayer, Villager villager) {
         EntityType<? extends Animal> entityType = ENTITY_TYPE_LIST.get(serverPlayer.getRandom().nextInt(ENTITY_TYPE_LIST.size()));
         int randomInt = serverPlayer.getRandom().nextInt(10);
-        if(randomInt == 1) {
+        if (randomInt == 1) {
             entityType = WOMEntities.LUPUS_REX.get();
         }
         BlockPos spawnPos = villager.getOnPos().above(3);
         Animal animal = entityType.spawn(serverPlayer.serverLevel(), spawnPos, MobSpawnType.MOB_SUMMONED);
-        if(animal != null) {
+        if (animal != null) {
             animal.setInLove(serverPlayer);
-            if(animal instanceof TamableAnimal tamableAnimal) {
+            if (animal instanceof TamableAnimal tamableAnimal) {
                 tamableAnimal.tame(serverPlayer);
             }
-            if(animal instanceof AbstractHorse abstractHorse) {
+            if (animal instanceof AbstractHorse abstractHorse) {
                 abstractHorse.tameWithName(serverPlayer);
                 ItemUtil.addItem(serverPlayer, Items.SADDLE.getDefaultInstance(), true);
             }
@@ -101,24 +103,24 @@ public class ShepherdDialogBuilder extends VillagerDialogScreenHandler.VillagerD
     @OnlyIn(Dist.CLIENT)
     public void createDialog(LinkListStreamDialogueScreenBuilder builder, Villager self) {
         LocalPlayer localPlayer = Minecraft.getInstance().player;
-        if(localPlayer != null) {
+        if (localPlayer != null) {
 
             TreeNode root = new TreeNode(answer(0));
 
             int petTicketCnt = localPlayer.getInventory().countItem(SMCRegistrateItems.DOLL_RAFFLE_TICKET.asItem());
             int dollTicketCnt = localPlayer.getInventory().countItem(SMCRegistrateItems.PET_RAFFLE_TICKET.asItem());
-            if(petTicketCnt < 1) {
-                root.addChild(new TreeNode(answer(1), choice(0)))
+            if (petTicketCnt < 1) {
+                root.addChild(new TreeNode(answer(1), choice(0))
                         .addLeaf(choice(2), (byte) 1)
-                        .addLeaf(choice(3));
+                        .addLeaf(choice(3)));
             } else {
                 root.addLeaf(choice(0), (byte) 1);
             }
 
-            if(dollTicketCnt < 1) {
-                root.addChild(new TreeNode(answer(2), choice(1)))
+            if (dollTicketCnt < 1) {
+                root.addChild(new TreeNode(answer(2), choice(1))
                         .addLeaf(choice(2), (byte) 2)
-                        .addLeaf(choice(3));
+                        .addLeaf(choice(3)));
             } else {
                 root.addLeaf(choice(1), (byte) 2);
             }
@@ -140,7 +142,6 @@ public class ShepherdDialogBuilder extends VillagerDialogScreenHandler.VillagerD
         generator.addVillagerOpt(this.profession, 2, "确定");
         generator.addVillagerOpt(this.profession, 3, "取消");
     }
-
 
 
 }

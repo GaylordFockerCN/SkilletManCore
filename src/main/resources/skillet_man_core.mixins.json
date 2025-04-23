@@ -24,6 +24,7 @@
   "client": [
     "CreateWorldScreenMixin",
     "DodgeSkillMixin",
+    "LevelRendererMixin",
     "WorldListEntryMixin"
   ],
   "injectors": {

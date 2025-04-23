@@ -41,8 +41,11 @@ public class CartographerDialogBuilder extends VillagerDialogScreenHandler.Villa
             int dollTicketCnt = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.DISC_RAFFLE_TICKET.asItem(), 1);
             if (dollTicketCnt == 0) {
                 ItemUtil.tryAddRandomItem(serverPlayer, DISCS, 1600, 1);
+                serverPlayer.serverLevel().sendParticles(ParticleTypes.TOTEM_OF_UNDYING, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), 50, 1.0, 1.0, 1.0, 0.2);
+                serverPlayer.serverLevel().playSound(null, serverPlayer.getOnPos(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 0.5F, 2.0F);
+
             } else {
-                BlockPos spawnPos = villager.getOnPos().above(4);
+                BlockPos spawnPos = serverPlayer.getOnPos().above(4);
                 ItemUtil.addItemEntity(serverPlayer.serverLevel(), spawnPos, DISCS.get(serverPlayer.getRandom().nextInt(DISCS.size())));
                 serverPlayer.serverLevel().sendParticles(ParticleTypes.TOTEM_OF_UNDYING, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 50, 1.0, 1.0, 1.0, 0.2);
                 serverPlayer.serverLevel().playSound(null, serverPlayer.getOnPos(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 0.5F, 2.0F);
@@ -59,9 +62,9 @@ public class CartographerDialogBuilder extends VillagerDialogScreenHandler.Villa
 
             int discTicketCnt = localPlayer.getInventory().countItem(SMCRegistrateItems.DISC_RAFFLE_TICKET.asItem());
             if (discTicketCnt < 1) {
-                root.addChild(new TreeNode(answer(1), choice(0)))
+                root.addChild(new TreeNode(answer(1), choice(0))
                         .addLeaf(choice(2), (byte) 1)
-                        .addLeaf(choice(3));
+                        .addLeaf(choice(3)));
             } else {
                 root.addLeaf(choice(0), (byte) 1);
             }
@@ -74,7 +77,7 @@ public class CartographerDialogBuilder extends VillagerDialogScreenHandler.Villa
     @Override
     public void onGenerateLang(SMCLangGenerator generator) {
         generator.addVillagerName(this.profession, " §d时尚的制图师§r");
-        generator.addVillagerAns(this.profession, 0, "嘿宝贝，来点碟吗？这儿可都是大宝贝！  （你愿意花费辛苦赚来的绿宝石，为枯燥的营业生活添加点乐趣吗？  传说级碟片 §l§8[13号唱片]§r 概率UP！）");
+        generator.addVillagerAns(this.profession, 0, "嘿宝贝，来点碟吗？这儿可都是大宝贝！（你愿意花费辛苦赚来的绿宝石，  为枯燥的营业生活添加点乐趣吗？  传说级碟片 §l§8[13号唱片]§r 概率UP！）");
         generator.addVillagerOpt(this.profession, 0, "抽取唱片");
         generator.addVillagerOpt(this.profession, 1, "离去");
         generator.addVillagerAns(this.profession, 1, "唱片抽奖券不足，是否用 §a1600 绿宝石§r代替？");

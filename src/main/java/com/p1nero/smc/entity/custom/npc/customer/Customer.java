@@ -60,10 +60,14 @@ import java.util.function.Supplier;
 public class Customer extends SMCNpc {
 
     protected static final EntityDataAccessor<Boolean> TRADED = SynchedEntityData.defineId(Customer.class, EntityDataSerializers.BOOLEAN);//是否交易过
+    protected static final EntityDataAccessor<Integer> MOOD_AFTER_TRADE = SynchedEntityData.defineId(Customer.class, EntityDataSerializers.INT);//交易后是否happy
     protected static final EntityDataAccessor<Boolean> IS_SPECIAL = SynchedEntityData.defineId(Customer.class, EntityDataSerializers.BOOLEAN);//是否是隐士，可以给予武林秘籍
     protected static final EntityDataAccessor<Integer> SMC_ID = SynchedEntityData.defineId(Customer.class, EntityDataSerializers.INT);//村民编号，用于区别对话
     protected static final EntityDataAccessor<ItemStack> ORDER = SynchedEntityData.defineId(Customer.class, EntityDataSerializers.ITEM_STACK);//请求的食物
     public static final int MAX_CUSTOMER_TYPE = 26;
+    public static final int NO_MOOD = 0;
+    public static final int HAPPY = 1;
+    public static final int UN_HAPPY = 2;
     public static final List<CustomerData> CUSTOMERS = new ArrayList<>();
     public static final List<CustomerData> SPECIAL_CUSTOMERS = new ArrayList<>();
 
@@ -166,12 +170,20 @@ public class Customer extends SMCNpc {
     public ItemStack getOrder() {
         return this.getEntityData().get(ORDER);
     }
+    public void setMoodAfterTrade(int moodAfterTrade) {
+        this.getEntityData().set(MOOD_AFTER_TRADE, moodAfterTrade);
+    }
+
+    public int getMoodAfterTrade() {
+        return this.getEntityData().get(MOOD_AFTER_TRADE);
+    }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.getEntityData().define(ORDER, ItemStack.EMPTY);
         this.getEntityData().define(SMC_ID, 0);
+        this.getEntityData().define(MOOD_AFTER_TRADE, NO_MOOD);
         this.getEntityData().define(TRADED, false);
         this.getEntityData().define(IS_SPECIAL, false);
     }
@@ -342,11 +354,13 @@ public class Customer extends SMCNpc {
     @Override
     public void handleNpcInteraction(ServerPlayer player, byte interactionID) {
         if(interactionID == CustomerData.BAD) {
+            this.setMoodAfterTrade(UN_HAPPY);
             this.setTraded(true);//离去
         }
 
         if(interactionID == CustomerData.BEST || interactionID == CustomerData.MIDDLE) {
             SMCPlayer.finishTransaction(player);//能吃就能升级
+            this.setMoodAfterTrade(interactionID == CustomerData.BEST ? HAPPY : UN_HAPPY);
             this.setTraded(true);//离去
         }
 
