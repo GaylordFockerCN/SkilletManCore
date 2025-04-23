@@ -1,8 +1,13 @@
 package com.p1nero.smc.util;
 
+import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
+import com.p1nero.smc.registrate.SMCRegistrateItems;
+import dev.xkmc.cuisinedelight.init.registrate.CDItems;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -14,6 +19,21 @@ public class WeaponGachaSystem {
     private static final double RATE_INCREMENT_5STAR = 0.06; // 6% per pull after 73
 
     private static final Random random = new Random();
+    public static final List<ItemStack> STAR3_LIST = new ArrayList<>();
+    public static final List<ItemStack> STAR4_LIST = new ArrayList<>();
+    public static final List<ItemStack> STAR5_LIST = new ArrayList<>();
+
+    public static void initItemList() {
+        STAR3_LIST.addAll(List.of(CDItems.SPATULA.asStack(), SMCRegistrateItems.SPATULA_V2.asStack(), SMCRegistrateItems.SPATULA_V3.asStack(), SMCRegistrateItems.SPATULA_V4.asStack(), SMCRegistrateItems.SPATULA_V5.asStack()));
+        STAR3_LIST.addAll(List.of(CDItems.SKILLET.asStack(), SMCRegistrateItems.IRON_SKILLET_LEVEL2.asStack(), SMCRegistrateItems.IRON_SKILLET_LEVEL3.asStack(), SMCRegistrateItems.IRON_SKILLET_LEVEL4.asStack(), SMCRegistrateItems.IRON_SKILLET_LEVEL5.asStack()));
+
+
+    }
+
+    public static ItemStack pull(ServerPlayer serverPlayer) {
+        SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+        return pull(STAR3_LIST, STAR4_LIST, STAR5_LIST, smcPlayer);
+    }
 
     public static ItemStack pull(List<ItemStack> threeStar, List<ItemStack> fourStar, List<ItemStack> fiveStar, SMCPlayer playerData) {
         // 更新保底计数器

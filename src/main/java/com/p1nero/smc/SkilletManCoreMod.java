@@ -14,6 +14,8 @@ import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.registrate.SMCRegistrateBlocks;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
+import com.p1nero.smc.util.SkillBookGachaSystem;
+import com.p1nero.smc.util.WeaponGachaSystem;
 import dev.xkmc.l2library.base.L2Registrate;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -73,6 +75,8 @@ public class SkilletManCoreMod {
 
     private void commonSetup(final FMLCommonSetupEvent event){
         SMCPacketHandler.register();
+        WeaponGachaSystem.initItemList();
+        SkillBookGachaSystem.initItemList();
 //        event.enqueueWork(() -> {
 //            try{
 //                File dir = FMLPaths.CONFIGDIR.get().resolve(SkilletManCoreMod.MOD_ID).toFile();

@@ -1,5 +1,6 @@
 package com.p1nero.smc.entity.custom;
 
+import com.p1nero.smc.entity.SMCEntities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -17,11 +18,16 @@ public class CustomColorItemEntity extends ItemEntity {
     }
 
     public CustomColorItemEntity(Level p_32001_, double p_32002_, double p_32003_, double p_32004_, ItemStack p_32005_) {
-        super(p_32001_, p_32002_, p_32003_, p_32004_, p_32005_);
+        this(p_32001_, p_32002_, p_32003_, p_32004_, p_32005_, p_32001_.random.nextDouble() * 0.2D - 0.1D, 0.2D, p_32001_.random.nextDouble() * 0.2D - 0.1D);
     }
 
     public CustomColorItemEntity(Level p_149663_, double p_149664_, double p_149665_, double p_149666_, ItemStack p_149667_, double p_149668_, double p_149669_, double p_149670_) {
-        super(p_149663_, p_149664_, p_149665_, p_149666_, p_149667_, p_149668_, p_149669_, p_149670_);
+        super(SMCEntities.CUSTOM_COLOR_ITEM.get(), p_149663_);
+        this.setPos(p_149664_, p_149665_, p_149666_);
+        this.setDeltaMovement(p_149668_, p_149669_, p_149670_);
+        this.setItem(p_149667_);
+        p_149667_.getItem();
+        this.lifespan = p_149667_.getEntityLifespan(p_149663_);
     }
 
     @Override

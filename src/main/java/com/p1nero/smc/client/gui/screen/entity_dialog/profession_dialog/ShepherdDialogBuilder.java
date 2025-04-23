@@ -59,12 +59,12 @@ public class ShepherdDialogBuilder extends VillagerDialogScreenHandler.VillagerD
             if (dollTicketCnt == 0) {
                 ItemUtil.tryAddRandomItem(serverPlayer, List.of(ModItems.PURPLE_DOLL_GIFT_BOX.get().getDefaultInstance()), 1600, 1);
                 serverPlayer.serverLevel().sendParticles(ParticleTypes.TOTEM_OF_UNDYING, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), 50, 1.0, 1.0, 1.0, 0.2);
-                serverPlayer.serverLevel().playSound(null, serverPlayer.getOnPos(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 0.5F, 2.0F);
+                serverPlayer.serverLevel().playSound(null, serverPlayer.getOnPos(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 1.0F, 2.0F);
             } else {
                 BlockPos spawnPos = serverPlayer.getOnPos().above(4);
                 ItemUtil.addItemEntity(serverPlayer.serverLevel(), spawnPos, ModItems.PURPLE_DOLL_GIFT_BOX.get().getDefaultInstance());
                 serverPlayer.serverLevel().sendParticles(ParticleTypes.TOTEM_OF_UNDYING, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 50, 1.0, 1.0, 1.0, 0.2);
-                serverPlayer.serverLevel().playSound(null, serverPlayer.getOnPos(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 0.5F, 2.0F);
+                serverPlayer.serverLevel().playSound(null, serverPlayer.getOnPos(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 1.0F, 2.0F);
             }
         }
 
@@ -79,6 +79,7 @@ public class ShepherdDialogBuilder extends VillagerDialogScreenHandler.VillagerD
         BlockPos spawnPos = villager.getOnPos().above(3);
         Animal animal = entityType.spawn(serverPlayer.serverLevel(), spawnPos, MobSpawnType.MOB_SUMMONED);
         if (animal != null) {
+            animal.playAmbientSound();
             animal.setInLove(serverPlayer);
             if (animal instanceof TamableAnimal tamableAnimal) {
                 tamableAnimal.tame(serverPlayer);

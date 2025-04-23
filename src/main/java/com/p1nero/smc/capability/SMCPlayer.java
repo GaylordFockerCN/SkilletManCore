@@ -4,20 +4,27 @@ import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.client.sound.player.WorkingMusicPlayer;
 import com.p1nero.smc.datagen.SMCAdvancementData;
+import com.p1nero.smc.entity.custom.CustomColorItemEntity;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.SyncSMCPlayerPacket;
 import com.p1nero.smc.util.ItemUtil;
+import com.p1nero.smc.util.SkillBookGachaSystem;
 import com.p1nero.smc.util.WeaponGachaSystem;
 import dev.xkmc.cuisinedelight.init.registrate.PlateFood;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import yesman.epicfight.world.item.EpicFightItems;
+import yesman.epicfight.world.item.SkillBookItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,17 +35,37 @@ import java.util.function.Consumer;
  * 懒得换成DataKey了将就一下吧
  */
 public class SMCPlayer {
-    public static final List<ItemStack> WEAPON_3STAR_LIST = new ArrayList<>();
-    public static final List<ItemStack> WEAPON_4STAR_LIST = new ArrayList<>();
-    public static final List<ItemStack> WEAPON_5STAR_LIST = new ArrayList<>();
 
-    public static void initWeaponList(){
+    private int skillBookGachaingCount;
+    private int skillBookPity;
 
+    public void setSkillBookGachaingCount(int skillBookGachaingCount) {
+        this.skillBookGachaingCount = skillBookGachaingCount;
+    }
+
+    public int getSkillBookPity() {
+        return skillBookPity;
+    }
+
+    public void setSkillBookPity(int skillBookPity) {
+        this.skillBookPity = skillBookPity;
+    }
+
+    public void incrementSkillBookPity4Star() {
+        skillBookPity++;
+    }
+
+    public void resetSkillBookPity() {
+        skillBookPity = 0;
     }
 
     private int weaponGachaingCount;
     private int weaponPity4Star;
     private int weaponPity5Star;
+
+    public void setWeaponGachaingCount(int weaponGachaingCount) {
+        this.weaponGachaingCount = weaponGachaingCount;
+    }
 
     public int getWeaponPity4Star() {
         return weaponPity4Star;
@@ -263,6 +290,24 @@ public class SMCPlayer {
         serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.EARN_MONEY.get(), serverPlayer.getSoundSource(), 0.4F, 1.0F);
     }
 
+    public static boolean hasMoney(ServerPlayer serverPlayer, int moneyNeed) {
+        SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+        return smcPlayer.getMoneyCount() >= moneyNeed;
+    }
+
+    public static boolean hasMoney(ServerPlayer serverPlayer, int moneyNeed, boolean playSound) {
+        if(!playSound) {
+            return hasMoney(serverPlayer, moneyNeed);
+        }
+        if(hasMoney(serverPlayer, moneyNeed)) {
+            serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
+            return true;
+        }
+        serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SoundEvents.VILLAGER_NO, serverPlayer.getSoundSource(), 1.0F, 1.0F);
+        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("no_enough_money"), true);
+        return false;
+    }
+
     public void setStage(int stage) {
         this.stage = stage;
     }
@@ -354,6 +399,7 @@ public class SMCPlayer {
     }
 
     public CompoundTag saveNBTData(CompoundTag tag) {
+        tag.putInt("skillBookPity", skillBookPity);
         tag.putInt("weaponPity4Star", weaponPity4Star);
         tag.putInt("weaponPity5Star", weaponPity5Star);
         tag.putInt("dodgeCnt", dodgeCounter);
@@ -369,6 +415,7 @@ public class SMCPlayer {
     }
 
     public void loadNBTData(CompoundTag tag) {
+        skillBookPity = tag.getInt("skillBookPity");
         weaponPity4Star = tag.getInt("weaponPity4Star");
         weaponPity5Star = tag.getInt("weaponPity5Star");
         dodgeCounter = tag.getInt("dodgeCnt");
@@ -423,18 +470,55 @@ public class SMCPlayer {
                 //1s抽出一个武器来
                 if(this.weaponGachaingCount > 0) {
                     this.weaponGachaingCount--;
-                    ItemStack itemStack = WeaponGachaSystem.pull(WEAPON_3STAR_LIST, WEAPON_4STAR_LIST, WEAPON_5STAR_LIST, this);
-                    ItemUtil.addItemEntity(player, itemStack);
-                    //TODO 播报五星和四星，并播放粒子
-                    if(WEAPON_5STAR_LIST.contains(itemStack)) {
-
-                    } else if(WEAPON_4STAR_LIST.contains(itemStack)) {
-
+                    ItemStack itemStack = WeaponGachaSystem.pull(((ServerPlayer) player));
+                    CustomColorItemEntity entity = ItemUtil.addItemEntity(player, itemStack);
+                    if(WeaponGachaSystem.STAR5_LIST.contains(itemStack)) {
+                        entity.setTeamColor(0xfff66d);
+                        entity.setGlowingTag(true);
+                        playGoldEffect((ServerPlayer) player, itemStack);
+                    } else if(WeaponGachaSystem.STAR4_LIST.contains(itemStack)) {
+                        entity.setTeamColor(0xc000ff);
+                        entity.setGlowingTag(true);
+                        playRareEffect((ServerPlayer) player, itemStack);
+                    } else {
+                        playCommonEffect((ServerPlayer) player);
+                    }
+                }
+                if(this.skillBookGachaingCount > 0) {
+                    this.skillBookGachaingCount--;
+                    ItemStack itemStack = SkillBookGachaSystem.pull(((ServerPlayer) player));
+                    CustomColorItemEntity entity = ItemUtil.addItemEntity(player, itemStack);
+                    if(SkillBookGachaSystem.RARE_LIST.contains(itemStack)) {
+                        entity.setTeamColor(0xc000ff);
+                        entity.setGlowingTag(true);
+                        playRareEffect((ServerPlayer) player, itemStack);
+                    } else {
+                        playCommonEffect((ServerPlayer) player);
                     }
                 }
             }
 
         }
+    }
+    private void playCommonEffect(ServerPlayer player) {
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 0.5F, 2.0F);
+        player.serverLevel().sendParticles(ParticleTypes.TOTEM_OF_UNDYING, player.getX(), player.getY(), player.getZ(), 10, 1.0, 1.0, 1.0, 0.2);
+    }
+    private void playRareEffect(ServerPlayer player, ItemStack itemStack) {
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 2.0F, 2.0F);
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 2.0F, 2.0F);
+
+        Component itemName = itemStack.is(EpicFightItems.SKILLBOOK.get()) ? itemStack.getDisplayName().copy().append(" - ").append(SkillBookItem.getContainSkill(itemStack).getDisplayName()) : itemStack.getDisplayName();
+        player.server.getPlayerList().getPlayers().forEach(serverPlayer -> serverPlayer.displayClientMessage(player.getName().copy().append(SkilletManCoreMod.getInfo("rare_item_got", itemName)), false));
+    }
+
+    private void playGoldEffect(ServerPlayer player, ItemStack itemStack) {
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 3.0F, 1.0F);
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 2.0F, 0.5F);
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.TOTEM_USE, SoundSource.BLOCKS, 3.0F, 1.0F);
+        player.serverLevel().sendParticles(ParticleTypes.TOTEM_OF_UNDYING, player.getX(), player.getY(), player.getZ(), 50, 1.0, 1.0, 1.0, 0.2);
+        Component itemName = itemStack.is(EpicFightItems.SKILLBOOK.get()) ? itemStack.getDisplayName().copy().append(" - ").append(SkillBookItem.getContainSkill(itemStack).getDisplayName()) : itemStack.getDisplayName();
+        player.server.getPlayerList().getPlayers().forEach(serverPlayer -> serverPlayer.displayClientMessage(player.getName().copy().append(SkilletManCoreMod.getInfo("gold_item_got", itemName.copy().withStyle(ChatFormatting.GOLD))), false));
     }
 
 }

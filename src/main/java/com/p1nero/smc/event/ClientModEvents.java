@@ -9,9 +9,7 @@ import com.p1nero.smc.entity.custom.boss.goldenflame.client.FlameCircleRenderer;
 import com.p1nero.smc.entity.custom.boss.goldenflame.client.GoldenFlamePatchedRenderer;
 import com.p1nero.smc.entity.custom.boss.goldenflame.client.GoldenFlameRenderer;
 import com.p1nero.smc.entity.custom.npc.customer.client.CustomerRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.client.renderer.entity.VillagerRenderer;
+import net.minecraft.client.renderer.entity.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -38,6 +36,9 @@ public class ClientModEvents{
         //NPC
         EntityRenderers.register(SMCEntities.START_NPC.get(), VillagerRenderer::new);
         EntityRenderers.register(SMCEntities.CUSTOMER.get(), CustomerRenderer::new);
+
+        //MISC
+        EntityRenderers.register(SMCEntities.CUSTOM_COLOR_ITEM.get(), ItemEntityRenderer::new);
 
     }
 

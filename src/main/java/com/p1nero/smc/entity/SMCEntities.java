@@ -1,6 +1,7 @@
 package com.p1nero.smc.entity;
 
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.entity.custom.CustomColorItemEntity;
 import com.p1nero.smc.entity.custom.boss.goldenflame.GoldenFlamePatch;
 import com.p1nero.smc.entity.custom.boss.goldenflame.BlackHoleEntity;
 import com.p1nero.smc.entity.custom.boss.goldenflame.FlameCircleEntity;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
@@ -43,6 +45,8 @@ public class SMCEntities {
 	public static final RegistryObject<EntityType<GoldenFlame>> GOLDEN_FLAME = register("golden_flame",
 			EntityType.Builder.of(GoldenFlame::new, MobCategory.MONSTER).sized(0.8f, 2.5f));
 
+	public static final RegistryObject<EntityType<CustomColorItemEntity>> CUSTOM_COLOR_ITEM = register("custom_color_item",
+			EntityType.Builder.<CustomColorItemEntity>of(CustomColorItemEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(6).updateInterval(20));
 
 	private static <T extends Entity> RegistryObject<EntityType<T>> register(String name, EntityType.Builder<T> entityTypeBuilder) {
 		return REGISTRY.register(name, () -> entityTypeBuilder.build(new ResourceLocation(SkilletManCoreMod.MOD_ID, name).toString()));

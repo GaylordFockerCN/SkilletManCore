@@ -42,13 +42,13 @@ public class CartographerDialogBuilder extends VillagerDialogScreenHandler.Villa
             if (dollTicketCnt == 0) {
                 ItemUtil.tryAddRandomItem(serverPlayer, DISCS, 1600, 1);
                 serverPlayer.serverLevel().sendParticles(ParticleTypes.TOTEM_OF_UNDYING, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), 50, 1.0, 1.0, 1.0, 0.2);
-                serverPlayer.serverLevel().playSound(null, serverPlayer.getOnPos(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 0.5F, 2.0F);
+                serverPlayer.serverLevel().playSound(null, serverPlayer.getOnPos(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 1.0F, 2.0F);
 
             } else {
                 BlockPos spawnPos = serverPlayer.getOnPos().above(4);
                 ItemUtil.addItemEntity(serverPlayer.serverLevel(), spawnPos, DISCS.get(serverPlayer.getRandom().nextInt(DISCS.size())));
                 serverPlayer.serverLevel().sendParticles(ParticleTypes.TOTEM_OF_UNDYING, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 50, 1.0, 1.0, 1.0, 0.2);
-                serverPlayer.serverLevel().playSound(null, serverPlayer.getOnPos(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 0.5F, 2.0F);
+                serverPlayer.serverLevel().playSound(null, serverPlayer.getOnPos(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 1.0F, 2.0F);
             }
         }
     }

@@ -46,7 +46,7 @@ public class FishmanDialogBuilder extends VillagerDialogScreenHandler.VillagerDi
         generator.addVillagerAns(this.profession, 1, "（恭喜你发现了本整合包唯一提前获取海鲜的办法！正常需要等到阶段2才可解锁）");
         generator.addVillagerOpt(this.profession, 2, "怎么还是大礼包？");
         generator.addVillagerAns(this.profession, 2, "是这样的，本整合包无处不在的抽卡系统。");
-        generator.addVillagerOpt(this.profession, 3, "海鲜超级大礼包 - §a50000 绿宝石");
+        generator.addVillagerOpt(this.profession, 3, "海鲜超级大礼包 §a50000 绿宝石");
     }
 
 

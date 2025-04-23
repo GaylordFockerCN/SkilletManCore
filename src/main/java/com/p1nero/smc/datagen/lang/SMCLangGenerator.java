@@ -31,6 +31,8 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("alr", "好好好");
         this.addInfo("god_stove_talk", "我去！灶王公说话了！");
 
+        this.addInfo("gold_item_got", " §e刚刚 获得传说级物品：%s §e！");
+        this.addInfo("rare_item_got", " §d刚刚 获得史诗级物品：%s §d！");
         this.addInfo("someone_s_pet", " 的 ");
         this.addInfo("trial_required", ": §e§l寻找牧师通过试炼以突破世界等级限制！");
         this.addInfo("add_item_tip", "§a获得新物品：");
