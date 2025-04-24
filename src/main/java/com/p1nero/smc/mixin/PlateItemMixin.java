@@ -20,11 +20,11 @@ public abstract class PlateItemMixin extends Item {
 
     @Inject(method = "giveBack", at = @At("HEAD"), remap = false)
     private void smc$use(ItemStack foodStack, CookedFoodData food, PlateItem.ReturnTarget target, CallbackInfo ci){
-        if(target instanceof PlateItem.PlayerTarget playerTarget && playerTarget.player() instanceof ServerPlayer serverPlayer) {
-            if(serverPlayer.serverLevel().isNight()) {
+        if(target instanceof PlateItem.PlayerTarget playerTarget) {
+            if(playerTarget.player() instanceof ServerPlayer serverPlayer && serverPlayer.serverLevel().isNight()) {
                 SMCAdvancementData.finishAdvancement("pre_cook", serverPlayer);
-                DirtPlateItem.giveScoreEffect(serverPlayer, food.score);
             }
+            DirtPlateItem.giveScoreEffect(playerTarget.player(), food.score);
         }
     }
 

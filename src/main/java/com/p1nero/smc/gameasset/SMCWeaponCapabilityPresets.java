@@ -2,12 +2,12 @@ package com.p1nero.smc.gameasset;
 
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.gameasset.skill.SMCSkills;
+import com.p1nero.smc.gameasset.skill.SkilletCombos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import reascer.wom.gameasset.WOMAnimations;
-import reascer.wom.gameasset.WOMSkills;
 import yesman.epicfight.api.animation.LivingMotions;
 import yesman.epicfight.api.forgeevent.WeaponCapabilityPresetRegistryEvent;
 import yesman.epicfight.gameasset.Animations;
@@ -76,7 +76,7 @@ public class SMCWeaponCapabilityPresets {
                     .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
                     .comboCancel((style) -> false);
 
-    public static final Function<Item, CapabilityItem.Builder> GOLDEN_SKILLET_V1 = (item) ->
+    public static final Function<Item, CapabilityItem.Builder> DIAMOND_SKILLET = (item) ->
             (CapabilityItem.Builder) WeaponCapability.builder().category(CapabilityItem.WeaponCategories.SWORD)
                     .styleProvider((playerPatch) -> CapabilityItem.Styles.TWO_HAND).collider(SMCColliders.SKILLET)
                     .hitSound(EpicFightSounds.BLUNT_HIT.get())
@@ -85,12 +85,19 @@ public class SMCWeaponCapabilityPresets {
                     .canBePlacedOffhand(false)
                     .newStyleCombo(
                             CapabilityItem.Styles.TWO_HAND,
-                            Animations.GREATSWORD_AUTO1,
-                            Animations.GREATSWORD_AUTO2,
-                            Animations.GREATSWORD_AIR_SLASH,
                             Animations.GREATSWORD_AIR_SLASH)
-                    .innateSkill(CapabilityItem.Styles.TWO_HAND, (itemstack) -> null)
+                    .innateSkill(CapabilityItem.Styles.TWO_HAND, (itemstack) -> SkilletCombos.DIAMOND_SKILLET_COMBO)
                     .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_TACHI)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.KNEEL, Animations.BIPED_HOLD_TACHI)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_TACHI)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.CHASE, Animations.BIPED_HOLD_TACHI)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.RUN, Animations.BIPED_HOLD_TACHI)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.SNEAK, Animations.BIPED_HOLD_TACHI)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_TACHI)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.FLOAT, Animations.BIPED_HOLD_TACHI)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.FALL, Animations.BIPED_HOLD_TACHI)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.BLOCK, Animations.LONGSWORD_GUARD)
                     .comboCancel((style) -> false);
 
     public static final Function<Item, CapabilityItem.Builder> IRON_SPATULA_V1 = (item) ->
@@ -226,6 +233,9 @@ public class SMCWeaponCapabilityPresets {
         event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "iron_skillet_v1"), IRON_SKILLET_V1);
         event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "iron_skillet_v3"), IRON_SKILLET_V3);
         event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "iron_skillet_v5"), IRON_SKILLET_V5);
+
+        event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "diamond_skillet"), DIAMOND_SKILLET);
+
         event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "iron_spatula_v1"), IRON_SPATULA_V1);
         event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "iron_spatula_v3"), IRON_SPATULA_V3);
         event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "iron_spatula_v5"), IRON_SPATULA_V5);

@@ -41,27 +41,27 @@ public class DirtPlateItem extends PlateItem {
         super(pProperties);
     }
 
-    public static void giveScoreEffect(ServerPlayer player, int score) {
+    public static void giveScoreEffect(Player player, int score) {
         if(score > 95) {
             player.displayClientMessage(SkilletManCoreMod.getInfo("full_score"), true);
-            player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_LEVELUP, player.getSoundSource(), 1.0F, 1.0F);
+            player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_LEVELUP, player.getSoundSource(), 1.0F, 1.0F);
         } else if(score < 60){
             player.displayClientMessage(SkilletManCoreMod.getInfo("bad_score"), true);
-            player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.GLASS_BREAK, player.getSoundSource(), 1.0F, 1.0F);
+            player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.GLASS_BREAK, player.getSoundSource(), 1.0F, 1.0F);
         } else {
             player.displayClientMessage(SkilletManCoreMod.getInfo("middle_score"), true);
-            player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, player.getSoundSource(), 1.0F, 1.0F);
+            player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, player.getSoundSource(), 1.0F, 1.0F);
         }
     }
 
     private void giveBack(ItemStack foodStack, CookedFoodData food, ReturnTarget target) {
         target.addItem(foodStack);
         target.addExp(food.score * food.size / 100);
-        if(target instanceof PlateItem.PlayerTarget playerTarget && playerTarget.player() instanceof ServerPlayer serverPlayer) {
-            if(serverPlayer.serverLevel().isNight()) {
+        if(target instanceof PlateItem.PlayerTarget playerTarget) {
+            if(playerTarget.player() instanceof ServerPlayer serverPlayer && serverPlayer.serverLevel().isNight()) {
                 SMCAdvancementData.finishAdvancement("pre_cook", serverPlayer);
             }
-            giveScoreEffect(serverPlayer, food.score);
+            giveScoreEffect(playerTarget.player(), food.score);
         }
     }
 

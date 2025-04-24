@@ -1,6 +1,8 @@
 package com.p1nero.smc.client.gui.screen.entity_dialog.profession_dialog;
 
+import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
+import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
 import com.p1nero.smc.client.gui.screen.entity_dialog.VillagerDialogScreenHandler;
@@ -23,7 +25,7 @@ public class ClericDialogBuilder extends VillagerDialogScreenHandler.VillagerDia
     @Override
     public void handle(ServerPlayer serverPlayer, Villager villager, byte interactionID) {
         super.handle(serverPlayer, villager, interactionID);
-
+        SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         //试炼 TODO
         if(interactionID == 1) {
             SMCRaidManager.startTrial(serverPlayer);
@@ -31,7 +33,9 @@ public class ClericDialogBuilder extends VillagerDialogScreenHandler.VillagerDia
 
         //去末地 TODO
         if(interactionID == 2) {
-
+            if(smcPlayer.getLevel() <= SMCPlayer.STAGE1_REQUIRE) {
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("game_time_no_enough"), true);
+            }
         }
 
     }

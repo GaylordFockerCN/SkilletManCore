@@ -8,6 +8,7 @@ import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.util.SMCRaidManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.WanderingTrader;
@@ -47,11 +48,13 @@ public class WanderingTraderDialogBuilder extends VillagerDialogScreenHandler.Vi
     public void handle(ServerPlayer serverPlayer, WanderingTrader self, byte interactId){
         if(interactId == 1) {
             self.setHealth(0);
+            self.playSound(SoundEvents.WANDERING_TRADER_DEATH);
             SMCRaidManager.startRandomRaid(serverPlayer);
         }
         if(interactId == 2) {
             SMCPlayer.addMoney(20000, serverPlayer);
             self.setHealth(0);
+            self.playSound(SoundEvents.WANDERING_TRADER_DEATH);
             SMCRaidManager.startRandomRaid(serverPlayer);
         }
     }

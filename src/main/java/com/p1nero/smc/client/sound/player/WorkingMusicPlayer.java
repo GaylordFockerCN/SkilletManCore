@@ -79,7 +79,7 @@ public class WorkingMusicPlayer {
             this.attenuation = Attenuation.NONE;
             this.looping = true;
             this.delay = 0;
-            this.volume = 1.0F;
+            this.volume = 0.5F;
             this.x = player.getX();
             this.y = player.getY();
             this.z = player.getZ();

@@ -13,7 +13,7 @@ public class DiamondSpatulaV5 extends DiamondSpatulaBase {
 
     @Override
     public @NotNull MutableComponent getName(@NotNull ItemStack itemStack) {
-        return super.getDescription().copy().withStyle(ChatFormatting.YELLOW).append(Component.literal(" ⭐⭐⭐⭐⭐").withStyle(ChatFormatting.GOLD));
+        return super.getDescription().copy().withStyle(ChatFormatting.AQUA).append(Component.literal(" ⭐⭐⭐⭐⭐").withStyle(ChatFormatting.GOLD));
     }
 
 }

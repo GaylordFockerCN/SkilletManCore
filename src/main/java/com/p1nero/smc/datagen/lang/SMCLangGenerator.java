@@ -30,7 +30,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("middle_score", "§a优秀！");
         this.addInfo("bad_score", "§c不合格！！");
 
-        this.addInfo("first_food_bad", "\n §e胡来！胡来！这样的菜怎么能给客人吃！速速找NPC再去学习一番怎么做菜！！！第一道菜就这么烂，怎么行！");
+        this.addInfo("first_food_bad", "\n §e胡来！胡来！这样的菜怎么能给客人吃！速速找NPC再去学习一番怎么做菜！！！第一道菜就这么烂，怎么行！下菜也要有个先后！");
         this.addInfo("sorry", "呜呜呜我错了灶王爷我下次再也不敢了！");
         this.addInfo("give_me_another_chance", "伟大的炉神啊！再赐予我一次机会吧！");
         this.addInfo("cannot_left_customers", "\n §e嘿小子，你不能丢下你的顾客不管！");
@@ -38,7 +38,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("god_stove_talk", "我去！灶王公说话了！");
 
         this.addInfo("golden_skillet_tip", "§e翻炒冷却降低至 15tick");
-        this.addInfo("diamond_skillet_tip", "§b翻炒冷却降低至 10tick");
+        this.addInfo("diamond_skillet_tip", "§b每段平A都应该尝试一下key2（默认右键）");
         this.addInfo("golden_spatula_tip", "§e翻炒冷却降低至 15tick");
         this.addInfo("diamond_spatula_tip", "§b翻炒冷却降低至 10tick");
 
@@ -48,6 +48,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("rare_item_got", " §d刚刚 获得史诗级物品：%s §d！");
         this.addInfo("someone_s_pet", " 的 ");
         this.addInfo("trial_required", ": §e§l寻找牧师通过试炼以突破世界等级限制！");
+        this.addInfo("game_time_no_enough", "§4游戏时长不足！禁止挑战最终boss！");
         this.addInfo("add_item_tip", "§a获得新物品：");
         this.addInfo("advancement_look_tip", "§a不知道做什么时，可以查看一下进度（默认按 L ）");
         this.addInfo("unlock_new_order", "§a客户解锁了新的需求！ 当前可能的请求");
@@ -193,7 +194,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialog(SMCEntities.START_NPC, 4, "§a已升级！");
         this.addDialog(SMCEntities.START_NPC, 5, "准备好开业了吗！§6（由于作者没有建筑水平，因此还特地补偿了一些建筑方块，快去装饰你的店铺吧！§r§c建筑时记得给村民留交易窗口！村民将从四面八方生成！）");
         this.addDialog(SMCEntities.START_NPC, 6, "将§6炒锅§r摆上§6炉灶§r以开始营业，右键顾客以查看所需食材，烹饪完成后将食材放至§6主手§r，再次对话以交付食材。根据食材的品质将获得不同奖励。而夜晚可能会有§c袭击事件§r，拿起平底锅保卫村庄！");
-        this.addDialog(SMCEntities.START_NPC, 7, "炒菜时，拿着食材右键锅以把对应的食材丢入锅中，用§6锅铲§r右键即可翻炒。左边的仪表盘提示食物是否烧焦，请在合适的时候用盘子将其取出！使用§aJEI§r可查看料理配方。用到的§6食材越高级，奖励越丰富！§r如果手忙脚乱，§6预制菜§r是一个不错的选择。");
+        this.addDialog(SMCEntities.START_NPC, 7, "炒菜时，拿着食材右键锅以把对应的食材丢入锅中，用§6锅铲§r右键即可翻炒。左边的仪表盘提示食物是否烧焦，请在合适的时候用盘子将其取出！使用§aJ§r§aE§r§aI§r可查看料理配方。在物品栏可查看食材烹饪时间区间，做好计算再下锅吧！用到的食材越高级，店铺等级越高，奖励越丰富！如果手忙脚乱，§6预§r§6制§r§6菜§r是一个不错的选择。");
         this.addDialog(SMCEntities.START_NPC, 8, "接待足够多的村民或成功抵御一次袭击，将提升一次店铺等级.随着等级提升将解锁新的资源和玩法。到一定等级时将开启§6突破试炼§r，若试炼成功则可获得大量奖励并且进入下一游戏阶段。");
         this.addDialog(SMCEntities.START_NPC, 9, "Zzz...Zzz...Zzz...(忙碌了一天的员工睡得正香，  此刻也许你会好奇它为什么能够站着睡着。平底锅侠的世界就是如此奇妙，无需那么多为什么。)");
 

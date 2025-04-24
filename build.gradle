@@ -141,7 +141,7 @@ dependencies {
     implementation fg.deobf("curse.maven:library-ferret-forge-532727:4601234")
     implementation fg.deobf("curse.maven:farmers-delight-398521:6154802")
     implementation fg.deobf("curse.maven:cuisine-delight-893541:5814261")
-    implementation fg.deobf("curse.maven:epic-fight-invincible-1184379:6373264")
+    implementation fg.deobf("curse.maven:epic-fight-invincible-1184379:6447859")
     implementation fg.deobf("curse.maven:spice-of-life-carrot-edition-277616:4888575")
     implementation fg.deobf("curse.maven:kaleidoscope-doll-1233277:6373592")
     implementation fg.deobf("curse.maven:hungteens-lib-794622:5782587")

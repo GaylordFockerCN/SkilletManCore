@@ -37,9 +37,9 @@ public class DiamondSkilletItem extends SMCCuisineSkilletItem {
             default -> ChatFormatting.GRAY;
         };
         if(this.level > 1) {
-            return super.getDescription().copy().withStyle(ChatFormatting.YELLOW).append(Component.literal(" " + star).withStyle(formatting));
+            return super.getDescription().copy().withStyle(ChatFormatting.AQUA).append(Component.literal(" " + star).withStyle(formatting));
         }
-        return super.getDescription().copy().withStyle(ChatFormatting.YELLOW);
+        return super.getDescription().copy().withStyle(ChatFormatting.AQUA);
     }
 
     @Override

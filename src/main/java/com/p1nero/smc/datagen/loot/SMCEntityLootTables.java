@@ -29,6 +29,7 @@ public class SMCEntityLootTables extends EntityLootSubProvider {
 
         add(SMCEntities.START_NPC.get(), emptyLootTable());
         add(SMCEntities.CUSTOMER.get(), emptyLootTable());
+        add(SMCEntities.FAKE_CUSTOMER.get(), emptyLootTable());
     }
 
     public LootTable.Builder emptyLootTable() {

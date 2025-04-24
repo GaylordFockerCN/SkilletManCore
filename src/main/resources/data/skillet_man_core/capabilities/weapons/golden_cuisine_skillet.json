@@ -1,0 +1,12 @@
+{
+  "attributes":
+  {
+    "common":
+    {
+      "max_strikes":3,
+      "impact":1.0,
+      "damage_bonus":-4
+    }
+  },
+  "type":"wom:solar"
+}
