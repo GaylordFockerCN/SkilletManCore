@@ -1,5 +1,6 @@
 package com.p1nero.smc.item.custom;
 
+import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.util.ItemUtil;
 import dev.xkmc.cuisinedelight.content.block.CuisineSkilletBlockEntity;
@@ -23,7 +24,11 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BucketPickup;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
@@ -36,14 +41,27 @@ public class DirtPlateItem extends PlateItem {
         super(pProperties);
     }
 
+    public static void giveScoreEffect(ServerPlayer player, int score) {
+        if(score > 95) {
+            player.displayClientMessage(SkilletManCoreMod.getInfo("full_score"), true);
+            player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_LEVELUP, player.getSoundSource(), 1.0F, 1.0F);
+        } else if(score < 60){
+            player.displayClientMessage(SkilletManCoreMod.getInfo("bad_score"), true);
+            player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.GLASS_BREAK, player.getSoundSource(), 1.0F, 1.0F);
+        } else {
+            player.displayClientMessage(SkilletManCoreMod.getInfo("middle_score"), true);
+            player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, player.getSoundSource(), 1.0F, 1.0F);
+        }
+    }
+
     private void giveBack(ItemStack foodStack, CookedFoodData food, ReturnTarget target) {
         target.addItem(foodStack);
         target.addExp(food.score * food.size / 100);
         if(target instanceof PlateItem.PlayerTarget playerTarget && playerTarget.player() instanceof ServerPlayer serverPlayer) {
-            long currentTime = serverPlayer.serverLevel().getDayTime();
-            if(currentTime > 12700) {
+            if(serverPlayer.serverLevel().isNight()) {
                 SMCAdvancementData.finishAdvancement("pre_cook", serverPlayer);
             }
+            giveScoreEffect(serverPlayer, food.score);
         }
     }
 
@@ -58,7 +76,8 @@ public class DirtPlateItem extends PlateItem {
             BlockPos blockpos = blockhitresult.getBlockPos();
             Direction direction = blockhitresult.getDirection();
             BlockPos blockPos1 = blockpos.relative(direction);
-            if (player.mayUseItemAt(blockPos1, direction, itemstack)) {
+            BlockState blockState = level.getBlockState(blockpos);
+            if (player.mayUseItemAt(blockPos1, direction, itemstack) && blockState.getBlock() instanceof LiquidBlock liquidBlock && liquidBlock.getFluid().isSame(Fluids.WATER)) {
                 int count = player.getItemInHand(hand).getCount();
                 player.setItemInHand(hand, ItemStack.EMPTY);
                 ItemUtil.addItem(player, CDItems.PLATE.asStack(count));

@@ -1,0 +1,33 @@
+package com.p1nero.smc.block.custom;
+
+import com.p1nero.smc.registrate.SMCRegistrateBlocks;
+import dev.xkmc.cuisinedelight.content.block.CuisineSkilletBlock;
+import dev.xkmc.cuisinedelight.content.block.CuisineSkilletBlockEntity;
+import dev.xkmc.l2serial.util.Wrappers;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+public class GoldenCuisineSkilletBlock extends CuisineSkilletBlock {
+    public GoldenCuisineSkilletBlock(Properties properties) {
+        super(properties);
+    }
+
+    public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
+        return SMCRegistrateBlocks.GOLDEN_BE_SKILLET.create(pos, state);
+    }
+
+    public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
+        return type == SMCRegistrateBlocks.GOLDEN_BE_SKILLET.get() ? (BlockEntityTicker) Wrappers.cast(getTicker()) : null;
+    }
+    private static BlockEntityTicker<CuisineSkilletBlockEntity> getTicker() {
+        return (level, pos, state, be) -> {
+            be.tick(level, pos, state);
+        };
+    }
+}

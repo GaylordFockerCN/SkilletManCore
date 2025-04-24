@@ -333,7 +333,8 @@ public class SMCCombatBehaviors {
      * 世界等级检测
      */
     public static Function<HumanoidMobPatch<?>, Boolean> worldLevelCheck(int min) {
-        return humanoidMobPatch -> SMCArchiveManager.getWorldLevel() >= min;
+        return humanoidMobPatch -> true;
+//        return humanoidMobPatch -> SMCArchiveManager.getWorldLevel() >= min;
     }
 
     /**

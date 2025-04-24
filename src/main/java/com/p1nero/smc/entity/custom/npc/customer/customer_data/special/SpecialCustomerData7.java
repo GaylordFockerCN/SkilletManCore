@@ -39,7 +39,7 @@ public class SpecialCustomerData7 extends SpecialCustomerData {
         generator.add(answerPre(-1), "（这位村民眼神迷离，仿佛在注视着遥远的神秘事物）");
         generator.add(choicePre(-1), "这位客官想要啥呢？");
 
-        generator.add(answerPre(0), "我听说有一种超级大大的 %s ？");
+        generator.add(answerPre(0), "我听说有一种超级大大的 %s ？ （或许它的需求会异于常人）");
         generator.add(choicePre(0), "递上食物");
 
 

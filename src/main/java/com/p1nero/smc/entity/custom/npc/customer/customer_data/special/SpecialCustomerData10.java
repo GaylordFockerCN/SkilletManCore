@@ -48,7 +48,7 @@ public class SpecialCustomerData10 extends SpecialCustomerData {
     @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.get().getDefaultInstance());
+        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.DOLL_RAFFLE_TICKET.get(), 3);
 
         ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
         ListTag bookPages = new ListTag();

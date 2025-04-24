@@ -9,8 +9,10 @@ import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.SyncSMCPlayerPacket;
 import com.p1nero.smc.util.ItemUtil;
-import com.p1nero.smc.util.SkillBookGachaSystem;
-import com.p1nero.smc.util.WeaponGachaSystem;
+import com.p1nero.smc.util.SMCRaidManager;
+import com.p1nero.smc.util.gacha.ArmorGachaSystem;
+import com.p1nero.smc.util.gacha.SkillBookGachaSystem;
+import com.p1nero.smc.util.gacha.WeaponGachaSystem;
 import dev.xkmc.cuisinedelight.init.registrate.PlateFood;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
@@ -36,6 +38,47 @@ import java.util.function.Consumer;
  */
 public class SMCPlayer {
 
+    private int armorGachaingCount;
+    private int armorPity4Star;
+    private int armorPity5Star;
+
+    public void setArmorGachaingCount(int armorGachaingCount) {
+        this.armorGachaingCount = armorGachaingCount;
+    }
+
+    public int getArmorPity4Star() {
+        return armorPity4Star;
+    }
+
+    public void setArmorPity4Star(int armorPity4Star) {
+        this.armorPity4Star = armorPity4Star;
+    }
+
+    public int getArmorPity5Star() {
+        return armorPity5Star;
+    }
+
+    public void setArmorPity5Star(int armorPity5Star) {
+        this.armorPity5Star = armorPity5Star;
+    }
+
+    public void incrementAmorPity4Star() {
+        armorPity4Star++;
+    }
+
+    public void incrementArmorPity5Star() {
+        armorPity5Star++;
+    }
+
+    public void resetArmorPity4Star() {
+        armorPity4Star = 0;
+    }
+
+    public void resetArmorPity5Star() {
+        armorPity5Star = 0;
+    }
+
+    //============================================================================================
     private int skillBookGachaingCount;
     private int skillBookPity;
 
@@ -58,7 +101,7 @@ public class SMCPlayer {
     public void resetSkillBookPity() {
         skillBookPity = 0;
     }
-
+    //============================================================================================
     private int weaponGachaingCount;
     private int weaponPity4Star;
     private int weaponPity5Star;
@@ -128,9 +171,11 @@ public class SMCPlayer {
     public static void finishTransaction(ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         smcPlayer.levelUpLeft++;
-        if(smcPlayer.levelUpLeft > smcPlayer.stage) {
+        if(smcPlayer.levelUpLeft > (smcPlayer.stage + 1) * 2) {
             smcPlayer.levelUpLeft = 0;
             levelUPPlayer(serverPlayer);
+        } else {
+            serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("level_up_left", (smcPlayer.stage + 1) * 2 - smcPlayer.levelUpLeft + 1), false);
         }
     }
 
@@ -198,6 +243,20 @@ public class SMCPlayer {
         smcPlayer.setLevel(currentLevel + 1);
         SMCPlayer.addMoney(200, serverPlayer);
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("shop_upgrade", smcPlayer.level), false);
+        int nextStageLeft = smcPlayer.getNextStageLeft();
+        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("next_grade_left", nextStageLeft), false);
+    }
+
+    public int getNextStageLeft() {
+        if(this.level < STAGE1_REQUIRE) {
+            return STAGE1_REQUIRE - this.level;
+        } else if(this.level < STAGE2_REQUIRE){
+            return STAGE2_REQUIRE - this.level;
+        } else if(this.level < STAGE3_REQUIRE) {
+            return STAGE3_REQUIRE - this.level;
+        } else {
+            return -1;
+        }
     }
 
     public static void stageUp(ServerPlayer serverPlayer) {
@@ -257,6 +316,9 @@ public class SMCPlayer {
             } else {
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("end_work").withStyle(ChatFormatting.BOLD), true);
                 serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
+                if(serverPlayer.serverLevel().isNight()) {
+                    SMCRaidManager.startNightRaid(serverPlayer);
+                }
             }
             smcPlayer.syncToClient(serverPlayer);
         }
@@ -399,9 +461,17 @@ public class SMCPlayer {
     }
 
     public CompoundTag saveNBTData(CompoundTag tag) {
+        tag.putInt("armorGachaingCount", armorGachaingCount);
+        tag.putInt("armorPity4Star", armorPity4Star);
+        tag.putInt("armorPity5Star", armorPity5Star);
+
+        tag.putInt("skillBookGachaingCount", skillBookGachaingCount);
         tag.putInt("skillBookPity", skillBookPity);
+
+        tag.putInt("weaponGachaingCount", weaponGachaingCount);
         tag.putInt("weaponPity4Star", weaponPity4Star);
         tag.putInt("weaponPity5Star", weaponPity5Star);
+
         tag.putInt("dodgeCnt", dodgeCounter);
         tag.putInt("parryCnt", parryCounter);
         tag.putInt("levelUpLeft", levelUpLeft);
@@ -415,9 +485,17 @@ public class SMCPlayer {
     }
 
     public void loadNBTData(CompoundTag tag) {
+        armorGachaingCount = tag.getInt("armorGachaingCount");
+        armorPity4Star = tag.getInt("armorPity4Star");
+        armorPity5Star = tag.getInt("armorPity5Star");
+
+        skillBookGachaingCount = tag.getInt("skillBookGachaingCount");
         skillBookPity = tag.getInt("skillBookPity");
+
+        weaponGachaingCount = tag.getInt("weaponGachaingCount");
         weaponPity4Star = tag.getInt("weaponPity4Star");
         weaponPity5Star = tag.getInt("weaponPity5Star");
+
         dodgeCounter = tag.getInt("dodgeCnt");
         parryCounter = tag.getInt("parryCnt");
         level = tag.getInt("tradeLevel");
@@ -431,8 +509,18 @@ public class SMCPlayer {
 
     public void copyFrom(SMCPlayer old) {
         this.data = old.data;
+
+        this.skillBookGachaingCount = old.skillBookGachaingCount;
+        this.skillBookPity = old.skillBookPity;
+
+        this.armorGachaingCount = old.armorGachaingCount;
+        this.armorPity4Star = old.armorPity4Star;
+        this.armorPity5Star = old.armorPity5Star;
+
+        this.weaponGachaingCount = old.weaponGachaingCount;
         this.weaponPity5Star = old.weaponPity5Star;
         this.weaponPity4Star = old.weaponPity4Star;
+
         this.dodgeCounter = old.dodgeCounter;
         this.parryCounter = old.parryCounter;
         this.levelUpLeft = old.levelUpLeft;
@@ -467,7 +555,23 @@ public class SMCPlayer {
             }
 
             if(player.tickCount % 20 == 0) {
-                //1s抽出一个武器来
+                //1s抽出一个
+                if(this.armorGachaingCount > 0) {
+                    this.armorGachaingCount--;
+                    ItemStack itemStack = ArmorGachaSystem.pull(((ServerPlayer) player));
+                    CustomColorItemEntity entity = ItemUtil.addItemEntity(player, itemStack);
+                    if(ArmorGachaSystem.STAR5_LIST.contains(itemStack)) {
+                        entity.setTeamColor(0xfff66d);
+                        entity.setGlowingTag(true);
+                        playGoldEffect((ServerPlayer) player, itemStack);
+                    } else if(ArmorGachaSystem.STAR4_LIST.contains(itemStack)) {
+                        entity.setTeamColor(0xc000ff);
+                        entity.setGlowingTag(true);
+                        playRareEffect((ServerPlayer) player, itemStack);
+                    } else {
+                        playCommonEffect((ServerPlayer) player);
+                    }
+                }
                 if(this.weaponGachaingCount > 0) {
                     this.weaponGachaingCount--;
                     ItemStack itemStack = WeaponGachaSystem.pull(((ServerPlayer) player));
@@ -501,6 +605,7 @@ public class SMCPlayer {
         }
     }
     private void playCommonEffect(ServerPlayer player) {
+        SMCAdvancementData.finishAdvancement("first_gacha", player);
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 0.5F, 2.0F);
         player.serverLevel().sendParticles(ParticleTypes.TOTEM_OF_UNDYING, player.getX(), player.getY(), player.getZ(), 10, 1.0, 1.0, 1.0, 0.2);
     }
@@ -513,6 +618,7 @@ public class SMCPlayer {
     }
 
     private void playGoldEffect(ServerPlayer player, ItemStack itemStack) {
+        SMCAdvancementData.finishAdvancement("first_5star_item", player);
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 3.0F, 1.0F);
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 2.0F, 0.5F);
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.TOTEM_USE, SoundSource.BLOCKS, 3.0F, 1.0F);

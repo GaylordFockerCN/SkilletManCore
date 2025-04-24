@@ -1,14 +1,24 @@
 package com.p1nero.smc.client.gui.screen.entity_dialog.profession_dialog;
 
+import com.p1nero.smc.capability.SMCCapabilityProvider;
+import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
 import com.p1nero.smc.client.gui.screen.entity_dialog.VillagerDialogScreenHandler;
+import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
+import com.p1nero.smc.registrate.SMCRegistrateItems;
+import com.p1nero.smc.util.ItemUtil;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
- * TODO 武器抽卡
+ * 武器抽卡
  */
 public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.VillagerDialogBuilder {
     public WeaponSmithDialogBuilder() {
@@ -16,27 +26,82 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
     }
 
     @Override
+    public void handle(ServerPlayer serverPlayer, Villager villager, byte interactionID) {
+        super.handle(serverPlayer, villager, interactionID);
+        SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+        if (interactionID == 1) {
+            int ticketCount = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asItem(), 1);
+            if (ticketCount == 0) {
+                if(SMCPlayer.hasMoney(serverPlayer, 160, true)) {
+                    SMCPlayer.consumeMoney(160, serverPlayer);
+                    smcPlayer.setWeaponGachaingCount(1);
+                }
+            } else {
+                serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
+                smcPlayer.setWeaponGachaingCount(1);
+            }
+        }
+        if (interactionID == 2) {
+            int ticketCount = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asItem(), 10);
+            if(ticketCount < 10) {
+                int need = 10 - ticketCount;
+                if(SMCPlayer.hasMoney(serverPlayer, 160 * need, true)) {
+                    SMCPlayer.consumeMoney(160 * need, serverPlayer);
+                    smcPlayer.setWeaponGachaingCount(10);
+                }
+            } else {
+                serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
+                smcPlayer.setWeaponGachaingCount(10);
+            }
+        }
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
     public void createDialog(LinkListStreamDialogueScreenBuilder builder, Villager self) {
-        builder.setAnswerRoot(new TreeNode(answer(0))
-                .addChild(new TreeNode(answer(1), choice(0))
-                        .addLeaf(choice(1), (byte) -1))
-                        .addChild(new TreeNode(answer(2), choice(2)))
-                .addLeaf(choice(-1), (byte) -1));
+        LocalPlayer localPlayer = Minecraft.getInstance().player;
+        if (localPlayer != null) {
+            int ticketCount = localPlayer.getInventory().countItem(SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asItem());
+
+            TreeNode pull = new TreeNode(answer(1), choice(0));
+
+            if (ticketCount < 1) {
+                pull.addChild(new TreeNode(answer(3, 160), choice(2))
+                        .addLeaf(choice(4), (byte) 1)
+                        .addLeaf(choice(5))
+                        .addChild(new TreeNode(answer(3, 1600), choice(3))
+                                .addLeaf(choice(4), (byte) 2)
+                                .addLeaf(choice(5))));
+            } else if (ticketCount < 10) {
+                int needTicket = 10 - ticketCount;
+                pull.addLeaf(choice(2), (byte) 1)
+                        .addChild(new TreeNode(answer(4, 160 * needTicket), choice(3))
+                                .addLeaf(choice(4), (byte) 2)
+                                .addLeaf(choice(5)));
+            } else {
+                pull.addLeaf(choice(2), (byte) 1);
+                pull.addLeaf(choice(3), (byte) 2);
+            }
+
+            builder.setAnswerRoot(new TreeNode(answer(0))
+                    .addChild(pull)
+                    .addLeaf(choice(1)));
+        }
     }
 
     @Override
     public void onGenerateLang(SMCLangGenerator generator) {
-        generator.addVillagerName(this.profession, "魁梧的武器匠");
-        generator.addVillagerOpt(this.profession, -1, "离去");
-        generator.addVillagerAns(this.profession, 0, "（图书管理员今日无事，正在闲逛。  要不找他问问有没有卖附魔书吧，刚好给我的锅和铲升升级！）");
-        generator.addVillagerOpt(this.profession, 0, "购买附魔书");
-        generator.addVillagerAns(this.profession, 1, "小子，你不会以为我真的会卖给你附魔书吧？你是不是对作者设计的五合一升级系统和抽卡系统有意见？还企图通过附魔这种旁门左道提升实力？！");
-        generator.addVillagerOpt(this.profession, 1, "好嘛");
-        generator.addVillagerOpt(this.profession, 2, "抽取技能书");
-        generator.addVillagerAns(this.profession, 2, "所有技能书概率均等，童叟无欺！抽10次必出奇迹武器技能书！");
-        generator.addVillagerOpt(this.profession, 3, "抽 1 次 §a160 绿宝石");
-        generator.addVillagerOpt(this.profession, 4, "抽 10 次 §a1599 绿宝石");
-        generator.addVillagerOpt(this.profession, 5, "使用技能书抽奖券");
+        generator.addVillagerName(this.profession, " §c魁梧的武器匠§r");
+        generator.addVillagerAns(this.profession, 0, "（这位武器匠长得凶神恶煞，他可以为你锻造趁手的武器。）");
+        generator.addVillagerOpt(this.profession, 0, "武器祈愿");
+        generator.addVillagerOpt(this.profession, 1, "离开");
+        generator.addVillagerAns(this.profession, 1, "10次祈愿必得四星武器，90次祈愿必得五星武器！  五个相同星级的武器§6可以合并§r升星哦！  五星武器 §6[左锅右铲]§r 概率UP！");
+        generator.addVillagerOpt(this.profession, 2, "祈愿一次");
+        generator.addVillagerOpt(this.profession, 3, "祈愿十次");
+        generator.addVillagerAns(this.profession, 2, "武器抽奖券不足，是否用 %d 绿宝石替代？");
+        generator.addVillagerAns(this.profession, 3, "武器抽奖券不足，是否用 %d 绿宝石补全？");
+        generator.addVillagerOpt(this.profession, 4, "确定");
+        generator.addVillagerOpt(this.profession, 5, "取消");
     }
 
 

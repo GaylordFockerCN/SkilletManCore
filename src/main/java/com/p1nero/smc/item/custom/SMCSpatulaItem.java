@@ -2,7 +2,11 @@ package com.p1nero.smc.item.custom;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import dev.xkmc.cuisinedelight.content.block.CuisineSkilletBlockEntity;
+import dev.xkmc.cuisinedelight.content.item.CuisineSkilletItem;
 import dev.xkmc.cuisinedelight.content.item.SpatulaItem;
+import dev.xkmc.cuisinedelight.init.registrate.CDItems;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -11,14 +15,23 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
+import vectorwing.farmersdelight.common.registry.ModSounds;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+
+import java.util.Objects;
 
 public class SMCSpatulaItem extends SpatulaItem {
 
     private final Multimap<Attribute, AttributeModifier> toolAttributes;
+    protected int cooldown = 20;
 
     public SMCSpatulaItem(Properties pProperties) {
         super(pProperties);
@@ -42,9 +55,31 @@ public class SMCSpatulaItem extends SpatulaItem {
         return slot == EquipmentSlot.MAINHAND ? toolAttributes : super.getAttributeModifiers(slot, stack);
     }
 
-    //TODO 修改冷却
+    private static int getReduction(ItemStack stack) {
+        return stack.getEnchantmentLevel(Enchantments.SILK_TOUCH) > 0 ? 20 : 0;
+    }
+
     @Override
     public @NotNull InteractionResult useOn(@NotNull UseOnContext ctx) {
-        return super.useOn(ctx);
+        if(Objects.requireNonNull(EpicFightCapabilities.getEntityPatch(ctx.getPlayer(), PlayerPatch.class)).isBattleMode()) {
+            return InteractionResult.PASS;
+        }
+        Level level = ctx.getLevel();
+        Player player = ctx.getPlayer();
+        BlockEntity var5 = level.getBlockEntity(ctx.getClickedPos());
+        if (var5 instanceof CuisineSkilletBlockEntity be) {
+            if (!be.cookingData.contents.isEmpty()) {
+                if (!level.isClientSide()) {
+                    be.stir(level.getGameTime(), getReduction(ctx.getItemInHand()));
+                    if (player != null) {
+                        player.getCooldowns().addCooldown(this, cooldown);
+                    }
+                } else if (player != null) {
+                    CuisineSkilletItem.playSound(player, level, ModSounds.BLOCK_SKILLET_SIZZLE.get());
+                }
+            }
+        }
+
+        return InteractionResult.SUCCESS;
     }
 }

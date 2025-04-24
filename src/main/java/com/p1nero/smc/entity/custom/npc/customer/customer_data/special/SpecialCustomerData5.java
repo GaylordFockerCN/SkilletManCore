@@ -31,7 +31,7 @@ public class SpecialCustomerData5 extends SpecialCustomerData {
         generator.add(choicePre(-1), "请问客官想吃些什么？");
         generator.add(answerPre(0), "如果有一道能慰藉心灵的 %s ，或许能让我暂时忘却烦恼。");
         generator.add(choicePre(0), "轻声呈上");
-        generator.add(answerPre(1), "（眼眸微亮）这味道像极了从前的她...这份珍宝送你，愿你也能珍惜这份美好。年轻人，不要等到失去了才懂得珍惜！");
+        generator.add(answerPre(1), "（眼眸微亮）这味道像极了从前的她...这份唱片送你，愿你也能珍惜这份美好。年轻人，不要等到失去了才懂得珍惜！");
         generator.add(choicePre(1), "轻声道谢  （原来是失恋了）");
         generator.add(answerPre(2), "（轻叹）还不够...还不够...这味道，不及她三分...");
         generator.add(choicePre(2), "告辞，再接再厉。");
@@ -42,7 +42,7 @@ public class SpecialCustomerData5 extends SpecialCustomerData {
     @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.get().getDefaultInstance());
+        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.DISC_RAFFLE_TICKET.get(), 3);
     }
 
 }

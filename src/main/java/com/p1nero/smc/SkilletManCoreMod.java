@@ -14,8 +14,9 @@ import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.registrate.SMCRegistrateBlocks;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
-import com.p1nero.smc.util.SkillBookGachaSystem;
-import com.p1nero.smc.util.WeaponGachaSystem;
+import com.p1nero.smc.util.gacha.ArmorGachaSystem;
+import com.p1nero.smc.util.gacha.SkillBookGachaSystem;
+import com.p1nero.smc.util.gacha.WeaponGachaSystem;
 import dev.xkmc.l2library.base.L2Registrate;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -77,17 +78,7 @@ public class SkilletManCoreMod {
         SMCPacketHandler.register();
         WeaponGachaSystem.initItemList();
         SkillBookGachaSystem.initItemList();
-//        event.enqueueWork(() -> {
-//            try{
-//                File dir = FMLPaths.CONFIGDIR.get().resolve(SkilletManCoreMod.MOD_ID).toFile();
-//                if(!dir.exists()){
-//                    SkilletManCoreMod.LOGGER.info("creating dir : "+dir.mkdirs());
-//                }
-//            }catch (Exception e){
-//                SkilletManCoreMod.LOGGER.error("Failed to read map！",e);
-//            }
-//        });
-
+        ArmorGachaSystem.initItemList();
     }
 
     public void registerExtraStuff(RegisterEvent evt) {

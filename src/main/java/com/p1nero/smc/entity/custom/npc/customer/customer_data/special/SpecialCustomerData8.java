@@ -52,17 +52,7 @@ public class SpecialCustomerData8 extends SpecialCustomerData {
     @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.get().getDefaultInstance());
-    }
-
-    @Override
-    protected void onBad(ServerPlayer serverPlayer, Customer self) {
-        super.onBad(serverPlayer, self);
-        serverPlayer.hurt(serverPlayer.damageSources().magic(), 0.5F);
-        PrimedTnt primedtnt = new PrimedTnt(serverPlayer.level(), self.getX() + 0.5D, self.getY(), self.getZ() + 0.5D, self);
-        serverPlayer.level().addFreshEntity(primedtnt);
-        serverPlayer.level().playSound(null, primedtnt.getX(), primedtnt.getY(), primedtnt.getZ(), SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0F, 1.0F);
-        serverPlayer.level().gameEvent(self, GameEvent.PRIME_FUSE, self.getOnPos());
+        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.get(), 3);
     }
 
 }

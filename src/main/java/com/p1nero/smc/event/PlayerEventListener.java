@@ -9,21 +9,26 @@ import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.entity.custom.boss.SMCBoss;
+import com.p1nero.smc.gameasset.skill.SMCSkills;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.packet.SyncArchivePacket;
 import com.p1nero.smc.network.packet.clientbound.OpenStartGuideScreenPacket;
 import com.p1nero.smc.network.packet.clientbound.SyncUuidPacket;
+import com.p1nero.smc.util.ItemUtil;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
 import dev.xkmc.cuisinedelight.content.item.CuisineSkilletItem;
 import dev.xkmc.cuisinedelight.content.item.SpatulaItem;
 import dev.xkmc.cuisinedelight.events.FoodEatenEvent;
+import dev.xkmc.cuisinedelight.init.registrate.CDItems;
 import net.blay09.mods.waystones.block.ModBlocks;
+import net.kenddie.fantasyarmor.item.FAItems;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -33,9 +38,11 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import yesman.epicfight.gameasset.EpicFightSkills;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.world.item.EpicFightItems;
 
 import java.util.Objects;
 
@@ -78,6 +85,27 @@ public class PlayerEventListener {
                 Objects.requireNonNull(serverPlayer.getServer()).getCommands().performPrefixedCommand(commandSourceStack, "gamerule keepInventory true");
                 serverPlayer.playSound(SoundEvents.VILLAGER_CELEBRATE);
                 PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new OpenStartGuideScreenPacket(), serverPlayer);
+                serverPlayer.setItemSlot(EquipmentSlot.HEAD, FAItems.THIEF_HELMET.get().getDefaultInstance());
+                serverPlayer.setItemSlot(EquipmentSlot.CHEST, FAItems.THIEF_CHESTPLATE.get().getDefaultInstance());
+
+                ItemUtil.addItem(serverPlayer, CDItems.SKILLET.asItem(), 1);
+                ItemUtil.addItem(serverPlayer, CDItems.SPATULA.asItem(), 1);
+                ItemStack step = new ItemStack(EpicFightItems.SKILLBOOK.get());
+                step.getOrCreateTag().putString("skill", EpicFightSkills.STEP.toString());
+                ItemStack parrying = new ItemStack(EpicFightItems.SKILLBOOK.get());
+                parrying.getOrCreateTag().putString("skill", EpicFightSkills.PARRYING.toString());
+                ItemStack technician = new ItemStack(EpicFightItems.SKILLBOOK.get());
+                technician.getOrCreateTag().putString("skill", EpicFightSkills.TECHNICIAN.toString());
+                ItemStack dodgeDisplay = new ItemStack(EpicFightItems.SKILLBOOK.get());
+                dodgeDisplay.getOrCreateTag().putString("skill", SMCSkills.BETTER_DODGE_DISPLAY.toString());
+                ItemStack guard = new ItemStack(EpicFightItems.SKILLBOOK.get());
+                guard.getOrCreateTag().putString("skill", EpicFightSkills.GUARD.toString());
+                ItemUtil.addItem(serverPlayer, step);
+                ItemUtil.addItem(serverPlayer, technician);
+                ItemUtil.addItem(serverPlayer, dodgeDisplay);
+                ItemUtil.addItem(serverPlayer, guard);
+                ItemUtil.addItem(serverPlayer, parrying);
+
             }
         }
 

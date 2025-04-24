@@ -13,12 +13,16 @@ import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.custom.npc.SMCNpc;
+import com.p1nero.smc.entity.custom.npc.customer.Customer;
+import com.p1nero.smc.entity.custom.npc.customer.FakeCustomer;
+import com.p1nero.smc.event.ServerEvents;
 import com.p1nero.smc.gameasset.skill.SMCSkills;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
 import dev.xkmc.cuisinedelight.content.logic.FoodType;
 import dev.xkmc.cuisinedelight.content.logic.IngredientConfig;
 import dev.xkmc.cuisinedelight.init.registrate.CDItems;
+import me.jellysquid.mods.sodium.mixin.features.render.world.ClientLevelMixin;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -35,6 +39,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -47,6 +53,8 @@ import yesman.epicfight.gameasset.EpicFightSkills;
 import yesman.epicfight.world.item.EpicFightItems;
 
 import java.util.*;
+
+import static com.p1nero.smc.block.entity.MainCookBlockEntity.PROFESSION_LIST;
 
 /**
  * 凝渊人，引导的npc
@@ -173,14 +181,37 @@ public class StartNPC extends SMCNpc {
             }
         }
 
-        long currentTime = this.level().getDayTime();
-        if (!level().isClientSide && this.isHired() && currentTime > 600 && currentTime < 12700) {
+        if (this.getOwner() instanceof ServerPlayer serverPlayer && this.isHired() && this.isWorkingTime()) {
             this.getEntityData().set(INCOME, this.getIncome() + this.getIncomeSpeed());
+
+            if(this.tickCount % 300 == 0) {
+                BlockPos centerPos = this.getHomePos();
+                double centerX = centerPos.getX() + 0.5;
+                double centerZ = centerPos.getZ() + 0.5;
+
+                double angle = Math.random() * 2 * Math.PI;
+                double radius = this.getRandom().nextInt(15, 20);
+
+                double spawnX = centerX + Math.cos(angle) * radius;
+                double spawnZ = centerZ + Math.sin(angle) * radius;
+
+                BlockPos spawnPos = ServerEvents.getSurfaceBlockPos(((ServerLevel) this.level()), (int) spawnX, (int) spawnZ);
+                FakeCustomer customer = new FakeCustomer(serverPlayer, spawnPos.getCenter());
+                customer.setHomePos(this.getHomePos());
+                customer.setSpawnPos(spawnPos);
+                customer.getNavigation().moveTo(customer.getNavigation().createPath(this.getHomePos(), 3), 1.0);
+                VillagerProfession profession = PROFESSION_LIST.get(customer.getRandom().nextInt(PROFESSION_LIST.size()));//随机抽个职业，换皮肤好看
+                customer.setVillagerData(customer.getVillagerData().setType(VillagerType.byBiome(serverPlayer.serverLevel().getBiome(this.getOnPos()))).setProfession(profession));
+                level().addFreshEntity(customer);
+            }
         }
 
         currentSleepingString = totalSleepingString.substring(0, (this.tickCount / 20) % totalSleepingString.length());
     }
 
+    /**
+     * 用level.isDay的话双端不同步
+     */
     public boolean isWorkingTime() {
         long currentTime = this.level().getDayTime();
         return currentTime > 600 && currentTime < 12700;
@@ -246,12 +277,15 @@ public class StartNPC extends SMCNpc {
         } else if (isGuider()) {
 
             TreeNode ticketExchange = new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(11), dialogueComponentBuilder.buildDialogueOption(16))
-                    .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(12), dialogueComponentBuilder.buildDialogueOption(17))
+                    .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(12), dialogueComponentBuilder.buildDialogueOption(17))//武器
                             .addLeaf(dialogueComponentBuilder.buildDialogueOption(18, 160), (byte) 16)
                             .addLeaf(dialogueComponentBuilder.buildDialogueOption(19, 1599), (byte) 17))
+                    .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(12), dialogueComponentBuilder.buildDialogueOption(24))//盔甲
+                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(18, 160), (byte) 26)
+                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(19, 1599), (byte) 27))
                     .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(12), dialogueComponentBuilder.buildDialogueOption(20))
-                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(18, 160), (byte) 18)
-                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(19, 1599), (byte) 19))
+                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(18, 1600), (byte) 18)
+                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(19, 15800), (byte) 19))
                     .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(12), dialogueComponentBuilder.buildDialogueOption(21))
                             .addLeaf(dialogueComponentBuilder.buildDialogueOption(18, 1600), (byte) 20)
                             .addLeaf(dialogueComponentBuilder.buildDialogueOption(19, 16000), (byte) 21))
@@ -302,7 +336,7 @@ public class StartNPC extends SMCNpc {
             //初始态
             builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(0))
                     .addLeaf(dialogueComponentBuilder.buildDialogueOption(0, 100), (byte) 1) //入职
-                    .addLeaf(dialogueComponentBuilder.buildDialogueOption(1, 1000), (byte) 2) //雇佣
+                    .addLeaf(dialogueComponentBuilder.buildDialogueOption(1, getUpgradeNeed()), (byte) 2) //雇佣
                     .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3)); //告辞
         }
 
@@ -371,30 +405,15 @@ public class StartNPC extends SMCNpc {
             DataManager.firstGiftGot.put(player, true);
             player.displayClientMessage(dialogueComponentBuilder.buildEntityAnswer(5), false);
             ItemUtil.addItem(player, SOLCarrotItems.FOOD_BOOK.get(), 1);
-            ItemUtil.addItem(player, CDItems.SKILLET.asItem(), 1);
-            ItemUtil.addItem(player, CDItems.SPATULA.asItem(), 1);
             ItemUtil.addItem(player, CDItems.PLATE.asItem().asItem(), 10);
-            ItemStack step = new ItemStack(EpicFightItems.SKILLBOOK.get());
-            step.getOrCreateTag().putString("skill", EpicFightSkills.STEP.toString());
-            ItemStack parrying = new ItemStack(EpicFightItems.SKILLBOOK.get());
-            parrying.getOrCreateTag().putString("skill", EpicFightSkills.PARRYING.toString());
-            ItemStack technician = new ItemStack(EpicFightItems.SKILLBOOK.get());
-            technician.getOrCreateTag().putString("skill", EpicFightSkills.TECHNICIAN.toString());
-            ItemStack dodgeDisplay = new ItemStack(EpicFightItems.SKILLBOOK.get());
-            dodgeDisplay.getOrCreateTag().putString("skill", SMCSkills.BETTER_DODGE_DISPLAY.toString());
-            ItemStack guard = new ItemStack(EpicFightItems.SKILLBOOK.get());
-            guard.getOrCreateTag().putString("skill", EpicFightSkills.GUARD.toString());
-            ItemUtil.addItem(player, step);
-            ItemUtil.addItem(player, technician);
-            ItemUtil.addItem(player, dodgeDisplay);
-            ItemUtil.addItem(player, guard);
-            ItemUtil.addItem(player, parrying);
             ItemUtil.addItem(player, Blocks.CRAFTING_TABLE.asItem(), 1);
             ItemUtil.addItem(player, Blocks.JUKEBOX.asItem(), 1);
             ItemUtil.addItem(player, Blocks.OAK_WOOD.asItem(), 64);
             ItemUtil.addItem(player, Blocks.STONE.asItem().asItem(), 64);
             ItemUtil.addItem(player, Blocks.COBBLESTONE.asItem().asItem(), 64);
             ItemUtil.addItem(player, Blocks.BRICKS.asItem().asItem(), 64);
+            ItemUtil.addItem(player, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asItem(), 10);
+            ItemUtil.addItem(player, SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asItem(), 10);
 
             player.playSound(SoundEvents.PLAYER_LEVELUP);
         }
@@ -430,10 +449,10 @@ public class StartNPC extends SMCNpc {
         }
         //技能书抽奖券
         if (interactionID == 18) {
-            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asStack()), 160, 1);
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asStack()), 1600, 1);
         }
         if (interactionID == 19) {
-            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asStack()), 1599, 10);
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asStack()), 15800, 10);
         }
         //宠物
         if (interactionID == 20) {
@@ -455,6 +474,13 @@ public class StartNPC extends SMCNpc {
         }
         if (interactionID == 25) {
             addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.DOLL_RAFFLE_TICKET.asStack()), 16000, 10);
+        }
+        //盔甲
+        if (interactionID == 26) {
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asStack()), 160, 1);
+        }
+        if (interactionID == 27) {
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asStack()), 1599, 10);
         }
 
         this.setConversingPlayer(null);

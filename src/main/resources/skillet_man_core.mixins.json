@@ -16,7 +16,9 @@
     "PlateItemMixin",
     "ServerGamePacketListenerImplMixin",
     "ServerPlayerPatchMixin",
+    "SpatulaItemMixin",
     "VillagerMixin",
+    "WanderingTraderMixin",
     "WolfMixin",
     "WOMAnimationsMixin",
     "WorldOptionsMixin"
@@ -24,6 +26,7 @@
   "client": [
     "CreateWorldScreenMixin",
     "DodgeSkillMixin",
+    "HealthBarIndicatorMixin",
     "LevelRendererMixin",
     "WorldListEntryMixin"
   ],

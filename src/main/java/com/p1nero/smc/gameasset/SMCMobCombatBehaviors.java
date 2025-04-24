@@ -1,5 +1,6 @@
 package com.p1nero.smc.gameasset;
 
+import com.p1nero.smc.entity.custom.super_golem.SuperBadIronGolemPatch;
 import yesman.epicfight.data.conditions.entity.HealthPoint;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.network.server.SPMoveAndPlayAnimation;

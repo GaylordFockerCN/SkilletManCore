@@ -21,18 +21,44 @@ public class SMCItemTabs {
 
     public static final RegistryObject<CreativeModeTab> ITEMS = REGISTRY.register("items",
             () -> CreativeModeTab.builder().title(Component.translatable("itemGroup.smc.items")).icon(() -> {
-                return new ItemStack(SMCRegistrateItems.IRON_SKILLET_LEVEL5.get());//TODO 换别的锅或眼罩
+                return new ItemStack(SMCRegistrateItems.DIAMOND_SPATULA_V5.get());
             }).withTabsBefore(CDItems.TAB.getKey()).displayItems((params, output) -> {
                 output.accept(SMCBlocks.MAIN_COOK_BLOCK.get());
+
+                output.accept(SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get());
+
 				output.accept(SMCRegistrateItems.IRON_SKILLET_LEVEL2);
                 output.accept(SMCRegistrateItems.IRON_SKILLET_LEVEL3);
                 output.accept(SMCRegistrateItems.IRON_SKILLET_LEVEL4);
                 output.accept(SMCRegistrateItems.IRON_SKILLET_LEVEL5);
+                output.accept(SMCRegistrateItems.GOLDEN_SKILLET);
+                output.accept(SMCRegistrateItems.GOLDEN_SKILLET_V2);
+                output.accept(SMCRegistrateItems.GOLDEN_SKILLET_V3);
+                output.accept(SMCRegistrateItems.GOLDEN_SKILLET_V4);
+                output.accept(SMCRegistrateItems.GOLDEN_SKILLET_V5);
+                output.accept(SMCRegistrateItems.DIAMOND_SKILLET);
+                output.accept(SMCRegistrateItems.DIAMOND_SKILLET_V2);
+                output.accept(SMCRegistrateItems.DIAMOND_SKILLET_V3);
+                output.accept(SMCRegistrateItems.DIAMOND_SKILLET_V4);
+                output.accept(SMCRegistrateItems.DIAMOND_SKILLET_V5);
+
                 output.accept(SMCRegistrateItems.SPATULA_V2);
                 output.accept(SMCRegistrateItems.SPATULA_V3);
                 output.accept(SMCRegistrateItems.SPATULA_V4);
                 output.accept(SMCRegistrateItems.SPATULA_V5);
+                output.accept(SMCRegistrateItems.GOLDEN_SPATULA);
+                output.accept(SMCRegistrateItems.GOLDEN_SPATULA_V2);
+                output.accept(SMCRegistrateItems.GOLDEN_SPATULA_V3);
+                output.accept(SMCRegistrateItems.GOLDEN_SPATULA_V4);
+                output.accept(SMCRegistrateItems.GOLDEN_SPATULA_V5);
+                output.accept(SMCRegistrateItems.DIAMOND_SPATULA);
+                output.accept(SMCRegistrateItems.DIAMOND_SPATULA_V2);
+                output.accept(SMCRegistrateItems.DIAMOND_SPATULA_V3);
+                output.accept(SMCRegistrateItems.DIAMOND_SPATULA_V4);
+                output.accept(SMCRegistrateItems.DIAMOND_SPATULA_V5);
+
                 output.accept(SMCRegistrateItems.WEAPON_RAFFLE_TICKET);
+                output.accept(SMCRegistrateItems.ARMOR_RAFFLE_TICKET);
                 output.accept(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET);
                 output.accept(SMCRegistrateItems.DISC_RAFFLE_TICKET);
                 output.accept(SMCRegistrateItems.PET_RAFFLE_TICKET);

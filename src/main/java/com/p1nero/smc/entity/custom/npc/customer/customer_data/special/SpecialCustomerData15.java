@@ -46,6 +46,7 @@ public class SpecialCustomerData15 extends SpecialCustomerData {
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
         ItemUtil.addItem(serverPlayer, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.get(), 4);
+        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.ARMOR_RAFFLE_TICKET.get(), 4);
         ItemStack nameTag = Items.NAME_TAG.getDefaultInstance();
         nameTag.setHoverName(Component.literal("Dinnerbone"));
         ItemUtil.addItem(serverPlayer, nameTag);

@@ -9,15 +9,12 @@ import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
-import com.p1nero.smc.util.SkillBookGachaSystem;
-import com.p1nero.smc.util.WeaponGachaSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -39,8 +36,8 @@ public class LibrarianDialogBuilder extends VillagerDialogScreenHandler.Villager
         if (interactionID == 1) {
             int ticketCount = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asItem(), 1);
             if (ticketCount == 0) {
-                if(SMCPlayer.hasMoney(serverPlayer, 160, true)) {
-                    SMCPlayer.consumeMoney(160, serverPlayer);
+                if(SMCPlayer.hasMoney(serverPlayer, 1600, true)) {
+                    SMCPlayer.consumeMoney(1600, serverPlayer);
                     smcPlayer.setSkillBookGachaingCount(1);
                 }
             } else {
@@ -52,8 +49,8 @@ public class LibrarianDialogBuilder extends VillagerDialogScreenHandler.Villager
             int ticketCount = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asItem(), 10);
             if(ticketCount < 10) {
                 int need = 10 - ticketCount;
-                if(SMCPlayer.hasMoney(serverPlayer, 160 * need, true)) {
-                    SMCPlayer.consumeMoney(160 * need, serverPlayer);
+                if(SMCPlayer.hasMoney(serverPlayer, 1600 * need, true)) {
+                    SMCPlayer.consumeMoney(1600 * need, serverPlayer);
                     smcPlayer.setSkillBookGachaingCount(10);
                 }
             } else {
@@ -74,16 +71,16 @@ public class LibrarianDialogBuilder extends VillagerDialogScreenHandler.Villager
             TreeNode pull = new TreeNode(answer(2), choice(2));
 
             if (ticketCount < 1) {
-                pull.addChild(new TreeNode(answer(3, 160), choice(3))
+                pull.addChild(new TreeNode(answer(3, 1600), choice(3))
                                 .addLeaf(choice(5), (byte) 1)
                                 .addLeaf(choice(6), (byte) -1))
-                        .addChild(new TreeNode(answer(3, 1600), choice(4))
+                        .addChild(new TreeNode(answer(3, 16000), choice(4))
                                 .addLeaf(choice(5), (byte) 2)
                                 .addLeaf(choice(6), (byte) -1));
             } else if (ticketCount < 10) {
-                int needTicket = ticketCount - 10;
+                int needTicket = 10 - ticketCount;
                 pull.addLeaf(choice(3), (byte) 1)
-                        .addChild(new TreeNode(answer(4, 160 * needTicket), choice(4))
+                        .addChild(new TreeNode(answer(4, 1600 * needTicket), choice(4))
                                 .addLeaf(choice(5), (byte) 2)
                                 .addLeaf(choice(6), (byte) -1));
             } else {

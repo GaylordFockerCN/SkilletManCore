@@ -1,21 +1,18 @@
 package com.p1nero.smc.entity.custom.boss.goldenflame;
 
 import com.p1nero.smc.SMCConfig;
-import com.p1nero.smc.archive.SMCArchiveManager;
-import com.p1nero.smc.client.gui.DialogueComponentBuilder;
-import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.effect.SMCEffects;
 import com.p1nero.smc.entity.api.IWanderableEntity;
 import com.p1nero.smc.entity.ai.epicfight.api.TimeStampedEvent;
 import com.p1nero.smc.entity.ai.goal.CustomWanderGoal;
 import com.p1nero.smc.entity.custom.boss.SMCBoss;
 import com.p1nero.smc.util.EntityUtil;
+import net.kenddie.fantasyarmor.item.FAItems;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -61,6 +58,10 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity {
     public GoldenFlame(EntityType<? extends PathfinderMob> type, Level level) {
         super(type, level);
         setItemInHand(InteractionHand.MAIN_HAND, WOMItems.SOLAR.get().getDefaultInstance());
+        setItemSlot(EquipmentSlot.HEAD, FAItems.DARK_LORD_HELMET.get().getDefaultInstance());
+        setItemSlot(EquipmentSlot.CHEST, FAItems.DARK_LORD_CHESTPLATE.get().getDefaultInstance());
+        setItemSlot(EquipmentSlot.LEGS, FAItems.DARK_LORD_LEGGINGS.get().getDefaultInstance());
+        setItemSlot(EquipmentSlot.FEET, FAItems.DARK_LORD_BOOTS.get().getDefaultInstance());
     }
 
     @Override
@@ -287,7 +288,7 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity {
 
     public static AttributeSupplier setAttributes() {
         return Animal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 1500.0f)
+                .add(Attributes.MAX_HEALTH, 773.84)
                 .add(Attributes.ATTACK_DAMAGE, 2.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
                 .add(Attributes.MOVEMENT_SPEED, 0.3f)

@@ -10,7 +10,11 @@ import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.gameevent.GameEvent;
 import yesman.epicfight.gameasset.EpicFightSounds;
 
 public class SpecialCustomerData3 extends SpecialCustomerData {
@@ -42,6 +46,7 @@ public class SpecialCustomerData3 extends SpecialCustomerData {
         super.onBest(serverPlayer, self);
         ItemUtil.addItem(serverPlayer, Items.DIAMOND, 64);
         ItemUtil.addItem(serverPlayer, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.get(), 3);
+        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.ARMOR_RAFFLE_TICKET.get(), 3);
     }
 
     @Override
@@ -49,5 +54,10 @@ public class SpecialCustomerData3 extends SpecialCustomerData {
         super.onBad(serverPlayer, self);
         serverPlayer.playSound(EpicFightSounds.BLADE_HIT.get());
         serverPlayer.hurt(serverPlayer.damageSources().magic(), 0.5F);
+        PrimedTnt primedtnt = new PrimedTnt(serverPlayer.level(), self.getX() + 0.5D, self.getY(), self.getZ() + 0.5D, self);
+        primedtnt.setFuse(142857);
+        serverPlayer.level().addFreshEntity(primedtnt);
+        serverPlayer.level().playSound(null, primedtnt.getX(), primedtnt.getY(), primedtnt.getZ(), SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0F, 1.0F);
+        serverPlayer.level().gameEvent(self, GameEvent.PRIME_FUSE, self.getOnPos());
     }
 }

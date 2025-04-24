@@ -43,7 +43,7 @@ public class SpecialCustomerData20 extends SpecialCustomerData {
     @Override
     public void handle(ServerPlayer serverPlayer, Customer self, byte interactId) {
         if(self.level().getBlockEntity(self.getHomePos()) instanceof MainCookBlockEntity cookBlockEntity){
-            cookBlockEntity.summonRaidFor(serverPlayer);
+            cookBlockEntity.summonRandomRaidFor(serverPlayer);
         }
     }
 }

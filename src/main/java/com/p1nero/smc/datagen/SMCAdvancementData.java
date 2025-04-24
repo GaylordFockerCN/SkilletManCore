@@ -68,11 +68,19 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement parryMaster2 = registerAdvancement(parryMaster, "parry_master2", FrameType.TASK, SMCRegistrateItems.PARRY_ICON, true, true, false);//招架10次， 100次， 1000次
             Advancement dodgeMaster3 = registerAdvancement(dodgeMaster2, "dodge_master3", FrameType.TASK, SMCRegistrateItems.DODGE_ICON, true, true, false);//闪避10次， 100次， 1000次
             Advancement parryMaster3 = registerAdvancement(parryMaster2, "parry_master3", FrameType.TASK, SMCRegistrateItems.PARRY_ICON, true, true, false);//招架10次， 100次， 1000次
-            Advancement end = registerAdvancement(startFight, "end", FrameType.CHALLENGE, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_3"))), true, true, false);
+
+            Advancement startChangeVillager = registerAdvancement(root, "change_villager", FrameType.TASK, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_24"))), true, true, false);
+            Advancement talkToCleric = registerAdvancement(startChangeVillager, "talk_to_cleric", FrameType.TASK, Items.ENDER_EYE, true, true, false);
+            Advancement end = registerAdvancement(talkToCleric, "end", FrameType.CHALLENGE, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_3"))), true, true, false);
+            //TODO
+            Advancement trueEnd = registerAdvancement(end, "true_end", FrameType.CHALLENGE, Items.NETHER_STAR, true, true, true);
+
+            Advancement firstGacha = registerAdvancement(root, "first_gacha", FrameType.TASK, ModItems.DOLL_MACHINE.get(), true, true, false);
+            Advancement first5StarSkillet = registerAdvancement(firstGacha, "first_5star_skillet", FrameType.TASK, SMCRegistrateItems.IRON_SKILLET_LEVEL5, true, true, false);
+            Advancement first5StarItem = registerAdvancement(firstGacha, "first_5star_item", FrameType.TASK, SMCRegistrateItems.DIAMOND_SPATULA_V5, true, true, false);
 
             Advancement dogNoEat = registerAdvancement(root, "dog_no_eat", FrameType.TASK, Items.BONE);
             Advancement noYourPower = registerAdvancement(root, "no_your_power", FrameType.TASK, Blocks.BARRIER);
-            Advancement first5StarSkillet = registerAdvancement(root, "first_5star_skillet", FrameType.TASK, SMCRegistrateItems.IRON_SKILLET_LEVEL5);
             Advancement fakeSleep = registerAdvancement(root, "fake_sleep", FrameType.TASK, Items.RED_BED);
             Advancement tryPush = registerAdvancement(root, "try_push", FrameType.TASK, Blocks.PISTON);
             Advancement noMoney = registerAdvancement(root, "no_money", FrameType.TASK, Items.EMERALD);

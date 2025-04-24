@@ -3,6 +3,7 @@ package com.p1nero.smc.client.gui.screen.entity_dialog.profession_dialog;
 import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
 import com.p1nero.smc.client.gui.screen.entity_dialog.VillagerDialogScreenHandler;
+import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerPlayer;
@@ -61,11 +62,14 @@ public class NoneDialogBuilder extends VillagerDialogScreenHandler.VillagerDialo
     @Override
     public void handle(ServerPlayer serverPlayer, Villager villager, byte interactionID) {
         super.handle(serverPlayer, villager, interactionID);
+        if(interactionID >= 4 && interactionID <= 9) {
+            SMCAdvancementData.finishAdvancement("change_villager", serverPlayer);
+        }
         switch (interactionID) {
             case 4 -> villager.setVillagerData(villager.getVillagerData().setProfession(VillagerProfession.NITWIT));
-            case 5 -> villager.setVillagerData(villager.getVillagerData().setProfession(VillagerProfession.BUTCHER).setLevel(2));//setLevel锁职业
-            case 6 -> villager.setVillagerData(villager.getVillagerData().setProfession(VillagerProfession.CLERIC).setLevel(2));
-            case 7 -> villager.setVillagerData(villager.getVillagerData().setProfession(VillagerProfession.FISHERMAN).setLevel(2));
+            case 5 -> villager.setVillagerData(villager.getVillagerData().setProfession(VillagerProfession.WEAPONSMITH).setLevel(2));//setLevel锁职业
+            case 6 -> villager.setVillagerData(villager.getVillagerData().setProfession(VillagerProfession.ARMORER).setLevel(2));
+            case 7 -> villager.setVillagerData(villager.getVillagerData().setProfession(VillagerProfession.CLERIC).setLevel(2));
             case 8 -> {
                 Pig pig = new Pig(EntityType.PIG, serverPlayer.level());
                 pig.setPos(villager.position());
@@ -102,9 +106,9 @@ public class NoneDialogBuilder extends VillagerDialogScreenHandler.VillagerDialo
         generator.addVillagerAns(this.profession, 3, "（你就不考虑村民的自己的意愿吗？）");
         generator.addVillagerAns(this.profession, 4, "（你想将它变成什么职业？）");
         generator.addVillagerOpt(this.profession, 4, "绿袍尊者");
-        generator.addVillagerOpt(this.profession, 5, "屠夫");
-        generator.addVillagerOpt(this.profession, 6, "牧师§a（主线人物）");
-        generator.addVillagerOpt(this.profession, 7, "渔夫");
+        generator.addVillagerOpt(this.profession, 5, "武器匠§a（武器祈愿）");
+        generator.addVillagerOpt(this.profession, 6, "盔甲匠§a（盔甲祈愿）");
+        generator.addVillagerOpt(this.profession, 7, "牧师§a（主线）");
         generator.addVillagerOpt(this.profession, 8, "猪");
         generator.addVillagerOpt(this.profession, 9, "随机职业");
 

@@ -1,10 +1,12 @@
 package com.p1nero.smc.network.packet.clientbound;
 import com.p1nero.smc.client.gui.screen.entity_dialog.VillagerDialogScreenHandler;
+import com.p1nero.smc.client.gui.screen.entity_dialog.profession_dialog.WanderingTraderDialogBuilder;
 import com.p1nero.smc.network.packet.BasePacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.entity.player.Player;
 
 public record OpenVillagerDialogPacket(int villagerId) implements BasePacket {
@@ -23,6 +25,9 @@ public record OpenVillagerDialogPacket(int villagerId) implements BasePacket {
             Entity entity = Minecraft.getInstance().level.getEntity(villagerId);
             if(entity instanceof Villager villager) {
                 VillagerDialogScreenHandler.addDialogScreen(villager);
+            }
+            if(entity instanceof WanderingTrader wanderingTrader) {
+                WanderingTraderDialogBuilder.getInstance().buildDialog(wanderingTrader);
             }
         }
     }

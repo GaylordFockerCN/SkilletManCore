@@ -33,7 +33,7 @@ public class SpecialCustomerData9 extends SpecialCustomerData {
         generator.add(answerPre(0), "要吃就来点能一眼看出价值的 %s 。");
         generator.add(choicePre(0), "即刻奉上");
 
-        generator.add(answerPre(1), "（微微点头）还算合格。此秘籍送你。用处不大但比你强。");
+        generator.add(answerPre(1), "（微微点头）还算合格。此武器送你罢");
         generator.add(choicePre(1), "收下，多谢");
 
         generator.add(answerPre(2), "（不屑一顾）勉勉强强。");
@@ -46,7 +46,7 @@ public class SpecialCustomerData9 extends SpecialCustomerData {
     @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.get().getDefaultInstance());
+        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.get(), 5);
     }
 
     @Override

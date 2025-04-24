@@ -18,6 +18,7 @@ import java.util.Map;
 
 public class VillagerDialogScreenHandler {
     private static final Map<VillagerProfession, VillagerDialogBuilder> PROFESSION_VILLAGER_DIALOG_BUILDER_MAP = new HashMap<>();
+    private static final BabyVillagerDialogBuilder BABY_VILLAGER_DIALOG_BUILDER = new BabyVillagerDialogBuilder();
     static {
         PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.put(VillagerProfession.NONE, new NoneDialogBuilder());
         PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.put(VillagerProfession.NITWIT, new NitWitDialogBuilder());
@@ -27,11 +28,15 @@ public class VillagerDialogScreenHandler {
         PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.put(VillagerProfession.BUTCHER, new ButcherDialogBuilder());
         PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.put(VillagerProfession.SHEPHERD, new ShepherdDialogBuilder());
         PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.put(VillagerProfession.CARTOGRAPHER, new CartographerDialogBuilder());
-
+        PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.put(VillagerProfession.CLERIC, new ClericDialogBuilder());
+        PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.put(VillagerProfession.ARMORER, new ArmorerDialogBuilder());
+        PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.put(VillagerProfession.WEAPONSMITH, new WeaponSmithDialogBuilder());
     }
 
     public static void onLanguageGen(SMCLangGenerator generator) {
         PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.forEach((profession, villagerDialogBuilder) -> villagerDialogBuilder.onGenerateLang(generator));
+        BABY_VILLAGER_DIALOG_BUILDER.onGenerateLang(generator);
+        WanderingTraderDialogBuilder.getInstance().onGenerateLang(generator);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -42,8 +47,13 @@ public class VillagerDialogScreenHandler {
             screenBuilder = new LinkListStreamDialogueScreenBuilder(villager);
             buildDefaultDialog(screenBuilder);
         } else {
-            screenBuilder = new LinkListStreamDialogueScreenBuilder(villager, villagerDialogBuilder.getName());
-            villagerDialogBuilder.createDialog(screenBuilder, villager);
+            if(villager.isBaby()) {
+                screenBuilder = new LinkListStreamDialogueScreenBuilder(villager, BABY_VILLAGER_DIALOG_BUILDER.getName());
+                BABY_VILLAGER_DIALOG_BUILDER.createDialog(screenBuilder, villager);
+            } else {
+                screenBuilder = new LinkListStreamDialogueScreenBuilder(villager, villagerDialogBuilder.getName());
+                villagerDialogBuilder.createDialog(screenBuilder, villager);
+            }
         }
         if(!screenBuilder.isEmpty()) {
             Minecraft.getInstance().setScreen(screenBuilder.build());
@@ -51,7 +61,14 @@ public class VillagerDialogScreenHandler {
     }
 
     public static void handle(ServerPlayer serverPlayer, Villager villager, byte interactionID) {
-        PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.get(villager.getVillagerData().getProfession()).handle(serverPlayer, villager, interactionID);
+        if(villager.isBaby()) {
+            BABY_VILLAGER_DIALOG_BUILDER.handle(serverPlayer, villager, interactionID);
+        } else {
+            VillagerDialogBuilder builder = PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.get(villager.getVillagerData().getProfession());
+            if(builder!= null){
+                builder.handle(serverPlayer, villager, interactionID);
+            }
+        }
         SMCCapabilityProvider.getSMCPlayer(serverPlayer).setCurrentTalkingEntity(null);
     }
 
@@ -77,17 +94,21 @@ public class VillagerDialogScreenHandler {
 
         }
 
+        protected String getTranslationKey() {
+            return profession.name();
+        }
+
         public Component getName() {
-            return Component.translatable("villager.smc." + profession.name().toLowerCase(Locale.ROOT) + ".name");
+            return Component.translatable("villager.smc." + getTranslationKey().toLowerCase(Locale.ROOT) + ".name");
         }
 
         public Component answer(int id, Object... objects) {
-            Component component = Component.translatable("villager.smc." + profession.name().toLowerCase(Locale.ROOT) + ".ans." + id, objects);
+            Component component = Component.translatable("villager.smc." + getTranslationKey().toLowerCase(Locale.ROOT) + ".ans." + id, objects);
             return Component.literal("\n").append(component);
         }
 
         public Component choice(int id, Object... objects) {
-            return Component.translatable("villager.smc." + profession.name().toLowerCase(Locale.ROOT) + ".opt." + id, objects);
+            return Component.translatable("villager.smc." + getTranslationKey().toLowerCase(Locale.ROOT) + ".opt." + id, objects);
         }
 
     }

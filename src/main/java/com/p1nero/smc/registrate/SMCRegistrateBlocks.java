@@ -1,6 +1,8 @@
 package com.p1nero.smc.registrate;
 
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.block.custom.DiamondCuisineSkilletBlock;
+import com.p1nero.smc.block.custom.GoldenCuisineSkilletBlock;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import dev.xkmc.cuisinedelight.content.block.CuisineSkilletBlock;
@@ -21,31 +23,55 @@ import net.minecraftforge.client.model.generators.ModelFile;
 import vectorwing.farmersdelight.common.block.SkilletBlock;
 
 public class SMCRegistrateBlocks {
-    public static final BlockEntry<CuisineSkilletBlock> GOLD_SKILLET;
+    public static final BlockEntry<GoldenCuisineSkilletBlock> GOLDEN_SKILLET;
 
-    public static final BlockEntityEntry<CuisineSkilletBlockEntity> GOLD_BE_SKILLET;
+    public static final BlockEntityEntry<CuisineSkilletBlockEntity> GOLDEN_BE_SKILLET;
+    public static final BlockEntry<DiamondCuisineSkilletBlock> DIAMOND_SKILLET;
+
+    public static final BlockEntityEntry<CuisineSkilletBlockEntity> DIAMOND_BE_SKILLET;
 
     static {
-        GOLD_SKILLET = SkilletManCoreMod.REGISTRATE.block("gold_cuisine_skillet", p -> new CuisineSkilletBlock(
+        GOLDEN_SKILLET = SkilletManCoreMod.REGISTRATE.block("golden_cuisine_skillet", p -> new GoldenCuisineSkilletBlock(
                         BlockBehaviour.Properties.of().mapColor(MapColor.METAL)
                                 .strength(0.5F, 6.0F).sound(SoundType.LANTERN)))
                 .blockstate((ctx, pvd) -> pvd.getVariantBuilder(ctx.getEntry()).forAllStates(e ->
                         ConfiguredModel.builder().modelFile(new ModelFile.UncheckedModelFile(
                                         e.getValue(SkilletBlock.SUPPORT) ?
-                                                new ResourceLocation(SkilletManCoreMod.MOD_ID, "block/gold_cuisine_skillet_tray") :
-                                                new ResourceLocation(SkilletManCoreMod.MOD_ID, "block/gold_cuisine_skillet"))
+                                                new ResourceLocation(SkilletManCoreMod.MOD_ID, "block/golden_cuisine_skillet_tray") :
+                                                new ResourceLocation(SkilletManCoreMod.MOD_ID, "block/golden_cuisine_skillet"))
                                 ).rotationY(((int) e.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180) % 360)
                                 .build()))
                 .loot((loot, block) -> loot.add(block,
                         LootTable.lootTable().withPool(
                                 LootTableTemplate.getPool(1, 0).add(
-                                        LootItem.lootTableItem(CDItems.SKILLET.get())
+                                        LootItem.lootTableItem(SMCRegistrateItems.GOLDEN_SKILLET.get())
                                                 .apply(CopySkilletFunction.builder())
                                 ))))
                 .register();
 
-        GOLD_BE_SKILLET = SkilletManCoreMod.REGISTRATE.blockEntity("gold_cuisine_skillet", CuisineSkilletBlockEntity::new)
-                .validBlock(GOLD_SKILLET).renderer(() -> CuisineSkilletRenderer::new).register();
+        GOLDEN_BE_SKILLET = SkilletManCoreMod.REGISTRATE.blockEntity("golden_cuisine_skillet", CuisineSkilletBlockEntity::new)
+                .validBlock(GOLDEN_SKILLET).renderer(() -> CuisineSkilletRenderer::new).register();
+
+        DIAMOND_SKILLET = SkilletManCoreMod.REGISTRATE.block("diamond_cuisine_skillet", p -> new DiamondCuisineSkilletBlock(
+                        BlockBehaviour.Properties.of().mapColor(MapColor.METAL)
+                                .strength(0.5F, 6.0F).sound(SoundType.LANTERN)))
+                .blockstate((ctx, pvd) -> pvd.getVariantBuilder(ctx.getEntry()).forAllStates(e ->
+                        ConfiguredModel.builder().modelFile(new ModelFile.UncheckedModelFile(
+                                        e.getValue(SkilletBlock.SUPPORT) ?
+                                                new ResourceLocation(SkilletManCoreMod.MOD_ID, "block/diamond_cuisine_skillet_tray") :
+                                                new ResourceLocation(SkilletManCoreMod.MOD_ID, "block/diamond_cuisine_skillet"))
+                                ).rotationY(((int) e.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180) % 360)
+                                .build()))
+                .loot((loot, block) -> loot.add(block,
+                        LootTable.lootTable().withPool(
+                                LootTableTemplate.getPool(1, 0).add(
+                                        LootItem.lootTableItem(SMCRegistrateItems.DIAMOND_SKILLET.get())
+                                                .apply(CopySkilletFunction.builder())
+                                ))))
+                .register();
+
+        DIAMOND_BE_SKILLET = SkilletManCoreMod.REGISTRATE.blockEntity("diamond_cuisine_skillet", CuisineSkilletBlockEntity::new)
+                .validBlock(DIAMOND_SKILLET).renderer(() -> CuisineSkilletRenderer::new).register();
     }
 
     public static void register() {

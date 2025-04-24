@@ -1,0 +1,11 @@
+{
+  "trail": {
+    "color": [255, 255, 255],
+    "begin_pos": [0.0, 0.1, -0.1],
+    "end_pos": [0.0, -0.05, -0.95],
+    "lifetime": 8,
+    "interpolations": 24,
+    "texture_path": "wom:textures/particle/moonless/weapon_trail/basic.png",
+    "particle_type": "epicfight:swing_trail"
+  }
+}

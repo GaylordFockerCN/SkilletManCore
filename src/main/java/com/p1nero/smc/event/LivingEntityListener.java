@@ -7,6 +7,9 @@ import com.p1nero.smc.worldgen.dimension.SMCDimension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.animal.Cat;
+import net.minecraft.world.entity.animal.CatVariant;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.ItemStack;
@@ -76,8 +79,8 @@ public class LivingEntityListener {
 
     @SubscribeEvent
     public static void onEntityDie(LivingDeathEvent event) {
-        if(event.getEntity() instanceof Monster monster && event.getSource().getEntity() instanceof ServerPlayer player) {
-            SMCPlayer.addMoney((int) monster.getMaxHealth(), player);//击杀奖励
+        if(event.getEntity() instanceof Enemy && event.getSource().getEntity() instanceof ServerPlayer player) {
+            SMCPlayer.addMoney((int) event.getEntity().getMaxHealth(), player);//击杀奖励
         }
     }
 
@@ -107,6 +110,14 @@ public class LivingEntityListener {
                 }
             }
         }
+
+        if(event.getEntity() instanceof Cat cat) {
+            if(cat.getVariant().texture().toString().equals(CatVariant.WHITE.toString())) {
+                cat.setCustomName(SkilletManCoreMod.getInfo("rana_kaname"));
+                cat.setCustomNameVisible(true);
+            }
+        }
+
     }
 
 }

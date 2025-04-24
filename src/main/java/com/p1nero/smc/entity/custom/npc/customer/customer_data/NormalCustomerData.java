@@ -1,5 +1,7 @@
 package com.p1nero.smc.entity.custom.npc.customer.customer_data;
 
+import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.DialogueComponentBuilder;
 import com.p1nero.smc.client.gui.TreeNode;
@@ -108,14 +110,19 @@ public abstract class NormalCustomerData extends Customer.CustomerData {
 
     protected void onBest(ServerPlayer serverPlayer, Customer self){
         CookedFoodData cookedFoodData = BaseFoodItem.getData(self.getOrder());
-        float mul = 1.0F;
+        SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+        float mul = 1.0F + smcPlayer.getStage();
+        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("level_mul", smcPlayer.getStage() + 1), false);
         if(cookedFoodData != null) {
             mul *= cookedFoodData.types.size();
+            serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("type_mul", cookedFoodData.types.size()), false);
             if(cookedFoodData.types.contains(FoodType.MEAT)) {
                 mul *= 2.0F;
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("meat_mul", 2.0F), false);
             }
             if(cookedFoodData.types.contains(FoodType.SEAFOOD)) {
                 mul *= 5.0F;
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("seafood_mul", 5.0F), false);
             }
         }
         SMCPlayer.addMoney((int) (50 * mul), serverPlayer);

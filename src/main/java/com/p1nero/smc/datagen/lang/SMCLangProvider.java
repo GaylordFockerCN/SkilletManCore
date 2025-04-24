@@ -160,6 +160,18 @@ public abstract class SMCLangProvider extends LanguageProvider {
         this.add("screen.smc.opt." + key + "_" + id, text);
     }
 
+    public void addVillagerName(String profession, String text) {
+        this.add("villager.smc." + profession.toLowerCase(Locale.ROOT) + ".name", text);
+    }
+
+    public void addVillagerAns(String profession, int id, String text) {
+        this.add("villager.smc." + profession.toLowerCase(Locale.ROOT) + ".ans." + id, text);
+    }
+
+    public void addVillagerOpt(String profession, int id, String text) {
+        this.add("villager.smc." + profession.toLowerCase(Locale.ROOT) + ".opt." + id, text);
+    }
+
     public void addVillagerName(VillagerProfession profession, String text) {
         this.add("villager.smc." + profession.name().toLowerCase(Locale.ROOT) + ".name", text);
     }

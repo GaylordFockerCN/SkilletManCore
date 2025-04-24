@@ -35,7 +35,9 @@ public class ClientForgeEvents {
             event.setCanceled(true);
             HealthBarRenderer.renderHealthBar(event.getGuiGraphics(), event.getWindow(), event.getPartialTick());
         }
-
+        if (event.getOverlay() == VanillaGuiOverlay.ARMOR_LEVEL.type()) {
+            event.setCanceled(true);
+        }
     }
 
     /**

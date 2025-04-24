@@ -6,17 +6,16 @@ import com.p1nero.smc.block.custom.INpcDialogueBlock;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
-import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.start_npc.StartNPC;
 import com.p1nero.smc.event.ServerEvents;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.NPCBlockDialoguePacket;
+import com.p1nero.smc.util.SMCRaidManager;
 import dev.xkmc.cuisinedelight.content.item.CuisineSkilletItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -44,7 +43,6 @@ import vectorwing.farmersdelight.common.registry.ModBlocks;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBlock {
     @Nullable
@@ -52,7 +50,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
     private boolean isWorking;
     public static final int WORKING_RADIUS = 8;
     private final List<Customer> customers = new ArrayList<>();
-    private static final List<VillagerProfession> PROFESSION_LIST = ForgeRegistries.VILLAGER_PROFESSIONS.getValues().stream().toList();
+    public static final List<VillagerProfession> PROFESSION_LIST = ForgeRegistries.VILLAGER_PROFESSIONS.getValues().stream().toList();
 
     public MainCookBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(SMCBlockEntities.MAIN_COOK_BLOCK_ENTITY.get(), blockPos, blockState);
@@ -141,9 +139,9 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             owner.serverLevel().playSound(null, owner.getX(), owner.getY(), owner.getZ(), SoundEvents.VILLAGER_NO, owner.getSoundSource(), 1.0F, 1.0F);
         }
 
-        //生成顾客，20s一只，最多6只
+        //生成顾客，30s一只，最多6只
         this.customers.removeIf(customer -> customer == null || customer.isRemoved() || !customer.isAlive());
-        if(this.customers.size() < 6 && owner.tickCount % 300 == 0) {
+        if(this.customers.size() < 6 && owner.tickCount % 600 == 0) {
             BlockPos centerPos = this.getBlockPos();
             double centerX = centerPos.getX() + 0.5;
             double centerZ = centerPos.getZ() + 0.5;
@@ -174,11 +172,9 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         }
     }
 
-    public void summonRaidFor(ServerPlayer serverPlayer){
+    public void summonRandomRaidFor(ServerPlayer serverPlayer){
         clearCustomers();
-        CommandSourceStack commandSourceStack = serverPlayer.createCommandSourceStack();
-        Objects.requireNonNull(serverPlayer.getServer()).getCommands().performPrefixedCommand(commandSourceStack, "s");
-
+        SMCRaidManager.startRandomRaid(serverPlayer);
     }
 
     /**
@@ -230,12 +226,12 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         if (this.level == null) {
             return false;
         }
-        long currentTime = this.level.getDayTime();
-        return currentTime > 0 && currentTime < 12700;
+
+        return level.isDay();
     }
 
     public boolean canPlayerLeave(ServerPlayer serverPlayer) {
-        //TODO 在试炼则可以离开
+        //TODO 在试炼则可以离开？
         return false;
     }
 
