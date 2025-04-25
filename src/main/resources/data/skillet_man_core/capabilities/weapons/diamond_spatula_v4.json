@@ -3,10 +3,10 @@
   {
     "common":
     {
-      "max_strikes":5,
-      "impact":1.3,
-      "damage_bonus":5,
-      "speed_bonus": -2.2
+      "max_strikes":2,
+      "impact":1.2,
+      "damage_bonus":4,
+      "speed_bonus": -2.3
     }
   },
   "type":"skillet_man_core:diamond_spatula"

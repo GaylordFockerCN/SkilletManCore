@@ -1,12 +1,17 @@
-package com.p1nero.smc.gameasset.skill;
+package com.p1nero.smc.gameasset.skill.combo;
 
 import com.p1nero.invincible.api.events.TimeStampedEvent;
 import com.p1nero.invincible.conditions.*;
 import com.p1nero.invincible.skill.api.ComboNode;
 import com.p1nero.smc.SkilletManCoreMod;
-import com.p1nero.smc.gameasset.skill.combo.DiamondSkilletCombo;
+import com.p1nero.smc.entity.ai.epicfight.SMCCombatBehaviors;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import reascer.wom.gameasset.WOMAnimations;
@@ -44,6 +49,17 @@ public class SkilletCombos {
                 })));
         ComboNode aaaabab = ComboNode.createNode(() -> WOMAnimations.SOLAR_BRASERO_INFIERNO).setNotCharge(true);
         ComboNode da = ComboNode.createNode(() -> WOMAnimations.TORMENT_AUTO_4).setNotCharge(true);
+        ComboNode dab = ComboNode.createNode(() -> WOMAnimations.SOLAR_BRASERO_CREMATORIO).setNotCharge(true)
+                .addTimeEvent(new TimeStampedEvent(0.3F, entityPatch -> {
+                    if (entityPatch.getOriginal().level() instanceof ServerLevel serverLevel) {
+                        LivingEntity entity = entityPatch.getOriginal();
+                        serverLevel.sendParticles(ParticleTypes.SOUL_FIRE_FLAME, entity.getX(), entity.getY() + 1.0, entity.getZ(), 10, 0.0, 0.0, 0.0, 0.1);
+                        serverLevel.playSound(null, entity.getX(), entity.getY() + 0.75, entity.getZ(), SoundEvents.PLAYER_HURT_ON_FIRE, SoundSource.BLOCKS, 1.0F, 0.5F);
+                    }
+                }))
+                .addTimeEvent(new TimeStampedEvent(1.0F, SMCCombatBehaviors.PLAY_SOLAR_BRASERO_CREMATORIO_PARTICLE))
+                .addTimeEvent(new TimeStampedEvent(1.5F, SMCCombatBehaviors.PLAY_SOLAR_BRASERO_CREMATORIO_PARTICLE))
+                .addTimeEvent(new TimeStampedEvent(2.0F, SMCCombatBehaviors.PLAY_SOLAR_BRASERO_CREMATORIO_PARTICLE));
         a.key2(ab);
         a.key1(aa_);
         aa.key1(aaa_);
@@ -67,6 +83,8 @@ public class SkilletCombos {
         dashAttack.key1(da);
         dashAttack.key2(da);
         da.key1(a);
+        da.key2(dab);
+        dab.key1(a);
         SkillBuildEvent.ModRegistryWorker registryWorker = event.createRegistryWorker(SkilletManCoreMod.MOD_ID);
         DIAMOND_SKILLET_COMBO = registryWorker.build("diamond_skillet_combo", DiamondSkilletCombo::new, DiamondSkilletCombo.createComboBasicAttack().setCombo(root).setShouldDrawGui(false));
     }

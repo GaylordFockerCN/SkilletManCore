@@ -141,7 +141,7 @@ dependencies {
     implementation fg.deobf("curse.maven:library-ferret-forge-532727:4601234")
     implementation fg.deobf("curse.maven:farmers-delight-398521:6154802")
     implementation fg.deobf("curse.maven:cuisine-delight-893541:5814261")
-    implementation fg.deobf("curse.maven:epic-fight-invincible-1184379:6447859")
+//    implementation fg.deobf("curse.maven:epic-fight-invincible-1184379:6447859")
     implementation fg.deobf("curse.maven:spice-of-life-carrot-edition-277616:4888575")
     implementation fg.deobf("curse.maven:kaleidoscope-doll-1233277:6373592")
     implementation fg.deobf("curse.maven:hungteens-lib-794622:5782587")
@@ -152,6 +152,7 @@ dependencies {
     implementation fg.deobf("curse.maven:fantasy-armor-1083998:6385161")
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.20.1:4.4.7")
     implementation fg.deobf("libs:super_golem:20.9.1.2")
+    implementation fg.deobf("libs:invincible:20.9.20")
 //    implementation fg.deobf("curse.maven:epic-fight-super-golem-1236331:6397690")
 
 //    implementation fg.deobf("curse.maven:leawind-third-person-930880:5961735")

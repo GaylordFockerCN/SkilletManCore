@@ -38,7 +38,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("god_stove_talk", "我去！灶王公说话了！");
 
         this.addInfo("golden_skillet_tip", "§e翻炒冷却降低至 15tick");
-        this.addInfo("diamond_skillet_tip", "§b每段平A都应该尝试一下key2（默认右键）");
+        this.addInfo("diamond_weapon_tip", "§b每段攻击都应该尝试一下 [KEY2] （默认右键），摸索出最合适的连招！");
         this.addInfo("golden_spatula_tip", "§e翻炒冷却降低至 15tick");
         this.addInfo("diamond_spatula_tip", "§b翻炒冷却降低至 10tick");
 
@@ -129,8 +129,14 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add(SMCRegistrateItems.DIAMOND_SPATULA_V3.get(), "钻石锅铲");
         this.add(SMCRegistrateItems.DIAMOND_SPATULA_V4.get(), "钻石锅铲");
         this.add(SMCRegistrateItems.DIAMOND_SPATULA_V5.get(), "钻石锅铲");
+        this.add("item.smc.diamond_spatula_skill1", "%s %s %s %s %s 开启强化");
+        this.add("item.smc.diamond_spatula_skill2", "%s %s 开启无月连段");
+        this.add("item.smc.diamond_spatula_skill3", "存在 冲刺 跳跃 攻击分支");
         this.add(SMCRegistrateItems.GOLDEN_SKILLET.get(), "黄金平底锅");
         this.add(SMCRegistrateItems.DIAMOND_SKILLET.get(), "钻石平底锅");
+        this.add("item.smc.diamond_skillet_skill1", "%s %s %s %s %s %s %s 开启强化");
+        this.add("item.smc.diamond_skillet_skill2", "冲刺时 %s %s/%s %s 释放 CREMATORIO");
+        this.add("item.smc.diamond_skillet_skill3", "%s %s %s %s %s 释放 SOLAR POLVORA");
         this.add(SMCRegistrateItems.DIRT_PLATE.get(), "脏盘子");
         this.add(SMCRegistrateItems.DIRT_PLATE.get().getDescriptionId() + ".disc", "上面充满了油渍，对着水右键可以洗干净。或许也可以重复使用？");
         this.add(SMCBlocks.MAIN_COOK_BLOCK.get(), "核心方块");

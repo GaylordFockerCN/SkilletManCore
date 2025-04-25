@@ -1,5 +1,6 @@
 package com.p1nero.smc.item.custom.skillets;
 
+import com.p1nero.invincible.client.keymappings.InvincibleKeyMappings;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.item.custom.SMCCuisineSkilletItem;
 import net.minecraft.ChatFormatting;
@@ -45,7 +46,11 @@ public class DiamondSkilletItem extends SMCCuisineSkilletItem {
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> list, @NotNull TooltipFlag flag) {
         super.appendHoverText(stack, level, list, flag);
-        list.add(SkilletManCoreMod.getInfo("diamond_skillet_tip"));
+        list.add(SkilletManCoreMod.getInfo("diamond_weapon_tip"));
+        list.add(Component.translatable("item.smc.diamond_skillet_skill1", InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey2(), InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey1()).withStyle(ChatFormatting.GRAY));
+        list.add(Component.translatable("item.smc.diamond_skillet_skill2", InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey2(), InvincibleKeyMappings.getTranslatableKey2()).withStyle(ChatFormatting.GRAY));
+        list.add(Component.translatable("item.smc.diamond_skillet_skill3", InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey1()).withStyle(ChatFormatting.GRAY));
+
     }
 
 }
