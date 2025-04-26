@@ -248,5 +248,4 @@ public class DialogueScreen extends Screen {
 
     }
 
-
 }

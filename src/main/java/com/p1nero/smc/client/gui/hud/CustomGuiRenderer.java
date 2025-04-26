@@ -3,6 +3,7 @@ package com.p1nero.smc.client.gui.hud;
 import com.mojang.blaze3d.platform.Window;
 import com.p1nero.smc.SMCConfig;
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.screen.DialogueScreen;
@@ -61,8 +62,13 @@ public class CustomGuiRenderer {
 
         guiGraphics.blit(MONEY_TEXTURE, x - offsetX, y, 20, 20, 0.0F, 0.0F, 1, 1, 1, 1);
         guiGraphics.drawString(font, ": " + smcPlayer.getMoneyCount(), x + 20 - offsetX, y + 5, 16777215, true);
-
-        guiGraphics.drawString(font, smcPlayer.isWorking() ? SkilletManCoreMod.getInfo("working").withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN) : SkilletManCoreMod.getInfo("resting").withStyle(ChatFormatting.BOLD, ChatFormatting.GOLD), x - offsetX, y + font.lineHeight + interval, 0x00ff00, true);
-
+        if(!DataManager.firstGiftGot.get(localPlayer)) {
+            Component info = SkilletManCoreMod.getInfo("find_villager_first").withStyle(ChatFormatting.BOLD, ChatFormatting.YELLOW);
+            Component info2 = SkilletManCoreMod.getInfo("find_villager_first2").withStyle(ChatFormatting.BOLD, ChatFormatting.YELLOW);
+            guiGraphics.drawString(font, info, x - font.width(info), y + font.lineHeight + interval, 0x00ff00, true);
+            guiGraphics.drawString(font, info2, x - font.width(info2), y + font.lineHeight + interval, 0x00ff00, true);
+        } else {
+            guiGraphics.drawString(font, smcPlayer.isWorking() ? SkilletManCoreMod.getInfo("working").withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN) : SkilletManCoreMod.getInfo("resting").withStyle(ChatFormatting.BOLD, ChatFormatting.GOLD), x - offsetX, y + font.lineHeight + interval, 0x00ff00, true);
+        }
     }
 }

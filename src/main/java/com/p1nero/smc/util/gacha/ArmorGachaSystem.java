@@ -55,11 +55,11 @@ public class ArmorGachaSystem {
 
     public static ItemStack pull(List<ItemStack> threeStar, List<ItemStack> fourStar, List<ItemStack> fiveStar, SMCPlayer playerData) {
         // 更新保底计数器
-        playerData.incrementWeaponPity5Star();
-        playerData.incrementWeaponPity4Star();
+        playerData.incrementArmorPity5Star();
+        playerData.incrementAmorPity4Star();
 
-        int currentPity5 = playerData.getWeaponPity5Star();
-        int currentPity4 = playerData.getWeaponPity4Star();
+        int currentPity5 = playerData.getArmorPity5Star();
+        int currentPity4 = playerData.getArmorPity4Star();
 
         // 先检查五星保底
         if (currentPity5 >= 90) {
@@ -87,13 +87,13 @@ public class ArmorGachaSystem {
     }
 
     private static ItemStack handle5StarPull(List<ItemStack> fiveStarPool, SMCPlayer playerData) {
-        playerData.resetWeaponPity5Star();
-        playerData.resetWeaponPity4Star(); // 抽到五星会重置四星保底
+        playerData.resetArmorPity5Star();
+        playerData.resetArmorPity4Star(); // 抽到五星会重置四星保底
         return getRandomItem(fiveStarPool);
     }
 
     private static ItemStack handle4StarPull(List<ItemStack> fourStarPool, SMCPlayer playerData) {
-        playerData.resetWeaponPity4Star();
+        playerData.resetArmorPity4Star();
         return getRandomItem(fourStarPool);
     }
 

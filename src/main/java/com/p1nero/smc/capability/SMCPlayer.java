@@ -141,6 +141,8 @@ public class SMCPlayer {
     public void resetWeaponPity5Star() {
         weaponPity5Star = 0;
     }
+    //============================================================================================
+    private int morality = 0;
     private int level;
     private int stage;
     private int moneyCount;
@@ -177,6 +179,18 @@ public class SMCPlayer {
         } else {
             serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("level_up_left", (smcPlayer.stage + 1) * 2 - smcPlayer.levelUpLeft + 1), false);
         }
+    }
+
+    public int getMorality() {
+        return morality;
+    }
+
+    public void addMorality() {
+        this.morality++;
+    }
+
+    public void consumeMorality() {
+        this.morality--;
     }
 
     public int getLevelUpLeft() {
@@ -461,6 +475,7 @@ public class SMCPlayer {
     }
 
     public CompoundTag saveNBTData(CompoundTag tag) {
+        tag.putInt("morality", morality);
         tag.putInt("armorGachaingCount", armorGachaingCount);
         tag.putInt("armorPity4Star", armorPity4Star);
         tag.putInt("armorPity5Star", armorPity5Star);
@@ -485,6 +500,8 @@ public class SMCPlayer {
     }
 
     public void loadNBTData(CompoundTag tag) {
+        morality = tag.getInt("morality");
+
         armorGachaingCount = tag.getInt("armorGachaingCount");
         armorPity4Star = tag.getInt("armorPity4Star");
         armorPity5Star = tag.getInt("armorPity5Star");
@@ -509,6 +526,8 @@ public class SMCPlayer {
 
     public void copyFrom(SMCPlayer old) {
         this.data = old.data;
+
+        this.morality = old.morality;
 
         this.skillBookGachaingCount = old.skillBookGachaingCount;
         this.skillBookPity = old.skillBookPity;

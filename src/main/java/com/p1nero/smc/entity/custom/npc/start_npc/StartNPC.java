@@ -13,16 +13,13 @@ import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.custom.npc.SMCNpc;
-import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.customer.FakeCustomer;
 import com.p1nero.smc.event.ServerEvents;
-import com.p1nero.smc.gameasset.skill.SMCSkills;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
 import dev.xkmc.cuisinedelight.content.logic.FoodType;
 import dev.xkmc.cuisinedelight.content.logic.IngredientConfig;
 import dev.xkmc.cuisinedelight.init.registrate.CDItems;
-import me.jellysquid.mods.sodium.mixin.features.render.world.ClientLevelMixin;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -49,8 +46,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import yesman.epicfight.gameasset.EpicFightSkills;
-import yesman.epicfight.world.item.EpicFightItems;
 
 import java.util.*;
 
@@ -260,84 +255,84 @@ public class StartNPC extends SMCNpc {
         if (isHired()) {
 
             if (isWorkingTime()) {
-                TreeNode takeMoney = new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(3), dialogueComponentBuilder.buildDialogueOption(5))
+                TreeNode takeMoney = new TreeNode(dialogueComponentBuilder.ans(3), dialogueComponentBuilder.opt(5))
                         .execute((byte) 4);
-                TreeNode main = new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(1), dialogueComponentBuilder.buildDialogueOption(7))
+                TreeNode main = new TreeNode(dialogueComponentBuilder.ans(1), dialogueComponentBuilder.opt(7))
                         .addChild(takeMoney)//全部取出
-                        .addLeaf(dialogueComponentBuilder.buildDialogueOption(6, this.getUpgradeNeed()), (byte) 5)//升级
-                        .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3);//告辞
+                        .addLeaf(dialogueComponentBuilder.opt(6, this.getUpgradeNeed()), (byte) 5)//升级
+                        .addLeaf(dialogueComponentBuilder.opt(2), (byte) 3);//告辞
                 takeMoney.addChild(main);
                 builder.setAnswerRoot(main);//告辞
             } else {
-                builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(9))
-                        .addLeaf(dialogueComponentBuilder.buildDialogueOption(9), (byte) 3)
-                        .addLeaf(dialogueComponentBuilder.buildDialogueOption(10), (byte) 7));
+                builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.ans(9))
+                        .addLeaf(dialogueComponentBuilder.opt(9), (byte) 3)
+                        .addLeaf(dialogueComponentBuilder.opt(10), (byte) 7));
             }
 
         } else if (isGuider()) {
 
-            TreeNode ticketExchange = new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(11), dialogueComponentBuilder.buildDialogueOption(16))
-                    .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(12), dialogueComponentBuilder.buildDialogueOption(17))//武器
-                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(18, 160), (byte) 16)
-                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(19, 1599), (byte) 17))
-                    .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(12), dialogueComponentBuilder.buildDialogueOption(24))//盔甲
-                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(18, 160), (byte) 26)
-                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(19, 1599), (byte) 27))
-                    .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(12), dialogueComponentBuilder.buildDialogueOption(20))
-                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(18, 1600), (byte) 18)
-                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(19, 15800), (byte) 19))
-                    .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(12), dialogueComponentBuilder.buildDialogueOption(21))
-                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(18, 1600), (byte) 20)
-                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(19, 16000), (byte) 21))
-                    .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(12), dialogueComponentBuilder.buildDialogueOption(22))
-                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(18, 1600), (byte) 22)
-                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(19, 16000), (byte) 23))
-                    .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(12), dialogueComponentBuilder.buildDialogueOption(23))
-                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(18, 1600), (byte) 24)
-                            .addLeaf(dialogueComponentBuilder.buildDialogueOption(19, 16000), (byte) 25));
+            TreeNode ticketExchange = new TreeNode(dialogueComponentBuilder.ans(11), dialogueComponentBuilder.opt(16))
+                    .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(17))//武器
+                            .addLeaf(dialogueComponentBuilder.opt(18, 160), (byte) 16)
+                            .addLeaf(dialogueComponentBuilder.opt(19, 1599), (byte) 17))
+                    .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(24))//盔甲
+                            .addLeaf(dialogueComponentBuilder.opt(18, 160), (byte) 26)
+                            .addLeaf(dialogueComponentBuilder.opt(19, 1599), (byte) 27))
+                    .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(20))
+                            .addLeaf(dialogueComponentBuilder.opt(18, 1600), (byte) 18)
+                            .addLeaf(dialogueComponentBuilder.opt(19, 15800), (byte) 19))
+                    .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(21))
+                            .addLeaf(dialogueComponentBuilder.opt(18, 1600), (byte) 20)
+                            .addLeaf(dialogueComponentBuilder.opt(19, 16000), (byte) 21))
+                    .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(22))
+                            .addLeaf(dialogueComponentBuilder.opt(18, 1600), (byte) 22)
+                            .addLeaf(dialogueComponentBuilder.opt(19, 16000), (byte) 23))
+                    .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(23))
+                            .addLeaf(dialogueComponentBuilder.opt(18, 1600), (byte) 24)
+                            .addLeaf(dialogueComponentBuilder.opt(19, 16000), (byte) 25));
 
 
-            TreeNode foodBuyer = new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(10), dialogueComponentBuilder.buildDialogueOption(11))
-                    .addLeaf(dialogueComponentBuilder.buildDialogueOption(12), (byte) 12)
-                    .addLeaf(dialogueComponentBuilder.buildDialogueOption(13), (byte) 13);
+            TreeNode foodBuyer = new TreeNode(dialogueComponentBuilder.ans(10), dialogueComponentBuilder.opt(11))
+                    .addLeaf(dialogueComponentBuilder.opt(12), (byte) 12)
+                    .addLeaf(dialogueComponentBuilder.opt(13), (byte) 13);
             int stage = senderData.getInt("player_stage");
 
             if (stage > 1) {
-                foodBuyer.addLeaf(dialogueComponentBuilder.buildDialogueOption(14), (byte) 14);
+                foodBuyer.addLeaf(dialogueComponentBuilder.opt(14), (byte) 14);
             }
 
             if (stage > 2) {
-                foodBuyer.addLeaf(dialogueComponentBuilder.buildDialogueOption(15), (byte) 15);
+                foodBuyer.addLeaf(dialogueComponentBuilder.opt(15), (byte) 15);
             }
 
             //入职给予新手福利，锅铲和锅，建筑方块，初始食材订购机等等
             if (senderData.getBoolean("first_gift_got")) {
-                builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(1))
+                builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.ans(1))
                         .addChild(ticketExchange)
                         .addChild(foodBuyer)//食材订购机
                         // 新手帮助
-                        .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(6), dialogueComponentBuilder.buildDialogueOption(4))
-                                .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(7), dialogueComponentBuilder.buildDialogueOption(8))
-                                        .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(8), dialogueComponentBuilder.buildDialogueOption(8))
-                                                .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3))))
-                        .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3)); //告辞
+                        .addChild(new TreeNode(dialogueComponentBuilder.ans(6), dialogueComponentBuilder.opt(4))
+                                .addChild(new TreeNode(dialogueComponentBuilder.ans(7), dialogueComponentBuilder.opt(8))
+                                        .addChild(new TreeNode(dialogueComponentBuilder.ans(8), dialogueComponentBuilder.opt(8))
+                                                .addLeaf(dialogueComponentBuilder.opt(2), (byte) 3))))
+                        .addLeaf(dialogueComponentBuilder.opt(2), (byte) 3)); //告辞
             } else {
-                builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(1))
-                        .addLeaf(dialogueComponentBuilder.buildDialogueOption(3), (byte) 6) //新手福利
+                builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.ans(1))
+                        .addLeaf(dialogueComponentBuilder.opt(3), (byte) 6) //新手福利
                         .addChild(foodBuyer)//食材订购机
                         // 新手帮助
-                        .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(6), dialogueComponentBuilder.buildDialogueOption(4))
-                                .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(7), dialogueComponentBuilder.buildDialogueOption(8))
-                                        .addChild(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(8), dialogueComponentBuilder.buildDialogueOption(8))
-                                                .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3))))
-                        .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3)); //告辞
+                        .addChild(new TreeNode(dialogueComponentBuilder.ans(6), dialogueComponentBuilder.opt(4))
+                                .addChild(new TreeNode(dialogueComponentBuilder.ans(7), dialogueComponentBuilder.opt(8))
+                                        .addChild(new TreeNode(dialogueComponentBuilder.ans(8), dialogueComponentBuilder.opt(8))
+                                                .addLeaf(dialogueComponentBuilder.opt(2), (byte) 3))))
+                        .addLeaf(dialogueComponentBuilder.opt(2), (byte) 3)); //告辞
             }
         } else {
             //初始态
-            builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.buildDialogueAnswer(0))
-                    .addLeaf(dialogueComponentBuilder.buildDialogueOption(0, 100), (byte) 1) //入职
-                    .addLeaf(dialogueComponentBuilder.buildDialogueOption(1, getUpgradeNeed()), (byte) 2) //雇佣
-                    .addLeaf(dialogueComponentBuilder.buildDialogueOption(2), (byte) 3)); //告辞
+            builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.ans(0))
+                    .addLeaf(dialogueComponentBuilder.opt(0, 100), (byte) 1) //入职
+                    .addLeaf(dialogueComponentBuilder.opt(1, getUpgradeNeed()), (byte) 2) //雇佣
+                    .addLeaf(dialogueComponentBuilder.opt(2), (byte) 3)); //告辞
         }
 
         if (!builder.isEmpty()) {

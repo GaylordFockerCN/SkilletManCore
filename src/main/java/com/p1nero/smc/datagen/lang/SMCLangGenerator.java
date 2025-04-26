@@ -3,8 +3,9 @@ package com.p1nero.smc.datagen.lang;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.block.SMCBlocks;
 import com.p1nero.smc.client.gui.screen.entity_dialog.VillagerDialogScreenHandler;
-import com.p1nero.smc.client.gui.screen.entity_dialog.animal.PigDialogScreenHandler;
-import com.p1nero.smc.client.gui.screen.entity_dialog.profession_dialog.BabyVillagerDialogBuilder;
+import com.p1nero.smc.client.gui.screen.entity_dialog.animal.*;
+import com.p1nero.smc.client.gui.screen.entity_dialog.golem.IronGolemDialogScreenHandler;
+import com.p1nero.smc.client.gui.screen.entity_dialog.golem.SnowGolemDialogScreenHandler;
 import com.p1nero.smc.client.gui.screen.info_screen.BanPortalScreenHandler;
 import com.p1nero.smc.client.gui.screen.info_screen.StartGuideScreenHandler;
 import com.p1nero.smc.effect.SMCEffects;
@@ -63,6 +64,8 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("unlock_game_stage", "§6游戏阶段提升！现在等级上限已提升至： %d §6！§r解锁新的订购列表，并且客户需求种类增加！");
         this.addInfo("working", "营业中");
         this.addInfo("resting", "休息中");
+        this.addInfo("find_villager_first", "请在村庄找到店铺并领取新手福利");
+        this.addInfo("find_villager_first2", "（最好找个好位置，让客人能找到你）");
         this.addInfo("level_mul", "等级加成！× %.1f");
         this.addInfo("seafood_mul", "海鲜加成！× %.1f");
         this.addInfo("meat_mul", "肉类加成！× %.1f");
@@ -97,7 +100,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("end", "结束了？", "击败最终boss");
         this.addAdvancement("true_end", "真结局", "和牧师对话解锁真相");
 
-        this.addAdvancement("start_fight", "战斗之路", "第一次成功抵御袭击");
+        this.addAdvancement("start_fight", "战斗之路", "第一次成功抵御来自终界的袭击");
         this.addAdvancement("dodge_master", "闪避大师", "完美闪避10次");
         this.addAdvancement("dodge_master2", "闪避大师2", "完美闪避100次");
         this.addAdvancement("dodge_master3", "闪避大师3", "完美闪避1000次");
@@ -200,7 +203,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialog(SMCEntities.START_NPC, 4, "§a已升级！");
         this.addDialog(SMCEntities.START_NPC, 5, "准备好开业了吗！§6（由于作者没有建筑水平，因此还特地补偿了一些建筑方块，快去装饰你的店铺吧！§r§c建筑时记得给村民留交易窗口！村民将从四面八方生成！）");
         this.addDialog(SMCEntities.START_NPC, 6, "将§6炒锅§r摆上§6炉灶§r以开始营业，右键顾客以查看所需食材，烹饪完成后将食材放至§6主手§r，再次对话以交付食材。根据食材的品质将获得不同奖励。而夜晚可能会有§c袭击事件§r，拿起平底锅保卫村庄！");
-        this.addDialog(SMCEntities.START_NPC, 7, "炒菜时，拿着食材右键锅以把对应的食材丢入锅中，用§6锅铲§r右键即可翻炒。左边的仪表盘提示食物是否烧焦，请在合适的时候用盘子将其取出！使用§aJ§r§aE§r§aI§r可查看料理配方。在物品栏可查看食材烹饪时间区间，做好计算再下锅吧！用到的食材越高级，店铺等级越高，奖励越丰富！如果手忙脚乱，§6预§r§6制§r§6菜§r是一个不错的选择。");
+        this.addDialog(SMCEntities.START_NPC, 7, "炒菜时，拿着食材右键§6炒锅§r以把对应的食材丢入锅中，用§6锅铲§r右键即可翻炒。左边的仪表盘提示食物是否§c烧焦§r，请在合适的时候用盘子将其取出！使用 [JEI] 可查看料理配方。在物品栏对着食材按shift可查看食材烹饪时间区间，做好计算再下锅吧！用到的食材越高级，店铺等级越高，奖励越丰富！如果手忙脚乱，[预制菜] 是一个不错的选择。");
         this.addDialog(SMCEntities.START_NPC, 8, "接待足够多的村民或成功抵御一次袭击，将提升一次店铺等级.随着等级提升将解锁新的资源和玩法。到一定等级时将开启§6突破试炼§r，若试炼成功则可获得大量奖励并且进入下一游戏阶段。");
         this.addDialog(SMCEntities.START_NPC, 9, "Zzz...Zzz...Zzz...(忙碌了一天的员工睡得正香，  此刻也许你会好奇它为什么能够站着睡着。平底锅侠的世界就是如此奇妙，无需那么多为什么。)");
 
@@ -220,6 +223,11 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialogChoice(EntityType.VILLAGER, 0, "离去");
 
         PigDialogScreenHandler.onGenerateLang(this);
-
+        CatDialogScreenHandler.onGenerateLang(this);
+        WolfDialogScreenHandler.onGenerateLang(this);
+        SheepDialogScreenHandler.onGenerateLang(this);
+        CowDialogScreenHandler.onGenerateLang(this);
+        IronGolemDialogScreenHandler.onGenerateLang(this);
+        SnowGolemDialogScreenHandler.onGenerateLang(this);
     }
 }

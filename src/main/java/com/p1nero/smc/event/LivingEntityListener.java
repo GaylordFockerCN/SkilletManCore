@@ -111,8 +111,8 @@ public class LivingEntityListener {
             }
         }
 
-        if(event.getEntity() instanceof Cat cat) {
-            if(cat.getVariant().texture().toString().equals(CatVariant.WHITE.toString())) {
+        if(event.getEntity() instanceof Cat cat && !cat.level().isClientSide) {
+            if(!cat.hasCustomName() && cat.getVariant().texture().toString().contains("white")) {
                 cat.setCustomName(SkilletManCoreMod.getInfo("rana_kaname"));
                 cat.setCustomNameVisible(true);
             }

@@ -26,8 +26,8 @@ public class SkilletCombos {
     public static void BuildSkills(SkillBuildEvent event){
         ComboNode root = ComboNode.create();
         ComboNode a = ComboNode.create();
-        ComboNode jumpAttack = ComboNode.createNode(() -> WOMAnimations.TORMENT_CHARGED_ATTACK_3).setNotCharge(true).addCondition(new JumpCondition()).setPriority(2);
-        ComboNode dashAttack = ComboNode.createNode(() -> WOMAnimations.TORMENT_CHARGED_ATTACK_2).setNotCharge(true).addCondition(new SprintingCondition()).setPriority(1).setCanBeInterrupt(false);
+        ComboNode jumpAttack = ComboNode.createNode(() -> WOMAnimations.RUINE_EXPIATION).setNotCharge(true).addCondition(new JumpCondition()).setPriority(2);
+        ComboNode dashAttack = ComboNode.createNode(() -> WOMAnimations.RUINE_EXPIATION).setNotCharge(true).addCondition(new SprintingCondition()).setPriority(1).setCanBeInterrupt(false);
         ComboNode auto1 = ComboNode.createNode(() -> WOMAnimations.SOLAR_AUTO_1);
         a.addConditionAnimation(jumpAttack).addConditionAnimation(dashAttack).addConditionAnimation(auto1);
         ComboNode aa = ComboNode.createNode(() -> WOMAnimations.SOLAR_AUTO_2);
@@ -45,6 +45,8 @@ public class SkilletCombos {
         ComboNode aaaabaa = ComboNode.createNode(() -> WOMAnimations.SOLAR_BRASERO_OBSCURIDAD).setNotCharge(true)
                 .addTimeEvent(new TimeStampedEvent(1.5F, (entityPatch -> {
                     entityPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 2));
+                    entityPatch.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 200, 2));
+                    entityPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 200, 2));
                     entityPatch.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 200, 2));
                 })));
         ComboNode aaaabab = ComboNode.createNode(() -> WOMAnimations.SOLAR_BRASERO_INFIERNO).setNotCharge(true);
@@ -76,8 +78,8 @@ public class SkilletCombos {
         aaaab.key1(aaaaba);
         aaaaba.key1(aaaabaa);
         aaaaba.key2(aaaabab);
-        jumpAttack.key1(a);
-        jumpAttack.key2(a);
+        jumpAttack.key1(da);
+        jumpAttack.key2(da);
         root.key1(a);
         root.key2(dashAttack);
         dashAttack.key1(da);

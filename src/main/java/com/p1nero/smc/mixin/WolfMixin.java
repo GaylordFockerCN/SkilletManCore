@@ -1,5 +1,6 @@
 package com.p1nero.smc.mixin;
 
+import com.p1nero.smc.client.gui.screen.entity_dialog.animal.WolfDialogScreenHandler;
 import com.p1nero.smc.datagen.SMCAdvancementData;
 import dev.xkmc.cuisinedelight.content.item.BaseFoodItem;
 import dev.xkmc.cuisinedelight.content.logic.CookedFoodData;
@@ -62,6 +63,7 @@ public abstract class WolfMixin extends TamableAnimal {
                 this.level().broadcastEntityEvent(this, (byte)6);//播放失败粒子
                 SMCAdvancementData.finishAdvancement("dog_no_eat", ((ServerPlayer) player));
                 cir.setReturnValue(InteractionResult.SUCCESS);
+                WolfDialogScreenHandler.addDialogScreen((Wolf) (Object) this);
             }
         }
     }

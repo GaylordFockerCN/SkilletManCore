@@ -82,7 +82,7 @@ public class LinkListStreamDialogueScreenBuilder {
      * @param greeting 初始时显示的话的编号
      */
     public LinkListStreamDialogueScreenBuilder start(int greeting) {
-        return start(DialogueComponentBuilder.BUILDER.buildDialogueAnswer(entityType, greeting));
+        return start(DialogueComponentBuilder.BUILDER.ans(entityType, greeting));
     }
 
     /**
@@ -101,7 +101,7 @@ public class LinkListStreamDialogueScreenBuilder {
      * @param returnValue 选项的返回值，默认返回0。用于处理 {@link NpcDialogue#handleNpcInteraction(Player, byte)}
      */
     public LinkListStreamDialogueScreenBuilder addFinalChoice(int finalOption, byte returnValue) {
-        return addFinalChoice(DialogueComponentBuilder.BUILDER.buildDialogueOption(entityType, finalOption), returnValue);
+        return addFinalChoice(DialogueComponentBuilder.BUILDER.opt(entityType, finalOption), returnValue);
     }
 
     /**
@@ -132,7 +132,7 @@ public class LinkListStreamDialogueScreenBuilder {
      * @param answer 选择该选项后的回答内容编号
      */
     public LinkListStreamDialogueScreenBuilder addChoice(int option, int answer) {
-        return addChoice(DialogueComponentBuilder.BUILDER.buildDialogueOption(entityType, option), DialogueComponentBuilder.BUILDER.buildDialogueAnswer(entityType, answer));
+        return addChoice(DialogueComponentBuilder.BUILDER.opt(entityType, option), DialogueComponentBuilder.BUILDER.ans(entityType, answer));
     }
 
     /**

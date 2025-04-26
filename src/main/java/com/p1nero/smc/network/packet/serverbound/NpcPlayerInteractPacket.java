@@ -1,6 +1,8 @@
 package com.p1nero.smc.network.packet.serverbound;
 
 import com.p1nero.smc.client.gui.screen.entity_dialog.VillagerDialogScreenHandler;
+import com.p1nero.smc.client.gui.screen.entity_dialog.animal.CatDialogScreenHandler;
+import com.p1nero.smc.client.gui.screen.entity_dialog.golem.IronGolemDialogScreenHandler;
 import com.p1nero.smc.client.gui.screen.entity_dialog.profession_dialog.WanderingTraderDialogBuilder;
 import com.p1nero.smc.entity.api.NpcDialogue;
 import com.p1nero.smc.network.packet.BasePacket;
@@ -8,6 +10,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Cat;
+import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.WanderingTrader;
@@ -47,12 +50,12 @@ public record NpcPlayerInteractPacket(int entityID, byte interactionID) implemen
                     WanderingTraderDialogBuilder.getInstance().handle(serverPlayer, wanderingTrader, interactionID);
                 }
 
-                if(entity instanceof Pig pig) {
-
+                if(entity instanceof Cat cat) {
+                    CatDialogScreenHandler.handle(serverPlayer, cat, interactionID);
                 }
 
-                if(entity instanceof Cat cat) {
-
+                if(entity instanceof IronGolem ironGolem) {
+                    IronGolemDialogScreenHandler.handle(serverPlayer, ironGolem, interactionID);
                 }
 
             }

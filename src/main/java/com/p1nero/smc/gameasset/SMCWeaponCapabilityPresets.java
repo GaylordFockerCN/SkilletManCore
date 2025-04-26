@@ -78,6 +78,60 @@ public class SMCWeaponCapabilityPresets {
                     .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
                     .comboCancel((style) -> false);
 
+    public static final Function<Item, CapabilityItem.Builder> GOLDEN_SKILLET_V1 = (item) ->
+            (CapabilityItem.Builder) WeaponCapability.builder().category(CapabilityItem.WeaponCategories.SWORD)
+                    .styleProvider((playerPatch) -> CapabilityItem.Styles.TWO_HAND).collider(SMCColliders.SKILLET)
+                    .hitSound(EpicFightSounds.BLUNT_HIT.get())
+                    .hitParticle(EpicFightParticles.HIT_BLUNT.get())
+                    .swingSound(EpicFightSounds.WHOOSH.get())
+                    .canBePlacedOffhand(false)
+                    .newStyleCombo(
+                            CapabilityItem.Styles.TWO_HAND,
+                            WOMAnimations.TORMENT_AUTO_1,
+                            WOMAnimations.TORMENT_AUTO_2,
+                            WOMAnimations.TORMENT_CHARGED_ATTACK_1,
+                            Animations.GREATSWORD_DASH,
+                            Animations.GREATSWORD_DASH)
+                    .innateSkill(CapabilityItem.Styles.TWO_HAND, (itemstack) -> null)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
+                    .comboCancel((style) -> false);
+
+    public static final Function<Item, CapabilityItem.Builder> GOLDEN_SKILLET_V3 = (item) ->
+            (CapabilityItem.Builder) WeaponCapability.builder().category(CapabilityItem.WeaponCategories.SWORD)
+                    .styleProvider((playerPatch) -> CapabilityItem.Styles.TWO_HAND).collider(SMCColliders.SKILLET)
+                    .hitSound(EpicFightSounds.BLUNT_HIT.get())
+                    .hitParticle(EpicFightParticles.HIT_BLUNT.get())
+                    .swingSound(EpicFightSounds.WHOOSH.get())
+                    .canBePlacedOffhand(false)
+                    .newStyleCombo(
+                            CapabilityItem.Styles.TWO_HAND,
+                            WOMAnimations.TORMENT_AUTO_1,
+                            WOMAnimations.TORMENT_AUTO_2,
+                            WOMAnimations.TORMENT_CHARGED_ATTACK_1,
+                            WOMAnimations.TORMENT_AIRSLAM,
+                            WOMAnimations.TORMENT_BERSERK_AIRSLAM)
+                    .innateSkill(CapabilityItem.Styles.TWO_HAND, (itemstack) -> null)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
+                    .comboCancel((style) -> false);
+
+    public static final Function<Item, CapabilityItem.Builder> GOLDEN_SKILLET_V5 = (item) ->
+            (CapabilityItem.Builder) WeaponCapability.builder().category(CapabilityItem.WeaponCategories.SWORD)
+                    .styleProvider((playerPatch) -> CapabilityItem.Styles.TWO_HAND).collider(SMCColliders.SKILLET)
+                    .hitSound(EpicFightSounds.BLUNT_HIT.get())
+                    .hitParticle(EpicFightParticles.HIT_BLUNT.get())
+                    .swingSound(EpicFightSounds.WHOOSH.get())
+                    .canBePlacedOffhand(false)
+                    .newStyleCombo(
+                            CapabilityItem.Styles.TWO_HAND,
+                            WOMAnimations.SOLAR_AUTO_3,
+                            WOMAnimations.SOLAR_AUTO_3_POLVORA,
+                            WOMAnimations.SOLAR_AUTO_2,
+                            WOMAnimations.RUINE_AUTO_3,
+                            WOMAnimations.RUINE_AUTO_2)
+                    .innateSkill(CapabilityItem.Styles.TWO_HAND, (itemstack) -> SMCSkills.GOLDEN_SKILLET_INNATE)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
+                    .comboCancel((style) -> false);
+
     public static final Function<Item, CapabilityItem.Builder> DIAMOND_SKILLET = (item) ->
             (CapabilityItem.Builder) WeaponCapability.builder().category(CapabilityItem.WeaponCategories.SWORD)
                     .styleProvider((playerPatch) -> CapabilityItem.Styles.TWO_HAND).collider(SMCColliders.SKILLET)
@@ -99,7 +153,6 @@ public class SMCWeaponCapabilityPresets {
                     .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_TACHI)
                     .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.FLOAT, Animations.BIPED_HOLD_TACHI)
                     .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.FALL, Animations.BIPED_HOLD_TACHI)
-                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.BLOCK, Animations.LONGSWORD_GUARD)
                     .comboCancel((style) -> false);
 
     public static final Function<Item, CapabilityItem.Builder> IRON_SPATULA_V1 = (item) ->
@@ -256,14 +309,20 @@ public class SMCWeaponCapabilityPresets {
         event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "iron_skillet_v3"), IRON_SKILLET_V3);
         event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "iron_skillet_v5"), IRON_SKILLET_V5);
 
+        event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "golden_skillet_v1"), GOLDEN_SKILLET_V1);
+        event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "golden_skillet_v3"), GOLDEN_SKILLET_V3);
+        event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "golden_skillet_v5"), GOLDEN_SKILLET_V5);
+
         event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "diamond_skillet"), DIAMOND_SKILLET);
 
         event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "iron_spatula_v1"), IRON_SPATULA_V1);
         event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "iron_spatula_v3"), IRON_SPATULA_V3);
         event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "iron_spatula_v5"), IRON_SPATULA_V5);
+
         event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "golden_spatula_v1"), GOLDEN_SPATULA_V1);
         event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "golden_spatula_v3"), GOLDEN_SPATULA_V3);
         event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "golden_spatula_v5"), GOLDEN_SPATULA_V5);
+
         event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "diamond_spatula"), DIAMOND_SPATULA);
     }
 

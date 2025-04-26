@@ -1,0 +1,12 @@
+{
+  "attributes":
+  {
+    "common":
+    {
+      "max_strikes":5,
+      "impact":1.2,
+      "damage_bonus":0
+    }
+  },
+  "type":"skillet_man_core:golden_skillet_v5"
+}

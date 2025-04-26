@@ -58,6 +58,9 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement money1000 = registerAdvancement(startWork, "money1000", FrameType.TASK, Items.DIAMOND, true, true, false);
             Advancement money1000000 = registerAdvancement(money1000, "money1000000", FrameType.TASK, Items.EMERALD, true, true, false);
             Advancement money1000000000 = registerAdvancement(money1000000, "money1000000000", FrameType.TASK, Items.EMERALD_BLOCK, true, true, false);
+            Advancement level1 = registerAdvancement(startWork, "level1", FrameType.TASK, CDItems.SPATULA, true, true, false);
+            Advancement level2 = registerAdvancement(level1, "level2", FrameType.TASK, SMCRegistrateItems.GOLDEN_SPATULA, true, true, false);
+            Advancement level3 = registerAdvancement(level2, "level3", FrameType.TASK, SMCRegistrateItems.DIAMOND_SPATULA, true, true, false);
             Advancement hijackCustomer = registerAdvancement(startWork, "hijack_customer", FrameType.TASK, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_30"))));
             Advancement dirtPlate = registerAdvancement(startWork, "dirt_plate", FrameType.TASK, SMCRegistrateItems.DIRT_PLATE);
 

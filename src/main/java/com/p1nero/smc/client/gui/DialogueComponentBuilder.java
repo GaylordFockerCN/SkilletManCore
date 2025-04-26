@@ -60,15 +60,15 @@ public class DialogueComponentBuilder {
         return Component.literal("[").append(entity.getDisplayName().copy().withStyle(nameChatFormatting)).append("]:").append(content).withStyle();
     }
 
-    public MutableComponent buildDialogueOption(EntityType<?> entityType, String key) {
+    public MutableComponent opt(EntityType<?> entityType, String key) {
         return Component.translatable(entityType + ".choice." + key);
     }
 
-    public MutableComponent buildDialogueOption(EntityType<?> entityType, int i) {
+    public MutableComponent opt(EntityType<?> entityType, int i) {
         return Component.translatable(entityType + ".choice" + i);
     }
 
-    public MutableComponent buildDialogueAnswer(EntityType<?> entityType, int i, boolean newLine) {
+    public MutableComponent ans(EntityType<?> entityType, int i, boolean newLine) {
         Component component = Component.translatable(entityType + ".dialog" + i);
 
         return Component.literal(newLine ? "\n" : "").append(component);//换行符有效
@@ -79,45 +79,45 @@ public class DialogueComponentBuilder {
         return Component.literal("\n").append(component);
     }
 
-    public MutableComponent buildDialogueAnswer(EntityType<?> entityType, int i, Object... objects) {
+    public MutableComponent ans(EntityType<?> entityType, int i, Object... objects) {
         Component component = Component.translatable(entityType + ".dialog" + i, objects);
         return Component.literal("\n").append(component);//换行符有效
     }
 
-    public MutableComponent buildDialogueAnswer(EntityType<?> entityType, int i, String s) {
+    public MutableComponent ans(EntityType<?> entityType, int i, String s) {
         Component component = Component.translatable(entityType + ".dialog" + i, s);
         return Component.literal("\n").append(component);
     }
 
-    public MutableComponent buildDialogueOption(String key) {
+    public MutableComponent opt(String key) {
         return Component.translatable(entityType + ".choice." + key);
     }
 
-    public MutableComponent buildDialogueOption(int i) {
+    public MutableComponent opt(int i) {
         return Component.translatable(entityType + ".choice" + i);
     }
 
-    public MutableComponent buildDialogueOption(int i, Object... param) {
+    public MutableComponent opt(int i, Object... param) {
         return Component.translatable(entityType + ".choice" + i, param);
     }
 
-    public MutableComponent buildDialogueAnswer(int i, boolean newLine) {
+    public MutableComponent ans(int i, boolean newLine) {
         Component component = Component.translatable(entityType + ".dialog" + i);
 
         return Component.literal(newLine ? "\n" : "").append(component);//换行符有效
     }
 
-    public MutableComponent buildDialogueAnswer(String s) {
+    public MutableComponent ans(String s) {
         Component component = Component.translatable(entityType + ".dialog" + s);
         return Component.literal("\n").append(component);//换行符有效
     }
 
-    public MutableComponent buildDialogueAnswer(int i) {
+    public MutableComponent ans(int i) {
         Component component = Component.translatable(entityType + ".dialog" + i);
         return Component.literal("\n").append(component);//换行符有效
     }
 
-    public MutableComponent buildDialogueAnswer(int i, Object... param) {
+    public MutableComponent ans(int i, Object... param) {
         Component component = Component.translatable(entityType + ".dialog" + i, param);
         return Component.literal("\n").append(component);//换行符有效
     }
@@ -127,12 +127,12 @@ public class DialogueComponentBuilder {
         return Component.literal("[").append(entityType.getDescription().copy().withStyle(ChatFormatting.YELLOW)).append(Component.literal("]: ").append(component));
     }
 
-    public MutableComponent buildDialogueAnswer(int skinID, int i, boolean newLine) {
+    public MutableComponent ans(int skinID, int i, boolean newLine) {
         Component component = Component.translatable(entityType + ".dialog" + skinID + "_" + i);
         return Component.literal(newLine ? "\n" : "").append(component);//换行符有效
     }
 
-    public MutableComponent buildDialogueAnswer(int i, String s) {
+    public MutableComponent ans(int i, String s) {
         Component component = Component.translatable(entityType + ".dialog" + i, s);
         return Component.literal("\n").append(component);
     }

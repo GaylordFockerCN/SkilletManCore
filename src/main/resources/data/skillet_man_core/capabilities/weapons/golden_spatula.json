@@ -4,7 +4,7 @@
     "common":
     {
       "max_strikes":3,
-      "damage_bonus":1,
+      "damage_bonus":0,
       "speed_bonus": -2.4
     }
   },

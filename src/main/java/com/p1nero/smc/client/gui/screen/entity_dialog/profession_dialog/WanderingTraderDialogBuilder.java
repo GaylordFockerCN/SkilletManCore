@@ -1,5 +1,6 @@
 package com.p1nero.smc.client.gui.screen.entity_dialog.profession_dialog;
 
+import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
@@ -48,12 +49,15 @@ public class WanderingTraderDialogBuilder extends VillagerDialogScreenHandler.Vi
     public void handle(ServerPlayer serverPlayer, WanderingTrader self, byte interactId){
         if(interactId == 1) {
             self.setHealth(0);
+            SMCCapabilityProvider.getSMCPlayer(serverPlayer).consumeMorality();
             self.playSound(SoundEvents.WANDERING_TRADER_DEATH);
             SMCRaidManager.startRandomRaid(serverPlayer);
         }
         if(interactId == 2) {
             SMCPlayer.addMoney(20000, serverPlayer);
             self.setHealth(0);
+            SMCCapabilityProvider.getSMCPlayer(serverPlayer).consumeMorality();
+            SMCCapabilityProvider.getSMCPlayer(serverPlayer).consumeMorality();
             self.playSound(SoundEvents.WANDERING_TRADER_DEATH);
             SMCRaidManager.startRandomRaid(serverPlayer);
         }
