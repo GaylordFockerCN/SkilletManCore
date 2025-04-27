@@ -88,6 +88,9 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("money1000", "一千富翁", "持有 1,000 绿宝石");
         this.addAdvancement("money1000000", "百万富翁", "持有 1,000,000 绿宝石");
         this.addAdvancement("money1000000000", "一个小目标", "持有 1,000,000,000 绿宝石（你真的没有开挂吗）");
+        this.addAdvancement("level1", "崭露头角", "经营等级达到一级");
+        this.addAdvancement("level2", "信手拈来", "经营等级达到二级");
+        this.addAdvancement("level3", "厨神", "经营等级达到三级。那么喜欢做菜，还不去打最终boss？");
 
         this.addAdvancement("change_villager", "给我上班！", "和无业游民对话转换其职业");
         this.addAdvancement("talk_to_cleric", "神的指示", "和牧师对话，了解终界的事");

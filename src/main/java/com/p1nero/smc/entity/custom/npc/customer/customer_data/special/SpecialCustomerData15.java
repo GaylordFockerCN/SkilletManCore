@@ -30,7 +30,7 @@ public class SpecialCustomerData15 extends SpecialCustomerData {
         generator.add(answerPre(-2), "的要我是不这");
         generator.add(choicePre(-2), "！歉抱，歉抱");
         generator.add(choicePre(-3), "！去就这");
-        generator.add(answerPre(-1), "（眼前这位村民不知为何上下翻转，连同文案也不知为何，反过来了）");
+        generator.add(answerPre(-1), "（眼前这位村民不知为何上下翻转，连同文案也不知为何，反过来了。 §6（或许它对食材的评价也会反过来？））");
         generator.add(choicePre(-1), "？么点什吃想官客");
         generator.add(answerPre(0), "？s% 点来");
         generator.add(choicePre(0), "交提");
@@ -43,7 +43,7 @@ public class SpecialCustomerData15 extends SpecialCustomerData {
     }
 
     @Override
-    protected void onBest(ServerPlayer serverPlayer, Customer self) {
+    protected void onBad(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
         ItemUtil.addItem(serverPlayer, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.get(), 4);
         ItemUtil.addItem(serverPlayer, SMCRegistrateItems.ARMOR_RAFFLE_TICKET.get(), 4);
@@ -52,4 +52,8 @@ public class SpecialCustomerData15 extends SpecialCustomerData {
         ItemUtil.addItem(serverPlayer, nameTag);
     }
 
+    @Override
+    protected void onBest(ServerPlayer serverPlayer, Customer self) {
+        super.onBad(serverPlayer, self);
+    }
 }

@@ -64,7 +64,7 @@ public class Customer extends SMCNpc {
     protected static final EntityDataAccessor<Boolean> IS_SPECIAL = SynchedEntityData.defineId(Customer.class, EntityDataSerializers.BOOLEAN);//是否是隐士，可以给予武林秘籍
     protected static final EntityDataAccessor<Integer> SMC_ID = SynchedEntityData.defineId(Customer.class, EntityDataSerializers.INT);//村民编号，用于区别对话
     protected static final EntityDataAccessor<ItemStack> ORDER = SynchedEntityData.defineId(Customer.class, EntityDataSerializers.ITEM_STACK);//请求的食物
-    public static final int MAX_CUSTOMER_TYPE = 26;
+    public static int MAX_CUSTOMER_TYPE;
     public static final int NO_MOOD = 0;
     public static final int HAPPY = 1;
     public static final int UN_HAPPY = 2;
@@ -92,6 +92,8 @@ public class Customer extends SMCNpc {
         SPECIAL_CUSTOMERS.add(new SpecialCustomerData18());
         SPECIAL_CUSTOMERS.add(new SpecialCustomerData19());
         SPECIAL_CUSTOMERS.add(new SpecialCustomerData20());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData21());
+        SPECIAL_CUSTOMERS.add(new SpecialCustomerData22());
 
         CUSTOMERS.add(new NormalCustomerData1());
         CUSTOMERS.add(new NormalCustomerData2());
@@ -99,6 +101,8 @@ public class Customer extends SMCNpc {
         CUSTOMERS.add(new NormalCustomerData4());
         CUSTOMERS.add(new NormalCustomerData5());
         CUSTOMERS.add(new NormalCustomerData6());
+
+        MAX_CUSTOMER_TYPE = SPECIAL_CUSTOMERS.size() + CUSTOMERS.size();
     }
 
     @Nullable
@@ -107,7 +111,7 @@ public class Customer extends SMCNpc {
     private int dieTimer = 0;
     public Customer(EntityType<? extends Villager> entityType, Level level) {
         super(entityType, level);
-        this.setSMCId(this.getRandom().nextInt(MAX_CUSTOMER_TYPE));
+        this.setSMCId(this.getRandom().nextInt(MAX_CUSTOMER_TYPE));//确保村民随机且固定
     }
 
     public Customer(Player owner, Vec3 pos) {
@@ -305,9 +309,9 @@ public class Customer extends SMCNpc {
 
         //双端
         if(customerData == null) {
-            //每五级随机一个神人
+            //每级1/5概率刷新神人
             SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
-            if(smcPlayer.getLevel() % 5 == 0 && smcPlayer.getLevel() > 0 && !smcPlayer.isSpecialAlive()) {
+            if(smcPlayer.getLevel() > 0 && !smcPlayer.isSpecialAlive() && this.getRandom().nextInt(5) == 1) {
                 customerData = SPECIAL_CUSTOMERS.get(this.getSMCId() % SPECIAL_CUSTOMERS.size());
                 this.setSpecial(true);
                 smcPlayer.setSpecialAlive(true);

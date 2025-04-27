@@ -30,7 +30,7 @@ public class SpecialCustomerData17 extends SpecialCustomerData {
         generator.add(answerPre(0), "能否赐我一道...（突然单膝跪地）能与月光共舞、和诗篇齐飞的 %s ？");
         generator.add(choicePre(0), "呈上！");
 
-        generator.add(answerPre(1), "（突然热泪盈眶）我找到了灵感！（掏出一本诗集）这本《食物之歌》送你，谢你的杰作。");
+        generator.add(answerPre(1), "（突然热泪盈眶）我找到了灵感！纯美女神眷顾于你！（掏出一本诗集）这本《食物之歌》送你，谢你的杰作。");
         generator.add(choicePre(1), "（尴尬笑着收下）多谢，告辞。");
 
         generator.add(answerPre(2), "（皱眉）少了灵魂...像被霜打的诗篇，失去了温度...");

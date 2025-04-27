@@ -1,28 +1,17 @@
 package com.p1nero.smc.entity.custom.npc.customer.customer_data.special;
 
-import com.github.ysbbbbbb.kaleidoscopedoll.init.ModItems;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.customer.customer_data.SpecialCustomerData;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.registries.ForgeRegistries;
 import yesman.epicfight.gameasset.EpicFightSounds;
-
-import java.util.Objects;
 
 public class SpecialCustomerData21 extends SpecialCustomerData {
 
     public SpecialCustomerData21() {
-        super(2);
-    }
-
-    @Override
-    public void onInteract(ServerPlayer player, Customer self) {
-        super.onInteract(player, self);
-        self.setAge(-114514);
+        super(21);
     }
 
     public void generateTranslation(SMCLangGenerator generator) {

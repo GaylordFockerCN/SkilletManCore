@@ -32,7 +32,7 @@ public class SpecialCustomerData19 extends SpecialCustomerData {
         generator.add(choicePre(-1), "客官要来些什么？");
         generator.add(answerPre(0), "最近练功到紧要处，需带刚猛气的 %s 补补身子！（怎么mc的世界还有习武的村民...）");
         generator.add(choicePre(0), "呈上");
-        generator.add(answerPre(1), "（龙吟隐隐）痛快！这秘笈与予你防身！");
+        generator.add(answerPre(1), "（龙吟隐隐）痛快！这秘笈与盔甲予你防身！");
         generator.add(choicePre(1), "小的有眼不识泰山！");
         generator.add(answerPre(2), "比马厩草料还糙！");
         generator.add(choicePre(2), "抱歉抱歉！");

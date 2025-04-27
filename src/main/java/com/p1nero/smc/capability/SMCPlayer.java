@@ -322,6 +322,7 @@ public class SMCPlayer {
 
     public static void updateWorkingState(boolean isWorking, ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+        smcPlayer.setSpecialAlive(false);
         if (smcPlayer.isWorking != isWorking) {
             smcPlayer.isWorking = isWorking;
             if (isWorking) {
@@ -548,7 +549,7 @@ public class SMCPlayer {
         this.moneyCount = old.moneyCount;
         this.consumerLeft = old.consumerLeft;
         this.isWorking = old.isWorking;
-        this.isSpecialAlive = old.isSpecialAlive;
+        this.isSpecialAlive = old.isSpecialAlive;//复制就好，不持久化
     }
 
     public void syncToClient(ServerPlayer serverPlayer) {
