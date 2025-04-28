@@ -1,11 +1,11 @@
 
 [ingame]
-	use_animation_shader = true
+	use_animation_shader = false
 	show_epicfight_attributes = true
 	#Range: 1 ~ 10
 	long_press_count = 2
 	auto_preparation = false
-	mining_autoswitch_items = ["minecraft:golden_axe", "minecraft:golden_pickaxe", "minecraft:iron_axe", "minecraft:diamond_axe", "minecraft:netherite_axe", "minecraft:stone_pickaxe", "minecraft:iron_pickaxe", "minecraft:netherite_pickaxe", "minecraft:diamond_pickaxe", "minecraft:stone_axe"]
+	mining_autoswitch_items = ["minecraft:stone_axe", "minecraft:netherite_axe", "minecraft:netherite_pickaxe", "minecraft:golden_axe", "minecraft:iron_axe", "minecraft:diamond_axe", "minecraft:stone_pickaxe", "minecraft:golden_pickaxe", "minecraft:diamond_pickaxe", "minecraft:iron_pickaxe"]
 	blood_effects = true
 	show_target_indicator = true
 	#Range: 0.0 ~ 1.0

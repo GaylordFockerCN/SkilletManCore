@@ -1,6 +1,7 @@
 package com.p1nero.smc.capability;
 
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.client.sound.player.WorkingMusicPlayer;
 import com.p1nero.smc.datagen.SMCAdvancementData;
@@ -9,11 +10,11 @@ import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.SyncSMCPlayerPacket;
 import com.p1nero.smc.util.ItemUtil;
-import com.p1nero.smc.util.SMCRaidManager;
 import com.p1nero.smc.util.gacha.ArmorGachaSystem;
 import com.p1nero.smc.util.gacha.SkillBookGachaSystem;
 import com.p1nero.smc.util.gacha.WeaponGachaSystem;
 import dev.xkmc.cuisinedelight.init.registrate.PlateFood;
+import hungteen.htlib.common.world.entity.DummyEntityManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -24,6 +25,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.Nullable;
 import yesman.epicfight.world.item.EpicFightItems;
 import yesman.epicfight.world.item.SkillBookItem;
@@ -142,6 +144,8 @@ public class SMCPlayer {
         weaponPity5Star = 0;
     }
     //============================================================================================
+
+    private boolean todayInRaid;
     private int morality = 0;
     private int level;
     private int stage;
@@ -155,30 +159,43 @@ public class SMCPlayer {
     public static final int STAGE1_REQUIRE = 10;
     public static final int STAGE2_REQUIRE = 20;
     public static final int STAGE3_REQUIRE = 50;
-    public static final List<PlateFood> STAGE0_FOOD_LIST = List.of(PlateFood.FRIED_RICE, PlateFood.FRIED_PASTA, PlateFood.FRIED_MUSHROOM,
-            PlateFood.VEGETABLE_FRIED_RICE, PlateFood.VEGETABLE_PASTA, PlateFood.VEGETABLE_PLATTER);
+    public static final List<PlateFood> STAGE0_FOOD_LIST = List.of(PlateFood.FRIED_RICE, PlateFood.FRIED_PASTA, PlateFood.FRIED_MUSHROOM, PlateFood.VEGETABLE_PLATTER);
+    public static final List<PlateFood> MEAT_AND_MIX = List.of(PlateFood.VEGETABLE_FRIED_RICE, PlateFood.VEGETABLE_PASTA, PlateFood.SCRAMBLED_EGG_AND_TOMATO,
+            PlateFood.MEAT_WITH_VEGETABLES, PlateFood.FRIED_MEAT_AND_MELON, PlateFood.HAM_FRIED_RICE, PlateFood.MEAT_FRIED_RICE,
+            PlateFood.MEAT_PASTA, PlateFood.MEAT_PLATTER);
     public static final List<PlateFood> STAGE1_FOOD_LIST = new ArrayList<>();
+    public static final List<PlateFood> SEAFOOD_LIST = List.of(PlateFood.MEAT_WITH_SEAFOOD, PlateFood.SEAFOOD_FRIED_RICE, PlateFood.SEAFOOD_PASTA, PlateFood.SEAFOOD_PLATTER,
+            PlateFood.SEAFOOD_WITH_VEGETABLES, PlateFood.MIXED_FRIED_RICE, PlateFood.MIXED_PASTA);
     public static final List<PlateFood> STAGE2_FOOD_LIST = new ArrayList<>();
 
     static {
         STAGE1_FOOD_LIST.addAll(STAGE0_FOOD_LIST);
-        STAGE1_FOOD_LIST.addAll(List.of(PlateFood.SCRAMBLED_EGG_AND_TOMATO, PlateFood.MEAT_WITH_VEGETABLES, PlateFood.FRIED_MEAT_AND_MELON,
-                PlateFood.HAM_FRIED_RICE, PlateFood.MEAT_FRIED_RICE, PlateFood.MEAT_PASTA, PlateFood.MEAT_PLATTER));
+        STAGE1_FOOD_LIST.addAll(MEAT_AND_MIX);
+        STAGE1_FOOD_LIST.addAll(MEAT_AND_MIX);//增加概率
+
         STAGE2_FOOD_LIST.addAll(STAGE1_FOOD_LIST);
-        STAGE2_FOOD_LIST.addAll(
-                List.of(PlateFood.MEAT_WITH_SEAFOOD, PlateFood.SEAFOOD_FRIED_RICE, PlateFood.SEAFOOD_PASTA,
-                        PlateFood.SEAFOOD_PLATTER, PlateFood.SEAFOOD_WITH_VEGETABLES, PlateFood.MIXED_FRIED_RICE, PlateFood.MIXED_PASTA));
+        STAGE2_FOOD_LIST.addAll(SEAFOOD_LIST);
+        STAGE2_FOOD_LIST.addAll(SEAFOOD_LIST);
+        STAGE2_FOOD_LIST.addAll(SEAFOOD_LIST);//增加概率
     }
 
-    public static void finishTransaction(ServerPlayer serverPlayer) {
+    public static void addExperience(ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         smcPlayer.levelUpLeft++;
-        if(smcPlayer.levelUpLeft > (smcPlayer.stage + 1) * 2) {
+        if(smcPlayer.levelUpLeft > 1 + smcPlayer.stage * 2) {
             smcPlayer.levelUpLeft = 0;
             levelUPPlayer(serverPlayer);
         } else {
-            serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("level_up_left", (smcPlayer.stage + 1) * 2 - smcPlayer.levelUpLeft + 1), false);
+            serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("level_up_left", 1 + smcPlayer.stage * 2 - smcPlayer.levelUpLeft + 1), false);
         }
+    }
+
+    public boolean isTodayInRaid() {
+        return todayInRaid;
+    }
+
+    public void setTodayInRaid(boolean inRaid) {
+        this.todayInRaid = inRaid;
     }
 
     public int getMorality() {
@@ -255,6 +272,7 @@ public class SMCPlayer {
             return;
         }
         smcPlayer.setLevel(currentLevel + 1);
+        ItemUtil.addItem(serverPlayer, Items.ENCHANTED_GOLDEN_APPLE.getDefaultInstance(), true);
         SMCPlayer.addMoney(200, serverPlayer);
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("shop_upgrade", smcPlayer.level), false);
         int nextStageLeft = smcPlayer.getNextStageLeft();
@@ -291,6 +309,22 @@ public class SMCPlayer {
         }
     }
 
+    public static void defendSuccess(ServerPlayer serverPlayer) {
+        SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+        int dayTime = (int) (serverPlayer.serverLevel().dayTime() / 24000);
+        SMCPlayer.addExperience(serverPlayer);
+        addMoney(1600 * (1 + dayTime), serverPlayer);
+        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("raid_success_for_day", dayTime), false);
+        SMCAdvancementData.finishAdvancement("start_fight", serverPlayer);
+    }
+
+    public static void defendFailed(ServerPlayer serverPlayer) {
+        SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+        int dayTime = (int) (serverPlayer.serverLevel().dayTime() / 24000);
+        consumeMoney(100 * (1 + dayTime), serverPlayer);
+        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("raid_loss_tip"), false);
+    }
+
     public void unlockStage1(ServerPlayer serverPlayer) {
         this.stage = 1;
         addMoney(1000, serverPlayer);
@@ -314,25 +348,29 @@ public class SMCPlayer {
 
     public List<PlateFood> getOrderList() {
         return switch (this.getStage()) {
+            case 0 -> STAGE0_FOOD_LIST;
             case 1 -> STAGE1_FOOD_LIST;
-            case 2 -> STAGE2_FOOD_LIST;
-            default -> STAGE0_FOOD_LIST;
+            default -> STAGE2_FOOD_LIST;
         };
     }
 
     public static void updateWorkingState(boolean isWorking, ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
-        smcPlayer.setSpecialAlive(false);
         if (smcPlayer.isWorking != isWorking) {
+            if(isWorking && !DummyEntityManager.getDummyEntities(serverPlayer.serverLevel()).isEmpty()) {
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("raid_no_work"), true);
+                return;
+            }
             smcPlayer.isWorking = isWorking;
             if (isWorking) {
+                smcPlayer.setTodayInRaid(false);
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("start_work").withStyle(ChatFormatting.BOLD), true);
                 serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
             } else {
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("end_work").withStyle(ChatFormatting.BOLD), true);
                 serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
                 if(serverPlayer.serverLevel().isNight()) {
-                    SMCRaidManager.startNightRaid(serverPlayer);
+                    smcPlayer.setSpecialAlive(false);
                 }
             }
             smcPlayer.syncToClient(serverPlayer);
@@ -476,6 +514,8 @@ public class SMCPlayer {
     }
 
     public CompoundTag saveNBTData(CompoundTag tag) {
+        tag.putBoolean("inRaid", todayInRaid);
+
         tag.putInt("morality", morality);
         tag.putInt("armorGachaingCount", armorGachaingCount);
         tag.putInt("armorPity4Star", armorPity4Star);
@@ -501,6 +541,8 @@ public class SMCPlayer {
     }
 
     public void loadNBTData(CompoundTag tag) {
+        todayInRaid = tag.getBoolean("inRaid");
+
         morality = tag.getInt("morality");
 
         armorGachaingCount = tag.getInt("armorGachaingCount");
@@ -527,6 +569,8 @@ public class SMCPlayer {
 
     public void copyFrom(SMCPlayer old) {
         this.data = old.data;
+
+        this.todayInRaid = old.todayInRaid;
 
         this.morality = old.morality;
 
@@ -626,6 +670,9 @@ public class SMCPlayer {
     }
     private void playCommonEffect(ServerPlayer player) {
         SMCAdvancementData.finishAdvancement("first_gacha", player);
+        if(!DataManager.firstGachaGot.get(player)) {
+            DataManager.firstGachaGot.put(player, true);
+        }
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 0.5F, 2.0F);
         player.serverLevel().sendParticles(ParticleTypes.TOTEM_OF_UNDYING, player.getX(), player.getY(), player.getZ(), 10, 1.0, 1.0, 1.0, 0.2);
     }

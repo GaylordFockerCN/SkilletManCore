@@ -20,20 +20,20 @@ public class CustomGuiRenderer {
     public static final ResourceLocation SPATULA_TEXTURE = new ResourceLocation(CuisineDelight.MODID, "textures/item/spatula.png");
     public static final ResourceLocation MONEY_TEXTURE = new ResourceLocation("textures/item/emerald.png");
 
-    public static boolean shouldRender(){
-        if(Minecraft.getInstance().screen instanceof DialogueScreen) {
+    public static boolean shouldRender() {
+        if (Minecraft.getInstance().screen instanceof DialogueScreen) {
             return true;
         }
         return Minecraft.getInstance().screen == null;
     }
 
-    public static void renderCustomGui(GuiGraphics guiGraphics){
-        if(!shouldRender()) {
+    public static void renderCustomGui(GuiGraphics guiGraphics) {
+        if (!shouldRender()) {
             return;
         }
 
         LocalPlayer localPlayer = Minecraft.getInstance().player;
-        if(localPlayer == null) {
+        if (localPlayer == null) {
             return;
         }
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(localPlayer);
@@ -44,7 +44,7 @@ public class CustomGuiRenderer {
         int interval = SMCConfig.INTERVAL.get();
         int offsetX = font.width(": " + smcPlayer.getMoneyCount());
 
-        if(smcPlayer.isTrialRequired()) {
+        if (smcPlayer.isTrialRequired()) {
             Component info = SkilletManCoreMod.getInfo("trial_required");
             int offsetX2 = font.width(info);
             guiGraphics.blit(SPATULA_TEXTURE, x - offsetX2, y - 25, 20, 20, 0.0F, 0.0F, 1, 1, 1, 1);
@@ -60,15 +60,22 @@ public class CustomGuiRenderer {
             guiGraphics.drawString(font, ": " + smcPlayer.getLevel(), x + 20 - offsetX, y - 20, stageColor, true);
         }
 
+        int lineHeight = font.lineHeight + interval;
         guiGraphics.blit(MONEY_TEXTURE, x - offsetX, y, 20, 20, 0.0F, 0.0F, 1, 1, 1, 1);
         guiGraphics.drawString(font, ": " + smcPlayer.getMoneyCount(), x + 20 - offsetX, y + 5, 16777215, true);
-        if(!DataManager.firstGiftGot.get(localPlayer)) {
-            Component info = SkilletManCoreMod.getInfo("find_villager_first").withStyle(ChatFormatting.BOLD, ChatFormatting.YELLOW);
-            Component info2 = SkilletManCoreMod.getInfo("find_villager_first2").withStyle(ChatFormatting.BOLD, ChatFormatting.YELLOW);
-            guiGraphics.drawString(font, info, x - font.width(info), y + font.lineHeight + interval, 0x00ff00, true);
-            guiGraphics.drawString(font, info2, x - font.width(info2), y + font.lineHeight + interval, 0x00ff00, true);
-        } else {
-            guiGraphics.drawString(font, smcPlayer.isWorking() ? SkilletManCoreMod.getInfo("working").withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN) : SkilletManCoreMod.getInfo("resting").withStyle(ChatFormatting.BOLD, ChatFormatting.GOLD), x - offsetX, y + font.lineHeight + interval, 0x00ff00, true);
+        if (!DataManager.firstGiftGot.get(localPlayer)) {
+            Component info = SkilletManCoreMod.getInfo("find_villager_first").withStyle(ChatFormatting.BOLD, ChatFormatting.GOLD);
+            Component info2 = SkilletManCoreMod.getInfo("find_villager_first2").withStyle(ChatFormatting.GRAY);
+            Component info3 = SkilletManCoreMod.getInfo("find_villager_first3").withStyle(ChatFormatting.GRAY);
+            guiGraphics.drawString(font, info, 15, y + lineHeight * 2, 0x00ff00, true);
+            guiGraphics.drawString(font, info2, 15, y + lineHeight * 3, 0x00ff00, true);
+            guiGraphics.drawString(font, info3, 15, y + lineHeight * 4, 0x00ff00, true);
+        } else if (!DataManager.firstGachaGot.get(localPlayer)) {
+            Component info = SkilletManCoreMod.getInfo("find_villager_gacha").withStyle(ChatFormatting.BOLD, ChatFormatting.AQUA);
+            Component info2 = SkilletManCoreMod.getInfo("find_villager_gacha2").withStyle(ChatFormatting.GRAY);
+            guiGraphics.drawString(font, info, 15, y + lineHeight * 2, 0x00ff00, true);
+            guiGraphics.drawString(font, info2, 15, y + lineHeight * 3, 0x00ff00, true);
         }
+        guiGraphics.drawString(font, smcPlayer.isWorking() ? SkilletManCoreMod.getInfo("working").withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN) : SkilletManCoreMod.getInfo("resting").withStyle(ChatFormatting.BOLD, ChatFormatting.GOLD), x - offsetX, y + font.lineHeight + interval, 0x00ff00, true);
     }
 }

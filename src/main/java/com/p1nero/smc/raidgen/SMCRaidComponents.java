@@ -9,7 +9,10 @@ import hungteen.htlib.common.impl.raid.CommonRaid;
 import hungteen.htlib.common.impl.raid.HTRaidComponents;
 import hungteen.htlib.common.impl.result.HTResultComponents;
 import hungteen.htlib.common.impl.wave.HTWaveComponents;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import net.minecraft.core.HolderGetter;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -18,14 +21,54 @@ import net.minecraft.world.BossEvent.BossBarColor;
 
 public interface SMCRaidComponents {
     ResourceKey<IRaidComponent> RAID = create("raid");
-    ResourceKey<IRaidComponent> TRIAL = create("trial");
+    ResourceKey<IRaidComponent> TRIAL_1 = create("trial_1");
+    List<ResourceKey<IRaidComponent>> RAIDS = new ArrayList<>();
 
     static void register(BootstapContext<IRaidComponent> context) {
         HolderGetter<IResultComponent> results = HTResultComponents.registry().helper().lookup(context);
         HolderGetter<IWaveComponent> waves = HTWaveComponents.registry().helper().lookup(context);
-        context.register(RAID, new CommonRaid(HTRaidComponents.builder().blockInside(false).blockOutside(false).renderBorder(false).color(BossBarColor.BLUE).raidSound(HTSounds.PREPARE.getHolder()).waveSound(HTSounds.HUGE_WAVE.getHolder()).victorySound(HTSounds.VICTORY.getHolder()).lossSound(HTSounds.LOSS.getHolder()).build(), Arrays.asList(waves.getOrThrow(SMCWaveComponents.TEST_1), waves.getOrThrow(SMCWaveComponents.TEST_1))));
-        context.register(TRIAL, new CommonRaid(HTRaidComponents.builder().blockInside(true).blockOutside(true).renderBorder(true).victoryResult(results.getOrThrow(SMCResultComponents.STAGE_UP)).color(BossBarColor.RED).raidSound(HTSounds.PREPARE.getHolder()).waveSound(HTSounds.HUGE_WAVE.getHolder()).victorySound(HTSounds.VICTORY.getHolder()).lossSound(HTSounds.LOSS.getHolder()).build(), Arrays.asList(waves.getOrThrow(SMCWaveComponents.TEST_1), waves.getOrThrow(SMCWaveComponents.TEST_1), waves.getOrThrow(SMCWaveComponents.TEST_1))));
+
+        for (int i = 0; i <= 30; i++) {
+            RAIDS.add(create("raid_" + i));
+            context.register(RAIDS.get(i), new CommonRaid(HTRaidComponents.builder()
+                    .title(SkilletManCoreMod.getInfo("raid_title"))
+                    .victoryTitle(SkilletManCoreMod.getInfo("raid_victory"))
+                    .lossTitle(SkilletManCoreMod.getInfo("raid_loss"))
+                    .range(30)
+                    .blockInside(false)
+                    .blockOutside(false)
+                    .renderBorder(false)
+                    .color(BossBarColor.RED)
+                    .raidSound(HTSounds.PREPARE.getHolder())
+                    .waveSound(HTSounds.HUGE_WAVE.getHolder())
+                    .victorySound(HTSounds.VICTORY.getHolder())
+                    .lossSound(HTSounds.LOSS.getHolder())
+                    .lossResult(results.getOrThrow(SMCResultComponents.DEFEND_FAILED))
+                    .victoryResult(results.getOrThrow(SMCResultComponents.DEFEND_SUCCESS))
+                    .build(),
+                    Arrays.asList(waves.getOrThrow(SMCWaveComponents.RAID_WAVES_1.get(i)),
+                            waves.getOrThrow(SMCWaveComponents.RAID_WAVES_2.get(i)),
+                            waves.getOrThrow(SMCWaveComponents.RAID_WAVES_3.get(i)))));
+        }
+
+        context.register(TRIAL_1, new CommonRaid(HTRaidComponents.builder()
+                .title(SkilletManCoreMod.getInfo("trail_title"))
+                .victoryTitle(SkilletManCoreMod.getInfo("trail_success"))
+                .lossTitle(SkilletManCoreMod.getInfo("trail_failed"))
+                .blockInside(true)
+                .blockOutside(true)
+                .renderBorder(true)
+                .victoryResult(results.getOrThrow(SMCResultComponents.STAGE_UP))
+                .color(BossBarColor.YELLOW)
+                .raidSound(HTSounds.PREPARE.getHolder())
+                .waveSound(HTSounds.HUGE_WAVE.getHolder())
+                .victorySound(HTSounds.VICTORY.getHolder())
+                .lossSound(HTSounds.LOSS.getHolder()).build(),
+                Arrays.asList(waves.getOrThrow(SMCWaveComponents.TRIAL_1),
+                        waves.getOrThrow(SMCWaveComponents.TRIAL_1),
+                        waves.getOrThrow(SMCWaveComponents.TRIAL_1))));
     }
+
     static ResourceKey<IRaidComponent> create(String name) {
         return HTRaidComponents.registry().createKey(SkilletManCoreMod.prefix(name));
     }

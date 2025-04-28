@@ -46,6 +46,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import vectorwing.farmersdelight.common.registry.ModItems;
 
 import java.util.*;
 
@@ -69,6 +70,7 @@ public class StartNPC extends SMCNpc {
         Collections.addAll(VEG_SET, IngredientConfig.get().getAll(FoodType.VEG));
         Collections.addAll(MEAT_SET, IngredientConfig.get().getAll(FoodType.MEAT));
         Collections.addAll(SEAFOOD_SET, IngredientConfig.get().getAll(FoodType.SEAFOOD));
+        //TODO 移除切好的材料
     }
 
     public static final int EMPTY = 0;
@@ -208,7 +210,7 @@ public class StartNPC extends SMCNpc {
      * 用level.isDay的话双端不同步
      */
     public boolean isWorkingTime() {
-        long currentTime = this.level().getDayTime();
+        long currentTime = this.level().getDayTime() % 24000;
         return currentTime > 600 && currentTime < 12700;
     }
 
@@ -399,6 +401,7 @@ public class StartNPC extends SMCNpc {
         if (interactionID == 6) {
             DataManager.firstGiftGot.put(player, true);
             player.displayClientMessage(dialogueComponentBuilder.buildEntityAnswer(5), false);
+            ItemUtil.addItem(player, ModItems.CUTTING_BOARD.get(), 1);
             ItemUtil.addItem(player, SOLCarrotItems.FOOD_BOOK.get(), 1);
             ItemUtil.addItem(player, CDItems.PLATE.asItem().asItem(), 10);
             ItemUtil.addItem(player, Blocks.CRAFTING_TABLE.asItem(), 1);

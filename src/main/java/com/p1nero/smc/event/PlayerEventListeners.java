@@ -7,6 +7,7 @@ import com.p1nero.smc.block.SMCBlocks;
 import com.p1nero.smc.block.entity.MainCookBlockEntity;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
+import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.entity.custom.boss.SMCBoss;
 import com.p1nero.smc.gameasset.skill.SMCSkills;
@@ -21,6 +22,7 @@ import dev.xkmc.cuisinedelight.content.item.CuisineSkilletItem;
 import dev.xkmc.cuisinedelight.content.item.SpatulaItem;
 import dev.xkmc.cuisinedelight.events.FoodEatenEvent;
 import dev.xkmc.cuisinedelight.init.registrate.CDItems;
+import hungteen.htlib.common.event.events.RaidEvent;
 import net.blay09.mods.waystones.block.ModBlocks;
 import net.kenddie.fantasyarmor.item.FAItems;
 import net.minecraft.commands.CommandSourceStack;
@@ -38,6 +40,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.p3pp3rf1y.sophisticatedbackpacks.init.ModItems;
 import yesman.epicfight.gameasset.EpicFightSkills;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
@@ -47,7 +50,7 @@ import yesman.epicfight.world.item.EpicFightItems;
 import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID)
-public class PlayerEventListener {
+public class PlayerEventListeners {
 
     @SubscribeEvent
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
@@ -83,11 +86,12 @@ public class PlayerEventListener {
                 DataManager.firstJoint.put(serverPlayer, true);
                 CommandSourceStack commandSourceStack = serverPlayer.createCommandSourceStack().withPermission(2);
                 Objects.requireNonNull(serverPlayer.getServer()).getCommands().performPrefixedCommand(commandSourceStack, "gamerule keepInventory true");
-                serverPlayer.playSound(SoundEvents.VILLAGER_CELEBRATE);
+                serverPlayer.playSound(SMCSounds.VILLAGER_YES.get());
                 PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new OpenStartGuideScreenPacket(), serverPlayer);
                 serverPlayer.setItemSlot(EquipmentSlot.HEAD, FAItems.THIEF_HELMET.get().getDefaultInstance());
                 serverPlayer.setItemSlot(EquipmentSlot.CHEST, FAItems.THIEF_CHESTPLATE.get().getDefaultInstance());
 
+                ItemUtil.addItem(serverPlayer, ModItems.NETHERITE_BACKPACK.get(), 1);
                 ItemUtil.addItem(serverPlayer, CDItems.SKILLET.asItem(), 1);
                 ItemUtil.addItem(serverPlayer, CDItems.SPATULA.asItem(), 1);
                 ItemStack step = new ItemStack(EpicFightItems.SKILLBOOK.get());
@@ -190,6 +194,16 @@ public class PlayerEventListener {
 
     @SubscribeEvent
     public static void onPlayerUseItem(LivingEntityUseItemEvent.Start event) {
+
+    }
+
+    @SubscribeEvent
+    public static void onRaidSuccess(RaidEvent.RaidDefeatedEvent event) {
+
+    }
+
+    @SubscribeEvent
+    public static void onRaidLoss(RaidEvent.RaidLostEvent event) {
 
     }
 

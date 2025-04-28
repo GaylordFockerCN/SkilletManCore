@@ -21,6 +21,8 @@ public interface SMCResultComponents {
 
     static void register(BootstapContext<IResultComponent> context) {
         context.register(STAGE_UP, new CommandResult(Optional.empty(), Optional.of("smc stageUp @s"), Optional.empty()));
+        context.register(DEFEND_SUCCESS, new CommandResult(Optional.empty(), Optional.of("smc defendSuccess @s"), Optional.empty()));
+        context.register(DEFEND_FAILED, new CommandResult(Optional.empty(), Optional.of("smc defendFailed @s"), Optional.empty()));
     }
     static ResourceKey<IResultComponent> create(String name) {
         return HTResultComponents.registry().createKey(SkilletManCoreMod.prefix(name));

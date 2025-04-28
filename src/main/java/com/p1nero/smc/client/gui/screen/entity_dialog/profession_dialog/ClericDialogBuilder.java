@@ -28,7 +28,7 @@ public class ClericDialogBuilder extends VillagerDialogScreenHandler.VillagerDia
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         //试炼 TODO
         if(interactionID == 1) {
-            SMCRaidManager.startTrial(serverPlayer);
+            SMCRaidManager.startTrial(serverPlayer, smcPlayer);
         }
 
         //去末地 TODO
@@ -84,7 +84,7 @@ public class ClericDialogBuilder extends VillagerDialogScreenHandler.VillagerDia
         generator.addVillagerAns(this.profession, 2, "？！（牧师感到震惊，看来他知道你在§c『终界』§r找到了答案。 什么，你说你没看懂？你是不是跳过了通关动画？）");
         generator.addVillagerOpt(this.profession, 5, "但事已至此，再见吧。");
 
-        generator.addVillagerAns(this.profession, 3, "（在这些日子里，你觉得自己的实力得到了很大的提升，于是找到牧师，询问敌人的信息）  不，不！作为蹭误入§c『终界』§r的我可以明确的告诉你，现在的你远远不足以挑战恶龙。你还需要更多的试炼。");
+        generator.addVillagerAns(this.profession, 3, "（在这些日子里，你觉得自己的实力得到了很大的提升，于是找到牧师，询问敌人的信息）  不，不！作为蹭误入§c『终界』§r的我可以明确的告诉你，现在的你远远不足以挑战恶龙！终界的魔物日益猖狂，若你能通过试炼，我便相信你有击败恶龙的力量，并愿意赞助你的店铺。");
 
         generator.addVillagerOpt(this.profession, 6, "进行突破试炼");
         generator.addVillagerOpt(this.profession, 7, "再等等");

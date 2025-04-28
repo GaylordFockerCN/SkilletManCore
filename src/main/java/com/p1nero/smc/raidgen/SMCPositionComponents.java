@@ -13,8 +13,8 @@ public interface SMCPositionComponents {
     ResourceKey<IPositionComponent> RAID = create("raid");
 
     static void register(BootstapContext<IPositionComponent> context) {
-        context.register(TRIAL, new CenterAreaPosition(Vec3.ZERO, 0.0, 1.0, true, 0.0, true));
-        context.register(RAID, new CenterAreaPosition(Vec3.ZERO, 0.0, 1.0, true, 0.0, true));
+        context.register(TRIAL, new CenterAreaPosition(Vec3.ZERO, 10, 15, true, 0.0, true));
+        context.register(RAID, new CenterAreaPosition(Vec3.ZERO, 10, 15, true, 0.0, true));
     }
 
     static ResourceKey<IPositionComponent> create(String name) {

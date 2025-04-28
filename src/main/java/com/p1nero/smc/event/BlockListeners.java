@@ -6,7 +6,6 @@ import com.p1nero.smc.block.entity.MainCookBlockEntity;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.OpenBanPortalScreenPacket;
-import com.p1nero.smc.network.packet.clientbound.OpenStartGuideScreenPacket;
 import dev.xkmc.cuisinedelight.content.item.CuisineSkilletItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,7 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
 
 @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID)
-public class BlockListener {
+public class BlockListeners {
     @SubscribeEvent
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         if (event.getPlayer() instanceof ServerPlayer serverPlayer) {

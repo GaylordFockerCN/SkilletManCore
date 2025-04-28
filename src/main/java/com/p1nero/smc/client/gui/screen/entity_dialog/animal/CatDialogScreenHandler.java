@@ -5,11 +5,13 @@ import com.p1nero.smc.client.gui.DialogueComponentBuilder;
 import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
+import com.p1nero.smc.util.ItemUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Cat;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -30,6 +32,8 @@ public class CatDialogScreenHandler {
             cat.setInLove(serverPlayer);
             if(interactId == TAME) {
                 cat.tame(serverPlayer);
+                ItemUtil.addItem(serverPlayer, Items.NAME_TAG.getDefaultInstance(), true);
+                ItemUtil.addItem(serverPlayer, Items.LEAD.getDefaultInstance(), true);
             } else if(interactId == SIT_DOWN) {
                 cat.setOrderedToSit(true);
             } else if(interactId == SIT_UP) {

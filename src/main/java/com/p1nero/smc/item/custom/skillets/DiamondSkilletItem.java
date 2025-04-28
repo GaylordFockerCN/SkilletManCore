@@ -2,9 +2,12 @@ package com.p1nero.smc.item.custom.skillets;
 
 import com.p1nero.invincible.client.keymappings.InvincibleKeyMappings;
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.item.custom.SMCCuisineSkilletItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -41,6 +44,16 @@ public class DiamondSkilletItem extends SMCCuisineSkilletItem {
             return super.getDescription().copy().withStyle(ChatFormatting.AQUA).append(Component.literal(" " + star).withStyle(formatting));
         }
         return super.getDescription().copy().withStyle(ChatFormatting.AQUA);
+    }
+
+    @Override
+    public void onCraftedBy(@NotNull ItemStack itemStack, @NotNull Level level, @NotNull Player player) {
+        super.onCraftedBy(itemStack, level, player);
+        if(itemStack.getItem() instanceof GoldenSkilletItem goldenSkilletItem && goldenSkilletItem.level == 5) {
+            if(player instanceof ServerPlayer serverPlayer) {
+                SMCAdvancementData.finishAdvancement("first_5star_skillet", serverPlayer);
+            }
+        }
     }
 
     @Override

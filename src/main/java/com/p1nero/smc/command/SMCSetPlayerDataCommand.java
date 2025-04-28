@@ -89,6 +89,22 @@ public class SMCSetPlayerDataCommand {
                                 })
                         )
                 )
+                .then(Commands.literal("defendSuccess").requires((commandSourceStack) -> commandSourceStack.hasPermission(2))
+                        .then(Commands.argument("player", EntityArgument.player())
+                                .executes((context) -> {
+                                    SMCPlayer.defendSuccess(EntityArgument.getPlayer(context, "player"));
+                                    return 0;
+                                })
+                        )
+                )
+                .then(Commands.literal("defendFailed").requires((commandSourceStack) -> commandSourceStack.hasPermission(2))
+                        .then(Commands.argument("player", EntityArgument.player())
+                                .executes((context) -> {
+                                    SMCPlayer.defendFailed(EntityArgument.getPlayer(context, "player"));
+                                    return 0;
+                                })
+                        )
+                )
         );
     }
 }

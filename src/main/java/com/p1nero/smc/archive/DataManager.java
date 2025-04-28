@@ -26,6 +26,7 @@ import net.minecraft.world.entity.player.Player;
 public class DataManager {
     public static BoolData firstJoint =  new BoolData("first_joint",false);
     public static BoolData firstGiftGot =  new BoolData("first_gift_got",false);
+    public static BoolData firstGachaGot =  new BoolData("first_gacha_got",false);
     public static BoolData firstFoodBad =  new BoolData("first_food_bad",false);
     public static void putData(Player player, String key, double value) {
         getSMCPlayer(player).putDouble(key, value);

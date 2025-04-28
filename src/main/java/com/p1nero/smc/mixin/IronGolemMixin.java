@@ -6,6 +6,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.animal.IronGolem;
@@ -37,4 +38,12 @@ public abstract class IronGolemMixin extends AbstractGolem {
         }
         cir.setReturnValue(InteractionResult.SUCCESS);
     }
+
+    @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
+    private void smc$hurt(DamageSource damageSource, float v, CallbackInfoReturnable<Boolean> cir) {
+        if(damageSource.getEntity() instanceof Player) {
+            cir.setReturnValue(false);
+        }
+    }
+
 }

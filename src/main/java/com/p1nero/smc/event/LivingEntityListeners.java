@@ -4,14 +4,17 @@ import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
+import hungteen.htlib.common.event.events.DummyEntityEvent;
+import hungteen.htlib.common.world.raid.DefaultRaid;
 import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Cat;
-import net.minecraft.world.entity.animal.CatVariant;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
@@ -30,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID)
-public class LivingEntityListener {
+public class LivingEntityListeners {
 
     public static List<ItemStack> weapons = new ArrayList<>();
 
@@ -75,12 +78,24 @@ public class LivingEntityListener {
             player.displayClientMessage(SkilletManCoreMod.getInfo("customer_is_first").withStyle(ChatFormatting.RED), true);
             SMCPlayer.consumeMoney(10, player);
         }
+        if(event.getEntity() instanceof Player) {
+            event.setAmount(event.getAmount() * 0.33F);
+        }
     }
 
     @SubscribeEvent
     public static void onEntityDie(LivingDeathEvent event) {
         if(event.getEntity() instanceof Enemy && event.getSource().getEntity() instanceof ServerPlayer player) {
             SMCPlayer.addMoney((int) event.getEntity().getMaxHealth(), player);//击杀奖励
+        }
+    }
+
+    @SubscribeEvent
+    public static void onRaidSpawn(DummyEntityEvent.DummyEntitySpawnEvent event) {
+        if(event.getDummyEntity() instanceof DefaultRaid defaultRaid) {
+            for(Entity entity : defaultRaid.getRaiders()){
+                entity.setGlowingTag(true);
+            }
         }
     }
 
@@ -92,14 +107,14 @@ public class LivingEntityListener {
         }
 
         if(weapons.isEmpty()) {
-            weapons.add(Items.IRON_SWORD.getDefaultInstance());
-            weapons.add(Items.IRON_AXE.getDefaultInstance());
-            weapons.add(EpicFightItems.IRON_LONGSWORD.get().getDefaultInstance());
-            weapons.add(EpicFightItems.IRON_GREATSWORD.get().getDefaultInstance());
-            weapons.add(EpicFightItems.IRON_SPEAR.get().getDefaultInstance());
-            weapons.add(EpicFightItems.IRON_TACHI.get().getDefaultInstance());
+            weapons.add(Items.GOLDEN_SWORD.getDefaultInstance());
+            weapons.add(Items.GOLDEN_AXE.getDefaultInstance());
+            weapons.add(EpicFightItems.GOLDEN_LONGSWORD.get().getDefaultInstance());
+            weapons.add(EpicFightItems.GOLDEN_GREATSWORD.get().getDefaultInstance());
+            weapons.add(EpicFightItems.GOLDEN_SPEAR.get().getDefaultInstance());
+            weapons.add(EpicFightItems.GOLDEN_TACHI.get().getDefaultInstance());
             weapons.add(EpicFightItems.UCHIGATANA.get().getDefaultInstance());
-            weapons.add(EpicFightItems.IRON_DAGGER.get().getDefaultInstance());
+            weapons.add(EpicFightItems.GOLDEN_DAGGER.get().getDefaultInstance());
         }
 
         if(event.getEntity() instanceof Monster monster) {

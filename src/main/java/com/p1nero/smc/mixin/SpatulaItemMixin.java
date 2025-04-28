@@ -35,6 +35,7 @@ public abstract class SpatulaItemMixin {
     private void smc$useOn(UseOnContext ctx, CallbackInfoReturnable<InteractionResult> cir) {
         if(Objects.requireNonNull(EpicFightCapabilities.getEntityPatch(ctx.getPlayer(), PlayerPatch.class)).isBattleMode()) {
             cir.setReturnValue(InteractionResult.PASS);
+            return;
         }
         Level level = ctx.getLevel();
         Player player = ctx.getPlayer();
@@ -50,8 +51,7 @@ public abstract class SpatulaItemMixin {
                     CuisineSkilletItem.playSound(player, level, ModSounds.BLOCK_SKILLET_SIZZLE.get());
                 }
             }
-            cir.setReturnValue(InteractionResult.SUCCESS);
         }
-        cir.setReturnValue(InteractionResult.PASS);
+        cir.setReturnValue(InteractionResult.SUCCESS);
     }
 }

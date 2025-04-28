@@ -24,18 +24,16 @@ public class SMCRaidDatapackEntriesGen extends DatapackBuiltinEntriesProvider {
             .add(HTSpawnComponents.registry().getRegistryKey(), SMCSpawnComponents::register)
             .add(HTWaveComponents.registry().getRegistryKey(), SMCWaveComponents::register)
             .add(HTRaidComponents.registry().getRegistryKey(), SMCRaidComponents::register);
-    private final String modId;
 
-    public SMCRaidDatapackEntriesGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, RegistrySetBuilder datapackEntriesBuilder, String modId, Set<String> modIds) {
+    public SMCRaidDatapackEntriesGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, RegistrySetBuilder datapackEntriesBuilder, Set<String> modIds) {
         super(output, registries, datapackEntriesBuilder, modIds);
-        this.modId = modId;
     }
 
     SMCRaidDatapackEntriesGen(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-        this(output, provider, BUILDER, SkilletManCoreMod.MOD_ID, Set.of(VanillaHelper.get().getModID(), HTLibHelper.get().getModID(), SkilletManCoreMod.MOD_ID));
+        this(output, provider, BUILDER, Set.of(VanillaHelper.get().getModID(), HTLibHelper.get().getModID(), SkilletManCoreMod.MOD_ID));
     }
 
     public @NotNull String getName() {
-        return this.modId + " raid entries";
+        return SkilletManCoreMod.MOD_ID + " raid entries";
     }
 }

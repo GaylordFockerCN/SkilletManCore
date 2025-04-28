@@ -14,6 +14,7 @@ import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.NPCBlockDialoguePacket;
 import com.p1nero.smc.util.SMCRaidManager;
 import dev.xkmc.cuisinedelight.content.item.CuisineSkilletItem;
+import hungteen.htlib.common.world.entity.DummyEntityManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -96,9 +97,17 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
                         mainCookBlockEntity.updateWorkingState(serverPlayer);
                     } else {
                         //检查上班时间
-                        if(mainCookBlockEntity.checkWorkingTime() && owner.level().getBlockState(pos.above(1)).is(ModBlocks.STOVE.get()) && owner.level().getBlockState(pos.above(2)).getBlock().asItem() instanceof CuisineSkilletItem) {
-                            mainCookBlockEntity.isWorking = true;
-                            mainCookBlockEntity.updateWorkingState(serverPlayer);
+                        if(mainCookBlockEntity.checkWorkingTime()) {
+                            if(owner.level().getBlockState(pos.above(1)).is(ModBlocks.STOVE.get()) && owner.level().getBlockState(pos.above(2)).getBlock().asItem() instanceof CuisineSkilletItem){
+                                mainCookBlockEntity.isWorking = true;
+                                mainCookBlockEntity.updateWorkingState(serverPlayer);
+                            }
+                        } else {
+                            //生成袭击
+                            SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+                            if(!smcPlayer.isTodayInRaid()){
+                                SMCRaidManager.startNightRaid(serverPlayer, smcPlayer);
+                            }
                         }
                     }
                 }
@@ -221,12 +230,18 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
 
     /**
      * 判断是否开始营业
+     * 有袭击暂停营业
      */
     public boolean checkWorkingTime() {
         if (this.level == null) {
             return false;
         }
-
+        if(this.level instanceof ServerLevel serverLevel && !DummyEntityManager.getDummyEntities(serverLevel).isEmpty() && this.isWorking) {
+            for(ServerPlayer player : serverLevel.players()) {
+                player.displayClientMessage(SkilletManCoreMod.getInfo("raid_no_work"), true);
+            }
+            return false;
+        }
         return level.isDay();
     }
 

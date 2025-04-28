@@ -24,6 +24,8 @@ public class SMCLangGenerator extends SMCLangProvider {
     @Override
     protected void addTranslations() {
 
+        this.addInfo("set_time_not_allowed", "§c \"/time set\"命令将影响游戏进度！请使用 \"/time add\"代替！");
+
         this.addInfo("start_work", "§a上班！");
         this.addInfo("end_work", "§c下班！");
 
@@ -42,6 +44,15 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("diamond_weapon_tip", "§b每段攻击都应该尝试一下 [KEY2] （默认右键），摸索出最合适的连招！");
         this.addInfo("golden_spatula_tip", "§e翻炒冷却降低至 15tick");
         this.addInfo("diamond_spatula_tip", "§b翻炒冷却降低至 10tick");
+
+        this.addInfo("raid_title", "袭击");
+        this.addInfo("raid_success_for_day", "成功抵御了第 %d 天的袭击！");
+        this.addInfo("raid_victory", "成功抵御了袭击！");
+        this.addInfo("raid_loss", "抵御失败！损失惨重！");
+        this.addInfo("raid_loss_tip", "§6寻找§6盔甲匠§r，§6武器匠§r和§6图书管理员§r抽取更强力的盔甲、武器和技能书！也别忘了练习招架和格挡！");
+        this.addInfo("trail_title", "突破试炼");
+        this.addInfo("trail_success", "进阶成功！");
+        this.addInfo("trail_failed", " 很遗憾，你没能通过试炼");
 
         this.addInfo("rana_kaname", "要 乐奈");//Rāna Kaname
         this.addInfo("level_up_left", " 距离升级还需完成 %d 次交易");
@@ -64,8 +75,13 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("unlock_game_stage", "§6游戏阶段提升！现在等级上限已提升至： %d §6！§r解锁新的订购列表，并且客户需求种类增加！");
         this.addInfo("working", "营业中");
         this.addInfo("resting", "休息中");
-        this.addInfo("find_villager_first", "请在村庄找到店铺并领取新手福利");
-        this.addInfo("find_villager_first2", "（最好找个好位置，让客人能找到你）");
+        this.addInfo("raid_no_work", "§c§l世界某处正在遭遇袭击！紧急下班！");
+        this.addInfo("find_villager_first", "在村庄找到店铺并领取新手福利");
+        this.addInfo("find_villager_first2", "最好找个好位置，让客人能找到你");
+        this.addInfo("find_villager_first3", "本包不需要撸树挖矿，不要乱跑哦");
+        this.addInfo("find_villager_gacha", "进行任意 武器/盔甲/技能书 祈愿");
+        this.addInfo("find_villager_gacha2", "最好把村民框起来方便再次祈愿");
+        this.addInfo("special_customer", "§6特殊顾客！");
         this.addInfo("level_mul", "等级加成！× %.1f");
         this.addInfo("seafood_mul", "海鲜加成！× %.1f");
         this.addInfo("meat_mul", "肉类加成！× %.1f");
@@ -73,7 +89,8 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("all_taken", "已全部取出！");
         this.addInfo("customer_is_first", "§c顾客就是上帝！");
         this.addInfo("no_your_power", "Oh 不, 这份力量并不属于你...设定上你只能使用平底锅");
-        this.addInfo("no_your_power2", "关闭§6战斗模式§r以拾取被丢出的物品");
+        this.addInfo("no_your_power2", "关闭§6战斗模式§r以拾取被丢出的物品，部分物品阶段提升后可在战斗模式下使用。");
+        this.addInfo("two_craft_tip", "每两把同星级物品可以合成更高星级的物品，五星级除外。");
 
         StartGuideScreenHandler.onGenerate(this);
         BanPortalScreenHandler.onGenerate(this);
@@ -205,8 +222,8 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialog(SMCEntities.START_NPC, 3, "§a已全部取出！");
         this.addDialog(SMCEntities.START_NPC, 4, "§a已升级！");
         this.addDialog(SMCEntities.START_NPC, 5, "准备好开业了吗！§6（由于作者没有建筑水平，因此还特地补偿了一些建筑方块，快去装饰你的店铺吧！§r§c建筑时记得给村民留交易窗口！村民将从四面八方生成！）");
-        this.addDialog(SMCEntities.START_NPC, 6, "将§6炒锅§r摆上§6炉灶§r以开始营业，右键顾客以查看所需食材，烹饪完成后将食材放至§6主手§r，再次对话以交付食材。根据食材的品质将获得不同奖励。而夜晚可能会有§c袭击事件§r，拿起平底锅保卫村庄！");
-        this.addDialog(SMCEntities.START_NPC, 7, "炒菜时，拿着食材右键§6炒锅§r以把对应的食材丢入锅中，用§6锅铲§r右键即可翻炒。左边的仪表盘提示食物是否§c烧焦§r，请在合适的时候用盘子将其取出！使用 [JEI] 可查看料理配方。在物品栏对着食材按shift可查看食材烹饪时间区间，做好计算再下锅吧！用到的食材越高级，店铺等级越高，奖励越丰富！如果手忙脚乱，[预制菜] 是一个不错的选择。");
+        this.addDialog(SMCEntities.START_NPC, 6, "建议优先寻找§6盔甲匠§r和§6武器匠§r抽取盔甲和武器！以获得更好的游玩体验！ 将§6炒锅§r摆上§6炉灶§r以开始营业，长按拆下以下班。右键顾客以查看所需食材，烹饪完成后将食材放至§6主手§r，再次对话以交付食材。根据食材的品质将获得不同奖励。而夜晚可能会有§c袭击事件§r，拿起平底锅保卫村庄！");
+        this.addDialog(SMCEntities.START_NPC, 7, "炒菜时，拿着食材右键§6炒锅§r以把对应的食材丢入锅中，用§6锅铲§r右键即可翻炒。左边的仪表盘提示食物是否§c烧焦§r，请在合适的时候用盘子将其取出！ 使用§a[JEI]§r可查看料理配方。在物品栏对着食材按shift可查看食材烹饪时间区间，做好计算再下锅吧！用到的食材越高级，店铺等级越高，奖励越丰富！如果手忙脚乱，§6[预制菜]§r 是一个不错的选择。");
         this.addDialog(SMCEntities.START_NPC, 8, "接待足够多的村民或成功抵御一次袭击，将提升一次店铺等级.随着等级提升将解锁新的资源和玩法。到一定等级时将开启§6突破试炼§r，若试炼成功则可获得大量奖励并且进入下一游戏阶段。");
         this.addDialog(SMCEntities.START_NPC, 9, "Zzz...Zzz...Zzz...(忙碌了一天的员工睡得正香，  此刻也许你会好奇它为什么能够站着睡着。平底锅侠的世界就是如此奇妙，无需那么多为什么。)");
 
@@ -214,7 +231,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialog(SMCEntities.START_NPC, 11, "要兑换哪种抽奖券呢？");
         this.addDialog(SMCEntities.START_NPC, 12, "兑换几张呢？");
 
-        this.add(SMCEntities.CUSTOMER.get(), "§e人畜无害的村民§r");
+        this.add(SMCEntities.CUSTOMER.get(), "§e人畜无害的村民顾客§r");
         this.add(SMCEntities.FAKE_CUSTOMER.get(), "§e一位路过的村民§r");
 
         Customer.CUSTOMERS.forEach(customerData -> customerData.generateTranslation(this));

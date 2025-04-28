@@ -5,6 +5,7 @@
 
 package com.p1nero.smc.raidgen;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import com.p1nero.smc.SkilletManCoreMod;
 import hungteen.htlib.api.interfaces.raid.IPositionComponent;
@@ -14,21 +15,113 @@ import hungteen.htlib.common.impl.position.HTPositionComponents;
 import hungteen.htlib.common.impl.spawn.HTSpawnComponents;
 import hungteen.htlib.common.impl.wave.CommonWave;
 import hungteen.htlib.common.impl.wave.HTWaveComponents;
+
+import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.IntProvider;
 
 public interface SMCWaveComponents {
-    ResourceKey<IWaveComponent> TEST_1 = create("test_1");
-
+    ResourceKey<IWaveComponent> TRIAL_1 = create("test_1");
+    List<ResourceKey<IWaveComponent>> RAID_WAVES_1 = new ArrayList<>();
+    List<ResourceKey<IWaveComponent>> RAID_WAVES_2 = new ArrayList<>();
+    List<ResourceKey<IWaveComponent>> RAID_WAVES_3 = new ArrayList<>();
     static void register(BootstapContext<IWaveComponent> context) {
         HolderGetter<ISpawnComponent> spawns = HTSpawnComponents.registry().helper().lookup(context);
         HolderGetter<IPositionComponent> positions = HTPositionComponents.registry().helper().lookup(context);
-        Holder<ISpawnComponent> skeleton = spawns.getOrThrow(SMCSpawnComponents.WITHER_SKELETON);
-        context.register(TEST_1, new CommonWave(HTWaveComponents.builder().prepare(100).wave(800).skip(false).placement(positions.getOrThrow(SMCPositionComponents.TRIAL)).build(), List.of(Pair.of(ConstantInt.of(10), skeleton))));
+        Holder<ISpawnComponent> skeleton = spawns.getOrThrow(SMCSpawnComponents.WITHER_SKELETONS.get(8));
+        Holder<IPositionComponent> raidPosition = positions.getOrThrow(SMCPositionComponents.RAID);
+        context.register(TRIAL_1, new CommonWave(HTWaveComponents.builder()
+                .prepare(100)
+                .wave(800)
+                .placement(raidPosition)
+                .build(),
+                List.of(Pair.of(ConstantInt.of(10), skeleton))));
+
+        for(int i = 0; i <= 30; i ++) {
+            RAID_WAVES_1.add(create("raid_wave_" + i));
+            RAID_WAVES_2.add(create("raid_wave2_" + i));
+            RAID_WAVES_3.add(create("raid_wave3_" + i));
+            ImmutableList.Builder<Pair<IntProvider, Holder<ISpawnComponent>>> wave1builder = ImmutableList.builder();
+            ImmutableList.Builder<Pair<IntProvider, Holder<ISpawnComponent>>> wave2builder = ImmutableList.builder();
+            ImmutableList.Builder<Pair<IntProvider, Holder<ISpawnComponent>>> wave3builder = ImmutableList.builder();
+            spawns.get(SMCSpawnComponents.ZOMBIES.get(i)).ifPresent(reference -> {
+                wave1builder.add(Pair.of(ConstantInt.of(10), reference));
+                wave2builder.add(Pair.of(ConstantInt.of(10), reference));
+                wave3builder.add(Pair.of(ConstantInt.of(10), reference));
+            });
+            spawns.get(SMCSpawnComponents.SKELETONS.get(i)).ifPresent(reference -> {
+                wave1builder.add(Pair.of(ConstantInt.of(50), reference));
+                wave2builder.add(Pair.of(ConstantInt.of(50), reference));
+                wave3builder.add(Pair.of(ConstantInt.of(50), reference));
+            });
+            if(i > 1) {
+                spawns.get(SMCSpawnComponents.SPIDERS.get(i)).ifPresent(reference -> {
+                    wave1builder.add(Pair.of(ConstantInt.of(70), reference));
+                    wave2builder.add(Pair.of(ConstantInt.of(70), reference));
+                    wave3builder.add(Pair.of(ConstantInt.of(70), reference));
+                });
+                spawns.get(SMCSpawnComponents.CREEPERS.get(i)).ifPresent(reference -> {
+                    wave1builder.add(Pair.of(ConstantInt.of(70), reference));
+                    wave2builder.add(Pair.of(ConstantInt.of(70), reference));
+                    wave3builder.add(Pair.of(ConstantInt.of(70), reference));
+                });
+            }
+            if(i > 3) {
+                spawns.get(SMCSpawnComponents.WITCHES.get(i)).ifPresent(reference -> {
+                    wave2builder.add(Pair.of(ConstantInt.of(90), reference));
+                    wave3builder.add(Pair.of(ConstantInt.of(90), reference));
+                });
+                spawns.get(SMCSpawnComponents.PILLAGERS.get(i)).ifPresent(reference -> {
+                    wave2builder.add(Pair.of(ConstantInt.of(90), reference));
+                    wave3builder.add(Pair.of(ConstantInt.of(90), reference));
+                });
+            }
+            if(i > 5) {
+                spawns.get(SMCSpawnComponents.VINDICATORS.get(i)).ifPresent(reference -> {
+                    wave2builder.add(Pair.of(ConstantInt.of(100), reference));
+                    wave3builder.add(Pair.of(ConstantInt.of(100), reference));
+                });
+                spawns.get(SMCSpawnComponents.EVOKERS.get(i)).ifPresent(reference -> wave3builder.add(Pair.of(ConstantInt.of(100), reference)));
+            }
+
+            if(i > 7) {
+                spawns.get(SMCSpawnComponents.WITHER_SKELETONS.get(i)).ifPresent(reference -> wave3builder.add(Pair.of(ConstantInt.of(100), reference)));
+                spawns.get(SMCSpawnComponents.BLAZES.get(i)).ifPresent(reference -> wave3builder.add(Pair.of(ConstantInt.of(100), reference)));
+            }
+            if(i > 9) {
+                spawns.get(SMCSpawnComponents.ENDER_MANS.get(i)).ifPresent(reference -> wave3builder.add(Pair.of(ConstantInt.of(100), reference)));
+            }
+
+            if(i > 1 && i % 10 == 0) {
+                wave1builder.add(Pair.of(ConstantInt.of(10), spawns.getOrThrow(SMCSpawnComponents.WITHER)));
+            }
+
+            context.register(RAID_WAVES_1.get(i), new CommonWave(HTWaveComponents.builder()
+                    .prepare(600)
+                    .wave(3200)
+                    .placement(raidPosition)
+                    .build(),
+                    wave1builder.build()));
+            context.register(RAID_WAVES_2.get(i), new CommonWave(HTWaveComponents.builder()
+                    .prepare(300)
+                    .wave(9600)
+                    .placement(raidPosition)
+                    .build(),
+                    wave2builder.build()));
+            context.register(RAID_WAVES_3.get(i), new CommonWave(HTWaveComponents.builder()
+                    .prepare(300)
+                    .wave(12800)
+                    .placement(raidPosition)
+                    .build(),
+                    wave3builder.build()));
+        }
+
+
     }
     static ResourceKey<IWaveComponent> create(String name) {
         return HTWaveComponents.registry().createKey(SkilletManCoreMod.prefix(name));

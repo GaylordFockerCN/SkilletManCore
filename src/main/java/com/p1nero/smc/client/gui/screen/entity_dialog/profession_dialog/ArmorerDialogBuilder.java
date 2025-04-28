@@ -66,16 +66,16 @@ public class ArmorerDialogBuilder extends VillagerDialogScreenHandler.VillagerDi
             TreeNode pull = new TreeNode(answer(1), choice(0));
 
             if (ticketCount < 1) {
-                pull.addChild(new TreeNode(answer(3, 160), choice(2))
+                pull.addChild(new TreeNode(answer(2, 160), choice(2))
                                 .addLeaf(choice(4), (byte) 1)
-                                .addLeaf(choice(5))
-                        .addChild(new TreeNode(answer(3, 1600), choice(3))
+                                .addLeaf(choice(5)))
+                        .addChild(new TreeNode(answer(2, 1600), choice(3))
                                 .addLeaf(choice(4), (byte) 2)
-                                .addLeaf(choice(5))));
+                                .addLeaf(choice(5)));
             } else if (ticketCount < 10) {
                 int needTicket = 10 - ticketCount;
                 pull.addLeaf(choice(2), (byte) 1)
-                        .addChild(new TreeNode(answer(4, 160 * needTicket), choice(3))
+                        .addChild(new TreeNode(answer(3, 160 * needTicket), choice(3))
                                 .addLeaf(choice(4), (byte) 2)
                                 .addLeaf(choice(5)));
             } else {
