@@ -61,7 +61,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("someone_s_pet", " 的 ");
         this.addInfo("trial_required", ": §e§l寻找牧师通过试炼以突破世界等级限制！");
         this.addInfo("game_time_no_enough", "§4游戏时长不足！禁止挑战最终boss！");
-        this.addInfo("add_item_tip", "§a获得新物品：");
+        this.addInfo("add_item_tip", "§a获得新物品：%s × %d");
         this.addInfo("advancement_look_tip", "§a不知道做什么时，可以查看一下进度（默认按 L ）");
         this.addInfo("unlock_new_order", "§a客户解锁了新的需求！ 当前可能的请求");
         this.addInfo("customer_left", "§c时间太久，顾客离开了一位。。");
@@ -75,6 +75,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("unlock_game_stage", "§6游戏阶段提升！现在等级上限已提升至： %d §6！§r解锁新的订购列表，并且客户需求种类增加！");
         this.addInfo("working", "营业中");
         this.addInfo("resting", "休息中");
+        this.addInfo("foods_need_cut", "§6该食材需砧板加工处理！");
         this.addInfo("raid_no_work", "§c§l世界某处正在遭遇袭击！紧急下班！");
         this.addInfo("find_villager_first", "在村庄找到店铺并领取新手福利");
         this.addInfo("find_villager_first2", "最好找个好位置，让客人能找到你");
@@ -221,7 +222,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialog(SMCEntities.START_NPC, 2, "本店亏损已久，承蒙大侠相助！");
         this.addDialog(SMCEntities.START_NPC, 3, "§a已全部取出！");
         this.addDialog(SMCEntities.START_NPC, 4, "§a已升级！");
-        this.addDialog(SMCEntities.START_NPC, 5, "准备好开业了吗！§6（由于作者没有建筑水平，因此还特地补偿了一些建筑方块，快去装饰你的店铺吧！§r§c建筑时记得给村民留交易窗口！村民将从四面八方生成！）");
+        this.addDialog(SMCEntities.START_NPC, 5, "准备好开业了吗！§6由于作者没有建筑水平，因此还特地补偿了一些建筑方块，快去装饰你的店铺吧！§r§c建筑时记得给村民留交易窗口！村民将从四面八方生成！");
         this.addDialog(SMCEntities.START_NPC, 6, "建议优先寻找§6盔甲匠§r和§6武器匠§r抽取盔甲和武器！以获得更好的游玩体验！ 将§6炒锅§r摆上§6炉灶§r以开始营业，长按拆下以下班。右键顾客以查看所需食材，烹饪完成后将食材放至§6主手§r，再次对话以交付食材。根据食材的品质将获得不同奖励。而夜晚可能会有§c袭击事件§r，拿起平底锅保卫村庄！");
         this.addDialog(SMCEntities.START_NPC, 7, "炒菜时，拿着食材右键§6炒锅§r以把对应的食材丢入锅中，用§6锅铲§r右键即可翻炒。左边的仪表盘提示食物是否§c烧焦§r，请在合适的时候用盘子将其取出！ 使用§a[JEI]§r可查看料理配方。在物品栏对着食材按shift可查看食材烹饪时间区间，做好计算再下锅吧！用到的食材越高级，店铺等级越高，奖励越丰富！如果手忙脚乱，§6[预制菜]§r 是一个不错的选择。");
         this.addDialog(SMCEntities.START_NPC, 8, "接待足够多的村民或成功抵御一次袭击，将提升一次店铺等级.随着等级提升将解锁新的资源和玩法。到一定等级时将开启§6突破试炼§r，若试炼成功则可获得大量奖励并且进入下一游戏阶段。");

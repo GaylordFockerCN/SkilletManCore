@@ -41,7 +41,7 @@ public class StartGuideScreenHandler {
         generator.addScreenAns(name, 0, "你是一个来自天外的旅人，受§c『终界』§r侵扰，你失去了力量。因此你暂居此处，白天做饭维生，夜里抵御来自§c『终界』§r的袭击，保卫村庄。你在做菜的时候，不断从翻炒中领悟武学之道，同时可能邂逅神秘村民，传授你§e『秘笈』§r或§b『神兵』§r。");
         generator.addScreenOpt(name, 0, "继续");
         generator.addScreenOpt(name, 1, "跳过");
-        generator.addScreenAns(name, 1, "有朝一日，你觉得力量渐渐回来了，准备进军§c『终界』§r，击败恶龙，夺回属于你的力量，换得主世界永恒的安宁。最终将成为一代宗师，村民们因此称你为——§e平 底 锅 侠§r。");
+        generator.addScreenAns(name, 1, "有朝一日，你觉得力量渐渐回来了，准备前往§c『终界』§r，击败恶龙，夺回属于你的力量，换得主世界永恒的安宁。最终将成为一代宗师，村民们因此称你为——§e平 底 锅 侠§r。");
         generator.addScreenOpt(name, 2, "平底锅侠...好俗的名字...");
         generator.addScreenOpt(name, 3, "这像是作者一拍大腿就想出来的整合包");
         generator.addScreenAns(name, 2, "没错。这个整合包就是作者一拍大腿想出来的。但这一拍大腿就换来了一个月的爆肝...建议给作者三连。废话少说，快去村庄里寻找落脚点吧！");

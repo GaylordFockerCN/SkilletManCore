@@ -159,8 +159,8 @@ public class SMCPlayer {
     public static final int STAGE1_REQUIRE = 10;
     public static final int STAGE2_REQUIRE = 20;
     public static final int STAGE3_REQUIRE = 50;
-    public static final List<PlateFood> STAGE0_FOOD_LIST = List.of(PlateFood.FRIED_RICE, PlateFood.FRIED_PASTA, PlateFood.FRIED_MUSHROOM, PlateFood.VEGETABLE_PLATTER);
-    public static final List<PlateFood> MEAT_AND_MIX = List.of(PlateFood.VEGETABLE_FRIED_RICE, PlateFood.VEGETABLE_PASTA, PlateFood.SCRAMBLED_EGG_AND_TOMATO,
+    public static final List<PlateFood> STAGE0_FOOD_LIST = List.of(PlateFood.VEGETABLE_FRIED_RICE, PlateFood.VEGETABLE_PASTA, PlateFood.FRIED_RICE, PlateFood.FRIED_PASTA, PlateFood.FRIED_MUSHROOM, PlateFood.VEGETABLE_PLATTER);
+    public static final List<PlateFood> MEAT_AND_MIX = List.of(PlateFood.SCRAMBLED_EGG_AND_TOMATO,
             PlateFood.MEAT_WITH_VEGETABLES, PlateFood.FRIED_MEAT_AND_MELON, PlateFood.HAM_FRIED_RICE, PlateFood.MEAT_FRIED_RICE,
             PlateFood.MEAT_PASTA, PlateFood.MEAT_PLATTER);
     public static final List<PlateFood> STAGE1_FOOD_LIST = new ArrayList<>();
@@ -330,6 +330,7 @@ public class SMCPlayer {
         addMoney(1000, serverPlayer);
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("unlock_game_stage", STAGE2_REQUIRE), false);
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("meat_available"), false);
+        //TODO 赠送无脑村民蛋
         //TODO 解锁和牧师的对话，解锁最终boss战，弹窗引导对话
     }
 

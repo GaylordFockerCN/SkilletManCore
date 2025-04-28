@@ -56,7 +56,7 @@ public class SpecialCustomerData7 extends SpecialCustomerData {
     @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, Items.STONE.getDefaultInstance());
+        ItemUtil.addItem(serverPlayer, Items.STONE.getDefaultInstance(), true);
     }
 
 }

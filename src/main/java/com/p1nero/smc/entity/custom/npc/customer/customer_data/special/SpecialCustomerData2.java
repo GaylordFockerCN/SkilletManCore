@@ -51,7 +51,7 @@ public class SpecialCustomerData2 extends SpecialCustomerData {
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
         ItemUtil.addItem(serverPlayer, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_45"))).getDefaultInstance());
-        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.DOLL_RAFFLE_TICKET.get(), 3);
+        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.DOLL_RAFFLE_TICKET.get(), 3, true);
     }
 
     @Override

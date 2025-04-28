@@ -43,8 +43,8 @@ public class SpecialCustomerData19 extends SpecialCustomerData {
     @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.get(), 10);
-        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.get(), 10);
+        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.get(), 10, true);
+        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.get(), 10, true);
 
         ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
         ListTag bookPages = new ListTag();
@@ -78,7 +78,7 @@ public class SpecialCustomerData19 extends SpecialCustomerData {
         book.addTagElement("author", StringTag.valueOf("洪七"));
         book.addTagElement("title", StringTag.valueOf("降龙十八掌"));
 
-        ItemUtil.addItem(serverPlayer, book);
+        ItemUtil.addItem(serverPlayer, book, true);
 
     }
 

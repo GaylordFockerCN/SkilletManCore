@@ -87,9 +87,9 @@ public class SMCWeaponCapabilityPresets {
                     .canBePlacedOffhand(false)
                     .newStyleCombo(
                             CapabilityItem.Styles.TWO_HAND,
-                            WOMAnimations.TORMENT_AUTO_1,
-                            WOMAnimations.TORMENT_AUTO_2,
-                            WOMAnimations.TORMENT_CHARGED_ATTACK_1,
+                            WOMAnimations.SOLAR_AUTO_3,
+                            WOMAnimations.SOLAR_AUTO_3_POLVORA,
+                            WOMAnimations.SOLAR_AUTO_2,
                             Animations.GREATSWORD_DASH,
                             Animations.GREATSWORD_DASH)
                     .innateSkill(CapabilityItem.Styles.TWO_HAND, (itemstack) -> null)
@@ -105,11 +105,11 @@ public class SMCWeaponCapabilityPresets {
                     .canBePlacedOffhand(false)
                     .newStyleCombo(
                             CapabilityItem.Styles.TWO_HAND,
-                            WOMAnimations.TORMENT_AUTO_1,
-                            WOMAnimations.TORMENT_AUTO_2,
-                            WOMAnimations.TORMENT_CHARGED_ATTACK_1,
-                            WOMAnimations.TORMENT_AIRSLAM,
-                            WOMAnimations.TORMENT_BERSERK_AIRSLAM)
+                            WOMAnimations.SOLAR_AUTO_3,
+                            WOMAnimations.SOLAR_AUTO_3_POLVORA,
+                            WOMAnimations.SOLAR_AUTO_2,
+                            WOMAnimations.RUINE_AUTO_3,
+                            WOMAnimations.RUINE_AUTO_2)
                     .innateSkill(CapabilityItem.Styles.TWO_HAND, (itemstack) -> null)
                     .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
                     .comboCancel((style) -> false);

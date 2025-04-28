@@ -95,7 +95,7 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
         generator.addVillagerAns(this.profession, 0, "（这位武器匠长得凶神恶煞，他可以为你锻造趁手的武器。）");
         generator.addVillagerOpt(this.profession, 0, "武器祈愿");
         generator.addVillagerOpt(this.profession, 1, "离开");
-        generator.addVillagerAns(this.profession, 1, "10次祈愿必得四星武器，90次祈愿必得五星武器！  五个相同星级的武器§6可以合并§r升星哦！  五星武器 §6[左锅右铲]§r 概率UP！");
+        generator.addVillagerAns(this.profession, 1, "10次祈愿必得四星武器，90次祈愿必得五星武器！五星武器 §6[左锅右铲]§r 概率UP！");
         generator.addVillagerOpt(this.profession, 2, "祈愿一次");
         generator.addVillagerOpt(this.profession, 3, "祈愿十次");
         generator.addVillagerAns(this.profession, 2, "武器抽奖券不足，是否用 %d 绿宝石替代？");

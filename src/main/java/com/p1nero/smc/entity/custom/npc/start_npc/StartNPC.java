@@ -39,7 +39,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
@@ -64,13 +66,24 @@ public class StartNPC extends SMCNpc {
     public static final Set<ItemStack> VEG_SET = new HashSet<>();
     public static final Set<ItemStack> MEAT_SET = new HashSet<>();
     public static final Set<ItemStack> SEAFOOD_SET = new HashSet<>();
+    public static final List<Item> FOODS_NEED_CUT = new ArrayList<>();
 
     public static void initIngredients() {
         Collections.addAll(STAPLE_SET, IngredientConfig.get().getAll(FoodType.CARB));
         Collections.addAll(VEG_SET, IngredientConfig.get().getAll(FoodType.VEG));
         Collections.addAll(MEAT_SET, IngredientConfig.get().getAll(FoodType.MEAT));
         Collections.addAll(SEAFOOD_SET, IngredientConfig.get().getAll(FoodType.SEAFOOD));
-        //TODO 移除切好的材料
+        STAPLE_SET.removeIf(itemStack -> itemStack.is(ModItems.RAW_PASTA.get()));
+        VEG_SET.removeIf(itemStack -> itemStack.is(Items.BROWN_MUSHROOM) || itemStack.is(Items.RED_MUSHROOM) || itemStack.is(ModItems.CABBAGE_LEAF.get()));
+        MEAT_SET.removeIf(itemStack -> itemStack.is(ModItems.BACON.get()) || itemStack.is(ModItems.COOKED_BACON.get())
+                || itemStack.is(ModItems.MUTTON_CHOPS.get()) || itemStack.is(ModItems.COOKED_MUTTON_CHOPS.get())||
+                itemStack.is(ModItems.CHICKEN_CUTS.get())|| itemStack.is(ModItems.COOKED_CHICKEN_CUTS.get()));
+        SEAFOOD_SET.removeIf(itemStack -> itemStack.is(ModItems.SALMON_SLICE.get()) || itemStack.is(ModItems.COOKED_SALMON_SLICE.get())
+                || itemStack.is(ModItems.COD_SLICE.get()) || itemStack.is(ModItems.COOKED_COD_SLICE.get()));
+
+        FOODS_NEED_CUT.addAll(List.of(ModItems.BROWN_MUSHROOM_COLONY.get(), ModItems.RED_MUSHROOM_COLONY.get(), ModItems.CABBAGE.get(),
+                Items.BEEF, Items.PORKCHOP, Items.MUTTON, Items.COOKED_MUTTON, Items.CHICKEN, Items.COOKED_CHICKEN,
+                Items.SALMON, Items.COOKED_SALMON, Items.COD, Items.COOKED_COD));
     }
 
     public static final int EMPTY = 0;
@@ -401,17 +414,18 @@ public class StartNPC extends SMCNpc {
         if (interactionID == 6) {
             DataManager.firstGiftGot.put(player, true);
             player.displayClientMessage(dialogueComponentBuilder.buildEntityAnswer(5), false);
-            ItemUtil.addItem(player, ModItems.CUTTING_BOARD.get(), 1);
+            ItemUtil.addItem(player, ModItems.CUTTING_BOARD.get().getDefaultInstance(), true);
+            ItemUtil.addItem(player, ModItems.IRON_KNIFE.get().getDefaultInstance(), true);
             ItemUtil.addItem(player, SOLCarrotItems.FOOD_BOOK.get(), 1);
-            ItemUtil.addItem(player, CDItems.PLATE.asItem().asItem(), 10);
+            ItemUtil.addItem(player, CDItems.PLATE.asStack(), true);
             ItemUtil.addItem(player, Blocks.CRAFTING_TABLE.asItem(), 1);
             ItemUtil.addItem(player, Blocks.JUKEBOX.asItem(), 1);
             ItemUtil.addItem(player, Blocks.OAK_WOOD.asItem(), 64);
             ItemUtil.addItem(player, Blocks.STONE.asItem().asItem(), 64);
             ItemUtil.addItem(player, Blocks.COBBLESTONE.asItem().asItem(), 64);
             ItemUtil.addItem(player, Blocks.BRICKS.asItem().asItem(), 64);
-            ItemUtil.addItem(player, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asItem(), 10);
-            ItemUtil.addItem(player, SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asItem(), 10);
+            ItemUtil.addItem(player, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asStack(10), true);
+            ItemUtil.addItem(player, SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asStack(10), true);
 
             player.playSound(SoundEvents.PLAYER_LEVELUP);
         }

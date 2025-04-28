@@ -45,8 +45,8 @@ public class SpecialCustomerData3 extends SpecialCustomerData {
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
         ItemUtil.addItem(serverPlayer, Items.DIAMOND, 64);
-        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.get(), 3);
-        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.ARMOR_RAFFLE_TICKET.get(), 3);
+        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.get(), 3, true);
+        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.ARMOR_RAFFLE_TICKET.get(), 3, true);
     }
 
     @Override

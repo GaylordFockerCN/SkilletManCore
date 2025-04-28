@@ -11,6 +11,7 @@
     "BasicMultipleAttackAnimationMixin",
     "CatMixin",
     "CowMixin",
+    "CuisineSkilletBlockMixin",
     "CuisineSkilletItemMixin",
     "FoodDataMixin",
     "HumanoidMobPatchMixin",

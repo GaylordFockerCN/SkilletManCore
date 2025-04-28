@@ -130,9 +130,11 @@ public class SMCRegistrateItems {
     public static final ItemEntry<Item> PARRY_ICON = SkilletManCoreMod.REGISTRATE.item("parry_icon", Item::new)
             .defaultModel()
             .defaultLang().register();
+
     public static final ItemEntry<SimpleDescriptionFoilItem> WEAPON_RAFFLE_TICKET = SkilletManCoreMod.REGISTRATE.item("weapon_raffle_ticket", properties -> new SimpleDescriptionFoilItem(properties.fireResistant().rarity(Rarity.EPIC)))
             .defaultModel()
             .defaultLang().register();
+
     public static final ItemEntry<SimpleDescriptionFoilItem> ARMOR_RAFFLE_TICKET = SkilletManCoreMod.REGISTRATE.item("armor_raffle_ticket", properties -> new SimpleDescriptionFoilItem(properties.fireResistant().rarity(Rarity.EPIC)))
             .defaultModel()
             .defaultLang().register();
@@ -144,12 +146,15 @@ public class SMCRegistrateItems {
     public static final ItemEntry<SimpleDescriptionFoilItem> DISC_RAFFLE_TICKET = SkilletManCoreMod.REGISTRATE.item("disk_raffle_ticket", properties -> new SimpleDescriptionFoilItem(properties.fireResistant().rarity(Rarity.EPIC)))
             .defaultModel()
             .defaultLang().register();
+
     public static final ItemEntry<SimpleDescriptionFoilItem> PET_RAFFLE_TICKET = SkilletManCoreMod.REGISTRATE.item("pet_raffle_ticket", properties -> new SimpleDescriptionFoilItem(properties.fireResistant().rarity(Rarity.EPIC)))
             .defaultModel()
             .defaultLang().register();
+
     public static final ItemEntry<SimpleDescriptionFoilItem> DOLL_RAFFLE_TICKET = SkilletManCoreMod.REGISTRATE.item("doll_raffle_ticket", properties -> new SimpleDescriptionFoilItem(properties.fireResistant().rarity(Rarity.EPIC)))
             .defaultModel()
             .defaultLang().register();
+
     public static void register() {
     }
 

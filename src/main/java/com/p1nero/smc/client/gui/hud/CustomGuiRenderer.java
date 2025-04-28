@@ -15,7 +15,10 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class CustomGuiRenderer {
     public static final ResourceLocation SPATULA_TEXTURE = new ResourceLocation(CuisineDelight.MODID, "textures/item/spatula.png");
     public static final ResourceLocation MONEY_TEXTURE = new ResourceLocation("textures/item/emerald.png");
@@ -60,22 +63,34 @@ public class CustomGuiRenderer {
             guiGraphics.drawString(font, ": " + smcPlayer.getLevel(), x + 20 - offsetX, y - 20, stageColor, true);
         }
 
-        int lineHeight = font.lineHeight + interval;
+        int lineHeight = font.lineHeight + 6;
+        if (Minecraft.getInstance().screen == null) {
+            renderTutorial(guiGraphics, localPlayer, font, lineHeight, x, (int) (y + lineHeight * 1.5F));
+        }
         guiGraphics.blit(MONEY_TEXTURE, x - offsetX, y, 20, 20, 0.0F, 0.0F, 1, 1, 1, 1);
         guiGraphics.drawString(font, ": " + smcPlayer.getMoneyCount(), x + 20 - offsetX, y + 5, 16777215, true);
+
+        guiGraphics.drawString(font, smcPlayer.isWorking() ? SkilletManCoreMod.getInfo("working").withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN) : SkilletManCoreMod.getInfo("resting").withStyle(ChatFormatting.BOLD, ChatFormatting.GOLD), x - offsetX, y + font.lineHeight + interval, 0x00ff00, true);
+    }
+
+    public static void renderTutorial(GuiGraphics guiGraphics, LocalPlayer localPlayer, Font font, int lineHeight, int x, int y) {
         if (!DataManager.firstGiftGot.get(localPlayer)) {
             Component info = SkilletManCoreMod.getInfo("find_villager_first").withStyle(ChatFormatting.BOLD, ChatFormatting.GOLD);
             Component info2 = SkilletManCoreMod.getInfo("find_villager_first2").withStyle(ChatFormatting.GRAY);
             Component info3 = SkilletManCoreMod.getInfo("find_villager_first3").withStyle(ChatFormatting.GRAY);
-            guiGraphics.drawString(font, info, 15, y + lineHeight * 2, 0x00ff00, true);
-            guiGraphics.drawString(font, info2, 15, y + lineHeight * 3, 0x00ff00, true);
-            guiGraphics.drawString(font, info3, 15, y + lineHeight * 4, 0x00ff00, true);
+            int maxWidth = Math.max(Math.max(font.width(info), font.width(info2)), font.width(info3));
+            guiGraphics.fillGradient(8, y + lineHeight * 2 - 2, 8 + maxWidth + 2, y + lineHeight * 5, 0x66000000, 0x66000000);
+            guiGraphics.drawString(font, info, 10, y + lineHeight * 2, 0x00ff00, true);
+            guiGraphics.drawString(font, info2, 10, y + lineHeight * 3, 0x00ff00, true);
+            guiGraphics.drawString(font, info3, 10, y + lineHeight * 4, 0x00ff00, true);
         } else if (!DataManager.firstGachaGot.get(localPlayer)) {
             Component info = SkilletManCoreMod.getInfo("find_villager_gacha").withStyle(ChatFormatting.BOLD, ChatFormatting.AQUA);
             Component info2 = SkilletManCoreMod.getInfo("find_villager_gacha2").withStyle(ChatFormatting.GRAY);
-            guiGraphics.drawString(font, info, 15, y + lineHeight * 2, 0x00ff00, true);
-            guiGraphics.drawString(font, info2, 15, y + lineHeight * 3, 0x00ff00, true);
+            int maxWidth = Math.max(font.width(info), font.width(info2));
+            guiGraphics.fillGradient(8, y + lineHeight * 2 - 2, 8 + maxWidth + 2, y + lineHeight * 4, 0x66000000, 0x66000000);
+            guiGraphics.drawString(font, info, 10, y + lineHeight * 2, 0x00ff00, true);
+            guiGraphics.drawString(font, info2, 10, y + lineHeight * 3, 0x00ff00, true);
         }
-        guiGraphics.drawString(font, smcPlayer.isWorking() ? SkilletManCoreMod.getInfo("working").withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN) : SkilletManCoreMod.getInfo("resting").withStyle(ChatFormatting.BOLD, ChatFormatting.GOLD), x - offsetX, y + font.lineHeight + interval, 0x00ff00, true);
     }
+
 }

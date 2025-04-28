@@ -124,8 +124,8 @@ public class SpecialCustomerData6 extends SpecialCustomerData {
     @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.PET_RAFFLE_TICKET.get(), 1);
-        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.ARMOR_RAFFLE_TICKET.get(), 3);
+        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.PET_RAFFLE_TICKET.get(), 1, true);
+        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.ARMOR_RAFFLE_TICKET.get(), 3, true);
         SMCAdvancementData.finishAdvancement("too_many_mouth", serverPlayer);
     }
 

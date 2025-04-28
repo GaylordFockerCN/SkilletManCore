@@ -85,6 +85,31 @@ public class ItemUtil {
      * 添加物品，失败则掉落
      */
     public static void addItem(Player player, Item item, int count){
+        addItem(player, item, count, false);
+    }
+
+    public static void addItem(Player player, ItemStack item){
+        addItem(player, item, false);
+    }
+
+    public static void addItem(Player player, ItemStack itemStack, boolean showTip){
+        if(!player.level().isClientSide && showTip) {
+            player.displayClientMessage(SkilletManCoreMod.getInfo("add_item_tip", itemStack.getDisplayName(), itemStack.getCount()), false);
+            player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_PICKUP, player.getSoundSource(), 1.0F, 1.0F);
+        }
+        if(!player.addItem(itemStack)){
+            addItemEntity(player, itemStack);
+        }
+    }
+
+    /**
+     * 是否是需要加倍翻倍的奖励
+     */
+    public static void addItem(Player player, Item item, int count, boolean showTip){
+        if(!player.level().isClientSide && showTip) {
+            player.displayClientMessage(SkilletManCoreMod.getInfo("add_item_tip", item.getDefaultInstance().getDisplayName(), count), false);
+            player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_PICKUP, player.getSoundSource(), 1.0F, 1.0F);
+        }
         int maxStackSize = item.getDefaultInstance().getMaxStackSize();
         if(!player.addItem(item.getDefaultInstance().copyWithCount(count))){
             if(maxStackSize < count){
@@ -95,27 +120,6 @@ public class ItemUtil {
             } else {
                 addItemEntity(player, item, count);
             }
-        }
-    }
-    public static void addItem(Player player, ItemStack item){
-        addItem(player, item, false);
-    }
-    public static void addItem(Player player, ItemStack item, boolean showTip){
-        if(!player.addItem(item)){
-            addItemEntity(player, item);
-        }
-        if(showTip) {
-            player.displayClientMessage(SkilletManCoreMod.getInfo("add_item_tip").append(item.getDisplayName()).append(" × " + item.getCount()), false);
-            player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_PICKUP, player.getSoundSource(), 1.0F, 1.0F);
-        }
-    }
-
-    /**
-     * 是否是需要加倍翻倍的奖励
-     */
-    public static void addItem(Player player, Item item, int count, boolean isImportantLoot){
-        if(isImportantLoot && SMCConfig.BOSS_HEALTH_AND_LOOT_MULTIPLE.get() && player.level() instanceof ServerLevel serverLevel){
-            addItem(player, item, serverLevel.getPlayers((serverPlayer -> true)).size() * count);
         }
     }
 

@@ -48,7 +48,7 @@ public class SpecialCustomerData4 extends SpecialCustomerData {
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
         ItemUtil.addItem(serverPlayer, Items.KNOWLEDGE_BOOK.getDefaultInstance());
-        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.get().getDefaultInstance());
+        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.get().getDefaultInstance(), true);
 
     }
 
