@@ -26,21 +26,37 @@ import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 
 public interface SMCWaveComponents {
-    ResourceKey<IWaveComponent> TRIAL_1 = create("test_1");
+    ResourceKey<IWaveComponent> TRIAL_1 = create("trial_1");
+    ResourceKey<IWaveComponent> TRIAL_2 = create("trial_2");
+    ResourceKey<IWaveComponent> TRIAL_3 = create("trial_3");
     List<ResourceKey<IWaveComponent>> RAID_WAVES_1 = new ArrayList<>();
     List<ResourceKey<IWaveComponent>> RAID_WAVES_2 = new ArrayList<>();
     List<ResourceKey<IWaveComponent>> RAID_WAVES_3 = new ArrayList<>();
     static void register(BootstapContext<IWaveComponent> context) {
         HolderGetter<ISpawnComponent> spawns = HTSpawnComponents.registry().helper().lookup(context);
         HolderGetter<IPositionComponent> positions = HTPositionComponents.registry().helper().lookup(context);
-        Holder<ISpawnComponent> skeleton = spawns.getOrThrow(SMCSpawnComponents.WITHER_SKELETONS.get(8));
+        Holder<ISpawnComponent> wither = spawns.getOrThrow(SMCSpawnComponents.WITHER);
+        Holder<ISpawnComponent> superGolem1 = spawns.getOrThrow(SMCSpawnComponents.SUPER_GOLEM_1);
+        Holder<ISpawnComponent> superGolem2 = spawns.getOrThrow(SMCSpawnComponents.SUPER_GOLEM_2);
         Holder<IPositionComponent> raidPosition = positions.getOrThrow(SMCPositionComponents.RAID);
         context.register(TRIAL_1, new CommonWave(HTWaveComponents.builder()
                 .prepare(100)
-                .wave(800)
+                .wave(3200)
                 .placement(raidPosition)
                 .build(),
-                List.of(Pair.of(ConstantInt.of(10), skeleton))));
+                List.of(Pair.of(ConstantInt.of(10), superGolem1))));
+        context.register(TRIAL_2, new CommonWave(HTWaveComponents.builder()
+                .prepare(100)
+                .wave(4800)
+                .placement(raidPosition)
+                .build(),
+                List.of(Pair.of(ConstantInt.of(10), superGolem2))));
+        context.register(TRIAL_3, new CommonWave(HTWaveComponents.builder()
+                .prepare(100)
+                .wave(9600)
+                .placement(raidPosition)
+                .build(),
+                List.of(Pair.of(ConstantInt.of(10), superGolem2), Pair.of(ConstantInt.of(1000), wither))));
 
         for(int i = 0; i <= 30; i ++) {
             RAID_WAVES_1.add(create("raid_wave_" + i));

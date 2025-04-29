@@ -61,6 +61,9 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement level1 = registerAdvancement(startWork, "level1", FrameType.TASK, CDItems.SPATULA, true, true, false);
             Advancement level2 = registerAdvancement(level1, "level2", FrameType.TASK, SMCRegistrateItems.GOLDEN_SPATULA, true, true, false);
             Advancement level3 = registerAdvancement(level2, "level3", FrameType.TASK, SMCRegistrateItems.DIAMOND_SPATULA, true, true, false);
+            Advancement special_customer_1 = registerAdvancement(startWork, "special_customer_1", FrameType.TASK, Items.PUFFERFISH, true, true, false);
+            Advancement special_customer_2 = registerAdvancement(special_customer_1, "special_customer_2", FrameType.TASK, Items.PUFFERFISH, true, true, false);
+            Advancement special_customer_3 = registerAdvancement(special_customer_2, "special_customer_3", FrameType.TASK, Items.PUFFERFISH, true, true, false);
             Advancement hijackCustomer = registerAdvancement(startWork, "hijack_customer", FrameType.TASK, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_30"))));
             Advancement dirtPlate = registerAdvancement(startWork, "dirt_plate", FrameType.TASK, SMCRegistrateItems.DIRT_PLATE);
 
@@ -71,6 +74,9 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement parryMaster2 = registerAdvancement(parryMaster, "parry_master2", FrameType.TASK, SMCRegistrateItems.PARRY_ICON, true, true, false);//招架10次， 100次， 1000次
             Advancement dodgeMaster3 = registerAdvancement(dodgeMaster2, "dodge_master3", FrameType.TASK, SMCRegistrateItems.DODGE_ICON, true, true, false);//闪避10次， 100次， 1000次
             Advancement parryMaster3 = registerAdvancement(parryMaster2, "parry_master3", FrameType.TASK, SMCRegistrateItems.PARRY_ICON, true, true, false);//招架10次， 100次， 1000次
+            Advancement raid10d = registerAdvancement(startFight, "raid10d", FrameType.TASK, Items.GOLDEN_SWORD, true, true, false);//抵御袭击天数
+            Advancement raid20d = registerAdvancement(raid10d, "raid20d", FrameType.TASK, Items.DIAMOND_SWORD, true, true, false);//抵御袭击天数
+            Advancement raid30d = registerAdvancement(raid20d, "raid30d", FrameType.TASK, Items.NETHERITE_SWORD, true, true, false);//抵御袭击天数
 
             Advancement startChangeVillager = registerAdvancement(root, "change_villager", FrameType.TASK, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_24"))), true, true, false);
             Advancement talkToCleric = registerAdvancement(startChangeVillager, "talk_to_cleric", FrameType.TASK, Items.ENDER_EYE, true, true, false);

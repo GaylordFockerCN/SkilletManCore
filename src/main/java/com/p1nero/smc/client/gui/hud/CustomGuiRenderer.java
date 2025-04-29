@@ -90,6 +90,13 @@ public class CustomGuiRenderer {
             guiGraphics.fillGradient(8, y + lineHeight * 2 - 2, 8 + maxWidth + 2, y + lineHeight * 4, 0x66000000, 0x66000000);
             guiGraphics.drawString(font, info, 10, y + lineHeight * 2, 0x00ff00, true);
             guiGraphics.drawString(font, info2, 10, y + lineHeight * 3, 0x00ff00, true);
+        } else if(!DataManager.firstWork.get(localPlayer)) {
+            Component info = SkilletManCoreMod.getInfo("first_work").withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN);
+            Component info2 = SkilletManCoreMod.getInfo("first_work2").withStyle(ChatFormatting.GRAY);
+            int maxWidth = Math.max(font.width(info), font.width(info2));
+            guiGraphics.fillGradient(8, y + lineHeight * 2 - 2, 8 + maxWidth + 2, y + lineHeight * 4, 0x66000000, 0x66000000);
+            guiGraphics.drawString(font, info, 10, y + lineHeight * 2, 0x00ff00, true);
+            guiGraphics.drawString(font, info2, 10, y + lineHeight * 3, 0x00ff00, true);
         }
     }
 

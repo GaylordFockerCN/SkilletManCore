@@ -15,14 +15,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(VillagerGoalPackages.class)
 public class VillagerGoalPackagesMixin {
 
-    @Inject(method = "raidExistsAndActive", at = @At("HEAD"), cancellable = true, remap = false)
+    @Inject(method = "raidExistsAndActive", at = @At("HEAD"), cancellable = true)
     private static void smc$raidExistsAndActive(ServerLevel serverLevel, LivingEntity p_260163_, CallbackInfoReturnable<Boolean> cir){
         if(!DummyEntityManager.getDummyEntities(serverLevel).isEmpty()){
             cir.setReturnValue(true);
         }
     }
 
-    @Inject(method = "raidExistsAndNotVictory", at = @At("HEAD"), cancellable = true, remap = false)
+    @Inject(method = "raidExistsAndNotVictory", at = @At("HEAD"), cancellable = true)
     private static void smc$raidExistsAndNotVictory(ServerLevel serverLevel, LivingEntity p_259384_, CallbackInfoReturnable<Boolean> cir){
         if(!DummyEntityManager.getDummyEntities(serverLevel).isEmpty()){
             cir.setReturnValue(true);

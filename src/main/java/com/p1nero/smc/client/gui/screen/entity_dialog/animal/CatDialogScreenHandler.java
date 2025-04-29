@@ -70,7 +70,7 @@ public class CatDialogScreenHandler {
             root = new TreeNode(builder.ans(0), builder.opt(3))
                     .addChild(new TreeNode(builder.ans(1), builder.opt(0))
                             .execute(TAME)
-                            .addLeaf(builder.opt(4), TAME));
+                            .addLeaf(builder.opt(4)));
             root.addChild(new TreeNode(builder.ans(2), builder.opt(1))
                             .execute(KILL)
                             .addChild(root));

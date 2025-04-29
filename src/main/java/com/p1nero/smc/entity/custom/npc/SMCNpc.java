@@ -209,7 +209,10 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
         if(value == 1145) {
             return super.hurt(source, 1);
         }
-        return source.getEntity() instanceof Player player && player.isCreative();
+        if(source.isCreativePlayer()) {
+            return super.hurt(source, value);
+        }
+        return false;
     }
 
     @Override

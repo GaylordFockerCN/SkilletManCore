@@ -5,7 +5,7 @@
     {
       "max_strikes":3,
       "impact":1.0,
-      "damage_bonus":-3
+      "damage_bonus":-2
     }
   },
   "type":"skillet_man_core:iron_skillet_v3"

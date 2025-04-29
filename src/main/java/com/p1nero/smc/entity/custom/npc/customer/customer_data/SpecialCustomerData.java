@@ -7,6 +7,7 @@ import com.p1nero.smc.client.gui.DialogueComponentBuilder;
 import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
 import com.p1nero.smc.client.sound.SMCSounds;
+import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import dev.xkmc.cuisinedelight.content.item.BaseFoodItem;
@@ -123,6 +124,16 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         CookedFoodData cookedFoodData = BaseFoodItem.getData(self.getOrder());
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+        smcPlayer.increaseSpecialCustomerMet();
+        if(smcPlayer.getSpecialCustomerMet() >= 50) {
+            SMCAdvancementData.finishAdvancement("special_customer_1", serverPlayer);
+        } else if(smcPlayer.getSpecialCustomerMet() >= 20) {
+            SMCAdvancementData.finishAdvancement("special_customer_2", serverPlayer);
+        } else if(smcPlayer.getSpecialCustomerMet() >= 10) {
+            SMCAdvancementData.finishAdvancement("special_customer_3", serverPlayer);
+        }
+
+
         float mul = 1.0F + smcPlayer.getLevel();
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("level_mul", smcPlayer.getLevel() + 1), false);
         if (cookedFoodData != null) {

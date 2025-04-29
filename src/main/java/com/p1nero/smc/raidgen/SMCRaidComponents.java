@@ -20,8 +20,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.BossEvent.BossBarColor;
 
 public interface SMCRaidComponents {
-    ResourceKey<IRaidComponent> RAID = create("raid");
     ResourceKey<IRaidComponent> TRIAL_1 = create("trial_1");
+    ResourceKey<IRaidComponent> TRIAL_2 = create("trial_2");
+    ResourceKey<IRaidComponent> TRIAL_3 = create("trial_3");
     List<ResourceKey<IRaidComponent>> RAIDS = new ArrayList<>();
 
     static void register(BootstapContext<IRaidComponent> context) {
@@ -64,9 +65,35 @@ public interface SMCRaidComponents {
                 .waveSound(HTSounds.HUGE_WAVE.getHolder())
                 .victorySound(HTSounds.VICTORY.getHolder())
                 .lossSound(HTSounds.LOSS.getHolder()).build(),
-                Arrays.asList(waves.getOrThrow(SMCWaveComponents.TRIAL_1),
-                        waves.getOrThrow(SMCWaveComponents.TRIAL_1),
-                        waves.getOrThrow(SMCWaveComponents.TRIAL_1))));
+                List.of(waves.getOrThrow(SMCWaveComponents.TRIAL_1))));
+        context.register(TRIAL_2, new CommonRaid(HTRaidComponents.builder()
+                .title(SkilletManCoreMod.getInfo("trail_title"))
+                .victoryTitle(SkilletManCoreMod.getInfo("trail_success"))
+                .lossTitle(SkilletManCoreMod.getInfo("trail_failed"))
+                .blockInside(true)
+                .blockOutside(true)
+                .renderBorder(true)
+                .victoryResult(results.getOrThrow(SMCResultComponents.STAGE_UP))
+                .color(BossBarColor.YELLOW)
+                .raidSound(HTSounds.PREPARE.getHolder())
+                .waveSound(HTSounds.HUGE_WAVE.getHolder())
+                .victorySound(HTSounds.VICTORY.getHolder())
+                .lossSound(HTSounds.LOSS.getHolder()).build(),
+                List.of(waves.getOrThrow(SMCWaveComponents.TRIAL_2))));
+        context.register(TRIAL_3, new CommonRaid(HTRaidComponents.builder()
+                .title(SkilletManCoreMod.getInfo("trail_title"))
+                .victoryTitle(SkilletManCoreMod.getInfo("trail_success"))
+                .lossTitle(SkilletManCoreMod.getInfo("trail_failed"))
+                .blockInside(true)
+                .blockOutside(true)
+                .renderBorder(true)
+                .victoryResult(results.getOrThrow(SMCResultComponents.STAGE_UP))
+                .color(BossBarColor.YELLOW)
+                .raidSound(HTSounds.PREPARE.getHolder())
+                .waveSound(HTSounds.HUGE_WAVE.getHolder())
+                .victorySound(HTSounds.VICTORY.getHolder())
+                .lossSound(HTSounds.LOSS.getHolder()).build(),
+                List.of(waves.getOrThrow(SMCWaveComponents.TRIAL_3))));
     }
 
     static ResourceKey<IRaidComponent> create(String name) {

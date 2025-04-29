@@ -3,6 +3,7 @@ package com.p1nero.smc.entity;
 import com.merlin204.supergolem.gameassets.SuperGolemArmature;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.entity.custom.CustomColorItemEntity;
+import com.p1nero.smc.entity.custom.npc.VillagerWithoutBrain;
 import com.p1nero.smc.entity.custom.npc.customer.FakeCustomer;
 import com.p1nero.smc.entity.custom.super_golem.SuperBadIronGolem;
 import com.p1nero.smc.entity.custom.boss.goldenflame.GoldenFlamePatch;
@@ -12,6 +13,7 @@ import com.p1nero.smc.entity.custom.boss.goldenflame.GoldenFlame;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.start_npc.StartNPC;
 import com.p1nero.smc.entity.custom.super_golem.SuperBadIronGolemPatch;
+import com.p1nero.smc.entity.custom.super_golem.SuperGoodIronGolem;
 import com.p1nero.smc.event.ClientModEvents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -37,6 +39,8 @@ import yesman.epicfight.gameasset.Armatures;
 public class SMCEntities {
 	public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, SkilletManCoreMod.MOD_ID);
 
+	public static final RegistryObject<EntityType<VillagerWithoutBrain>> VILLAGER_NO_BRAIN = register("villager_no_brain",
+			EntityType.Builder.of(VillagerWithoutBrain::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
 	public static final RegistryObject<EntityType<StartNPC>> START_NPC = register("start_npc",
 			EntityType.Builder.<StartNPC>of(StartNPC::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
 
@@ -52,6 +56,8 @@ public class SMCEntities {
 			EntityType.Builder.of(GoldenFlame::new, MobCategory.MONSTER).sized(0.8f, 2.5f));
 	public static final RegistryObject<EntityType<SuperBadIronGolem>> SUPER_GOLEM = register("super_golem",
 			EntityType.Builder.of(SuperBadIronGolem::new, MobCategory.MISC).sized(1.4F, 2.7f));
+	public static final RegistryObject<EntityType<SuperGoodIronGolem>> SUPER_GOOD_GOLEM = register("super_good_golem",
+			EntityType.Builder.of(SuperGoodIronGolem::new, MobCategory.MISC).sized(1.4F, 2.7f));
 
 	public static final RegistryObject<EntityType<CustomColorItemEntity>> CUSTOM_COLOR_ITEM = register("custom_color_item",
 			EntityType.Builder.<CustomColorItemEntity>of(CustomColorItemEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(6).updateInterval(20));
@@ -68,6 +74,7 @@ public class SMCEntities {
 		//BOSS
 		event.getTypeEntry().put(GOLDEN_FLAME.get(), (entity) -> GoldenFlamePatch::new);
 		event.getTypeEntry().put(SUPER_GOLEM.get(), (entity) -> SuperBadIronGolemPatch::new);
+		event.getTypeEntry().put(SUPER_GOOD_GOLEM.get(), (entity) -> SuperBadIronGolemPatch::new);
 	}
 
 	/**
@@ -77,7 +84,9 @@ public class SMCEntities {
 	public static void setArmature(ModelBuildEvent.ArmatureBuild event) {
 		//Boss
 		Armatures.registerEntityTypeArmature(GOLDEN_FLAME.get(), Armatures.SKELETON);
-		Armatures.registerEntityTypeArmature(SUPER_GOLEM.get(), event.get(SkilletManCoreMod.MOD_ID, "entity/super_golem", SuperGolemArmature::new));
+		SuperGolemArmature superGolemArmature = event.get(SkilletManCoreMod.MOD_ID, "entity/super_golem", SuperGolemArmature::new);
+		Armatures.registerEntityTypeArmature(SUPER_GOLEM.get(), superGolemArmature);
+		Armatures.registerEntityTypeArmature(SUPER_GOOD_GOLEM.get(), superGolemArmature);
 	}
 
 	@SubscribeEvent
@@ -85,8 +94,10 @@ public class SMCEntities {
 		//BOSS
 		event.put(GOLDEN_FLAME.get(), GoldenFlame.setAttributes());
 		event.put(SUPER_GOLEM.get(), SuperBadIronGolem.setAttributes());
+		event.put(SUPER_GOOD_GOLEM.get(), SuperGoodIronGolem.setAttributes());
 
 		//NPC
+		event.put(VILLAGER_NO_BRAIN.get(), StartNPC.setAttributes());
 		event.put(START_NPC.get(), StartNPC.setAttributes());
 		event.put(CUSTOMER.get(), StartNPC.setAttributes());
 		event.put(FAKE_CUSTOMER.get(), StartNPC.setAttributes());
@@ -94,6 +105,8 @@ public class SMCEntities {
 
 	@SubscribeEvent
 	public static void entitySpawnRestriction(SpawnPlacementRegisterEvent event) {
+		event.register(VILLAGER_NO_BRAIN.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+				StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
 		event.register(START_NPC.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 				StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
 		event.register(CUSTOMER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,

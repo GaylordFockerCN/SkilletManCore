@@ -23,10 +23,10 @@ import java.util.Objects;
 
 import static dev.xkmc.cuisinedelight.content.item.SpatulaItem.ANIM_TIME;
 
-@Mixin(value = SpatulaItem.class, remap = false)
+@Mixin(value = SpatulaItem.class)
 public abstract class SpatulaItemMixin {
 
-    @Shadow
+    @Shadow(remap = false)
     private static int getReduction(ItemStack stack) {
         return stack.getEnchantmentLevel(Enchantments.SILK_TOUCH) > 0 ? 20 : 0;
     }

@@ -3,6 +3,7 @@ package com.p1nero.smc.event;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
+import com.p1nero.smc.util.ItemUtil;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
 import hungteen.htlib.common.event.events.DummyEntityEvent;
 import hungteen.htlib.common.world.raid.DefaultRaid;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -72,7 +74,7 @@ public class LivingEntityListeners {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onEntityHurt(LivingHurtEvent event) {
-        if(event.getEntity() instanceof Villager && event.getSource().getEntity() instanceof ServerPlayer player) {
+        if(event.getEntity() instanceof Villager villager && villager.getVillagerData().getProfession() != VillagerProfession.CLERIC && event.getSource().getEntity() instanceof ServerPlayer player) {
             event.setAmount(0);
             event.setCanceled(true);
             player.displayClientMessage(SkilletManCoreMod.getInfo("customer_is_first").withStyle(ChatFormatting.RED), true);
@@ -88,6 +90,11 @@ public class LivingEntityListeners {
         if(event.getEntity() instanceof Enemy && event.getSource().getEntity() instanceof ServerPlayer player) {
             SMCPlayer.addMoney((int) event.getEntity().getMaxHealth(), player);//击杀奖励
         }
+
+        if(event.getEntity() instanceof Villager villager && villager.getVillagerData().getProfession() == VillagerProfession.CLERIC && event.getSource().getEntity() instanceof ServerPlayer serverPlayer) {
+//            ItemUtil.addItem(serverPlayer, );
+        }
+
     }
 
     @SubscribeEvent

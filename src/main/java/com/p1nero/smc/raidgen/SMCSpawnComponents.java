@@ -7,6 +7,7 @@ package com.p1nero.smc.raidgen;
 
 import com.mojang.datafixers.util.Pair;
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.entity.SMCEntities;
 import hungteen.htlib.api.interfaces.raid.IPositionComponent;
 import hungteen.htlib.api.interfaces.raid.ISpawnComponent;
 import hungteen.htlib.common.impl.position.HTPositionComponents;
@@ -26,10 +27,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Witch;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 public interface SMCSpawnComponents {
     List<ResourceKey<ISpawnComponent>> ZOMBIES = new ArrayList<>();
@@ -44,7 +42,8 @@ public interface SMCSpawnComponents {
     List<ResourceKey<ISpawnComponent>> BLAZES = new ArrayList<>();
     List<ResourceKey<ISpawnComponent>> ENDER_MANS = new ArrayList<>();
     ResourceKey<ISpawnComponent> WITHER = create("wither");//突破试炼和袭击都可以用
-    ResourceKey<ISpawnComponent> SUPER_GOLEM = create("super_golem");//突破试炼用
+    ResourceKey<ISpawnComponent> SUPER_GOLEM_1 = create("super_golem_1");//突破试炼用
+    ResourceKey<ISpawnComponent> SUPER_GOLEM_2 = create("super_golem_2");//突破试炼用
 
     static void register(BootstapContext<ISpawnComponent> context) {
 
@@ -172,6 +171,22 @@ public interface SMCSpawnComponents {
                         .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 400.0))),
                                 NBTHelper.healthTag(400))).build()
                 , ConstantInt.of(1)));
+
+        context.register(SUPER_GOLEM_1, new OnceSpawn(HTSpawnComponents.builder()
+                .entityType(SMCEntities.SUPER_GOLEM.get())
+                .placement(positions.getOrThrow(SMCPositionComponents.TRIAL))
+                .nbt(NBTHelper
+                        .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 100.0))),
+                                NBTHelper.healthTag(100.0F))).build()
+                , ConstantInt.of(1)));
+
+        context.register(SUPER_GOLEM_2, new OnceSpawn(HTSpawnComponents.builder()
+                .entityType(SMCEntities.SUPER_GOLEM.get())
+                .placement(positions.getOrThrow(SMCPositionComponents.TRIAL))
+                .nbt(NBTHelper
+                        .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 300.0))),
+                                NBTHelper.healthTag(300.0F))).build()
+                , ConstantInt.of(2)));
     }
 
     static ResourceKey<ISpawnComponent> create(String name) {

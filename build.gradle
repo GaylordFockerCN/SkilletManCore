@@ -132,30 +132,45 @@ dependencies {
         jarJar.ranged(it, "[1.2.0,)")
     }
 
-
+    //史诗战斗
     implementation fg.deobf("curse.maven:epic-fight-mod-405076:6145747")
     implementation fg.deobf("curse.maven:weapons-of-miracles-epicfight-918614:5889471")
+    implementation fg.deobf("libs:super_golem:20.9.1.2")
+    implementation fg.deobf("libs:invincible:20.9.20")
+//    implementation fg.deobf("curse.maven:epic-fight-invincible-1184379:6447859")
+//    implementation fg.deobf("curse.maven:epic-fight-super-golem-1236331:6397690")
+
+    //传送石
     implementation fg.deobf("curse.maven:waystones-245755:6270584")
     implementation fg.deobf("curse.maven:balm-531761:6362504")
+
+    //更好的村庄
     implementation fg.deobf("curse.maven:better-village-forge-615352:6306266")
     implementation fg.deobf("curse.maven:library-ferret-forge-532727:4601234")
+
+    //农夫乐事 生活调味料
     implementation fg.deobf("curse.maven:farmers-delight-398521:6154802")
     implementation fg.deobf("curse.maven:cuisine-delight-893541:5814261")
-//    implementation fg.deobf("curse.maven:epic-fight-invincible-1184379:6447859")
     implementation fg.deobf("curse.maven:spice-of-life-carrot-edition-277616:4888575")
+
     implementation fg.deobf("curse.maven:kaleidoscope-doll-1233277:6373592")
+
     implementation fg.deobf("curse.maven:hungteens-lib-794622:5782587")
+
+    implementation fg.deobf("curse.maven:epic-terrain-compatible-1137535:6439744")
+
+    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.20.1:4.4.7")
+    implementation fg.deobf("curse.maven:fantasy-armor-1083998:6385161")
+
+    implementation fg.deobf("curse.maven:sophisticated-core-618298:6266807")
+    implementation fg.deobf("curse.maven:sophisticated-backpacks-422301:6246607")
+
+    implementation fg.deobf("curse.maven:yungs-better-end-island-901344:5193815")
+    implementation fg.deobf("curse.maven:yungs-api-421850:5769971")
+
     implementation fg.deobf("curse.maven:embeddium-908741:5681725")
     implementation fg.deobf("curse.maven:oculus-581495:6020952")
 //    implementation fg.deobf("curse.maven:distant-horizons-508933:6387680")
-    implementation fg.deobf("curse.maven:epic-terrain-compatible-1137535:6439744")
-    implementation fg.deobf("curse.maven:fantasy-armor-1083998:6385161")
-    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.20.1:4.4.7")
-    implementation fg.deobf("libs:super_golem:20.9.1.2")
-    implementation fg.deobf("libs:invincible:20.9.20")
-    implementation fg.deobf("curse.maven:sophisticated-core-618298:6266807")
-    implementation fg.deobf("curse.maven:sophisticated-backpacks-422301:6246607")
-//    implementation fg.deobf("curse.maven:epic-fight-super-golem-1236331:6397690")
 
 //    implementation fg.deobf("curse.maven:leawind-third-person-930880:5961735")
 //    implementation fg.deobf("libs:eflw:20.9.0")

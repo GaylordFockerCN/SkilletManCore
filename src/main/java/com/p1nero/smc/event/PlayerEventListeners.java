@@ -25,12 +25,14 @@ import dev.xkmc.cuisinedelight.init.registrate.CDItems;
 import hungteen.htlib.common.event.events.RaidEvent;
 import net.blay09.mods.waystones.block.ModBlocks;
 import net.kenddie.fantasyarmor.item.FAItems;
+import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -41,6 +43,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.p3pp3rf1y.sophisticatedbackpacks.init.ModItems;
+import yesman.epicfight.client.input.EpicFightKeyMappings;
 import yesman.epicfight.gameasset.EpicFightSkills;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
@@ -64,9 +67,9 @@ public class PlayerEventListeners {
         if(event.getEntity() instanceof ServerPlayer serverPlayer && event.getAdvancement().getId().getNamespace().equals(SkilletManCoreMod.MOD_ID)) {
             if(!event.getAdvancement().getId().getPath().contains("recipe")) {
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("advancement_look_tip"), false);
+                SMCPlayer.addMoney(200, serverPlayer);
+                serverPlayer.level().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SoundEvents.VILLAGER_CELEBRATE, serverPlayer.getSoundSource(), 1.0F, 1.0F);
             }
-            SMCPlayer.addMoney(200, serverPlayer);
-            serverPlayer.level().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SoundEvents.VILLAGER_CELEBRATE, serverPlayer.getSoundSource(), 1.0F, 1.0F);
         }
     }
 
@@ -144,9 +147,11 @@ public class PlayerEventListeners {
      */
     @SubscribeEvent
     public static void onPlayerAttack(LivingAttackEvent event) {
-        if (event.getSource().getEntity() instanceof ServerPlayer serverPlayer) {
-            if (!EpicFightCapabilities.getEntityPatch(serverPlayer, PlayerPatch.class).isBattleMode()) {
-                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("please_in_battle_mode"), true);
+        if (event.getSource().getEntity() instanceof Player player) {
+            if (!EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class).isBattleMode()) {
+                if(player.level().isClientSide) {
+                    player.displayClientMessage(SkilletManCoreMod.getInfo("please_in_battle_mode", EpicFightKeyMappings.SWITCH_MODE.getTranslatedKeyMessage().copy().withStyle(ChatFormatting.YELLOW)), true);
+                }
                 event.setCanceled(true);
             }
         }

@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class ArmorGachaSystem {
 
-    private static final double BASE_5STAR_RATE = 0.006;    // 0.6%
+    private static final double BASE_5STAR_RATE = 0.012;    // 1.2%
     private static final double BASE_4STAR_RATE = 0.051;    // 5.1%
     private static final int SOFT_PITY_5STAR_START = 73;
     private static final double RATE_INCREMENT_5STAR = 0.06; // 6% per pull after 73
@@ -35,7 +35,6 @@ public class ArmorGachaSystem {
 
         STAR4_LIST.addAll(List.of(FAItems.LADY_MARIA_HELMET.get().getDefaultInstance(), FAItems.LADY_MARIA_CHESTPLATE.get().getDefaultInstance(), FAItems.LADY_MARIA_LEGGINGS.get().getDefaultInstance(), FAItems.LADY_MARIA_BOOTS.get().getDefaultInstance(),
                 FAItems.GOLDEN_EXECUTION_HELMET.get().getDefaultInstance(), FAItems.GOLDEN_EXECUTION_CHESTPLATE.get().getDefaultInstance(), FAItems.GOLDEN_EXECUTION_LEGGINGS.get().getDefaultInstance(), FAItems.GOLDEN_EXECUTION_BOOTS.get().getDefaultInstance(),
-                FAItems.OLD_KNIGHT_HELMET.get().getDefaultInstance(), FAItems.OLD_KNIGHT_CHESTPLATE.get().getDefaultInstance(), FAItems.OLD_KNIGHT_LEGGINGS.get().getDefaultInstance(), FAItems.OLD_KNIGHT_BOOTS.get().getDefaultInstance(),
                 FAItems.ECLIPSE_SOLDIER_HELMET.get().getDefaultInstance(), FAItems.ECLIPSE_SOLDIER_CHESTPLATE.get().getDefaultInstance(), FAItems.ECLIPSE_SOLDIER_LEGGINGS.get().getDefaultInstance(), FAItems.ECLIPSE_SOLDIER_BOOTS.get().getDefaultInstance(),
                 FAItems.DRAGONSLAYER_HELMET.get().getDefaultInstance(), FAItems.DRAGONSLAYER_CHESTPLATE.get().getDefaultInstance(), FAItems.DRAGONSLAYER_LEGGINGS.get().getDefaultInstance(), FAItems.DRAGONSLAYER_BOOTS.get().getDefaultInstance(),
                 FAItems.CHESS_BOARD_KNIGHT_HELMET.get().getDefaultInstance(), FAItems.CHESS_BOARD_KNIGHT_CHESTPLATE.get().getDefaultInstance(), FAItems.CHESS_BOARD_KNIGHT_LEGGINGS.get().getDefaultInstance(), FAItems.CHESS_BOARD_KNIGHT_BOOTS.get().getDefaultInstance(),

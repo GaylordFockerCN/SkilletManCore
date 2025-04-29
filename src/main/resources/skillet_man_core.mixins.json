@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AbstractRaidMixin",
+    "AnimalMixin",
     "AnimationsMixin",
     "AntitheusDarknessMixin",
     "AttackAnimationMixin",

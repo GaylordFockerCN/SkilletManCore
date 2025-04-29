@@ -10,8 +10,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class CowDialogScreenHandler {
     @OnlyIn(Dist.CLIENT)
-    public static void addDialogScreen(Cow sheep) {
-        LinkListStreamDialogueScreenBuilder screenBuilder = new LinkListStreamDialogueScreenBuilder(sheep);
+    public static void addDialogScreen(Cow cow) {
+        LinkListStreamDialogueScreenBuilder screenBuilder = new LinkListStreamDialogueScreenBuilder(cow);
         screenBuilder.start(0)
                         .addChoice(0, 1)
                                 .addFinalChoice(1, (byte) -1);

@@ -11,6 +11,7 @@ import com.p1nero.smc.client.gui.screen.info_screen.StartGuideScreenHandler;
 import com.p1nero.smc.effect.SMCEffects;
 import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
+import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.worldgen.biome.SMCBiomes;
 import net.minecraft.data.PackOutput;
@@ -65,13 +66,13 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("advancement_look_tip", "§a不知道做什么时，可以查看一下进度（默认按 L ）");
         this.addInfo("unlock_new_order", "§a客户解锁了新的需求！ 当前可能的请求");
         this.addInfo("customer_left", "§c时间太久，顾客离开了一位。。");
-        this.addInfo("already_has_owner", "§c本店铺已经有主人了！");
-        this.addInfo("please_in_battle_mode", "§c请打开战斗模式！！");
+        this.addInfo("already_has_owner", "§c您不是本店铺的主人！");
+        this.addInfo("please_in_battle_mode", "§c按 §e[%s§e] §c键打开战斗模式！！");
         this.addInfo("no_enough_money", "§c余额不足！！");
         this.addInfo("shop_upgrade", "§a店铺已升至 %d §a级！");
         this.addInfo("next_grade_left", "§6距下一游戏阶段还差 %d §6级！");
-        this.addInfo("unlock_stage2_info", "村民订购解锁 [§a海鲜大礼包§r]！ 现在可以使用全部武器了！");
-        this.addInfo("meat_available", "村民订购解锁 [§a肉类大礼包§r]！");
+        this.addInfo("unlock_stage2_info", "村民订购解锁 §a[海鲜大礼包]§r！ 现在可以使用全部武器了！");
+        this.addInfo("meat_available", "村民订购解锁 §a[肉类大礼包]§r！\n §6接下来村民需求将出现混合食物！需多种食材混合，注意把控下锅时间哦~");
         this.addInfo("unlock_game_stage", "§6游戏阶段提升！现在等级上限已提升至： %d §6！§r解锁新的订购列表，并且客户需求种类增加！");
         this.addInfo("working", "营业中");
         this.addInfo("resting", "休息中");
@@ -82,6 +83,8 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("find_villager_first3", "本包不需要撸树挖矿，不要乱跑哦");
         this.addInfo("find_villager_gacha", "进行任意 武器/盔甲/技能书 祈愿");
         this.addInfo("find_villager_gacha2", "最好把村民框起来方便再次祈愿");
+        this.addInfo("first_work", "往炉灶上摆上炒锅开始工作！");
+        this.addInfo("first_work2", "GL & HF！");
         this.addInfo("special_customer", "§6特殊顾客！");
         this.addInfo("level_mul", "等级加成！× %.1f");
         this.addInfo("seafood_mul", "海鲜加成！× %.1f");
@@ -89,7 +92,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("type_mul", "品种加成！× %.1f");
         this.addInfo("all_taken", "已全部取出！");
         this.addInfo("customer_is_first", "§c顾客就是上帝！");
-        this.addInfo("no_your_power", "Oh 不, 这份力量并不属于你...设定上你只能使用平底锅");
+        this.addInfo("no_your_power", "Oh 不, 这份力量并不属于你...设定上你只能使用平底锅和锅铲");
         this.addInfo("no_your_power2", "关闭§6战斗模式§r以拾取被丢出的物品，部分物品阶段提升后可在战斗模式下使用。");
         this.addInfo("two_craft_tip", "每两把同星级物品可以合成更高星级的物品，五星级除外。");
 
@@ -106,6 +109,9 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("money1000", "一千富翁", "持有 1,000 绿宝石");
         this.addAdvancement("money1000000", "百万富翁", "持有 1,000,000 绿宝石");
         this.addAdvancement("money1000000000", "一个小目标", "持有 1,000,000,000 绿宝石（你真的没有开挂吗）");
+        this.addAdvancement("special_customer_1", "大亨", "接待10位特殊客户");
+        this.addAdvancement("special_customer_2", "超级大亨", "接待20位特殊客户");
+        this.addAdvancement("special_customer_3", "超级超级大亨", "接待50位特殊客户");
         this.addAdvancement("level1", "崭露头角", "经营等级达到一级");
         this.addAdvancement("level2", "信手拈来", "经营等级达到二级");
         this.addAdvancement("level3", "厨神", "经营等级达到三级。那么喜欢做菜，还不去打最终boss？");
@@ -122,6 +128,9 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("true_end", "真结局", "和牧师对话解锁真相");
 
         this.addAdvancement("start_fight", "战斗之路", "第一次成功抵御来自终界的袭击");
+        this.addAdvancement("raid10d", "村庄卫士", "抵御十天的袭击");
+        this.addAdvancement("raid20d", "村庄英雄", "抵御二十天的袭击");
+        this.addAdvancement("raid30d", "你怎么还没去打最终boss？", "抵御三十天的袭击");
         this.addAdvancement("dodge_master", "闪避大师", "完美闪避10次");
         this.addAdvancement("dodge_master2", "闪避大师2", "完美闪避100次");
         this.addAdvancement("dodge_master3", "闪避大师3", "完美闪避1000次");
@@ -178,17 +187,26 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add(SMCRegistrateItems.DISC_RAFFLE_TICKET.get(), "唱片抽奖券");
         this.addItemUsageInfo(SMCRegistrateItems.DISC_RAFFLE_TICKET.asItem(), "可以在§6制图师§r处抽取唱片。找不到6制图师时可以尝试通过对话转化普通村民。");
 
+        this.add(SMCRegistrateItems.END_TELEPORTER.get(), "末地传送石");
+        this.addItemUsageInfo(SMCRegistrateItems.END_TELEPORTER.asItem(), "击杀牧师获得，潜行时右键以传送至末地主岛。为何牧师身上会有这玩意儿？");
+
         this.addBiome(SMCBiomes.AIR, "虚空");
 
         this.add("itemGroup.smc.items", "平底锅侠 - 核心");
 
         this.add(SMCEntities.GOLDEN_FLAME.get(), "终界领主");
         this.add(SMCEntities.SUPER_GOLEM.get(), "超雄铁哥");
+        this.add(SMCEntities.SUPER_GOOD_GOLEM.get(), "超雄铁哥");
+        this.add(SMCItems.GOOD_SUPER_GOLEM_SPAWN_EGG.get(), "超雄铁哥刷怪蛋");
+
+        this.add(SMCEntities.VILLAGER_NO_BRAIN.get(), "§e不会乱动的村民§r");
+        this.add(SMCItems.NO_BRAIN_VILLAGER_SPAWN_EGG.get(), "不会乱动的村民刷怪蛋");
+        this.addInfo("no_brain_villager_spawn_egg_tip", "或许适合用来转换成对应的祈愿工具人");
 
         this.add(SMCEntities.START_NPC.get(), "§e人畜无害的村民§r");
         this.add(SMCEntities.START_NPC.get() + "_empty", "§e⬇对话以开始经营⬇");
         this.add(SMCEntities.START_NPC.get().getDescriptionId() + "_hired", "§a收入：%d §e| §a速度 %s");
-        this.add(SMCEntities.START_NPC.get().getDescriptionId() + "_guider", "§b人畜无害的村民");
+        this.add(SMCEntities.START_NPC.get().getDescriptionId() + "_guider", "§b美好生活小助手");
         this.addDialog(SMCEntities.START_NPC, 0, "准备好开始游戏了吗？");
         this.addDialogChoice(SMCEntities.START_NPC, 0, "入职 §a花费 %d 绿宝石");
         this.addDialogChoice(SMCEntities.START_NPC, 1, "雇佣 §a花费 %d 绿宝石");
@@ -202,7 +220,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialogChoice(SMCEntities.START_NPC, 9, "还是不要打扰它比较好...");
         this.addDialogChoice(SMCEntities.START_NPC, 10, "醒醒！Go work！");
 
-        this.addDialogChoice(SMCEntities.START_NPC, 11, "订购");
+        this.addDialogChoice(SMCEntities.START_NPC, 11, "订购食材");
         this.addDialogChoice(SMCEntities.START_NPC, 12, "订购 主食大礼包 §a花费 100 绿宝石");
         this.addDialogChoice(SMCEntities.START_NPC, 13, "订购 果蔬大礼包 §a花费 100 绿宝石");
         this.addDialogChoice(SMCEntities.START_NPC, 14, "订购 肉类大礼包 §a花费 2000 绿宝石");
@@ -248,6 +266,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         WolfDialogScreenHandler.onGenerateLang(this);
         SheepDialogScreenHandler.onGenerateLang(this);
         CowDialogScreenHandler.onGenerateLang(this);
+        ChickenDialogScreenHandler.onGenerateLang(this);
         IronGolemDialogScreenHandler.onGenerateLang(this);
         SnowGolemDialogScreenHandler.onGenerateLang(this);
     }

@@ -66,6 +66,10 @@ public class StartNPC extends SMCNpc {
     public static final Set<ItemStack> VEG_SET = new HashSet<>();
     public static final Set<ItemStack> MEAT_SET = new HashSet<>();
     public static final Set<ItemStack> SEAFOOD_SET = new HashSet<>();
+    public static final Set<ItemStack> STAPLE_SET2 = new HashSet<>();
+    public static final Set<ItemStack> VEG_SET2 = new HashSet<>();
+    public static final Set<ItemStack> MEAT_SET2 = new HashSet<>();
+    public static final Set<ItemStack> SEAFOOD_SET2 = new HashSet<>();
     public static final List<Item> FOODS_NEED_CUT = new ArrayList<>();
 
     public static void initIngredients() {
@@ -76,14 +80,22 @@ public class StartNPC extends SMCNpc {
         STAPLE_SET.removeIf(itemStack -> itemStack.is(ModItems.RAW_PASTA.get()));
         VEG_SET.removeIf(itemStack -> itemStack.is(Items.BROWN_MUSHROOM) || itemStack.is(Items.RED_MUSHROOM) || itemStack.is(ModItems.CABBAGE_LEAF.get()));
         MEAT_SET.removeIf(itemStack -> itemStack.is(ModItems.BACON.get()) || itemStack.is(ModItems.COOKED_BACON.get())
-                || itemStack.is(ModItems.MUTTON_CHOPS.get()) || itemStack.is(ModItems.COOKED_MUTTON_CHOPS.get())||
-                itemStack.is(ModItems.CHICKEN_CUTS.get())|| itemStack.is(ModItems.COOKED_CHICKEN_CUTS.get()));
+                || itemStack.is(ModItems.MUTTON_CHOPS.get()) || itemStack.is(ModItems.COOKED_MUTTON_CHOPS.get()) ||
+                itemStack.is(ModItems.CHICKEN_CUTS.get()) || itemStack.is(ModItems.COOKED_CHICKEN_CUTS.get()));
         SEAFOOD_SET.removeIf(itemStack -> itemStack.is(ModItems.SALMON_SLICE.get()) || itemStack.is(ModItems.COOKED_SALMON_SLICE.get())
                 || itemStack.is(ModItems.COD_SLICE.get()) || itemStack.is(ModItems.COOKED_COD_SLICE.get()));
 
-        FOODS_NEED_CUT.addAll(List.of(ModItems.BROWN_MUSHROOM_COLONY.get(), ModItems.RED_MUSHROOM_COLONY.get(), ModItems.CABBAGE.get(),
+        FOODS_NEED_CUT.addAll(List.of(ModItems.BROWN_MUSHROOM_COLONY.get(), ModItems.RED_MUSHROOM_COLONY.get(), ModItems.CABBAGE.get(), Items.MELON,
                 Items.BEEF, Items.PORKCHOP, Items.MUTTON, Items.COOKED_MUTTON, Items.CHICKEN, Items.COOKED_CHICKEN,
-                Items.SALMON, Items.COOKED_SALMON, Items.COD, Items.COOKED_COD));
+                Items.SALMON, Items.COOKED_SALMON, Items.COD, Items.COOKED_COD
+        ));
+
+        STAPLE_SET2.addAll(List.of(ModItems.RICE.get().getDefaultInstance(), ModItems.WHEAT_DOUGH.get().getDefaultInstance()));
+        VEG_SET2.addAll(List.of(ModItems.BROWN_MUSHROOM_COLONY.get().getDefaultInstance(), ModItems.RED_MUSHROOM_COLONY.get().getDefaultInstance()));
+        VEG_SET2.addAll(List.of(Items.MELON.getDefaultInstance(), ModItems.CABBAGE.get().getDefaultInstance(), ModItems.TOMATO.get().getDefaultInstance()));
+        MEAT_SET2.addAll(List.of(Items.PORKCHOP.getDefaultInstance(), Items.BEEF.getDefaultInstance(), Items.MUTTON.getDefaultInstance(), Items.CHICKEN.getDefaultInstance()));
+        SEAFOOD_SET2.addAll(List.of(Items.SALMON.getDefaultInstance(), Items.COD.getDefaultInstance()));
+
     }
 
     public static final int EMPTY = 0;
@@ -194,7 +206,7 @@ public class StartNPC extends SMCNpc {
         if (this.getOwner() instanceof ServerPlayer serverPlayer && this.isHired() && this.isWorkingTime()) {
             this.getEntityData().set(INCOME, this.getIncome() + this.getIncomeSpeed());
 
-            if(this.tickCount % 300 == 0) {
+            if (this.tickCount % 300 == 0) {
                 BlockPos centerPos = this.getHomePos();
                 double centerX = centerPos.getX() + 0.5;
                 double centerZ = centerPos.getZ() + 0.5;
@@ -417,7 +429,7 @@ public class StartNPC extends SMCNpc {
             ItemUtil.addItem(player, ModItems.CUTTING_BOARD.get().getDefaultInstance(), true);
             ItemUtil.addItem(player, ModItems.IRON_KNIFE.get().getDefaultInstance(), true);
             ItemUtil.addItem(player, SOLCarrotItems.FOOD_BOOK.get(), 1);
-            ItemUtil.addItem(player, CDItems.PLATE.asStack(), true);
+            ItemUtil.addItem(player, CDItems.PLATE.asStack(10), true);
             ItemUtil.addItem(player, Blocks.CRAFTING_TABLE.asItem(), 1);
             ItemUtil.addItem(player, Blocks.JUKEBOX.asItem(), 1);
             ItemUtil.addItem(player, Blocks.OAK_WOOD.asItem(), 64);
@@ -437,19 +449,19 @@ public class StartNPC extends SMCNpc {
 
         //主食大礼包
         if (interactionID == 12) {
-            addIngredient(smcPlayer, player, STAPLE_SET, 100, 10);
+            addIngredient(smcPlayer, player, STAPLE_SET2, 100, 10);
         }
         //果蔬大礼包
         if (interactionID == 13) {
-            addIngredient(smcPlayer, player, VEG_SET, 100, 10);
+            addIngredient(smcPlayer, player, VEG_SET2, 100, 10);
         }
         //肉类大礼包
         if (interactionID == 14) {
-            addIngredient(smcPlayer, player, MEAT_SET, 2000, 20);
+            addIngredient(smcPlayer, player, MEAT_SET2, 2000, 20);
         }
         //海鲜大礼包
         if (interactionID == 15) {
-            addIngredient(smcPlayer, player, SEAFOOD_SET, 5000, 20);
+            addIngredient(smcPlayer, player, SEAFOOD_SET2, 5000, 20);
         }
 
         //武器抽奖券 1
@@ -514,17 +526,6 @@ public class StartNPC extends SMCNpc {
                 ItemUtil.addItemEntity(player, itemStack);
             }
         }
-    }
-
-    @Override
-    public @NotNull Component getDisplayName() {
-        return this.getName();
-    }
-
-    @Nullable
-    @Override
-    public Component getCustomName() {
-        return this.getName();
     }
 
     @Override

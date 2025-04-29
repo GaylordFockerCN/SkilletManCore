@@ -26,8 +26,10 @@ public class WeaponGachaSystem {
     public static final List<ItemStack> STAR5_LIST = new ArrayList<>();
 
     public static void initItemList() {
+        STAR3_LIST.addAll(List.of(Items.IRON_GOLEM_SPAWN_EGG.getDefaultInstance(), Items.SNOW_GOLEM_SPAWN_EGG.getDefaultInstance(), Items.SNOW_GOLEM_SPAWN_EGG.getDefaultInstance()));
         STAR3_LIST.addAll(List.of(CDItems.SPATULA.asStack(), SMCRegistrateItems.SPATULA_V2.asStack(), SMCRegistrateItems.SPATULA_V3.asStack()));
         STAR3_LIST.addAll(List.of(CDItems.SKILLET.asStack(), SMCRegistrateItems.IRON_SKILLET_LEVEL2.asStack(), SMCRegistrateItems.IRON_SKILLET_LEVEL3.asStack()));
+        STAR4_LIST.addAll(List.of(SMCItems.GOOD_SUPER_GOLEM_SPAWN_EGG.get().getDefaultInstance(), SMCItems.GOOD_SUPER_GOLEM_SPAWN_EGG.get().getDefaultInstance()));
         STAR4_LIST.addAll(List.of(SMCRegistrateItems.GOLDEN_SKILLET.asStack(), SMCRegistrateItems.GOLDEN_SKILLET_V2.asStack(), SMCRegistrateItems.GOLDEN_SKILLET_V3.asStack()));
         STAR4_LIST.addAll(List.of(SMCRegistrateItems.GOLDEN_SPATULA.asStack(), SMCRegistrateItems.GOLDEN_SPATULA_V2.asStack(), SMCRegistrateItems.GOLDEN_SPATULA_V3.asStack()));
         STAR5_LIST.addAll(List.of(SMCRegistrateItems.DIAMOND_SKILLET.asStack(), SMCRegistrateItems.DIAMOND_SKILLET_V2.asStack(), SMCRegistrateItems.DIAMOND_SKILLET_V3.asStack()));

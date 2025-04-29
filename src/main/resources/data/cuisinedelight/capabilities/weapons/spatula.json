@@ -1,7 +1,7 @@
 {
   "attributes": {
     "common": {
-      "max_strikes": 3,
+      "max_strikes": 1,
       "damage_bonus": 0,
       "speed_bonus": -2.8
     }

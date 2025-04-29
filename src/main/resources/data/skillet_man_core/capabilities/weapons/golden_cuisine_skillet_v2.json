@@ -5,7 +5,7 @@
     {
       "max_strikes":5,
       "impact":1.0,
-      "damage_bonus":-3
+      "damage_bonus":0
     }
   },
   "type":"skillet_man_core:golden_skillet_v1"

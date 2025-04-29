@@ -3,6 +3,7 @@ package com.p1nero.smc.util;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import hungteen.htlib.HTLib;
@@ -31,14 +32,22 @@ public class SMCRaidManager {
     }
 
     /**
-     * 突破等级试炼 TODO
+     * 突破等级试炼
      */
     public static void startTrial(ServerPlayer serverPlayer, SMCPlayer smcPlayer) {
-
+        if(Level.isInSpawnableBounds(serverPlayer.blockPosition())) {
+            int stage = smcPlayer.getStage() + 1;
+            DummyEntity dummyEntity = createRaid(serverPlayer.serverLevel(), new ResourceLocation(SkilletManCoreMod.MOD_ID, "trial_" + stage), serverPlayer.position());
+            if(dummyEntity != null) {
+                smcPlayer.setTodayInRaid(true);
+                DataManager.inRaid.put(serverPlayer, true);
+                RAID_MAP.put(dummyEntity.getEntityID(), serverPlayer.getUUID());
+            }
+        }
     }
 
     /**
-     * 夜晚袭击 TODO
+     * 夜晚袭击
      */
     public static void startNightRaid(ServerPlayer serverPlayer, SMCPlayer smcPlayer) {
         if(Level.isInSpawnableBounds(serverPlayer.blockPosition())) {
@@ -49,18 +58,30 @@ public class SMCRaidManager {
             DummyEntity dummyEntity = createRaid(serverPlayer.serverLevel(), new ResourceLocation(SkilletManCoreMod.MOD_ID, "raid_" + day), serverPlayer.position());
             if(dummyEntity != null) {
                 smcPlayer.setTodayInRaid(true);
+                DataManager.inRaid.put(serverPlayer, true);
                 RAID_MAP.put(dummyEntity.getEntityID(), serverPlayer.getUUID());
             }
-
         }
     }
 
     /**
-     * 白天的随机袭击 TODO
+     * 白天的随机袭击，为夜间的一半难度
      */
     public static void startRandomRaid(ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
-
+        if(Level.isInSpawnableBounds(serverPlayer.blockPosition())) {
+            int day = (int) (serverPlayer.serverLevel().getDayTime() / 24000);
+            if(day > 30) {
+                day = 30;
+            }
+            day /= 2;
+            DummyEntity dummyEntity = createRaid(serverPlayer.serverLevel(), new ResourceLocation(SkilletManCoreMod.MOD_ID, "raid_" + day), serverPlayer.position());
+            if(dummyEntity != null) {
+                smcPlayer.setTodayInRaid(true);
+                DataManager.inRaid.put(serverPlayer, true);
+                RAID_MAP.put(dummyEntity.getEntityID(), serverPlayer.getUUID());
+            }
+        }
     }
 
     public static DummyEntity createRaid(ServerLevel serverLevel, ResourceLocation raidId, Vec3 position) {

@@ -47,8 +47,10 @@ public class ClientModEvents{
         EntityRenderers.register(SMCEntities.FLAME_CIRCLE.get(), FlameCircleRenderer::new);
 
         EntityRenderers.register(SMCEntities.SUPER_GOLEM.get(), SuperGolemRenderer::new);
+        EntityRenderers.register(SMCEntities.SUPER_GOOD_GOLEM.get(), SuperGolemRenderer::new);
 
         //NPC
+        EntityRenderers.register(SMCEntities.VILLAGER_NO_BRAIN.get(), VillagerRenderer::new);
         EntityRenderers.register(SMCEntities.START_NPC.get(), VillagerRenderer::new);
         EntityRenderers.register(SMCEntities.CUSTOMER.get(), CustomerRenderer::new);
         EntityRenderers.register(SMCEntities.FAKE_CUSTOMER.get(), CustomerRenderer::new);
@@ -90,6 +92,7 @@ public class ClientModEvents{
         //BOSS
         event.addPatchedEntityRenderer(SMCEntities.GOLDEN_FLAME.get(), (entityType) -> new GoldenFlamePatchedRenderer(() -> Meshes.SKELETON, context, entityType).initLayerLast(context, entityType));
         event.addPatchedEntityRenderer(SMCEntities.SUPER_GOLEM.get(), (entityType) -> new SGPatchedRenderer(context, entityType).initLayerLast(context, entityType));
+        event.addPatchedEntityRenderer(SMCEntities.SUPER_GOOD_GOLEM.get(), (entityType) -> new SGPatchedRenderer(context, entityType).initLayerLast(context, entityType));
 
         //Item
         event.addItemRenderer(SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get(), new LeftSkilletRightSpatulaRenderer());

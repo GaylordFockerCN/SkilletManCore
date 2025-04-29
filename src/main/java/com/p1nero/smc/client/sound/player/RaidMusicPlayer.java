@@ -1,36 +1,36 @@
 package com.p1nero.smc.client.sound.player;
 
+import com.p1nero.smc.archive.DataManager;
+import com.p1nero.smc.client.sound.SMCSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 /**
- * 靠近就播放boss战斗bgm
+ * 袭击时的bgm
  */
 public class RaidMusicPlayer {
 
-    private static BossMusic music;
+    private static RaidMusic music;
+    private static boolean isRecordPlaying;
 
-    public static void playBossMusic(LivingEntity entity, SoundEvent bgm, float dis) {
-
+    public static void playWorkingMusic() {
         Player player = Minecraft.getInstance().player;
-        if (player != null && bgm != null && entity.isAlive()) {
+        if (player != null && SMCSounds.WORKING_BGM != null && player.isAlive()) {
             if (music != null) {
                 if (Minecraft.getInstance().options.getSoundSourceVolume(SoundSource.RECORDS) <= 0) {
                     music = null;
-                } else
-                if (music.boss == entity && entity.distanceTo(player) > dis) {
-                    music.boss = null;
-                } else if (music.boss == null && music.soundEvent == bgm) {
-                    music.boss = entity;
+                } else if (!DataManager.inRaid.get(player)) {
+                    music.player = null;
+                } else if (music.player == null && music.soundEvent == SMCSounds.WORKING_BGM.get()) {
+                    music.player = player;
                 }
             } else {
-                if (entity.distanceTo(player) <= dis) {
-                    music = new BossMusic(bgm, entity, entity.getRandom());
+                if (DataManager.inRaid.get(player)) {
+                    music = new RaidMusic(SMCSounds.WORKING_BGM.get(), player, player.getRandom());
                 } else {
                     music = null;
                 }
@@ -42,38 +42,52 @@ public class RaidMusicPlayer {
         }
     }
 
-    public static void stopBossMusic(LivingEntity entity) {
-        if (music != null && music.boss == entity) {
-            music.boss = null;
+    public static boolean isPlaying() {
+        return music != null && music.player != null;
+    }
+
+    public static void stopMusic() {
+        if (music != null) {
+            music.player = null;
         }
     }
-    private static class BossMusic extends AbstractTickableSoundInstance {
-        public LivingEntity boss;
+
+    public static boolean isRecordPlaying() {
+        return isRecordPlaying;
+    }
+
+    public static void setIsRecordPlaying(boolean isRecordPlaying) {
+        RaidMusicPlayer.isRecordPlaying = isRecordPlaying;
+    }
+
+    private static class RaidMusic extends AbstractTickableSoundInstance {
+        public Player player;
         private int ticksExisted = 0;
         public final SoundEvent soundEvent;
 
-        public BossMusic(SoundEvent bgm, LivingEntity boss, RandomSource random) {
-            super(bgm, SoundSource.RECORDS, random);
-            this.boss = boss;
+        public RaidMusic(SoundEvent bgm, Player player, RandomSource random) {
+            super(bgm, SoundSource.MUSIC, random);
+            this.player = player;
             this.soundEvent = bgm;
             this.attenuation = Attenuation.NONE;
             this.looping = true;
             this.delay = 0;
-            this.volume = 4.5F;
-            this.x = boss.getX();
-            this.y = boss.getY();
-            this.z = boss.getZ();
+            this.volume = 0.5F;
+            this.x = player.getX();
+            this.y = player.getY();
+            this.z = player.getZ();
         }
 
+        @Override
         public boolean canPlaySound() {
             return RaidMusicPlayer.music == this;
         }
 
         public void tick() {
-            if (boss == null || !boss.isAlive() || boss.isSilent()) {
-                boss = null;
+            if (player == null || !DataManager.inRaid.get(player)) {
+                player = null;
                 if (volume >= 0) {
-                    volume -= 0.03F;
+                    volume -= 0.01F;
                 } else {
                     RaidMusicPlayer.music = null;
                 }

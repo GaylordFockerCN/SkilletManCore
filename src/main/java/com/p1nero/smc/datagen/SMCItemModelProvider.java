@@ -27,7 +27,8 @@ public class SMCItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-
+        eggItem(SMCItems.GOOD_SUPER_GOLEM_SPAWN_EGG);
+        eggItem(SMCItems.NO_BRAIN_VILLAGER_SPAWN_EGG);
     }
 
     // Thank you kaupenjoe & El_Redstoniano!

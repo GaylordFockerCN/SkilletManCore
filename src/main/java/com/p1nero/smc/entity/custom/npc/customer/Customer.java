@@ -377,22 +377,6 @@ public class Customer extends SMCNpc {
     }
 
     @Override
-    public @NotNull Component getDisplayName() {
-        return this.getName();
-    }
-
-    @Nullable
-    @Override
-    public Component getCustomName() {
-        return this.getName();
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return true;
-    }
-
-    @Override
     public @NotNull Component getName() {
         return this.customerData == null ? Component.translatable(this.getType().getDescriptionId()) : this.customerData.getTranslation();
     }

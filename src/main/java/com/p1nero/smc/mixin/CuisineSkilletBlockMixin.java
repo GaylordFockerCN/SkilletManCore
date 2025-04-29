@@ -29,7 +29,7 @@ import vectorwing.farmersdelight.common.registry.ModSounds;
 /**
  * 禁用未切的食物
  */
-@Mixin(value = CuisineSkilletBlock.class, remap = false)
+@Mixin(value = CuisineSkilletBlock.class)
 public class CuisineSkilletBlockMixin {
 
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)

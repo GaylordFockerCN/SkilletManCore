@@ -6,6 +6,7 @@ import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.client.sound.player.WorkingMusicPlayer;
 import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.entity.custom.CustomColorItemEntity;
+import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.SyncSMCPlayerPacket;
@@ -145,6 +146,7 @@ public class SMCPlayer {
     }
     //============================================================================================
 
+    private int specialCustomerMet;
     private boolean todayInRaid;
     private int morality = 0;
     private int level;
@@ -159,8 +161,8 @@ public class SMCPlayer {
     public static final int STAGE1_REQUIRE = 10;
     public static final int STAGE2_REQUIRE = 20;
     public static final int STAGE3_REQUIRE = 50;
-    public static final List<PlateFood> STAGE0_FOOD_LIST = List.of(PlateFood.VEGETABLE_FRIED_RICE, PlateFood.VEGETABLE_PASTA, PlateFood.FRIED_RICE, PlateFood.FRIED_PASTA, PlateFood.FRIED_MUSHROOM, PlateFood.VEGETABLE_PLATTER);
-    public static final List<PlateFood> MEAT_AND_MIX = List.of(PlateFood.SCRAMBLED_EGG_AND_TOMATO,
+    public static final List<PlateFood> STAGE0_FOOD_LIST = List.of(PlateFood.FRIED_RICE, PlateFood.FRIED_PASTA, PlateFood.FRIED_MUSHROOM, PlateFood.VEGETABLE_PLATTER);
+    public static final List<PlateFood> MEAT_AND_MIX = List.of(PlateFood.VEGETABLE_FRIED_RICE, PlateFood.VEGETABLE_PASTA, PlateFood.SCRAMBLED_EGG_AND_TOMATO,
             PlateFood.MEAT_WITH_VEGETABLES, PlateFood.FRIED_MEAT_AND_MELON, PlateFood.HAM_FRIED_RICE, PlateFood.MEAT_FRIED_RICE,
             PlateFood.MEAT_PASTA, PlateFood.MEAT_PLATTER);
     public static final List<PlateFood> STAGE1_FOOD_LIST = new ArrayList<>();
@@ -188,6 +190,18 @@ public class SMCPlayer {
         } else {
             serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("level_up_left", 1 + smcPlayer.stage * 2 - smcPlayer.levelUpLeft + 1), false);
         }
+    }
+
+    public int getSpecialCustomerMet() {
+        return specialCustomerMet;
+    }
+
+    public void setSpecialCustomerMet(int specialCustomerMet) {
+        this.specialCustomerMet = specialCustomerMet;
+    }
+
+    public void increaseSpecialCustomerMet() {
+        this.specialCustomerMet++;
     }
 
     public boolean isTodayInRaid() {
@@ -310,19 +324,29 @@ public class SMCPlayer {
     }
 
     public static void defendSuccess(ServerPlayer serverPlayer) {
+        DataManager.inRaid.put(serverPlayer, false);
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         int dayTime = (int) (serverPlayer.serverLevel().dayTime() / 24000);
-        SMCPlayer.addExperience(serverPlayer);
-        addMoney(1600 * (1 + dayTime), serverPlayer);
-        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("raid_success_for_day", dayTime), false);
+
         SMCAdvancementData.finishAdvancement("start_fight", serverPlayer);
+        if(dayTime >= 30) {
+            SMCAdvancementData.finishAdvancement("raid30d", serverPlayer);
+        } else if(dayTime >= 20) {
+            SMCAdvancementData.finishAdvancement("raid20d", serverPlayer);
+        } else if(dayTime >= 10) {
+            SMCAdvancementData.finishAdvancement("raid10d", serverPlayer);
+        }
+        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("raid_success_for_day", dayTime), false);
+        addMoney(1600 * (1 + dayTime), serverPlayer);
+        SMCPlayer.levelUPPlayer(serverPlayer);
     }
 
     public static void defendFailed(ServerPlayer serverPlayer) {
+        DataManager.inRaid.put(serverPlayer, false);
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("raid_loss_tip"), false);
         int dayTime = (int) (serverPlayer.serverLevel().dayTime() / 24000);
         consumeMoney(100 * (1 + dayTime), serverPlayer);
-        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("raid_loss_tip"), false);
     }
 
     public void unlockStage1(ServerPlayer serverPlayer) {
@@ -330,7 +354,7 @@ public class SMCPlayer {
         addMoney(1000, serverPlayer);
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("unlock_game_stage", STAGE2_REQUIRE), false);
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("meat_available"), false);
-        //TODO 赠送无脑村民蛋
+        ItemUtil.addItem(serverPlayer, SMCItems.NO_BRAIN_VILLAGER_SPAWN_EGG.get(), 5, true);
         //TODO 解锁和牧师的对话，解锁最终boss战，弹窗引导对话
     }
 
@@ -365,6 +389,10 @@ public class SMCPlayer {
             smcPlayer.isWorking = isWorking;
             if (isWorking) {
                 smcPlayer.setTodayInRaid(false);
+                DataManager.inRaid.put(serverPlayer, false);
+                if(!DataManager.firstWork.get(serverPlayer)){
+                    DataManager.firstWork.put(serverPlayer, true);
+                }
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("start_work").withStyle(ChatFormatting.BOLD), true);
                 serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
             } else {
@@ -515,6 +543,8 @@ public class SMCPlayer {
     }
 
     public CompoundTag saveNBTData(CompoundTag tag) {
+        tag.putInt("specialCustomerMet", specialCustomerMet);
+
         tag.putBoolean("inRaid", todayInRaid);
 
         tag.putInt("morality", morality);
@@ -542,6 +572,7 @@ public class SMCPlayer {
     }
 
     public void loadNBTData(CompoundTag tag) {
+        specialCustomerMet = tag.getInt("specialCustomerMet");
         todayInRaid = tag.getBoolean("inRaid");
 
         morality = tag.getInt("morality");
@@ -570,6 +601,7 @@ public class SMCPlayer {
 
     public void copyFrom(SMCPlayer old) {
         this.data = old.data;
+        this.specialCustomerMet = old.specialCustomerMet;
 
         this.todayInRaid = old.todayInRaid;
 
