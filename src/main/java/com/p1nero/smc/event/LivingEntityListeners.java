@@ -3,6 +3,7 @@ package com.p1nero.smc.event;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
+import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
 import hungteen.htlib.common.event.events.DummyEntityEvent;
@@ -92,7 +93,7 @@ public class LivingEntityListeners {
         }
 
         if(event.getEntity() instanceof Villager villager && villager.getVillagerData().getProfession() == VillagerProfession.CLERIC && event.getSource().getEntity() instanceof ServerPlayer serverPlayer) {
-//            ItemUtil.addItem(serverPlayer, );
+            ItemUtil.addItem(serverPlayer, SMCRegistrateItems.END_TELEPORTER.asStack(), true);
         }
 
     }

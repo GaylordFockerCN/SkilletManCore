@@ -158,7 +158,7 @@ public class SMCPlayer {
     private int levelUpLeft = 0;
     private int dodgeCounter = 0;
     private int parryCounter = 0;
-    public static final int STAGE1_REQUIRE = 10;
+    public static final int STAGE1_REQUIRE = 7;
     public static final int STAGE2_REQUIRE = 20;
     public static final int STAGE3_REQUIRE = 50;
     public static final List<PlateFood> STAGE0_FOOD_LIST = List.of(PlateFood.FRIED_RICE, PlateFood.FRIED_PASTA, PlateFood.FRIED_MUSHROOM, PlateFood.VEGETABLE_PLATTER);
