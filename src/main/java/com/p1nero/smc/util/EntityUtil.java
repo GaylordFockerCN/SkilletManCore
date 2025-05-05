@@ -74,8 +74,8 @@ public class EntityUtil {
         return self.level().getNearbyPlayers(TargetingConditions.forNonCombat(), self, getPlayerAABB(self.getOnPos(), offset));
     }
 
-    public static <T extends LivingEntity> List<T> getNearByEntities(Class<T> aClass, Level level, LivingEntity self, int offset){
-        return level.getNearbyEntities(aClass, TargetingConditions.forNonCombat(), self, getPlayerAABB(self.getOnPos(), offset));
+    public static <T extends LivingEntity> List<T> getNearByEntities(Class<T> aClass, LivingEntity self, int offset){
+        return self.level().getNearbyEntities(aClass, TargetingConditions.forNonCombat(), self, getPlayerAABB(self.getOnPos(), offset));
     }
 
     public static int getPlayerCount(ServerLevel level){

@@ -47,25 +47,18 @@ public class CustomGuiRenderer {
         int interval = SMCConfig.INTERVAL.get();
         int offsetX = font.width(": " + smcPlayer.getMoneyCount());
 
-        if (smcPlayer.isTrialRequired()) {
-            Component info = SkilletManCoreMod.getInfo("trial_required");
-            int offsetX2 = font.width(info);
-            guiGraphics.blit(SPATULA_TEXTURE, x - offsetX2, y - 25, 20, 20, 0.0F, 0.0F, 1, 1, 1, 1);
-            guiGraphics.drawString(font, info, x + 20 - offsetX2, y - 20, 16777215, true);
-        } else {
-            int stageColor = switch (smcPlayer.getStage()) {
-                case 1 -> 0x84fbff;
-                case 2 -> 0x40ff5f;
-                case 3 -> 0xfb4ee9;
-                default -> 16777215;
-            };
-            guiGraphics.blit(SPATULA_TEXTURE, x - offsetX, y - 25, 20, 20, 0.0F, 0.0F, 1, 1, 1, 1);
-            guiGraphics.drawString(font, ": " + smcPlayer.getLevel(), x + 20 - offsetX, y - 20, stageColor, true);
-        }
+        int stageColor = switch (smcPlayer.getStage()) {
+            case 1 -> 0x84fbff;
+            case 2 -> 0x40ff5f;
+            case 3 -> 0xfb4ee9;
+            default -> 16777215;
+        };
+        guiGraphics.blit(SPATULA_TEXTURE, x - offsetX, y - 25, 20, 20, 0.0F, 0.0F, 1, 1, 1, 1);
+        guiGraphics.drawString(font, ": " + smcPlayer.getLevel(), x + 20 - offsetX, y - 20, stageColor, true);
 
         int lineHeight = font.lineHeight + 6;
         if (Minecraft.getInstance().screen == null) {
-            renderTutorial(guiGraphics, localPlayer, font, lineHeight, x, (int) (y + lineHeight * 1.5F));
+            renderTutorial(guiGraphics, localPlayer, smcPlayer, font, lineHeight, x, (int) (y + lineHeight * 1.5F));
         }
         guiGraphics.blit(MONEY_TEXTURE, x - offsetX, y, 20, 20, 0.0F, 0.0F, 1, 1, 1, 1);
         guiGraphics.drawString(font, ": " + smcPlayer.getMoneyCount(), x + 20 - offsetX, y + 5, 16777215, true);
@@ -73,7 +66,7 @@ public class CustomGuiRenderer {
         guiGraphics.drawString(font, smcPlayer.isWorking() ? SkilletManCoreMod.getInfo("working").withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN) : SkilletManCoreMod.getInfo("resting").withStyle(ChatFormatting.BOLD, ChatFormatting.GOLD), x - offsetX, y + font.lineHeight + interval, 0x00ff00, true);
     }
 
-    public static void renderTutorial(GuiGraphics guiGraphics, LocalPlayer localPlayer, Font font, int lineHeight, int x, int y) {
+    public static void renderTutorial(GuiGraphics guiGraphics, LocalPlayer localPlayer, SMCPlayer smcPlayer, Font font, int lineHeight, int x, int y) {
         if (!DataManager.firstGiftGot.get(localPlayer)) {
             Component info = SkilletManCoreMod.getInfo("find_villager_first").withStyle(ChatFormatting.BOLD, ChatFormatting.GOLD);
             Component info2 = SkilletManCoreMod.getInfo("find_villager_first2").withStyle(ChatFormatting.GRAY);
@@ -93,6 +86,13 @@ public class CustomGuiRenderer {
         } else if(!DataManager.firstWork.get(localPlayer)) {
             Component info = SkilletManCoreMod.getInfo("first_work").withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN);
             Component info2 = SkilletManCoreMod.getInfo("first_work2").withStyle(ChatFormatting.GRAY);
+            int maxWidth = Math.max(font.width(info), font.width(info2));
+            guiGraphics.fillGradient(8, y + lineHeight * 2 - 2, 8 + maxWidth + 2, y + lineHeight * 4, 0x66000000, 0x66000000);
+            guiGraphics.drawString(font, info, 10, y + lineHeight * 2, 0x00ff00, true);
+            guiGraphics.drawString(font, info2, 10, y + lineHeight * 3, 0x00ff00, true);
+        } else if (smcPlayer.isTrialRequired()) {
+            Component info = SkilletManCoreMod.getInfo("trial_required").withStyle(ChatFormatting.BOLD, ChatFormatting.GOLD);
+            Component info2 = SkilletManCoreMod.getInfo("trial_required2").withStyle(ChatFormatting.GRAY);
             int maxWidth = Math.max(font.width(info), font.width(info2));
             guiGraphics.fillGradient(8, y + lineHeight * 2 - 2, 8 + maxWidth + 2, y + lineHeight * 4, 0x66000000, 0x66000000);
             guiGraphics.drawString(font, info, 10, y + lineHeight * 2, 0x00ff00, true);

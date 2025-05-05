@@ -11,6 +11,7 @@
     "AttributesMixin",
     "BasicMultipleAttackAnimationMixin",
     "CatMixin",
+    "CDEventListenersMixin",
     "CowMixin",
     "CuisineSkilletBlockMixin",
     "CuisineSkilletItemMixin",

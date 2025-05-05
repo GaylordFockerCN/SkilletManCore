@@ -62,7 +62,7 @@ public class FakeCustomer extends SMCNpc {
     }
 
     public FakeCustomer(Player owner, Vec3 pos) {
-        this(SMCEntities.CUSTOMER.get(), owner.level());
+        this(SMCEntities.FAKE_CUSTOMER.get(), owner.level());
         this.setPos(pos);
         this.setOwnerUUID(owner.getUUID());
     }

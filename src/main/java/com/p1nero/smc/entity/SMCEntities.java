@@ -3,8 +3,12 @@ package com.p1nero.smc.entity;
 import com.merlin204.supergolem.gameassets.SuperGolemArmature;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.entity.custom.CustomColorItemEntity;
+import com.p1nero.smc.entity.custom.npc.special.HeShen;
 import com.p1nero.smc.entity.custom.npc.VillagerWithoutBrain;
 import com.p1nero.smc.entity.custom.npc.customer.FakeCustomer;
+import com.p1nero.smc.entity.custom.npc.special.Thief1;
+import com.p1nero.smc.entity.custom.npc.special.Thief2;
+import com.p1nero.smc.entity.custom.npc.special.TwoKid;
 import com.p1nero.smc.entity.custom.super_golem.SuperBadIronGolem;
 import com.p1nero.smc.entity.custom.boss.goldenflame.GoldenFlamePatch;
 import com.p1nero.smc.entity.custom.boss.goldenflame.BlackHoleEntity;
@@ -23,7 +27,6 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
@@ -37,82 +40,102 @@ import yesman.epicfight.gameasset.Armatures;
 
 @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class SMCEntities {
-	public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, SkilletManCoreMod.MOD_ID);
+    public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, SkilletManCoreMod.MOD_ID);
 
-	public static final RegistryObject<EntityType<VillagerWithoutBrain>> VILLAGER_NO_BRAIN = register("villager_no_brain",
-			EntityType.Builder.of(VillagerWithoutBrain::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
-	public static final RegistryObject<EntityType<StartNPC>> START_NPC = register("start_npc",
-			EntityType.Builder.<StartNPC>of(StartNPC::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
+    public static final RegistryObject<EntityType<VillagerWithoutBrain>> VILLAGER_NO_BRAIN = register("villager_no_brain",
+            EntityType.Builder.of(VillagerWithoutBrain::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
+    public static final RegistryObject<EntityType<StartNPC>> START_NPC = register("start_npc",
+            EntityType.Builder.<StartNPC>of(StartNPC::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
 
-	public static final RegistryObject<EntityType<Customer>> CUSTOMER = register("customer",
-			EntityType.Builder.<Customer>of(Customer::new, MobCategory.CREATURE).sized(0.6f, 1.9f).noSave().fireImmune());
-	public static final RegistryObject<EntityType<FakeCustomer>> FAKE_CUSTOMER = register("fake_customer",
-			EntityType.Builder.<FakeCustomer>of(FakeCustomer::new, MobCategory.CREATURE).sized(0.6f, 1.9f).noSave().fireImmune());
-	public static final RegistryObject<EntityType<BlackHoleEntity>> BLACK_HOLE = register("black_hole",
-			EntityType.Builder.of(BlackHoleEntity::new, MobCategory.MISC).sized(1.0f, 1.0f));
-	public static final RegistryObject<EntityType<FlameCircleEntity>> FLAME_CIRCLE = register("flame_circle",
-			EntityType.Builder.<FlameCircleEntity>of(FlameCircleEntity::new, MobCategory.AMBIENT).sized(1.0f, 1.0f));
-	public static final RegistryObject<EntityType<GoldenFlame>> GOLDEN_FLAME = register("golden_flame",
-			EntityType.Builder.of(GoldenFlame::new, MobCategory.MONSTER).sized(0.8f, 2.5f));
-	public static final RegistryObject<EntityType<SuperBadIronGolem>> SUPER_GOLEM = register("super_golem",
-			EntityType.Builder.of(SuperBadIronGolem::new, MobCategory.MISC).sized(1.4F, 2.7f));
-	public static final RegistryObject<EntityType<SuperGoodIronGolem>> SUPER_GOOD_GOLEM = register("super_good_golem",
-			EntityType.Builder.of(SuperGoodIronGolem::new, MobCategory.MISC).sized(1.4F, 2.7f));
+    public static final RegistryObject<EntityType<Customer>> CUSTOMER = register("customer",
+            EntityType.Builder.<Customer>of(Customer::new, MobCategory.CREATURE).sized(0.6f, 1.9f).noSave().fireImmune());
+    public static final RegistryObject<EntityType<FakeCustomer>> FAKE_CUSTOMER = register("fake_customer",
+            EntityType.Builder.<FakeCustomer>of(FakeCustomer::new, MobCategory.CREATURE).sized(0.6f, 1.9f).noSave().fireImmune());
+    public static final RegistryObject<EntityType<HeShen>> HE_SHEN = register("he_shen",
+            EntityType.Builder.<HeShen>of(HeShen::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
+    public static final RegistryObject<EntityType<TwoKid>> TWO_KID = register("two_kid",
+            EntityType.Builder.<TwoKid>of(TwoKid::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
+    public static final RegistryObject<EntityType<Thief1>> THIEF1 = register("thief1",
+            EntityType.Builder.<Thief1>of(Thief1::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
+    public static final RegistryObject<EntityType<Thief2>> THIEF2 = register("thief2",
+            EntityType.Builder.<Thief2>of(Thief2::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
+    public static final RegistryObject<EntityType<BlackHoleEntity>> BLACK_HOLE = register("black_hole",
+            EntityType.Builder.of(BlackHoleEntity::new, MobCategory.MISC).sized(1.0f, 1.0f));
+    public static final RegistryObject<EntityType<FlameCircleEntity>> FLAME_CIRCLE = register("flame_circle",
+            EntityType.Builder.<FlameCircleEntity>of(FlameCircleEntity::new, MobCategory.AMBIENT).sized(1.0f, 1.0f));
+    public static final RegistryObject<EntityType<GoldenFlame>> GOLDEN_FLAME = register("golden_flame",
+            EntityType.Builder.of(GoldenFlame::new, MobCategory.MONSTER).sized(0.8f, 2.5f));
+    public static final RegistryObject<EntityType<SuperBadIronGolem>> SUPER_GOLEM = register("super_golem",
+            EntityType.Builder.of(SuperBadIronGolem::new, MobCategory.MISC).sized(1.4F, 2.7f));
+    public static final RegistryObject<EntityType<SuperGoodIronGolem>> SUPER_GOOD_GOLEM = register("super_good_golem",
+            EntityType.Builder.of(SuperGoodIronGolem::new, MobCategory.MISC).sized(1.4F, 2.7f));
 
-	public static final RegistryObject<EntityType<CustomColorItemEntity>> CUSTOM_COLOR_ITEM = register("custom_color_item",
-			EntityType.Builder.<CustomColorItemEntity>of(CustomColorItemEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(6).updateInterval(20));
+    public static final RegistryObject<EntityType<CustomColorItemEntity>> CUSTOM_COLOR_ITEM = register("custom_color_item",
+            EntityType.Builder.<CustomColorItemEntity>of(CustomColorItemEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(6).updateInterval(20));
 
-	private static <T extends Entity> RegistryObject<EntityType<T>> register(String name, EntityType.Builder<T> entityTypeBuilder) {
-		return REGISTRY.register(name, () -> entityTypeBuilder.build(new ResourceLocation(SkilletManCoreMod.MOD_ID, name).toString()));
-	}
+    private static <T extends Entity> RegistryObject<EntityType<T>> register(String name, EntityType.Builder<T> entityTypeBuilder) {
+        return REGISTRY.register(name, () -> entityTypeBuilder.build(new ResourceLocation(SkilletManCoreMod.MOD_ID, name).toString()));
+    }
 
-	/**
-	 * setPatch完还需要去绑定Renderer {@link ClientModEvents#onRenderPatched(PatchedRenderersEvent.Add)}
-	 */
-	@SubscribeEvent
-	public static void setPatch(EntityPatchRegistryEvent event) {
-		//BOSS
-		event.getTypeEntry().put(GOLDEN_FLAME.get(), (entity) -> GoldenFlamePatch::new);
-		event.getTypeEntry().put(SUPER_GOLEM.get(), (entity) -> SuperBadIronGolemPatch::new);
-		event.getTypeEntry().put(SUPER_GOOD_GOLEM.get(), (entity) -> SuperBadIronGolemPatch::new);
-	}
+    /**
+     * setPatch完还需要去绑定Renderer {@link ClientModEvents#onRenderPatched(PatchedRenderersEvent.Add)}
+     */
+    @SubscribeEvent
+    public static void setPatch(EntityPatchRegistryEvent event) {
+        //BOSS
+        event.getTypeEntry().put(GOLDEN_FLAME.get(), (entity) -> GoldenFlamePatch::new);
+        event.getTypeEntry().put(SUPER_GOLEM.get(), (entity) -> SuperBadIronGolemPatch::new);
+        event.getTypeEntry().put(SUPER_GOOD_GOLEM.get(), (entity) -> SuperBadIronGolemPatch::new);
+    }
 
-	/**
-	 * setArmature完还需要去绑定Renderer {@link ClientModEvents#onRenderPatched(PatchedRenderersEvent.Add)}
-	 */
-	@SubscribeEvent
-	public static void setArmature(ModelBuildEvent.ArmatureBuild event) {
-		//Boss
-		Armatures.registerEntityTypeArmature(GOLDEN_FLAME.get(), Armatures.SKELETON);
-		SuperGolemArmature superGolemArmature = event.get(SkilletManCoreMod.MOD_ID, "entity/super_golem", SuperGolemArmature::new);
-		Armatures.registerEntityTypeArmature(SUPER_GOLEM.get(), superGolemArmature);
-		Armatures.registerEntityTypeArmature(SUPER_GOOD_GOLEM.get(), superGolemArmature);
-	}
+    /**
+     * setArmature完还需要去绑定Renderer {@link ClientModEvents#onRenderPatched(PatchedRenderersEvent.Add)}
+     */
+    @SubscribeEvent
+    public static void setArmature(ModelBuildEvent.ArmatureBuild event) {
+        //Boss
+        Armatures.registerEntityTypeArmature(GOLDEN_FLAME.get(), Armatures.SKELETON);
+        SuperGolemArmature superGolemArmature = event.get(SkilletManCoreMod.MOD_ID, "entity/super_golem", SuperGolemArmature::new);
+        Armatures.registerEntityTypeArmature(SUPER_GOLEM.get(), superGolemArmature);
+        Armatures.registerEntityTypeArmature(SUPER_GOOD_GOLEM.get(), superGolemArmature);
+    }
 
-	@SubscribeEvent
-	public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
-		//BOSS
-		event.put(GOLDEN_FLAME.get(), GoldenFlame.setAttributes());
-		event.put(SUPER_GOLEM.get(), SuperBadIronGolem.setAttributes());
-		event.put(SUPER_GOOD_GOLEM.get(), SuperGoodIronGolem.setAttributes());
+    @SubscribeEvent
+    public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
+        //BOSS
+        event.put(GOLDEN_FLAME.get(), GoldenFlame.setAttributes());
+        event.put(SUPER_GOLEM.get(), SuperBadIronGolem.setAttributes());
+        event.put(SUPER_GOOD_GOLEM.get(), SuperGoodIronGolem.setAttributes());
 
-		//NPC
-		event.put(VILLAGER_NO_BRAIN.get(), StartNPC.setAttributes());
-		event.put(START_NPC.get(), StartNPC.setAttributes());
-		event.put(CUSTOMER.get(), StartNPC.setAttributes());
-		event.put(FAKE_CUSTOMER.get(), StartNPC.setAttributes());
-	}
+        //NPC
+        event.put(VILLAGER_NO_BRAIN.get(), StartNPC.setAttributes());
+        event.put(START_NPC.get(), StartNPC.setAttributes());
+        event.put(CUSTOMER.get(), StartNPC.setAttributes());
+        event.put(FAKE_CUSTOMER.get(), StartNPC.setAttributes());
+        event.put(HE_SHEN.get(), StartNPC.setAttributes());
+        event.put(TWO_KID.get(), StartNPC.setAttributes());
+        event.put(THIEF1.get(), StartNPC.setAttributes());
+        event.put(THIEF2.get(), StartNPC.setAttributes());
+    }
 
-	@SubscribeEvent
-	public static void entitySpawnRestriction(SpawnPlacementRegisterEvent event) {
-		event.register(VILLAGER_NO_BRAIN.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-				StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
-		event.register(START_NPC.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-				StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
-		event.register(CUSTOMER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-				StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
-		event.register(FAKE_CUSTOMER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-				StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
-	}
+    @SubscribeEvent
+    public static void entitySpawnRestriction(SpawnPlacementRegisterEvent event) {
+        event.register(VILLAGER_NO_BRAIN.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(START_NPC.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(CUSTOMER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(FAKE_CUSTOMER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(HE_SHEN.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(TWO_KID.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(THIEF1.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(THIEF2.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
+    }
 
 }

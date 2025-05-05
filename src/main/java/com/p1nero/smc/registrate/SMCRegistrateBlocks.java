@@ -1,8 +1,10 @@
 package com.p1nero.smc.registrate;
 
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.block.custom.ChairBlock;
 import com.p1nero.smc.block.custom.DiamondCuisineSkilletBlock;
 import com.p1nero.smc.block.custom.GoldenCuisineSkilletBlock;
+import com.p1nero.smc.block.entity.ChairBlockEntity;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import dev.xkmc.cuisinedelight.content.block.CuisineSkilletBlock;
@@ -29,6 +31,9 @@ public class SMCRegistrateBlocks {
     public static final BlockEntry<DiamondCuisineSkilletBlock> DIAMOND_SKILLET;
 
     public static final BlockEntityEntry<CuisineSkilletBlockEntity> DIAMOND_BE_SKILLET;
+    public static final BlockEntry<ChairBlock> CHAIR;
+
+    public static final BlockEntityEntry<ChairBlockEntity> CHAIR_ENTITY;
 
     static {
         GOLDEN_SKILLET = SkilletManCoreMod.REGISTRATE.block("golden_cuisine_skillet", p -> new GoldenCuisineSkilletBlock(
@@ -72,6 +77,20 @@ public class SMCRegistrateBlocks {
 
         DIAMOND_BE_SKILLET = SkilletManCoreMod.REGISTRATE.blockEntity("diamond_cuisine_skillet", CuisineSkilletBlockEntity::new)
                 .validBlock(DIAMOND_SKILLET).renderer(() -> CuisineSkilletRenderer::new).register();
+
+        CHAIR = SkilletManCoreMod.REGISTRATE.block("power_chair", p -> new ChairBlock(
+                        BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_WHITE)
+                                .noOcclusion()
+                                .strength(0.5F, 6.0F).sound(SoundType.WOOD)))
+                .blockstate((ctx, pvd) -> pvd.getVariantBuilder(ctx.getEntry()).forAllStates(e ->
+                        ConfiguredModel.builder().modelFile(new ModelFile.UncheckedModelFile(new ResourceLocation(SkilletManCoreMod.MOD_ID, "block/chair")))
+                                .rotationY(((int) e.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180) % 360)
+                                .build()))
+                .defaultLoot()
+                .register();
+
+        CHAIR_ENTITY = SkilletManCoreMod.REGISTRATE.blockEntity("power_chair", ChairBlockEntity::new)
+                .validBlock(CHAIR).register();
     }
 
     public static void register() {

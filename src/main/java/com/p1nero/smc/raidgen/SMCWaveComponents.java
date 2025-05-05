@@ -28,7 +28,9 @@ import net.minecraft.util.valueproviders.IntProvider;
 public interface SMCWaveComponents {
     ResourceKey<IWaveComponent> TRIAL_1 = create("trial_1");
     ResourceKey<IWaveComponent> TRIAL_2 = create("trial_2");
+    ResourceKey<IWaveComponent> TRIAL_2_2 = create("trial_2_2");
     ResourceKey<IWaveComponent> TRIAL_3 = create("trial_3");
+    ResourceKey<IWaveComponent> TRIAL_3_2 = create("trial_3_2");
     List<ResourceKey<IWaveComponent>> RAID_WAVES_1 = new ArrayList<>();
     List<ResourceKey<IWaveComponent>> RAID_WAVES_2 = new ArrayList<>();
     List<ResourceKey<IWaveComponent>> RAID_WAVES_3 = new ArrayList<>();
@@ -47,16 +49,28 @@ public interface SMCWaveComponents {
                 List.of(Pair.of(ConstantInt.of(10), superGolem1))));
         context.register(TRIAL_2, new CommonWave(HTWaveComponents.builder()
                 .prepare(100)
-                .wave(4800)
+                .wave(3200)
                 .placement(raidPosition)
                 .build(),
                 List.of(Pair.of(ConstantInt.of(10), superGolem2))));
-        context.register(TRIAL_3, new CommonWave(HTWaveComponents.builder()
+        context.register(TRIAL_2_2, new CommonWave(HTWaveComponents.builder()
                 .prepare(100)
                 .wave(9600)
                 .placement(raidPosition)
                 .build(),
-                List.of(Pair.of(ConstantInt.of(10), superGolem2), Pair.of(ConstantInt.of(1000), wither))));
+                List.of(Pair.of(ConstantInt.of(10), superGolem2), Pair.of(ConstantInt.of(500), wither))));
+        context.register(TRIAL_3, new CommonWave(HTWaveComponents.builder()
+                .prepare(100)
+                .wave(3200)
+                .placement(raidPosition)
+                .build(),
+                List.of(Pair.of(ConstantInt.of(10), superGolem2))));
+        context.register(TRIAL_3_2, new CommonWave(HTWaveComponents.builder()
+                .prepare(100)
+                .wave(9600)
+                .placement(raidPosition)
+                .build(),
+                List.of(Pair.of(ConstantInt.of(10), superGolem2), Pair.of(ConstantInt.of(500), wither), Pair.of(ConstantInt.of(600), wither))));
 
         for(int i = 0; i <= 30; i ++) {
             RAID_WAVES_1.add(create("raid_wave_" + i));

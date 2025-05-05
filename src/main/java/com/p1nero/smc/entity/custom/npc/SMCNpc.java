@@ -12,6 +12,7 @@ import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.packet.clientbound.NPCDialoguePacket;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -21,6 +22,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -100,6 +102,10 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
         } catch (IllegalArgumentException e) {
             return null;
         }
+    }
+
+    public void setOwner(LivingEntity livingEntity) {
+        this.setOwnerUUID(livingEntity.getUUID());
     }
 
     public void setOwnerUUID(@Nullable UUID pUuid) {
@@ -197,6 +203,14 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
 
     protected CompoundTag getDialogData(CompoundTag compoundTag, ServerPlayer serverPlayer) {
         return compoundTag;
+    }
+
+    public void explodeAndDiscard(){
+        if(level() instanceof ServerLevel serverLevel){
+            serverLevel.sendParticles(ParticleTypes.EXPLOSION, getX(), getY(), getZ(), 10, 0.0D, 0.1D, 0.0D, 0.01);
+            serverLevel.playSound(null, getX(), getY(), getZ(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1, 1);
+        }
+        discard();
     }
 
     @Override

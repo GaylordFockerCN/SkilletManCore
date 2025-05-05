@@ -129,8 +129,8 @@ public class PlayerEventListeners {
             if (!EpicFightCapabilities.getItemStackCapability(mainHandItem).isEmpty() && !event.player.isCreative() && serverPlayerPatch != null && serverPlayerPatch.isBattleMode()) {
                 if (!(mainHandItem.getItem() instanceof CuisineSkilletItem || mainHandItem.getItem() instanceof SpatulaItem)) {
                     SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(event.player);
-                    //stage3才解禁
-                    if (smcPlayer.getLevel() < SMCPlayer.STAGE3_REQUIRE) {
+                    //stage2才解禁
+                    if (smcPlayer.getLevel() < SMCPlayer.STAGE2_REQUIRE) {
                         event.player.drop(mainHandItem.copy(), true);
                         mainHandItem.shrink(1);
                         event.player.displayClientMessage(SkilletManCoreMod.getInfo("no_your_power"), true);

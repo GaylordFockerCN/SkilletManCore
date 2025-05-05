@@ -79,7 +79,7 @@ public interface SMCRaidComponents {
                 .waveSound(HTSounds.HUGE_WAVE.getHolder())
                 .victorySound(HTSounds.VICTORY.getHolder())
                 .lossSound(HTSounds.LOSS.getHolder()).build(),
-                List.of(waves.getOrThrow(SMCWaveComponents.TRIAL_2))));
+                List.of(waves.getOrThrow(SMCWaveComponents.TRIAL_2), waves.getOrThrow(SMCWaveComponents.TRIAL_2_2))));
         context.register(TRIAL_3, new CommonRaid(HTRaidComponents.builder()
                 .title(SkilletManCoreMod.getInfo("trail_title"))
                 .victoryTitle(SkilletManCoreMod.getInfo("trail_success"))
@@ -93,7 +93,7 @@ public interface SMCRaidComponents {
                 .waveSound(HTSounds.HUGE_WAVE.getHolder())
                 .victorySound(HTSounds.VICTORY.getHolder())
                 .lossSound(HTSounds.LOSS.getHolder()).build(),
-                List.of(waves.getOrThrow(SMCWaveComponents.TRIAL_3))));
+                List.of(waves.getOrThrow(SMCWaveComponents.TRIAL_3), waves.getOrThrow(SMCWaveComponents.TRIAL_3_2))));
     }
 
     static ResourceKey<IRaidComponent> create(String name) {

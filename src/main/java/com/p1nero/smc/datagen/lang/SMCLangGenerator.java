@@ -40,6 +40,9 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("cannot_left_customers", "\n §e嘿小子，你不能丢下你的顾客不管！");
         this.addInfo("alr", "好好好");
         this.addInfo("god_stove_talk", "我去！灶王公说话了！");
+        this.addInfo("special_event_ans", "嘿小子！大事不妙！店里失窃了！快去看看怎么回事再回来继续营业吧！");
+        this.addInfo("special_event_opt1", "大胆！何方小贼！");
+        this.addInfo("special_event_opt2", "灶爷，我去去就回！");
 
         this.addInfo("golden_skillet_tip", "§e翻炒冷却降低至 15tick");
         this.addInfo("diamond_weapon_tip", "§b每段攻击都应该尝试一下 [KEY2] （默认右键），摸索出最合适的连招！");
@@ -60,7 +63,8 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("gold_item_got", " §e刚刚 获得传说级物品：%s §e！");
         this.addInfo("rare_item_got", " §d刚刚 获得史诗级物品：%s §d！");
         this.addInfo("someone_s_pet", " 的 ");
-        this.addInfo("trial_required", ": §e§l寻找牧师通过试炼以突破世界等级限制！");
+        this.addInfo("trial_required", "寻找牧师通过试炼以突破声望等级限制！");
+        this.addInfo("trial_required2", "提示：可通过§a[酿造台]§r或对话转化无业村民");
         this.addInfo("game_time_no_enough", "§4游戏时长不足！禁止挑战最终boss！");
         this.addInfo("add_item_tip", "§a获得新物品：%s × %d");
         this.addInfo("advancement_look_tip", "§a不知道做什么时，可以查看一下进度（默认按 L ）");
@@ -73,7 +77,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("next_grade_left", "§6距下一游戏阶段还差 %d §6级！");
         this.addInfo("unlock_stage2_info", "村民订购解锁 §a[海鲜大礼包]§r！ 现在可以使用全部武器了！");
         this.addInfo("meat_available", "村民订购解锁 §a[肉类大礼包]§r！\n §6接下来村民需求将出现混合食物！需多种食材混合，注意把控下锅时间哦~");
-        this.addInfo("unlock_game_stage", "§6游戏阶段提升！现在等级上限已提升至： %d §6！§r解锁新的订购列表，并且客户需求种类增加！");
+        this.addInfo("unlock_game_stage", "§6游戏阶段提升！现在声望等级上限已提升至： %d§6！解锁新的订购列表，并且客户需求种类增加！");
         this.addInfo("working", "营业中");
         this.addInfo("resting", "休息中");
         this.addInfo("foods_need_cut", "§6该食材需砧板加工处理！");
@@ -86,7 +90,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("first_work", "往炉灶上摆上炒锅开始工作！");
         this.addInfo("first_work2", "GL & HF！");
         this.addInfo("special_customer", "§6特殊顾客！");
-        this.addInfo("level_mul", "等级加成！× %.1f");
+        this.addInfo("level_mul", "声望等级加成！× %.1f");
         this.addInfo("seafood_mul", "海鲜加成！× %.1f");
         this.addInfo("meat_mul", "肉类加成！× %.1f");
         this.addInfo("type_mul", "品种加成！× %.1f");
@@ -177,15 +181,15 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.get(), "技能书抽奖券");
         this.addItemUsageInfo(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asItem(), "可以在§6图书管理员§r处抽取技能书。");
         this.add(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.get(), "武器抽奖券");
-        this.addItemUsageInfo(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asItem(), "可以在§6武器匠§r处抽取武器。找不到武器匠时可以尝试通过对话转化普通村民");
+        this.addItemUsageInfo(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asItem(), "可以在§6武器匠§r处抽取武器。找不到武器匠时可以尝试 在无业村民附近摆放§a[砂轮]§r 或 通过对话 转化普通村民");
         this.add(SMCRegistrateItems.ARMOR_RAFFLE_TICKET.get(), "盔甲抽奖券");
-        this.addItemUsageInfo(SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asItem(), "可以在§6盔甲匠§r处抽取盔甲。找不到盔甲匠时可以尝试通过对话转化普通村民");
+        this.addItemUsageInfo(SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asItem(), "可以在§6盔甲匠§r处抽取盔甲。找不到盔甲匠时可以尝试 在无业村民附近摆放§a[高炉]§r 或 通过对话 转化普通村民");
         this.add(SMCRegistrateItems.DOLL_RAFFLE_TICKET.get(), "玩偶抽奖券");
-        this.addItemUsageInfo(SMCRegistrateItems.DOLL_RAFFLE_TICKET.asItem(), "可以在§6牧羊人§r处兑换玩偶盲盒。找不到牧羊人时可以尝试通过对话转化普通村民");
+        this.addItemUsageInfo(SMCRegistrateItems.DOLL_RAFFLE_TICKET.asItem(), "可以在§6牧羊人§r处兑换玩偶盲盒。找不到牧羊人时可以尝试 在无业村民附近摆放§a[织布机]§r 或 通过对话 转化普通村民");
         this.add(SMCRegistrateItems.PET_RAFFLE_TICKET.get(), "宠物抽奖券");
-        this.addItemUsageInfo(SMCRegistrateItems.PET_RAFFLE_TICKET.asItem(), "可以在§6牧羊人§r处抽取宠物。找不到牧羊人时可以尝试通过对话转化普通村民。§b图标很可爱对吧(〃'▽'〃)");
+        this.addItemUsageInfo(SMCRegistrateItems.PET_RAFFLE_TICKET.asItem(), "可以在§6牧羊人§r处抽取宠物。找不到牧羊人时可以尝试 在无业村民附近摆放§a[织布机]§r 或 通过对话 转化普通村民。 §b图标很可爱对吧(〃'▽'〃)");
         this.add(SMCRegistrateItems.DISC_RAFFLE_TICKET.get(), "唱片抽奖券");
-        this.addItemUsageInfo(SMCRegistrateItems.DISC_RAFFLE_TICKET.asItem(), "可以在§6制图师§r处抽取唱片。找不到6制图师时可以尝试通过对话转化普通村民。");
+        this.addItemUsageInfo(SMCRegistrateItems.DISC_RAFFLE_TICKET.asItem(), "可以在§6制图师§r处抽取唱片。找不到6制图师时可以尝试 在无业村民附近摆放§a[制图台]§r 或 通过对话 转化普通村民。");
 
         this.add(SMCRegistrateItems.END_TELEPORTER.get(), "末地传送石");
         this.addItemUsageInfo(SMCRegistrateItems.END_TELEPORTER.asItem(), "击杀牧师获得，潜行时右键以传送至末地主岛。为何牧师身上会有这玩意儿？");
@@ -242,13 +246,59 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialog(SMCEntities.START_NPC, 4, "§a已升级！");
         this.addDialog(SMCEntities.START_NPC, 5, "准备好开业了吗！§6由于作者没有建筑水平，因此还特地补偿了一些建筑方块，快去装饰你的店铺吧！§r§c建筑时记得给村民留交易窗口！村民将从四面八方生成！");
         this.addDialog(SMCEntities.START_NPC, 6, "建议优先寻找§6盔甲匠§r和§6武器匠§r抽取盔甲和武器！以获得更好的游玩体验！ 将§6炒锅§r摆上§6炉灶§r以开始营业，长按拆下以下班。右键顾客以查看所需食材，烹饪完成后将食材放至§6主手§r，再次对话以交付食材。根据食材的品质将获得不同奖励。而夜晚可能会有§c袭击事件§r，拿起平底锅保卫村庄！");
-        this.addDialog(SMCEntities.START_NPC, 7, "炒菜时，拿着食材右键§6炒锅§r以把对应的食材丢入锅中，用§6锅铲§r右键即可翻炒。左边的仪表盘提示食物是否§c烧焦§r，请在合适的时候用盘子将其取出！ 使用§a[JEI]§r可查看料理配方。在物品栏对着食材按shift可查看食材烹饪时间区间，做好计算再下锅吧！用到的食材越高级，店铺等级越高，奖励越丰富！如果手忙脚乱，§6[预制菜]§r 是一个不错的选择。");
-        this.addDialog(SMCEntities.START_NPC, 8, "接待足够多的村民或成功抵御一次袭击，将提升一次店铺等级.随着等级提升将解锁新的资源和玩法。到一定等级时将开启§6突破试炼§r，若试炼成功则可获得大量奖励并且进入下一游戏阶段。");
+        this.addDialog(SMCEntities.START_NPC, 7, "炒菜时，拿着食材右键§6炒锅§r以把对应的食材丢入锅中，用§6锅铲§r右键即可翻炒。左边的仪表盘提示食物是否§c烧焦§r，请在合适的时候用盘子将其取出！ 使用§a[JEI]§r可查看料理配方。在物品栏可查看食材烹饪时间区间，做好计算再下锅吧！用到的食材越高级，声望等级越高，奖励越丰富！如果手忙脚乱，§6[预制菜]§r 是一个不错的选择。");
+        this.addDialog(SMCEntities.START_NPC, 8, "接待足够多的村民或成功抵御一次袭击，将提升一次店铺声望等级.随着声望等级提升将解锁新的资源和玩法。到一定声望等级时将开启§6突破试炼§r，若试炼成功则可获得大量奖励并且进入下一游戏阶段。");
         this.addDialog(SMCEntities.START_NPC, 9, "Zzz...Zzz...Zzz...(忙碌了一天的员工睡得正香，  此刻也许你会好奇它为什么能够站着睡着。平底锅侠的世界就是如此奇妙，无需那么多为什么。)");
 
         this.addDialog(SMCEntities.START_NPC, 10, "这是目前可以订购的食材大礼包的列表，本列表将随着游戏阶段的提升而增加。");
         this.addDialog(SMCEntities.START_NPC, 11, "要兑换哪种抽奖券呢？");
         this.addDialog(SMCEntities.START_NPC, 12, "兑换几张呢？");
+
+        this.add(SMCEntities.HE_SHEN.get(), "一位路过的神明");
+        this.addDialog(SMCEntities.HE_SHEN, 0, "年轻人，你丢的，是这把金平底锅呢？还是这把钻石平底锅呢？还是这把普通的平底锅呢？");
+        this.addDialog(SMCEntities.HE_SHEN, 1, "诚实的孩子哟，这是你应得的！");
+        this.addDialog(SMCEntities.HE_SHEN, 2, "快哉快哉！成交愉快！");
+        this.addDialog(SMCEntities.HE_SHEN, 3, "§c贪婪的人类哟，这是对你的惩罚！我将收走你的锅，你们永世不得再见！");
+        this.addDialogChoice(SMCEntities.HE_SHEN, 0, "普通的平底锅");
+        this.addDialogChoice(SMCEntities.HE_SHEN, 1, "金的平底锅");
+        this.addDialogChoice(SMCEntities.HE_SHEN, 2, "钻石的平底锅");
+        this.addDialogChoice(SMCEntities.HE_SHEN, 3, "都是我丢的");
+        this.addDialogChoice(SMCEntities.HE_SHEN, -1, "拜拜~");
+        this.addDialogChoice(SMCEntities.HE_SHEN, -2, "怎么感觉有点强买强卖...");
+        this.addDialogChoice(SMCEntities.HE_SHEN, -3, "？？？");
+
+        this.add(SMCEntities.TWO_KID.get(), "两小儿");
+        this.addDialog(SMCEntities.TWO_KID, 0, "（%s 东游，见两小儿辩锅，一儿曰：）我认为这锅是香的。");
+        this.addDialogChoice(SMCEntities.TWO_KID, 0, "继续");
+        this.addDialogChoice(SMCEntities.TWO_KID, -1, "好了小朋友");
+        this.addDialogChoice(SMCEntities.TWO_KID, -2, "玩够了该把锅还我了");
+        this.addDialog(SMCEntities.TWO_KID, 1, "（一儿曰：）我认为这锅是臭的。");
+        this.addDialog(SMCEntities.TWO_KID, 2, "（一儿曰：）这锅日间做菜，岂不充满美食之味？");
+        this.addDialog(SMCEntities.TWO_KID, 3, "（一儿曰：）这锅夜间杀怪，岂不充满血腥之味？");
+        this.addDialog(SMCEntities.TWO_KID, 4, "（他们突然一起看向你，似乎是希望你做出回答。）");
+        this.addDialogChoice(SMCEntities.TWO_KID, 1, "我白天都没怎么上班，臭的");
+        this.addDialogChoice(SMCEntities.TWO_KID, 2, "我夜里都用锅铲，香的");
+        this.addDialogChoice(SMCEntities.TWO_KID, 3, "原来作者知道这厨具杀人不合理啊..");
+        this.addDialogChoice(SMCEntities.TWO_KID, 4, "我不到啊");
+        this.addDialog(SMCEntities.TWO_KID, 5, "（两小儿笑曰：）哈哈哈哈谁说您十分有智慧呢");
+
+        this.add(SMCEntities.THIEF1.get(), "倒卖村民");
+        this.addDialog(SMCEntities.THIEF1, 0, "走过路过不要错过！只要19.9便可加入美食社区！食材都是经过我精心加工的，质量无需担心！（眼前这位村民似曾相识，你一眼便认出它在倒卖你做的菜）");
+        this.addDialog(SMCEntities.THIEF1, 1, "你做的又如何？你知道我加调料有多辛苦吗？我收个辛苦费不行吗？与其在这和我争论不如先去把隔壁那个偷你锅卖的搞了！");
+        this.addDialog(SMCEntities.THIEF1, 2, "饶，饶命！大侠饶命！小的再也不敢了！（灰溜溜地逃跑了）");
+        this.addDialogChoice(SMCEntities.THIEF1, 0, "这不是我做的菜吗？");
+        this.addDialogChoice(SMCEntities.THIEF1, 1, "先去看看隔壁怎么个事");
+        this.addDialogChoice(SMCEntities.THIEF1, 2, "大胆！你问过我的锅铲了吗！（掏出武器）");
+        this.addDialogChoice(SMCEntities.THIEF1, 3, "算你识相");
+
+        this.add(SMCEntities.THIEF2.get(), "偷锅村民");
+        this.addDialog(SMCEntities.THIEF2, 0, "走过路过不要错过！只要19.9便可获得平底锅侠同款平底锅！货真价实，质量无需担心！还有我精心喷漆！（眼前这位村民手里的锅极具辨识度，你一看便知是他偷走了你的锅）");
+        this.addDialog(SMCEntities.THIEF2, 1, "谁说这是窃取…等等，竟然是本尊！大侠饶命！我只是收个喷漆的辛苦钱，没有倒卖！喷漆很辛苦的！您要不先管管隔壁倒卖的那家伙？");
+        this.addDialog(SMCEntities.THIEF2, 2, "饶，饶命！大侠饶命！小的再也不敢了！（灰溜溜地逃跑了）");
+        this.addDialogChoice(SMCEntities.THIEF2, 0, "大胆毛贼！何故窃取我锅！");
+        this.addDialogChoice(SMCEntities.THIEF2, 1, "先去看看隔壁怎么个事");
+        this.addDialogChoice(SMCEntities.THIEF2, 2, "得先问我锅铲同不同意！");
+        this.addDialogChoice(SMCEntities.THIEF2, 3, "算你识相");
 
         this.add(SMCEntities.CUSTOMER.get(), "§e人畜无害的村民顾客§r");
         this.add(SMCEntities.FAKE_CUSTOMER.get(), "§e一位路过的村民§r");

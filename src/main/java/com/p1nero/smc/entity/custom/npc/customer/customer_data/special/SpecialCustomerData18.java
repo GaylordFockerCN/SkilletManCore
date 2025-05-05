@@ -1,5 +1,6 @@
 package com.p1nero.smc.entity.custom.npc.customer.customer_data.special;
 
+import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.DialogueComponentBuilder;
 import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
@@ -57,6 +58,7 @@ public class SpecialCustomerData18 extends SpecialCustomerData {
         super.onBest(serverPlayer, self);
         serverPlayer.displayClientMessage(Component.literal("[").append(this.getTranslation().copy().withStyle(ChatFormatting.YELLOW)).append("] :").append(answer(2)), false);
         self.hurt(serverPlayer.damageSources().playerAttack(serverPlayer), 1145);
+        SMCPlayer.updateWorkingState(false, serverPlayer);
     }
 
 }

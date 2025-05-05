@@ -22,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * @author P1nero
@@ -187,6 +188,39 @@ public class ItemUtil {
         }
     }
 
+    public static int searchAndConsumeItem(Player player, Predicate<Item> itemPredicate, int need){
+        int total = 0;
+        ItemStack stack = ItemStack.EMPTY;
+        if(itemPredicate.test(player.getMainHandItem().getItem())){
+            stack = player.getMainHandItem();
+        }else if(itemPredicate.test(player.getOffhandItem().getItem())){
+            stack = player.getOffhandItem();
+        }else {
+            for (int i = 0; i < player.getInventory().items.size(); i++) {
+                ItemStack teststack = player.getInventory().items.get(i);
+                if (itemPredicate.test(teststack.getItem())) {
+                    stack = teststack;
+                    break;
+                }
+            }
+        }
+
+        if (stack != ItemStack.EMPTY) {
+            if (stack.getCount() >= need) {
+                stack.shrink(need);
+                return need;
+            } else {
+                int cnt = stack.getCount();
+                stack.shrink(cnt);
+                total += cnt;
+                total += searchAndConsumeItem(player,itemPredicate,need - cnt);
+                return total;
+            }
+        }else{
+            return 0;
+        }
+    }
+
     /**
      * 搜索第一个物品所在的物品栈
      * @return 返回物品栈
@@ -201,6 +235,24 @@ public class ItemUtil {
             for (int i = 0; i < player.getInventory().items.size(); i++) {
                 ItemStack teststack = player.getInventory().items.get(i);
                 if (teststack.getItem() == item) {
+                    stack = teststack;
+                    break;
+                }
+            }
+        }
+        return stack;
+    }
+
+    public static ItemStack searchItemStack(Player player, Predicate<Item> itemPredicate) {
+        ItemStack stack = ItemStack.EMPTY;
+        if (itemPredicate.test(player.getMainHandItem().getItem())) {
+            stack = player.getMainHandItem();
+        } else if (itemPredicate.test(player.getOffhandItem().getItem())) {
+            stack = player.getOffhandItem();
+        } else {
+            for (int i = 0; i < player.getInventory().items.size(); i++) {
+                ItemStack teststack = player.getInventory().items.get(i);
+                if (itemPredicate.test(teststack.getItem())) {
                     stack = teststack;
                     break;
                 }

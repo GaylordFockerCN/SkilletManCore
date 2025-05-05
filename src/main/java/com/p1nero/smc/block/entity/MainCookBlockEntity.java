@@ -1,12 +1,18 @@
 package com.p1nero.smc.block.entity;
 
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.block.SMCBlockEntities;
 import com.p1nero.smc.block.custom.INpcDialogueBlock;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
+import com.p1nero.smc.entity.SMCVillagers;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
+import com.p1nero.smc.entity.custom.npc.special.HeShen;
+import com.p1nero.smc.entity.custom.npc.special.Thief1;
+import com.p1nero.smc.entity.custom.npc.special.Thief2;
+import com.p1nero.smc.entity.custom.npc.special.TwoKid;
 import com.p1nero.smc.entity.custom.npc.start_npc.StartNPC;
 import com.p1nero.smc.event.ServerEvents;
 import com.p1nero.smc.network.PacketRelay;
@@ -98,7 +104,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
                     } else {
                         //检查上班时间
                         if(mainCookBlockEntity.checkWorkingTime()) {
-                            if(owner.level().getBlockState(pos.above(1)).is(ModBlocks.STOVE.get()) && owner.level().getBlockState(pos.above(2)).getBlock().asItem() instanceof CuisineSkilletItem){
+                            if(owner.level().getBlockState(pos.above(1)).is(ModBlocks.STOVE.get()) && mainCookBlockEntity.hasSkillet()){
                                 mainCookBlockEntity.isWorking = true;
                                 mainCookBlockEntity.updateWorkingState(serverPlayer);
                             }
@@ -107,6 +113,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
                             SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
                             if(!smcPlayer.isTodayInRaid()){
                                 SMCRaidManager.startNightRaid(serverPlayer, smcPlayer);
+                                DataManager.specialSolvedToday.put(serverPlayer, false);
                             }
                         }
                     }
@@ -136,7 +143,38 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         }
     }
 
+    public BlockPos getSkilletPos(){
+        return this.getBlockPos().above(2);
+    }
+
+    public BlockState getSkilletBlock() {
+        if(level == null){
+            return null;
+        }
+        BlockState blockState = level.getBlockState(this.getSkilletPos());
+        return blockState.getBlock().asItem() instanceof CuisineSkilletItem ? blockState : null;
+    }
+
+    public boolean hasSkillet() {
+        return this.getSkilletBlock() != null;
+    }
+
     public void workingTick(ServerPlayer owner){
+
+        //第一天后开始生成随机事件
+        if(level != null && level.dayTime() / 24000 > 1 && this.hasSkillet() && DataManager.hasAnySpecialEvent(owner) && !DataManager.specialSolvedToday.get(owner)){
+            level.destroyBlock(this.getSkilletPos(), true);
+            CompoundTag tag = new CompoundTag();
+            tag.putBoolean("special_event", true);
+            PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCBlockDialoguePacket(this.getBlockPos(), tag), owner);
+            owner.serverLevel().playSound(null, owner.getX(), owner.getY(), owner.getZ(), SoundEvents.FIRE_EXTINGUISH, owner.getSoundSource(), 1.0F, 1.0F);
+            if (!DataManager.inSpecial.get(owner)) {
+                summonSpecial(owner);
+                DataManager.inSpecial.put(owner, true);
+            }
+            return;
+        }
+
         //抓回来上班
         if(this.getBlockPos().getCenter().distanceTo(owner.position()) > WORKING_RADIUS && !this.canPlayerLeave(owner) && this.startNPC != null) {
             Vec3 targetPos = startNPC.getSpawnPos().getCenter();
@@ -170,6 +208,61 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             customer.setVillagerData(customer.getVillagerData().setType(VillagerType.byBiome(owner.serverLevel().getBiome(this.getBlockPos()))).setProfession(profession));
             this.customers.add(customer);
             owner.serverLevel().addFreshEntity(customer);
+        }
+    }
+
+    public BlockPos getRandomPos(ServerPlayer owner, int min, int max){
+        BlockPos centerPos = this.getBlockPos();
+        double centerX = centerPos.getX() + 0.5;
+        double centerZ = centerPos.getZ() + 0.5;
+
+        double angle = Math.random() * 2 * Math.PI;
+        double radius = owner.getRandom().nextInt(min, max);
+
+        double spawnX = centerX + Math.cos(angle) * radius;
+        double spawnZ = centerZ + Math.sin(angle) * radius;
+
+        return ServerEvents.getSurfaceBlockPos(owner.serverLevel(), (int) spawnX, (int) spawnZ);
+    }
+
+    /**
+     * 生成特殊事件npc
+     */
+    public void summonSpecial(ServerPlayer owner){
+        BlockPos randomSpawnPos = getRandomPos(owner, 10, 15);
+        BlockPos randomHomePos = getRandomPos(owner, 10, 15);
+        if(!DataManager.specialEvent1Solved.get(owner)) {
+            HeShen heShen = new HeShen(owner, randomHomePos.getCenter());
+            heShen.setSpawnPos(randomSpawnPos);
+            heShen.setHomePos(randomHomePos);
+            heShen.setOwner(owner);
+            owner.serverLevel().addFreshEntity(heShen);
+        } else if(!DataManager.specialEvent2Solved.get(owner)){
+            TwoKid twoKid1 = new TwoKid(owner, randomHomePos.getCenter());
+            twoKid1.setSpawnPos(randomSpawnPos);
+            twoKid1.setHomePos(randomHomePos);
+            TwoKid twoKid2 = new TwoKid(owner, randomHomePos.getCenter().offsetRandom(twoKid1.getRandom(), 2));
+            twoKid2.setSpawnPos(randomSpawnPos);
+            twoKid2.setHomePos(randomHomePos);
+            twoKid1.setOwner(owner);
+            twoKid2.setOwner(owner);
+            owner.serverLevel().addFreshEntity(twoKid1);
+            owner.serverLevel().addFreshEntity(twoKid2);
+        } else if(!DataManager.specialEvent3Solved.get(owner)) {
+            Thief1 thief1 = new Thief1(owner, randomHomePos.getCenter());
+            thief1.setSpawnPos(randomSpawnPos);
+            thief1.setHomePos(randomHomePos);
+            Thief2 thief2 = new Thief2(owner, randomHomePos.getCenter().offsetRandom(thief1.getRandom(), 2));
+            thief2.setSpawnPos(randomSpawnPos);
+            thief2.setHomePos(randomHomePos);
+            thief1.setOwner(owner);
+            thief2.setOwner(owner);
+            thief2.setThief1(thief1);
+            thief1.setThief2(thief2);
+            owner.serverLevel().addFreshEntity(thief1);
+            owner.serverLevel().addFreshEntity(thief2);
+        } else if(!DataManager.specialEvent4Solved.get(owner)){
+
         }
     }
 
@@ -266,6 +359,12 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             builder.start(SkilletManCoreMod.getInfo("first_food_bad"))
                     .addFinalChoice(SkilletManCoreMod.getInfo("sorry"), (byte) 0)
                     .addFinalChoice(SkilletManCoreMod.getInfo("give_me_another_chance"), (byte) 0);
+        }
+
+        if(senderData.getBoolean("special_event")){
+            builder.start(SkilletManCoreMod.getInfo("special_event_ans"))
+                    .addFinalChoice(SkilletManCoreMod.getInfo("special_event_opt1"), (byte) 0)
+                    .addFinalChoice(SkilletManCoreMod.getInfo("special_event_opt2"), (byte) 0);
         }
 
         if(!builder.isEmpty()){

@@ -2,6 +2,8 @@ package com.p1nero.smc.mixin;
 
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.client.gui.screen.entity_dialog.golem.IronGolemDialogScreenHandler;
+import com.p1nero.smc.entity.SMCEntities;
+import com.p1nero.smc.entity.custom.super_golem.SuperBadIronGolem;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -41,7 +43,7 @@ public abstract class IronGolemMixin extends AbstractGolem {
 
     @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
     private void smc$hurt(DamageSource damageSource, float v, CallbackInfoReturnable<Boolean> cir) {
-        if(damageSource.getEntity() instanceof Player) {
+        if(damageSource.getEntity() instanceof Player && this.getType() != SMCEntities.SUPER_GOLEM.get()) {
             cir.setReturnValue(false);
         }
     }

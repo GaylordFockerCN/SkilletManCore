@@ -66,6 +66,9 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement special_customer_3 = registerAdvancement(special_customer_2, "special_customer_3", FrameType.TASK, Items.PUFFERFISH, true, true, false);
             Advancement hijackCustomer = registerAdvancement(startWork, "hijack_customer", FrameType.TASK, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_30"))));
             Advancement dirtPlate = registerAdvancement(startWork, "dirt_plate", FrameType.TASK, SMCRegistrateItems.DIRT_PLATE);
+            Advancement heShen = registerAdvancement(startWork, "he_shen", FrameType.TASK, SMCRegistrateItems.IRON_SKILLET_LEVEL5);
+            Advancement twoKid = registerAdvancement(heShen, "two_kid", FrameType.TASK, SMCRegistrateItems.GOLDEN_SKILLET_V3);
+            Advancement thief = registerAdvancement(heShen, "thief", FrameType.TASK, SMCRegistrateItems.DIAMOND_SKILLET);
 
             Advancement startFight = registerAdvancement(root, "start_fight", FrameType.TASK, Items.IRON_SWORD, true, true, false);
             Advancement dodgeMaster = registerAdvancement(startFight, "dodge_master", FrameType.TASK, SMCRegistrateItems.DODGE_ICON, true, true, false);//闪避10次， 100次， 1000次

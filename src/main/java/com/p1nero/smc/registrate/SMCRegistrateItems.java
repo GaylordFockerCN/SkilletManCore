@@ -131,6 +131,9 @@ public class SMCRegistrateItems {
     public static final ItemEntry<Item> PARRY_ICON = SkilletManCoreMod.REGISTRATE.item("parry_icon", Item::new)
             .defaultModel()
             .defaultLang().register();
+    public static final ItemEntry<Item> TASK_TIP_ICON = SkilletManCoreMod.REGISTRATE.item("task_tip_icon", Item::new)
+            .defaultModel()
+            .defaultLang().register();
 
     public static final ItemEntry<SimpleDescriptionFoilItem> WEAPON_RAFFLE_TICKET = SkilletManCoreMod.REGISTRATE.item("weapon_raffle_ticket", properties -> new SimpleDescriptionFoilItem(properties.fireResistant().rarity(Rarity.EPIC)))
             .defaultModel()
