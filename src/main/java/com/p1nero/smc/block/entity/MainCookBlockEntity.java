@@ -3,12 +3,10 @@ package com.p1nero.smc.block.entity;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.block.SMCBlockEntities;
-import com.p1nero.smc.block.custom.ChairBlock;
 import com.p1nero.smc.block.custom.INpcDialogueBlock;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
-import com.p1nero.smc.entity.SMCVillagers;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.special.HeShen;
 import com.p1nero.smc.entity.custom.npc.special.Thief1;
@@ -104,11 +102,10 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
                 if (owner instanceof ServerPlayer serverPlayer && owner.isAlive()) {
                     if(mainCookBlockEntity.isWorking) {
                         mainCookBlockEntity.workingTick(serverPlayer);
-                        mainCookBlockEntity.isWorking = mainCookBlockEntity.checkWorkingTime();
                         mainCookBlockEntity.updateWorkingState(serverPlayer);
                     } else {
                         //检查上班时间
-                        if(mainCookBlockEntity.checkWorkingTime()) {
+                        if(mainCookBlockEntity.isWorkingTime()) {
                             if(owner.level().getBlockState(pos.above(1)).is(ModBlocks.STOVE.get()) && mainCookBlockEntity.hasSkillet()){
                                 mainCookBlockEntity.isWorking = true;
                                 mainCookBlockEntity.updateWorkingState(serverPlayer);
@@ -144,6 +141,9 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             SMCPlayer.updateWorkingState(true, serverPlayer);
         } else {
             SMCPlayer.updateWorkingState(false, serverPlayer);
+            if(hasSkillet()){
+                serverPlayer.serverLevel().destroyBlock(getSkilletPos(), true);
+            }
             this.clearCustomers();
         }
     }
@@ -165,9 +165,14 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
     }
 
     public void workingTick(ServerPlayer owner){
+        if(!hasSkillet() || !isWorkingTime()){
+            isWorking = false;
+            return;
+        }
         //第一天后开始生成随机事件
         if(level != null && (int)(level.dayTime() / 24000) % 2 == 1 && this.hasSkillet() && DataManager.hasAnySpecialEvent(owner) && !DataManager.specialSolvedToday.get(owner)){
             level.destroyBlock(this.getSkilletPos(), true);
+            isWorking = false;
             CompoundTag tag = new CompoundTag();
             tag.putBoolean("special_event", true);
             PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCBlockDialoguePacket(this.getBlockPos(), tag), owner);
@@ -180,7 +185,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         }
 
         //抓回来上班
-        if(this.getBlockPos().getCenter().distanceTo(owner.position()) > WORKING_RADIUS && !this.canPlayerLeave(owner) && this.startNPC != null) {
+        if(this.getBlockPos().getCenter().distanceTo(owner.position()) > WORKING_RADIUS && !this.canPlayerLeave(owner) && this.startNPC != null && !DataManager.inSpecial.get(owner)) {
             Vec3 targetPos = startNPC.getSpawnPos().getCenter();
             owner.teleportTo(targetPos.x, targetPos.y, targetPos.z);
             owner.playSound(SoundEvents.VILLAGER_NO);
@@ -338,7 +343,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
      * 判断是否开始营业
      * 有袭击暂停营业
      */
-    public boolean checkWorkingTime() {
+    public boolean isWorkingTime() {
         if (this.level == null) {
             return false;
         }

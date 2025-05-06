@@ -128,6 +128,10 @@ public class Customer extends SMCNpc {
         if(traded && !level().isClientSide) {
             dieTimer = 10;
         }
+        if(this.isSpecial() && this.getOwner() instanceof ServerPlayer serverPlayer) {
+            SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+            smcPlayer.setSpecialAlive(false);
+        }
     }
 
     public boolean isTraded() {

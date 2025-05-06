@@ -41,7 +41,7 @@ public class SMCRaidManager {
             if(dummyEntity != null) {
                 smcPlayer.setTodayInRaid(true);
                 DataManager.inRaid.put(serverPlayer, true);
-                RAID_MAP.put(dummyEntity.getEntityID(), serverPlayer.getUUID());
+//                RAID_MAP.put(dummyEntity.getEntityID(), serverPlayer.getUUID());
             }
         }
     }
@@ -59,7 +59,7 @@ public class SMCRaidManager {
             if(dummyEntity != null) {
                 smcPlayer.setTodayInRaid(true);
                 DataManager.inRaid.put(serverPlayer, true);
-                RAID_MAP.put(dummyEntity.getEntityID(), serverPlayer.getUUID());
+//                RAID_MAP.put(dummyEntity.getEntityID(), serverPlayer.getUUID());
             }
         }
     }
@@ -79,7 +79,7 @@ public class SMCRaidManager {
             if(dummyEntity != null) {
                 smcPlayer.setTodayInRaid(true);
                 DataManager.inRaid.put(serverPlayer, true);
-                RAID_MAP.put(dummyEntity.getEntityID(), serverPlayer.getUUID());
+//                RAID_MAP.put(dummyEntity.getEntityID(), serverPlayer.getUUID());
             }
         }
     }

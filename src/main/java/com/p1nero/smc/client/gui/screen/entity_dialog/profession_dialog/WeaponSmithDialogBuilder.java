@@ -63,7 +63,7 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
             if (itemStack.hasTag()) {
                 level = itemStack.getOrCreateTag().getInt(SkilletManCoreMod.WEAPON_LEVEL_KEY);
             }
-            int need = (int) (Math.pow(1.145, (level + 1)) * 1600);
+            int need = (int) (Math.pow(1.145, (level)) * 1600);
             if (SMCPlayer.hasMoney(serverPlayer, need, true)) {
                 SMCPlayer.consumeMoney(need, serverPlayer);
                 itemStack.getOrCreateTag().putInt(SkilletManCoreMod.WEAPON_LEVEL_KEY, level + 1);
@@ -104,7 +104,7 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
             if (itemStack.hasTag()) {
                 level = itemStack.getOrCreateTag().getInt(SkilletManCoreMod.WEAPON_LEVEL_KEY);
             }
-            TreeNode weaponUpdate = new TreeNode(answer(5, (int)(Math.pow(1.145, (level + 1)) * 1600)), choice(6))
+            TreeNode weaponUpdate = new TreeNode(answer(5, (int)(Math.pow(1.145, (level)) * 1600)), choice(6))
                     .addLeaf(choice(4), (byte) 3)
                     .addLeaf(choice(5));
 
@@ -129,7 +129,7 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
         generator.addVillagerOpt(this.profession, 4, "确定");
         generator.addVillagerOpt(this.profession, 5, "取消");
         generator.addVillagerOpt(this.profession, 6, "§a武器升级");
-        generator.addVillagerAns(this.profession, 5, "是否花费 %d 绿宝石 对当前主手物品进行升级？");
+        generator.addVillagerAns(this.profession, 5, "是否花费 %d 绿宝石 对当前§a主手§r物品进行升级？");
     }
 
 

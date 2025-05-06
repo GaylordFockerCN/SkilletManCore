@@ -15,6 +15,10 @@ import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.custom.npc.SMCNpc;
 import com.p1nero.smc.entity.custom.npc.customer.FakeCustomer;
 import com.p1nero.smc.event.ServerEvents;
+import com.p1nero.smc.item.SMCItems;
+import com.p1nero.smc.network.PacketRelay;
+import com.p1nero.smc.network.SMCPacketHandler;
+import com.p1nero.smc.network.packet.clientbound.AddWaypointPacket;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
 import dev.xkmc.cuisinedelight.content.logic.FoodType;
@@ -87,7 +91,8 @@ public class StartNPC extends SMCNpc {
 
         FOODS_NEED_CUT.addAll(List.of(ModItems.BROWN_MUSHROOM_COLONY.get(), ModItems.RED_MUSHROOM_COLONY.get(), ModItems.CABBAGE.get(), Items.MELON,
                 Items.BEEF, Items.PORKCHOP, Items.MUTTON, Items.COOKED_MUTTON, Items.CHICKEN, Items.COOKED_CHICKEN,
-                Items.SALMON, Items.COOKED_SALMON, Items.COD, Items.COOKED_COD
+                Items.SALMON, Items.COOKED_SALMON, Items.COD, Items.COOKED_COD,
+                ModItems.WHEAT_DOUGH.get()
         ));
 
         STAPLE_SET2.addAll(List.of(ModItems.RICE.get().getDefaultInstance(), ModItems.WHEAT_DOUGH.get().getDefaultInstance()));
@@ -385,6 +390,7 @@ public class StartNPC extends SMCNpc {
                 this.setOwnerUUID(player.getUUID());
                 SMCAdvancementData.finishAdvancement("start_work", player);
                 this.playSound(SoundEvents.VILLAGER_CELEBRATE);
+                addShopToMap(player);
                 player.displayClientMessage(dialogueComponentBuilder.buildEntityAnswer(2), false);
             }
         }
@@ -400,6 +406,7 @@ public class StartNPC extends SMCNpc {
                 this.setOwnerUUID(player.getUUID());
                 this.setIncomeSpeed(1);
                 this.playSound(SoundEvents.VILLAGER_CELEBRATE);
+                addShopToMap(player);
                 player.displayClientMessage(dialogueComponentBuilder.buildEntityAnswer(2), false);
             }
         }
@@ -426,6 +433,7 @@ public class StartNPC extends SMCNpc {
         if (interactionID == 6) {
             DataManager.firstGiftGot.put(player, true);
             player.displayClientMessage(dialogueComponentBuilder.buildEntityAnswer(5), false);
+            ItemUtil.addItem(player, SMCItems.NO_BRAIN_VILLAGER_SPAWN_EGG.get().getDefaultInstance(), true);
             ItemUtil.addItem(player, ModItems.CUTTING_BOARD.get().getDefaultInstance(), true);
             ItemUtil.addItem(player, ModItems.IRON_KNIFE.get().getDefaultInstance(), true);
             ItemUtil.addItem(player, SOLCarrotItems.FOOD_BOOK.get(), 1);
@@ -508,6 +516,10 @@ public class StartNPC extends SMCNpc {
         }
 
         this.setConversingPlayer(null);
+    }
+
+    public void addShopToMap(ServerPlayer serverPlayer){
+        PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new AddWaypointPacket("A New Shop", this.getHomePos()), serverPlayer);
     }
 
     public void addIngredient(SMCPlayer smcPlayer, ServerPlayer player, Set<ItemStack> itemStackSet, int moneyNeed, int foodCount) {

@@ -144,6 +144,10 @@ dependencies {
     implementation fg.deobf("curse.maven:waystones-245755:6270584")
     implementation fg.deobf("curse.maven:balm-531761:6362504")
 
+    //地图
+    implementation fg.deobf("curse.maven:xaeros-world-map-317780:6212636")//大地图
+    implementation fg.deobf("curse.maven:xaeros-minimap-263420:6306152")//小地图
+
     //更好的村庄
     implementation fg.deobf("curse.maven:better-village-forge-615352:6306266")
     implementation fg.deobf("curse.maven:library-ferret-forge-532727:4601234")

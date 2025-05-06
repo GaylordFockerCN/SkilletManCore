@@ -108,7 +108,9 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
 
     @Override
     public void handle(ServerPlayer serverPlayer, Customer self, byte interactId) {
-        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("special_customer"), false);
+        if(interactId != 0){
+            serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("special_customer"), false);
+        }
         switch (interactId) {
             case BEST:
                 onBest(serverPlayer, self);

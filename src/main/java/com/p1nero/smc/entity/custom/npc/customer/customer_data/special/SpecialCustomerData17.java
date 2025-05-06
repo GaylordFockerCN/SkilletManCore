@@ -86,7 +86,7 @@ public class SpecialCustomerData17 extends SpecialCustomerData {
         book.addTagElement("author", StringTag.valueOf("富有诗性的村民"));
         book.addTagElement("title", StringTag.valueOf("《食物之歌·卷一》"));
 
-        ItemUtil.addItem(serverPlayer, book);
+        ItemUtil.addItem(serverPlayer, book, true);
     }
 
 }

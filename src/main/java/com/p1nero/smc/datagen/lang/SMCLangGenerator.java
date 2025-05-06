@@ -29,6 +29,7 @@ public class SMCLangGenerator extends SMCLangProvider {
 
         this.addInfo("start_work", "§a上班！");
         this.addInfo("end_work", "§c下班！");
+        this.add("name.smc.new_shop", "一家新店铺");
 
         this.addInfo("full_score", "§e满分！！");
         this.addInfo("middle_score", "§a优秀！");
@@ -40,7 +41,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("cannot_left_customers", "\n §e嘿小子，你不能丢下你的顾客不管！");
         this.addInfo("alr", "好好好");
         this.addInfo("god_stove_talk", "我去！灶王公说话了！");
-        this.addInfo("special_event_ans", "嘿小子！大事不妙！店里失窃了！快去看看怎么回事再回来继续营业吧！");
+        this.addInfo("special_event_ans", "\n §e嘿小子！大事不妙！店里失窃了！快去看看怎么回事再回来继续营业吧！");
         this.addInfo("special_event_opt1", "大胆！何方小贼！");
         this.addInfo("special_event_opt2", "灶爷，我去去就回！");
 

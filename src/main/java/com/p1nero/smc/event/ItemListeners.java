@@ -61,7 +61,7 @@ public class ItemListeners {
                 }
             }
         }
-        if(stack.hasTag()){
+        if(stack.hasTag() && !stack.getAttributeModifiers(EquipmentSlot.MAINHAND).get(Attributes.ATTACK_DAMAGE).isEmpty()){
             int level = stack.getOrCreateTag().getInt(SkilletManCoreMod.WEAPON_LEVEL_KEY);
             event.getToolTip().add(1, SkilletManCoreMod.getInfo("weapon_level").append(String.valueOf(level)).withStyle(ChatFormatting.AQUA));
         }
@@ -72,7 +72,9 @@ public class ItemListeners {
         ItemStack itemStack = event.getItemStack();
         if(itemStack.hasTag() && event.getSlotType() == EquipmentSlot.MAINHAND){
             int level = itemStack.getOrCreateTag().getInt(SkilletManCoreMod.WEAPON_LEVEL_KEY);
-            event.addModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(LEVEL_MODIFIER_UUID, "SMC Level", 0.8 * level, AttributeModifier.Operation.ADDITION));
+            if(level > 0){
+                event.addModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(LEVEL_MODIFIER_UUID, "SMC Level", 0.8 * level, AttributeModifier.Operation.ADDITION));
+            }
         }
     }
 

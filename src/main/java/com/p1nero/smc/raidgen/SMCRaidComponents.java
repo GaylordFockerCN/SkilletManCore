@@ -35,7 +35,7 @@ public interface SMCRaidComponents {
                     .title(SkilletManCoreMod.getInfo("raid_title"))
                     .victoryTitle(SkilletManCoreMod.getInfo("raid_victory"))
                     .lossTitle(SkilletManCoreMod.getInfo("raid_loss"))
-                    .range(30)
+                    .range(72)
                     .blockInside(false)
                     .blockOutside(false)
                     .renderBorder(false)
