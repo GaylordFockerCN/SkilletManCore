@@ -35,6 +35,7 @@ public class SMCEntityLootTables extends EntityLootSubProvider {
         add(SMCEntities.TWO_KID.get(), emptyLootTable());
         add(SMCEntities.THIEF1.get(), emptyLootTable());
         add(SMCEntities.THIEF2.get(), emptyLootTable());
+        add(SMCEntities.VIRGIL_VILLAGER.get(), emptyLootTable());
     }
 
     public LootTable.Builder emptyLootTable() {

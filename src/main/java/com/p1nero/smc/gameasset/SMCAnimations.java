@@ -42,6 +42,7 @@ import java.util.Random;
 public class SMCAnimations {
 
     public static StaticAnimation ANTITHEUS_ASCENSION;
+    public static StaticAnimation POWER_SIT;
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void registerAnimations(AnimationRegistryEvent event) {
@@ -50,7 +51,7 @@ public class SMCAnimations {
 
     private static void build() {
         HumanoidArmature biped = Armatures.BIPED;
-
+        POWER_SIT = new StaticAnimation(true, "biped/living/power_sit", biped);
         ANTITHEUS_ASCENSION = (new UltimateAttackAnimation(0.1F, "biped/skill/antitheus_ascension", biped, new AttackAnimation.Phase(0.0F, 0.5F, 0.6F, 0.65F, 0.65F, biped.rootJoint, WOMWeaponColliders.PLUNDER_PERDITION), new AttackAnimation.Phase(0.65F, 1.75F, 2.05F, 2.8F, Float.MAX_VALUE, biped.rootJoint, WOMWeaponColliders.PLUNDER_PERDITION))).addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(1.0F)).addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(4.0F)).addProperty(AnimationProperty.AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(20.0F)).addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, WOMParticles.SOLAR_HIT).addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD).addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F), 1).addProperty(AnimationProperty.AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(20.0F), 1).addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, WOMParticles.SOLAR_HIT, 1).addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE, 1).addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.7F).addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 1.0F).addEvents(AnimationEvent.TimeStampedEvent.create(0.5F, (entityPatch, self, params) -> {
                     if (entityPatch instanceof PlayerPatch) {
                         entityPatch.getOriginal().level().playSound((Player)entityPatch.getOriginal(), entityPatch.getOriginal(), SoundEvents.WITHER_SHOOT, SoundSource.PLAYERS, 1.0F, 0.5F);

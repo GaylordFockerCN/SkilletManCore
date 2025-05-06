@@ -9,6 +9,8 @@ import com.p1nero.smc.entity.custom.npc.customer.FakeCustomer;
 import com.p1nero.smc.entity.custom.npc.special.Thief1;
 import com.p1nero.smc.entity.custom.npc.special.Thief2;
 import com.p1nero.smc.entity.custom.npc.special.TwoKid;
+import com.p1nero.smc.entity.custom.npc.special.virgil.VirgilVillager;
+import com.p1nero.smc.entity.custom.npc.special.virgil.VirgilVillagerPatch;
 import com.p1nero.smc.entity.custom.super_golem.SuperBadIronGolem;
 import com.p1nero.smc.entity.custom.boss.goldenflame.GoldenFlamePatch;
 import com.p1nero.smc.entity.custom.boss.goldenflame.BlackHoleEntity;
@@ -59,6 +61,8 @@ public class SMCEntities {
             EntityType.Builder.<Thief1>of(Thief1::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
     public static final RegistryObject<EntityType<Thief2>> THIEF2 = register("thief2",
             EntityType.Builder.<Thief2>of(Thief2::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
+    public static final RegistryObject<EntityType<VirgilVillager>> VIRGIL_VILLAGER = register("virgil_villager",
+            EntityType.Builder.<VirgilVillager>of(VirgilVillager::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
     public static final RegistryObject<EntityType<BlackHoleEntity>> BLACK_HOLE = register("black_hole",
             EntityType.Builder.of(BlackHoleEntity::new, MobCategory.MISC).sized(1.0f, 1.0f));
     public static final RegistryObject<EntityType<FlameCircleEntity>> FLAME_CIRCLE = register("flame_circle",
@@ -86,6 +90,7 @@ public class SMCEntities {
         event.getTypeEntry().put(GOLDEN_FLAME.get(), (entity) -> GoldenFlamePatch::new);
         event.getTypeEntry().put(SUPER_GOLEM.get(), (entity) -> SuperBadIronGolemPatch::new);
         event.getTypeEntry().put(SUPER_GOOD_GOLEM.get(), (entity) -> SuperBadIronGolemPatch::new);
+        event.getTypeEntry().put(VIRGIL_VILLAGER.get(), (entity) -> VirgilVillagerPatch::new);
     }
 
     /**
@@ -98,6 +103,7 @@ public class SMCEntities {
         SuperGolemArmature superGolemArmature = event.get(SkilletManCoreMod.MOD_ID, "entity/super_golem", SuperGolemArmature::new);
         Armatures.registerEntityTypeArmature(SUPER_GOLEM.get(), superGolemArmature);
         Armatures.registerEntityTypeArmature(SUPER_GOOD_GOLEM.get(), superGolemArmature);
+        Armatures.registerEntityTypeArmature(VIRGIL_VILLAGER.get(), Armatures.BIPED);
     }
 
     @SubscribeEvent
@@ -116,6 +122,7 @@ public class SMCEntities {
         event.put(TWO_KID.get(), StartNPC.setAttributes());
         event.put(THIEF1.get(), StartNPC.setAttributes());
         event.put(THIEF2.get(), StartNPC.setAttributes());
+        event.put(VIRGIL_VILLAGER.get(), VirgilVillager.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -135,6 +142,8 @@ public class SMCEntities {
         event.register(THIEF1.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
         event.register(THIEF2.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(VIRGIL_VILLAGER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
     }
 

@@ -12,21 +12,27 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffectUtil;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.Iterator;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID)
 public class ItemListeners {
+    public static final UUID LEVEL_MODIFIER_UUID = UUID.fromString("d1d111cc-f45f-00ed-a66b-1919ac114514");
     @SubscribeEvent
     public static void onTooltip(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
         if (!stack.isEmpty()) {
             if(stack.getItem() instanceof SpatulaItem || stack.getItem() instanceof CuisineSkilletItem) {
-                event.getToolTip().add(SkilletManCoreMod.getInfo("two_craft_tip").withStyle(ChatFormatting.YELLOW));
+                event.getToolTip().add(1, SkilletManCoreMod.getInfo("two_craft_tip").withStyle(ChatFormatting.YELLOW));
             }
             if(stack.is(SMCItems.NO_BRAIN_VILLAGER_SPAWN_EGG.get())) {
                 event.getToolTip().add(SkilletManCoreMod.getInfo("no_brain_villager_spawn_egg_tip").withStyle(ChatFormatting.GRAY));
@@ -55,5 +61,19 @@ public class ItemListeners {
                 }
             }
         }
+        if(stack.hasTag()){
+            int level = stack.getOrCreateTag().getInt(SkilletManCoreMod.WEAPON_LEVEL_KEY);
+            event.getToolTip().add(1, SkilletManCoreMod.getInfo("weapon_level").append(String.valueOf(level)).withStyle(ChatFormatting.AQUA));
+        }
     }
+
+    @SubscribeEvent
+    public static void onItemAttributeModifier(ItemAttributeModifierEvent event){
+        ItemStack itemStack = event.getItemStack();
+        if(itemStack.hasTag() && event.getSlotType() == EquipmentSlot.MAINHAND){
+            int level = itemStack.getOrCreateTag().getInt(SkilletManCoreMod.WEAPON_LEVEL_KEY);
+            event.addModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(LEVEL_MODIFIER_UUID, "SMC Level", 0.8 * level, AttributeModifier.Operation.ADDITION));
+        }
+    }
+
 }

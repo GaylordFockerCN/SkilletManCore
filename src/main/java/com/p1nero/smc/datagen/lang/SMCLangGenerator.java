@@ -49,6 +49,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("golden_spatula_tip", "§e翻炒冷却降低至 15tick");
         this.addInfo("diamond_spatula_tip", "§b翻炒冷却降低至 10tick");
 
+        this.addInfo("weapon_level", "武器等级：");
         this.addInfo("raid_title", "袭击");
         this.addInfo("raid_success_for_day", "成功抵御了第 %d 天的袭击！");
         this.addInfo("raid_victory", "成功抵御了袭击！");
@@ -152,6 +153,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("pre_cook", "预制菜", "在大晚上的做菜卖给谁呢？");
         this.addAdvancement("dog_no_eat", "狗都不吃", "企图给狗吃做坏的食材。");
 
+        this.add(SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get(), "左锅右铲");
         this.add(SMCRegistrateItems.SPATULA_V2.get(), "锅铲");
         this.add(SMCRegistrateItems.SPATULA_V3.get(), "锅铲");
         this.add(SMCRegistrateItems.SPATULA_V4.get(), "锅铲");
@@ -299,6 +301,20 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialogChoice(SMCEntities.THIEF2, 1, "先去看看隔壁怎么个事");
         this.addDialogChoice(SMCEntities.THIEF2, 2, "得先问我锅铲同不同意！");
         this.addDialogChoice(SMCEntities.THIEF2, 3, "算你识相");
+
+        this.add(SMCEntities.VIRGIL_VILLAGER.get(), "充满抛瓦的村民");
+        this.addDialog(SMCEntities.VIRGIL_VILLAGER, 0, "（眼前这位村民似乎不愿以正脸示人，不过很明显就是它偷了你的锅）");
+        this.addDialog(SMCEntities.VIRGIL_VILLAGER, 1, "（它还是坐在那里，不为所动）");
+        this.addDialog(SMCEntities.VIRGIL_VILLAGER, 2, "如果你想要，你得自己来拿。");
+        this.addDialog(SMCEntities.VIRGIL_VILLAGER, 3, " 这规矩你早就懂的。");
+        this.addDialog(SMCEntities.VIRGIL_VILLAGER, 4, "我们之间打过多少次架了。");
+        this.addDialog(SMCEntities.VIRGIL_VILLAGER, 5, "（邪魅一笑）");
+        this.addDialogChoice(SMCEntities.VIRGIL_VILLAGER, 0, "嘿，刌民，你动不动就袭击村庄的日子结束了！");
+        this.addDialogChoice(SMCEntities.VIRGIL_VILLAGER, 1, "（叹气）把平底锅给我");
+        this.addDialogChoice(SMCEntities.VIRGIL_VILLAGER, 2, "继续");
+        this.addDialogChoice(SMCEntities.VIRGIL_VILLAGER, 3, "我就知道你会这么说（掏出武器）");
+        this.addDialogChoice(SMCEntities.VIRGIL_VILLAGER, 4, "说不好。每次路过都会顺手清理刌民营地");
+        this.addDialogChoice(SMCEntities.VIRGIL_VILLAGER, 5, " 该做个了解了！一了百了！");
 
         this.add(SMCEntities.CUSTOMER.get(), "§e人畜无害的村民顾客§r");
         this.add(SMCEntities.FAKE_CUSTOMER.get(), "§e一位路过的村民§r");

@@ -36,6 +36,7 @@ import java.util.Locale;
 
 @Mod(SkilletManCoreMod.MOD_ID)
 public class SkilletManCoreMod {
+    public static final String WEAPON_LEVEL_KEY = "smc_weapon_level";
     public static final String MOD_ID = "skillet_man_core";
     public static final L2Registrate REGISTRATE = new L2Registrate(MOD_ID);
     public static final String REGISTRY_NAMESPACE = "smc";

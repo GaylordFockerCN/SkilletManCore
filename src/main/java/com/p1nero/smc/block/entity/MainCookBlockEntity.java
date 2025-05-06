@@ -3,6 +3,7 @@ package com.p1nero.smc.block.entity;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.block.SMCBlockEntities;
+import com.p1nero.smc.block.custom.ChairBlock;
 import com.p1nero.smc.block.custom.INpcDialogueBlock;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
@@ -13,11 +14,13 @@ import com.p1nero.smc.entity.custom.npc.special.HeShen;
 import com.p1nero.smc.entity.custom.npc.special.Thief1;
 import com.p1nero.smc.entity.custom.npc.special.Thief2;
 import com.p1nero.smc.entity.custom.npc.special.TwoKid;
+import com.p1nero.smc.entity.custom.npc.special.virgil.VirgilVillager;
 import com.p1nero.smc.entity.custom.npc.start_npc.StartNPC;
 import com.p1nero.smc.event.ServerEvents;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.NPCBlockDialoguePacket;
+import com.p1nero.smc.registrate.SMCRegistrateBlocks;
 import com.p1nero.smc.util.SMCRaidManager;
 import dev.xkmc.cuisinedelight.content.item.CuisineSkilletItem;
 import hungteen.htlib.common.world.entity.DummyEntityManager;
@@ -38,6 +41,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -46,6 +50,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
+import yesman.epicfight.api.utils.math.MathUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -160,9 +165,8 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
     }
 
     public void workingTick(ServerPlayer owner){
-
         //第一天后开始生成随机事件
-        if(level != null && level.dayTime() / 24000 > 1 && this.hasSkillet() && DataManager.hasAnySpecialEvent(owner) && !DataManager.specialSolvedToday.get(owner)){
+        if(level != null && (int)(level.dayTime() / 24000) % 2 == 1 && this.hasSkillet() && DataManager.hasAnySpecialEvent(owner) && !DataManager.specialSolvedToday.get(owner)){
             level.destroyBlock(this.getSkilletPos(), true);
             CompoundTag tag = new CompoundTag();
             tag.putBoolean("special_event", true);
@@ -229,8 +233,8 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
      * 生成特殊事件npc
      */
     public void summonSpecial(ServerPlayer owner){
-        BlockPos randomSpawnPos = getRandomPos(owner, 10, 15);
-        BlockPos randomHomePos = getRandomPos(owner, 10, 15);
+        BlockPos randomSpawnPos = getRandomPos(owner, 10, 12);
+        BlockPos randomHomePos = getRandomPos(owner, 10, 12);
         if(!DataManager.specialEvent1Solved.get(owner)) {
             HeShen heShen = new HeShen(owner, randomHomePos.getCenter());
             heShen.setSpawnPos(randomSpawnPos);
@@ -262,7 +266,16 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             owner.serverLevel().addFreshEntity(thief1);
             owner.serverLevel().addFreshEntity(thief2);
         } else if(!DataManager.specialEvent4Solved.get(owner)){
-
+            double yRot = MathUtils.getYRotOfVector(randomSpawnPos.getCenter().subtract(owner.position()));
+            Direction direction = Direction.fromYRot(yRot);
+            BlockState blockState = SMCRegistrateBlocks.CHAIR.getDefaultState().setValue(BlockStateProperties.HORIZONTAL_FACING, direction);
+            owner.serverLevel().setBlockAndUpdate(randomSpawnPos, blockState);
+            VirgilVillager villager = new VirgilVillager(owner, randomSpawnPos.above(1).getCenter());
+            float dir = direction.toYRot();
+            villager.setYRot(dir);
+            villager.setYBodyRot(dir);
+            villager.setYHeadRot(dir);
+            owner.serverLevel().addFreshEntity(villager);
         }
     }
 

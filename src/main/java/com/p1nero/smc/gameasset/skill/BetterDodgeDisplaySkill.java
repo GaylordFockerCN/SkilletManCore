@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class BetterDodgeDisplaySkill extends PassiveSkill {
 
-    private static final UUID EVENT_UUID = UUID.fromString("d2d000cc-f30f-00ed-a66b-1919ac114514");
+    private static final UUID EVENT_UUID = UUID.fromString("d2d000cc-f30f-11ed-a66b-1919ac114514");
     public BetterDodgeDisplaySkill(Builder<? extends Skill> builder) {
         super(builder);
     }

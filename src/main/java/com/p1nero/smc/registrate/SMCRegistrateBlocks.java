@@ -44,7 +44,7 @@ public class SMCRegistrateBlocks {
                                         e.getValue(SkilletBlock.SUPPORT) ?
                                                 new ResourceLocation(SkilletManCoreMod.MOD_ID, "block/golden_cuisine_skillet_tray") :
                                                 new ResourceLocation(SkilletManCoreMod.MOD_ID, "block/golden_cuisine_skillet"))
-                                ).rotationY(((int) e.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180) % 360)
+                                ).rotationY(((int) e.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot()) % 360)
                                 .build()))
                 .loot((loot, block) -> loot.add(block,
                         LootTable.lootTable().withPool(

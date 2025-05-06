@@ -3,6 +3,7 @@ package com.p1nero.smc.datagen;
 import com.github.ysbbbbbb.kaleidoscopedoll.init.ModItems;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.capability.SMCPlayer;
+import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import dev.xkmc.cuisinedelight.init.registrate.CDItems;
 import dev.xkmc.cuisinedelight.init.registrate.PlateFood;
@@ -68,7 +69,8 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement dirtPlate = registerAdvancement(startWork, "dirt_plate", FrameType.TASK, SMCRegistrateItems.DIRT_PLATE);
             Advancement heShen = registerAdvancement(startWork, "he_shen", FrameType.TASK, SMCRegistrateItems.IRON_SKILLET_LEVEL5);
             Advancement twoKid = registerAdvancement(heShen, "two_kid", FrameType.TASK, SMCRegistrateItems.GOLDEN_SKILLET_V3);
-            Advancement thief = registerAdvancement(heShen, "thief", FrameType.TASK, SMCRegistrateItems.DIAMOND_SKILLET);
+            Advancement thief = registerAdvancement(twoKid, "thief", FrameType.TASK, SMCRegistrateItems.DIAMOND_SKILLET);
+            Advancement virgil = registerAdvancement(thief, "virgil", FrameType.TASK, SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get());
 
             Advancement startFight = registerAdvancement(root, "start_fight", FrameType.TASK, Items.IRON_SWORD, true, true, false);
             Advancement dodgeMaster = registerAdvancement(startFight, "dodge_master", FrameType.TASK, SMCRegistrateItems.DODGE_ICON, true, true, false);//闪避10次， 100次， 1000次

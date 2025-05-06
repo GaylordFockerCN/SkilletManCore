@@ -53,6 +53,12 @@ public class Thief2 extends SMCNpc implements SpecialNpc {
         this.setVillagerData(this.getVillagerData().setProfession(SMCVillagers.THIEF2.get()));
     }
 
+    public Thief2(Player owner, Vec3 pos) {
+        this(SMCEntities.HE_SHEN.get(), owner.level());
+        this.setPos(pos);
+        this.setOwnerUUID(owner.getUUID());
+    }
+
     @Override
     public boolean isCurrentlyGlowing() {
         return !isTalked();
@@ -61,12 +67,6 @@ public class Thief2 extends SMCNpc implements SpecialNpc {
     @Override
     public int getTeamColor() {
         return 0xfff66d;
-    }
-
-    public Thief2(Player owner, Vec3 pos) {
-        this(SMCEntities.HE_SHEN.get(), owner.level());
-        this.setPos(pos);
-        this.setOwnerUUID(owner.getUUID());
     }
 
     public void setThief1(Thief1 thief1) {

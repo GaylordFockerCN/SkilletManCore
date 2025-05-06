@@ -1,6 +1,5 @@
 {
   "credit": "Made with Blockbench",
-  "ambientocclusion": false,
   "textures": {
 	"3": "skillet_man_core:block/golden_cuisine_skillet_side",
 	"particle": "skillet_man_core:block/golden_skillet_top",

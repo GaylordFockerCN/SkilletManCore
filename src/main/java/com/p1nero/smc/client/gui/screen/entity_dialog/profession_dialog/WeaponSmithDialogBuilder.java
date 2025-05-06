@@ -1,5 +1,6 @@
 package com.p1nero.smc.client.gui.screen.entity_dialog.profession_dialog;
 
+import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.TreeNode;
@@ -14,6 +15,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -32,7 +34,7 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
         if (interactionID == 1) {
             int ticketCount = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asItem(), 1);
             if (ticketCount == 0) {
-                if(SMCPlayer.hasMoney(serverPlayer, 160, true)) {
+                if (SMCPlayer.hasMoney(serverPlayer, 160, true)) {
                     SMCPlayer.consumeMoney(160, serverPlayer);
                     smcPlayer.setWeaponGachaingCount(1);
                 }
@@ -43,9 +45,9 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
         }
         if (interactionID == 2) {
             int ticketCount = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asItem(), 10);
-            if(ticketCount < 10) {
+            if (ticketCount < 10) {
                 int need = 10 - ticketCount;
-                if(SMCPlayer.hasMoney(serverPlayer, 160 * need, true)) {
+                if (SMCPlayer.hasMoney(serverPlayer, 160 * need, true)) {
                     SMCPlayer.consumeMoney(160 * need, serverPlayer);
                     smcPlayer.setWeaponGachaingCount(10);
                 }
@@ -54,6 +56,20 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
                 smcPlayer.setWeaponGachaingCount(10);
             }
         }
+
+        if (interactionID == 3) {
+            ItemStack itemStack = serverPlayer.getMainHandItem();
+            int level = 0;
+            if (itemStack.hasTag()) {
+                level = itemStack.getOrCreateTag().getInt(SkilletManCoreMod.WEAPON_LEVEL_KEY);
+            }
+            int need = (int) (Math.pow(1.145, (level + 1)) * 1600);
+            if (SMCPlayer.hasMoney(serverPlayer, need, true)) {
+                SMCPlayer.consumeMoney(need, serverPlayer);
+                itemStack.getOrCreateTag().putInt(SkilletManCoreMod.WEAPON_LEVEL_KEY, level + 1);
+            }
+        }
+
     }
 
     @Override
@@ -67,8 +83,8 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
 
             if (ticketCount < 1) {
                 pull.addChild(new TreeNode(answer(2, 160), choice(2))
-                        .addLeaf(choice(4), (byte) 1)
-                        .addLeaf(choice(5)))
+                                .addLeaf(choice(4), (byte) 1)
+                                .addLeaf(choice(5)))
                         .addChild(new TreeNode(answer(2, 1600), choice(3))
                                 .addLeaf(choice(4), (byte) 2)
                                 .addLeaf(choice(5)));
@@ -83,8 +99,18 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
                 pull.addLeaf(choice(3), (byte) 2);
             }
 
+            ItemStack itemStack = localPlayer.getMainHandItem();
+            int level = 0;
+            if (itemStack.hasTag()) {
+                level = itemStack.getOrCreateTag().getInt(SkilletManCoreMod.WEAPON_LEVEL_KEY);
+            }
+            TreeNode weaponUpdate = new TreeNode(answer(5, (int)(Math.pow(1.145, (level + 1)) * 1600)), choice(6))
+                    .addLeaf(choice(4), (byte) 3)
+                    .addLeaf(choice(5));
+
             builder.setAnswerRoot(new TreeNode(answer(0))
                     .addChild(pull)
+                    .addChild(weaponUpdate)
                     .addLeaf(choice(1)));
         }
     }
@@ -102,8 +128,9 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
         generator.addVillagerAns(this.profession, 3, "武器抽奖券不足，是否用 %d 绿宝石补全？");
         generator.addVillagerOpt(this.profession, 4, "确定");
         generator.addVillagerOpt(this.profession, 5, "取消");
+        generator.addVillagerOpt(this.profession, 6, "§a武器升级");
+        generator.addVillagerAns(this.profession, 5, "是否花费 %d 绿宝石 对当前主手物品进行升级？");
     }
-
 
 
 }

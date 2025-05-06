@@ -1,0 +1,265 @@
+package com.p1nero.smc.entity.custom.npc.special.virgil;
+
+import com.p1nero.smc.archive.DataManager;
+import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
+import com.p1nero.smc.client.sound.SMCSounds;
+import com.p1nero.smc.datagen.SMCAdvancementData;
+import com.p1nero.smc.entity.SMCEntities;
+import com.p1nero.smc.entity.api.NpcDialogue;
+import com.p1nero.smc.network.PacketRelay;
+import com.p1nero.smc.network.SMCPacketHandler;
+import com.p1nero.smc.network.packet.clientbound.NPCDialoguePacket;
+import com.p1nero.smc.registrate.SMCRegistrateItems;
+import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Vindicator;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+public class VirgilVillager extends Vindicator implements NpcDialogue {
+
+    protected static final EntityDataAccessor<Boolean> TALKED = SynchedEntityData.defineId(VirgilVillager.class, EntityDataSerializers.BOOLEAN);//是否对话过，用来渲染黄色感叹号
+    protected static final EntityDataAccessor<Boolean> FIGHTING = SynchedEntityData.defineId(VirgilVillager.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(VirgilVillager.class, EntityDataSerializers.BOOLEAN);
+
+    @Nullable
+    private Player conversingPlayer;
+
+    public VirgilVillager(EntityType<? extends Vindicator> entityType, Level level) {
+        super(entityType, level);
+    }
+
+    public VirgilVillager(Player owner, Vec3 pos) {
+        this(SMCEntities.VIRGIL_VILLAGER.get(), owner.level());
+        this.setPos(pos);
+    }
+
+    protected void populateDefaultEquipmentSlots(@NotNull RandomSource randomSource, @NotNull DifficultyInstance instance) {
+        this.setItemInHand(InteractionHand.MAIN_HAND, SMCRegistrateItems.IRON_SKILLET_LEVEL5.asStack());
+        this.setItemInHand(InteractionHand.OFF_HAND, SMCRegistrateItems.IRON_SKILLET_LEVEL5.asStack());
+    }
+
+    @Override
+    public void applyRaidBuffs(int p_34079_, boolean p_34080_) {
+
+    }
+
+    @Override
+    public boolean isCurrentlyGlowing() {
+        return !isTalked();
+    }
+
+    @Override
+    public int getTeamColor() {
+        return 0xfff66d;
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        getEntityData().define(TALKED, false);
+        getEntityData().define(FIGHTING, false);
+        getEntityData().define(SITTING, true);
+    }
+
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
+        this.getEntityData().set(FIGHTING, compoundTag.getBoolean("fighting"));
+        if(isFighting()){
+            setSitting(false);
+            setTalked(true);
+        }
+    }
+
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
+        super.addAdditionalSaveData(compoundTag);
+        compoundTag.putBoolean("fighting", this.getEntityData().get(FIGHTING));
+    }
+
+    public static AttributeSupplier.@NotNull Builder createAttributes() {
+        return Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.35F).add(Attributes.MAX_HEALTH, 80.0D).add(Attributes.ATTACK_DAMAGE, 5.0D).add(Attributes.FOLLOW_RANGE, 32.0D);
+    }
+
+    public boolean isFighting() {
+        return this.getEntityData().get(FIGHTING);
+    }
+
+    public void setFighting(boolean fighting) {
+        this.getEntityData().set(FIGHTING, fighting);
+    }
+
+    public boolean isTalked() {
+        return this.getEntityData().get(TALKED);
+    }
+
+    public void setTalked(boolean talked) {
+        this.getEntityData().set(TALKED, talked);
+    }
+
+    public boolean isSitting() {
+        return this.getEntityData().get(SITTING);
+    }
+
+    public void setSitting(boolean sitting) {
+        this.getEntityData().set(SITTING, sitting);
+    }
+
+    @Override
+    public boolean hurt(@NotNull DamageSource damageSource, float v) {
+        if (!isFighting()) {
+            return false;
+        }
+        return super.hurt(damageSource, v);
+    }
+
+    @Override
+    public void die(@NotNull DamageSource damageSource) {
+        super.die(damageSource);
+        if (damageSource.getEntity() instanceof ServerPlayer player) {
+            player.removeEffect(MobEffects.BAD_OMEN);
+            SMCAdvancementData.finishAdvancement("virgil", player);
+            DataManager.inSpecial.put(player, false);
+            DataManager.specialEvent4Solved.put(player, true);
+            DataManager.specialSolvedToday.put(player, true);
+        }
+    }
+
+    @Override
+    protected @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
+        if(!level().isClientSide){
+            this.setTalked(true);
+        }
+        if (isFighting()) {
+            return InteractionResult.PASS;
+        }
+        this.playSound(SoundEvents.VILLAGER_AMBIENT);
+        if (player instanceof ServerPlayer serverPlayer) {
+            if (this.getConversingPlayer() == null) {
+                PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCDialoguePacket(this.getId(), new CompoundTag()), serverPlayer);
+                this.setConversingPlayer(serverPlayer);
+            }
+        }
+        return InteractionResult.sidedSuccess(level().isClientSide);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        //固定旋转，老实坐好
+        if (this.isSitting()) {
+            float yRot = this.getYRot();
+            this.setYRot(yRot);
+            this.setYBodyRot(yRot);
+            this.setYHeadRot(yRot);
+        } else if(this.getConversingPlayer() != null) {
+            this.getLookControl().setLookAt(this.getConversingPlayer());
+        }
+        if (!this.isFighting()) {
+            this.setTarget(null);
+        }
+    }
+
+    @Override
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0F, true));
+        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, true, livingEntity -> this.isFighting()));
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return SoundEvents.VILLAGER_AMBIENT;
+    }
+
+    @Override
+    public boolean shouldShowName() {
+        return true;
+    }
+
+    @Override
+    public void openDialogueScreen(CompoundTag senderData) {
+        LinkListStreamDialogueScreenBuilder builder = new LinkListStreamDialogueScreenBuilder(this);
+        builder.start(0)
+                .addChoice(0, 1)
+                .addChoice(1, 2)
+                .thenExecute((byte) 1)//起身
+                .addChoice(2, 3)
+                .thenExecute((byte) 2)//鼓点1
+                .addChoice(3, 4)
+                .thenExecute((byte) 3)//鼓点2
+                .addChoice(4, 5)
+                .thenExecute((byte) 4)//鼓点3
+                .addFinalChoice(5, (byte) 5);//开打
+        if (!builder.isEmpty()) {
+            Minecraft.getInstance().setScreen(builder.build());
+        }
+    }
+
+    @Override
+    public void handleNpcInteraction(ServerPlayer player, byte interactionID) {
+        this.playSound(SoundEvents.VILLAGER_AMBIENT);
+        if(interactionID == 5) {
+            this.setFighting(true);
+        }
+        if(interactionID == 4) {
+            level().playSound(null, player.getX(), player.getY() + 0.75, player.getZ(), SMCSounds.DRUMBEAT_3.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+            return;
+        }
+
+        if(interactionID == 3) {
+            level().playSound(null, player.getX(), player.getY() + 0.75, player.getZ(), SMCSounds.DRUMBEAT_2.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+            return;
+        }
+
+        if(interactionID == 2) {
+            level().playSound(null, player.getX(), player.getY() + 0.75, player.getZ(), SMCSounds.DRUMBEAT_1.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+            return;
+        }
+
+        if(interactionID == 1) {
+            this.setSitting(false);
+            return;
+        }
+        this.setConversingPlayer(null);
+    }
+
+    @Override
+    public void setConversingPlayer(@Nullable Player player) {
+        this.conversingPlayer = player;
+    }
+
+    @Nullable
+    @Override
+    public Player getConversingPlayer() {
+        return conversingPlayer;
+    }
+}
