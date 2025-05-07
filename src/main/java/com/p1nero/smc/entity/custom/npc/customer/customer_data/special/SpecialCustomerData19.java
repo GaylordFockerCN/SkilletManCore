@@ -7,6 +7,7 @@ import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.customer.customer_data.SpecialCustomerData;
 import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
+import com.p1nero.smc.util.BookManager;
 import com.p1nero.smc.util.ItemUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
@@ -46,37 +47,24 @@ public class SpecialCustomerData19 extends SpecialCustomerData {
         ItemUtil.addItem(serverPlayer, SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.get(), 10, true);
         ItemUtil.addItem(serverPlayer, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.get(), 10, true);
 
-        ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-        ListTag bookPages = new ListTag();
-
-        bookPages.add(StringTag.valueOf("""
-                第一式: 见龙在田
-                   /\\_/\\
-                  ( o.o )\s
-                ==>===|~"""));
-        bookPages.add(StringTag.valueOf("""
-                第二式: 飞龙在天
-                    ^
-                   / \\
-                ~O=====>
-                  \\_/"""));
-
-        bookPages.add(StringTag.valueOf("""
-                第三式: 龙战于野
-                  <><>\s
-                 {|==|}  ~~~*
-                  </\\>"""));
-        bookPages.add(StringTag.valueOf("""
-                收势: 神龙摆尾
-                  \\||/
-                  ~@~
-                 --<~~*\s"""));
-        bookPages.add(StringTag.valueOf("版权所有，盗版必究！"));
-
-        book.addTagElement("pages", bookPages);//页数
-        book.addTagElement("generation", IntTag.valueOf(3));//破损度
-        book.addTagElement("author", StringTag.valueOf("洪七"));
-        book.addTagElement("title", StringTag.valueOf("降龙十八掌"));
+        ItemStack book = BookManager.getDefaultTextBook(3, "洪七", "降龍十八掌"
+                , " 第一式：見龍在田\\n" +
+                        "    /\\\\_/\\\\\\n" +
+                        "    ( o.o )s\\n" +
+                        "==>===|~"
+                , "第二式: 飛龍在天\\n" +
+                        "    ^\\n" +
+                        "   / \\\\\\n" +
+                        "~O=====>\\n" +
+                        "\\\\_/"
+                , "第三式: 龍戰於野\\n" +
+                        "  <><>s\\n" +
+                        "{|==|}  ~~~*\\n" +
+                        " </\\\\>"
+                , "收勢: 神龍擺尾\\n" +
+                        "  \\\\||/\\n" +
+                        "  ~@~\\n" +
+                        "--<~~*s");
 
         ItemUtil.addItem(serverPlayer, book, true);
 

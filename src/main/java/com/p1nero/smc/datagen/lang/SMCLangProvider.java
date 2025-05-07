@@ -1,6 +1,7 @@
 package com.p1nero.smc.datagen.lang;
 
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.util.BookManager;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
@@ -161,7 +162,7 @@ public abstract class SMCLangProvider extends LanguageProvider {
     }
 
     public void addVillagerName(String profession, String text) {
-        this.add("villager.smc." + profession.toLowerCase(Locale.ROOT) + ".name", text);
+        this.add("villager.smc." + profession.toLowerCase(Locale.ROOT) + ".key", text);
     }
 
     public void addVillagerAns(String profession, int id, String text) {
@@ -173,7 +174,7 @@ public abstract class SMCLangProvider extends LanguageProvider {
     }
 
     public void addVillagerName(VillagerProfession profession, String text) {
-        this.add("villager.smc." + profession.name().toLowerCase(Locale.ROOT) + ".name", text);
+        this.add("villager.smc." + profession.name().toLowerCase(Locale.ROOT) + ".key", text);
     }
 
     public void addVillagerAns(VillagerProfession profession, int id, String text) {
@@ -242,7 +243,15 @@ public abstract class SMCLangProvider extends LanguageProvider {
             this.add(SkilletManCoreMod.MOD_ID + ".book." + bookKey + "." + pageCount, page);
         }
     }
-
+//    public void addBookAndAuthorAndContents(BookManager.Book book, String author, String bookTitle, String... pages) {
+//        this.add(SkilletManCoreMod.MOD_ID + ".book.author." + book.key(), author);
+//        this.add(SkilletManCoreMod.MOD_ID + ".book." + book.key(), bookTitle);
+//        int pageCount = 0;
+//        for (String page : pages) {
+//            pageCount++;
+//            this.add(SkilletManCoreMod.MOD_ID + ".book." + book.key() + "." + pageCount, page);
+//        }
+//    }
     public void addBookAndAuthorAndContents(String bookKey, String author, String bookTitle, String... pages) {
         this.add(SkilletManCoreMod.MOD_ID + ".book.author." + bookKey, author);
         this.add(SkilletManCoreMod.MOD_ID + ".book." + bookKey, bookTitle);

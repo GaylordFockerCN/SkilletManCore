@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * LZY:添加了实现打字机效果
- * A widget to handle an NPC's name and their response inside the dialogue screen.
+ * A widget to handle an NPC's key and their response inside the dialogue screen.
  * @author LZY
  * @author The Aether
  */
@@ -113,7 +113,7 @@ public class DialogueAnswerComponent {
         }
 
         shouldRenderOption = false;
-//        index = name.getString().length();//名字就不用打字机了
+//        index = key.getString().length();//名字就不用打字机了
         index = 0;
         max = message.getString().length();
         updateTypewriterDialogue();

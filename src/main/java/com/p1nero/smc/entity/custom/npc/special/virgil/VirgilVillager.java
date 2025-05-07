@@ -11,6 +11,7 @@ import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.NPCDialoguePacket;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -247,6 +248,7 @@ public class VirgilVillager extends Vindicator implements NpcDialogue {
 
         if(interactionID == 1) {
             this.setSitting(false);
+            player.serverLevel().sendParticles(ParticleTypes.SMOKE, this.getX(), this.getY(), this.getZ(), 50, 0, 0.1, 0, 0.1);
             return;
         }
         this.setConversingPlayer(null);

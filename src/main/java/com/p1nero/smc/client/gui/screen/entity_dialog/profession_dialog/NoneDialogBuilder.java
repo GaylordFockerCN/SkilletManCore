@@ -3,6 +3,7 @@ package com.p1nero.smc.client.gui.screen.entity_dialog.profession_dialog;
 import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
 import com.p1nero.smc.client.gui.screen.entity_dialog.VillagerDialogScreenHandler;
+import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import net.minecraft.client.Minecraft;
@@ -64,6 +65,7 @@ public class NoneDialogBuilder extends VillagerDialogScreenHandler.VillagerDialo
         super.handle(serverPlayer, villager, interactionID);
         if(interactionID >= 4 && interactionID <= 9) {
             SMCAdvancementData.finishAdvancement("change_villager", serverPlayer);
+            villager.playSound(SMCSounds.VILLAGER_YES.get(), 1.0F, 1.0F);
         }
         switch (interactionID) {
             case 4 -> villager.setVillagerData(villager.getVillagerData().setProfession(VillagerProfession.NITWIT));

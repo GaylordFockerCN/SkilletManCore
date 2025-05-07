@@ -18,7 +18,7 @@ public class AttributesMixin {
     @Inject(method = "register", at = @At("HEAD"), cancellable = true)
     private static void modifyMaxHealth(String name, Attribute attribute, CallbackInfoReturnable<Attribute> cir){
         if(name.equals("generic.max_health")){
-            cir.setReturnValue(Registry.register(BuiltInRegistries.ATTRIBUTE, name, (new RangedAttribute("attribute.name.generic.max_health", 20.0, 1.0, Double.MAX_VALUE)).setSyncable(true)));
+            cir.setReturnValue(Registry.register(BuiltInRegistries.ATTRIBUTE, name, (new RangedAttribute("attribute.key.generic.max_health", 20.0, 1.0, Double.MAX_VALUE)).setSyncable(true)));
         }
     }
 }

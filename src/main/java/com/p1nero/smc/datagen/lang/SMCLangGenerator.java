@@ -13,6 +13,7 @@ import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
+import com.p1nero.smc.util.BookManager;
 import com.p1nero.smc.worldgen.biome.SMCBiomes;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.entity.EntityType;
@@ -25,11 +26,17 @@ public class SMCLangGenerator extends SMCLangProvider {
     @Override
     protected void addTranslations() {
 
+//        this.addBookAndAuthorAndContents(BookManager.FOOD_SONG, "富有诗性的村民", "《食物之歌·卷一》"
+//                , "【豆腐谣】\\n黄豆化玉凝清光\\n白刃千击柔克刚\\n箸尖一点山河震\\n笑问宗师可敢尝？"
+//                , "【叫花鸡赋】\\n黄泥为甲火为裳\\n腹藏乾坤百味香\\n撕得金甲三千片\\n方知江湖即酒囊"
+//                , "【东坡肉颂】\\n慢火熬得琥珀光\\n肥而不腻即文章\\n箸下沉浮三十载\\n方悟此味是柔刚"
+//                , "【青团行】\\n艾草裹住江南春\\n一口咬出剑气横\\n若问清明何处好\\n剑客坟前酒尚温");
+
         this.addInfo("set_time_not_allowed", "§c \"/time set\"命令将影响游戏进度！请使用 \"/time add\"代替！");
 
         this.addInfo("start_work", "§a上班！");
         this.addInfo("end_work", "§c下班！");
-        this.add("name.smc.new_shop", "一家新店铺");
+        this.add("key.smc.new_shop", "一家新店铺");
 
         this.addInfo("full_score", "§e满分！！");
         this.addInfo("middle_score", "§a优秀！");

@@ -26,7 +26,7 @@ public record AddDialogPacket(Component name, Component content, boolean broadca
 
     @Override
     public void execute(@Nullable Player playerEntity) {
-//        DOTEArchiveManager.addDialog(name, content);
+//        DOTEArchiveManager.addDialog(key, content);
         if(playerEntity != null && broadcast && SMCConfig.BROADCAST_DIALOG.get()){
             for(Player player : playerEntity.level().players()){
                 if(player != playerEntity && player.getPosition(1.0f).distanceTo(playerEntity.getPosition(1.0f)) < SMCConfig.BROADCAST_DISTANCE.get()){

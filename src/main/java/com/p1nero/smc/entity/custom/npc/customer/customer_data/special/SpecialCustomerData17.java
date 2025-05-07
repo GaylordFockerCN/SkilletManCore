@@ -4,6 +4,7 @@ import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.customer.customer_data.SpecialCustomerData;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
+import com.p1nero.smc.util.BookManager;
 import com.p1nero.smc.util.ItemUtil;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
@@ -46,45 +47,11 @@ public class SpecialCustomerData17 extends SpecialCustomerData {
         ItemUtil.addItem(serverPlayer, SMCRegistrateItems.DISC_RAFFLE_TICKET.get(), 2, true);
         ItemUtil.addItem(serverPlayer, SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.get(), 2, true);
 
-        ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-        ListTag bookPages = new ListTag();
-
-        bookPages.add(StringTag.valueOf("""
-                【豆腐谣】
-                黄豆化玉凝清光
-                白刃千击柔克刚
-                箸尖一点山河震
-                笑问宗师可敢尝？
-                """));
-
-        bookPages.add(StringTag.valueOf("""
-                【叫花鸡赋】
-                黄泥为甲火为裳
-                腹藏乾坤百味香
-                撕得金甲三千片
-                方知江湖即酒囊
-                """));
-
-        bookPages.add(StringTag.valueOf("""
-                【东坡肉颂】
-                慢火熬得琥珀光
-                肥而不腻即文章
-                箸下沉浮三十载
-                方悟此味是柔刚
-                """));
-
-        bookPages.add(StringTag.valueOf("""
-                【青团行】
-                艾草裹住江南春
-                一口咬出剑气横
-                若问清明何处好
-                剑客坟前酒尚温
-                """));
-
-        book.addTagElement("pages", bookPages);//页数
-        book.addTagElement("generation", IntTag.valueOf(1));//破损度
-        book.addTagElement("author", StringTag.valueOf("富有诗性的村民"));
-        book.addTagElement("title", StringTag.valueOf("《食物之歌·卷一》"));
+        ItemStack book = BookManager.getDefaultTextBook(1, "富有诗性的村民", "《食物之歌·卷一》"
+                , "【豆腐谣】\\n黄豆化玉凝清光\\n白刃千击柔克刚\\n箸尖一点山河震\\n笑问宗师可敢尝？"
+                , "【叫花鸡赋】\\n黄泥为甲火为裳\\n腹藏乾坤百味香\\n撕得金甲三千片\\n方知江湖即酒囊"
+                , "【东坡肉颂】\\n慢火熬得琥珀光\\n肥而不腻即文章\\n箸下沉浮三十载\\n方悟此味是柔刚"
+                , "【青团行】\\n艾草裹住江南春\\n一口咬出剑气横\\n若问清明何处好\\n剑客坟前酒尚温");
 
         ItemUtil.addItem(serverPlayer, book, true);
     }

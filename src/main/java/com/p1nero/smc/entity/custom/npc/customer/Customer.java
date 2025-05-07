@@ -308,7 +308,7 @@ public class Customer extends SMCNpc {
         }
 
         //双端
-        if(customerData == null) {
+        if(customerData == null && !level().isClientSide) {
             //每级1/5概率刷新神人
             SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
             if(smcPlayer.getLevel() > 0 && !smcPlayer.isSpecialAlive() && this.getRandom().nextInt(5) == 1) {
@@ -319,7 +319,6 @@ public class Customer extends SMCNpc {
                 customerData = CUSTOMERS.get(this.getSMCId() % CUSTOMERS.size());
             }
         }
-//        customerData = SPECIAL_CUSTOMERS.get(this.getSMCId() % SPECIAL_CUSTOMERS.size());
         return super.mobInteract(player, hand);
     }
 
@@ -349,6 +348,11 @@ public class Customer extends SMCNpc {
     public void openDialogueScreen(CompoundTag senderData) {
         LinkListStreamDialogueScreenBuilder builder = new LinkListStreamDialogueScreenBuilder(this);
         DialogueComponentBuilder dialogueComponentBuilder = new DialogueComponentBuilder(this);
+        if(senderData.getBoolean("is_special")){
+            customerData = SPECIAL_CUSTOMERS.get(this.getSMCId() % SPECIAL_CUSTOMERS.size());
+        } else {
+            customerData = CUSTOMERS.get(this.getSMCId() % CUSTOMERS.size());
+        }
         this.customerData.getDialogScreen(senderData, builder, dialogueComponentBuilder, senderData.getBoolean("can_submit"), senderData.getInt("food_level"));
         if(!builder.isEmpty()){
             Minecraft.getInstance().setScreen(builder.build());

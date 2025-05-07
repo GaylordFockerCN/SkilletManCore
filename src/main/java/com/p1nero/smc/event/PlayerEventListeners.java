@@ -16,6 +16,7 @@ import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.packet.SyncArchivePacket;
 import com.p1nero.smc.network.packet.clientbound.OpenStartGuideScreenPacket;
 import com.p1nero.smc.network.packet.clientbound.SyncUuidPacket;
+import com.p1nero.smc.util.BookManager;
 import com.p1nero.smc.util.ItemUtil;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
 import dev.xkmc.cuisinedelight.content.item.CuisineSkilletItem;
@@ -27,6 +28,9 @@ import net.blay09.mods.waystones.block.ModBlocks;
 import net.kenddie.fantasyarmor.item.FAItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.nbt.IntTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -34,6 +38,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
@@ -50,6 +55,7 @@ import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.item.EpicFightItems;
 
+import java.util.List;
 import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID)
@@ -112,8 +118,28 @@ public class PlayerEventListeners {
                 ItemUtil.addItem(serverPlayer, dodgeDisplay);
                 ItemUtil.addItem(serverPlayer, guard);
                 ItemUtil.addItem(serverPlayer, parrying);
-
             }
+
+            ItemStack book = BookManager.getDefaultTextBook(3, "洪七", "降龍十八掌"
+                    , " 第一式：見龍在田\\n" +
+                            "    /\\\\_/\\\\\\n" +
+                            "    ( o.o )s\\n" +
+                            "==>===|~"
+                    , "第二式: 飛龍在天\\n" +
+                            "    ^\\n" +
+                            "   / \\\\\\n" +
+                            "~O=====>\\n" +
+                            "\\\\_/"
+                    , "第三式: 龍戰於野\\n" +
+                            "  <><>s\\n" +
+                            "{|==|}  ~~~*\\n" +
+                            " </\\\\>"
+                    , "收勢: 神龍擺尾\\n" +
+                            "  \\\\||/\\n" +
+                            "  ~@~\\n" +
+                            "--<~~*s");
+
+            ItemUtil.addItem(serverPlayer, book, true);
         }
 
     }

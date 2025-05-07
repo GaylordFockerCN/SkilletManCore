@@ -118,8 +118,8 @@ public class DialogueScreen extends Screen {
     }
 
     /**
-     * Sets up the formatting for the Valkyrie Queen's name in the {@link DialogueAnswerComponent} widget.
-     * @param component The name {@link Component}.
+     * Sets up the formatting for the Valkyrie Queen's key in the {@link DialogueAnswerComponent} widget.
+     * @param component The key {@link Component}.
      * @return The formatted {@link MutableComponent}.
      */
     public MutableComponent buildDialogueAnswerName(Component component) {

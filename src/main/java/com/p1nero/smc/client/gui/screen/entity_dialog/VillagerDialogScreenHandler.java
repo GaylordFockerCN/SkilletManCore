@@ -99,7 +99,7 @@ public class VillagerDialogScreenHandler {
         }
 
         public Component getName() {
-            return Component.translatable("villager.smc." + getTranslationKey().toLowerCase(Locale.ROOT) + ".name");
+            return Component.translatable("villager.smc." + getTranslationKey().toLowerCase(Locale.ROOT) + ".key");
         }
 
         public Component answer(int id, Object... objects) {
