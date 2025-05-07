@@ -132,6 +132,8 @@ dependencies {
         jarJar.ranged(it, "[1.2.0,)")
     }
 
+//    implementation fg.deobf("curse.maven:polymorph-388800:6450982")
+
     //史诗战斗
     implementation fg.deobf("curse.maven:epic-fight-mod-405076:6145747")
     implementation fg.deobf("curse.maven:weapons-of-miracles-epicfight-918614:5889471")
@@ -143,6 +145,8 @@ dependencies {
     //传送石
     implementation fg.deobf("curse.maven:waystones-245755:6270584")
     implementation fg.deobf("curse.maven:balm-531761:6362504")
+    //垃圾槽
+    implementation fg.deobf("curse.maven:trashslot-235577:6319121")
 
     //地图
     implementation fg.deobf("curse.maven:xaeros-world-map-317780:6212636")//大地图
@@ -169,8 +173,6 @@ dependencies {
     //背包
     implementation fg.deobf("curse.maven:sophisticated-core-618298:6266807")
     implementation fg.deobf("curse.maven:sophisticated-backpacks-422301:6246607")
-    //垃圾槽
-    implementation fg.deobf("curse.maven:trashslot-235577:6319121")
 
     implementation fg.deobf("curse.maven:yungs-better-end-island-901344:5193815")
     implementation fg.deobf("curse.maven:yungs-api-421850:5769971")

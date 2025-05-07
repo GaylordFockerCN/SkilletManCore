@@ -180,8 +180,10 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         }
         //第一天后开始生成随机事件
         if(level != null && (int)(level.dayTime() / 24000) % 2 == 1 && this.hasSkillet() && this.startNPC != null && DataManager.hasAnySpecialEvent(owner) && !DataManager.specialSolvedToday.get(owner)){
-            Vec3 targetPos = this.startNPC.getSpawnPos().getCenter();
-            owner.teleportTo(targetPos.x, targetPos.y, targetPos.z);
+            if(this.getBlockPos().getCenter().distanceTo(owner.position()) > WORKING_RADIUS){
+                Vec3 targetPos = this.startNPC.getSpawnPos().getCenter();
+                owner.teleportTo(targetPos.x, targetPos.y, targetPos.z);
+            }
             level.destroyBlock(this.getSkilletPos(), true);
             isWorking = false;
             CompoundTag tag = new CompoundTag();
@@ -209,17 +211,10 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         //生成顾客，30s一只，最多6只
         this.customers.removeIf(customer -> customer == null || customer.isRemoved() || !customer.isAlive());
         if(this.customers.size() < 6 && owner.tickCount % 600 == 0) {
-            BlockPos centerPos = this.getBlockPos();
-            double centerX = centerPos.getX() + 0.5;
-            double centerZ = centerPos.getZ() + 0.5;
-
-            double angle = Math.random() * 2 * Math.PI;
-            double radius = owner.getRandom().nextInt(15, 20);
-
-            double spawnX = centerX + Math.cos(angle) * radius;
-            double spawnZ = centerZ + Math.sin(angle) * radius;
-
-            BlockPos spawnPos = ServerEvents.getSurfaceBlockPos(owner.serverLevel(), (int) spawnX, (int) spawnZ);
+            BlockPos spawnPos = getRandomPos(owner, 15, 20);
+            while (spawnPos.getY() - owner.getY() > 5){
+                spawnPos = getRandomPos(owner, 15, 20);
+            }
             Customer customer = new Customer(owner, spawnPos.getCenter());
             customer.setHomePos(this.getBlockPos());
             customer.setSpawnPos(spawnPos);

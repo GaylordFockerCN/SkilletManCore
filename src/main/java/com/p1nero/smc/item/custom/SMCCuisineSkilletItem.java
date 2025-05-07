@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 
 public class SMCCuisineSkilletItem extends CuisineSkilletItem {
     public SMCCuisineSkilletItem(Block block, Properties properties) {
-        super(block, properties);
+        super(block, properties.setNoRepair());
     }
 
     @Override

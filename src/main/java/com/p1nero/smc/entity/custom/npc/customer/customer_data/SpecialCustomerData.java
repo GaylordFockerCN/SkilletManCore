@@ -149,6 +149,10 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
                 mul *= 5.0F;
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("seafood_mul", 5.0F), false);
             }
+            if(cookedFoodData.size > 0){
+                mul *= cookedFoodData.size;
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("size_mul", cookedFoodData.size), false);
+            }
         }
         SMCPlayer.addMoney(((int) (200 * mul)), serverPlayer);
         serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);

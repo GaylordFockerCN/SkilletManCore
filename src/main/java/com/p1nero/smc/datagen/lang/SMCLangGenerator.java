@@ -90,6 +90,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("please_in_battle_mode", "§c按 §e[%s§e] §c键打开战斗模式！！");
         this.addInfo("no_enough_money", "§c余额不足！！");
         this.addInfo("shop_upgrade", "§a店铺已升至 %d §a级！");
+
         this.addInfo("next_grade_left", "§6距下一游戏阶段还差 %d §6级！");
         this.addInfo("unlock_stage2_info", "村民订购解锁 §a[海鲜大礼包]§r！ 现在可以使用全部武器了！");
         this.addInfo("meat_available", "村民订购解锁 §a[肉类大礼包]§r！\n §6接下来村民需求将出现更多混合食物！注意把控下锅时间哦~");
@@ -104,12 +105,13 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("find_villager_gacha", "进行任意 武器/盔甲/技能书 祈愿");
         this.addInfo("find_villager_gacha2", "最好把村民框起来方便再次祈愿");
         this.addInfo("first_work", "往炉灶上摆上炒锅开始工作！");
-        this.addInfo("first_work2", "村民顾客每半分钟生一次，最多存在六位哦~");
+        this.addInfo("first_work2", "别忘了看新手教程哦~");
         this.addInfo("special_customer", "§6特殊顾客！");
         this.addInfo("level_mul", "声望等级加成！× %.1f");
         this.addInfo("seafood_mul", "海鲜加成！× %.1f");
         this.addInfo("meat_mul", "肉类加成！× %.1f");
         this.addInfo("type_mul", "品种加成！× %.1f");
+        this.addInfo("size_mul", "分量加成！× %.1f");
         this.addInfo("all_taken", "已全部取出！");
         this.addInfo("customer_is_first", "§c顾客就是上帝！");
         this.addInfo("no_your_power", "Oh 不, 这份力量并不属于你...设定上你只能使用平底锅和锅铲");

@@ -35,16 +35,16 @@ public class SMCRegistrateItems {
     public static final ItemEntry<GoldenSkilletItem> GOLDEN_SKILLET = SkilletManCoreMod.REGISTRATE.item("golden_cuisine_skillet", p -> new GoldenSkilletItem(SMCRegistrateBlocks.GOLDEN_SKILLET.get(), p.stacksTo(1)))
             .model((ctx, pvd) -> pvd.getBuilder(ctx.getName()).parent(new ModelFile.UncheckedModelFile("builtin/entity")))
             .setData(ProviderType.LANG, NonNullBiConsumer.noop()).register();
-    public static final ItemEntry<GoldenSkilletItem> GOLDEN_SKILLET_V2 = SkilletManCoreMod.REGISTRATE.item("golden_cuisine_skillet_v2", p -> new GoldenSkilletItem(SMCRegistrateBlocks.GOLDEN_SKILLET.get(), p.stacksTo(1), 2))
+    public static final ItemEntry<GoldenSkilletItemV2> GOLDEN_SKILLET_V2 = SkilletManCoreMod.REGISTRATE.item("golden_cuisine_skillet_v2", p -> new GoldenSkilletItemV2(SMCRegistrateBlocks.GOLDEN_SKILLET.get(), p.stacksTo(1)))
             .model((ctx, pvd) -> pvd.getBuilder(ctx.getName()).parent(new ModelFile.UncheckedModelFile("builtin/entity")))
             .setData(ProviderType.LANG, NonNullBiConsumer.noop()).register();
-    public static final ItemEntry<GoldenSkilletItem> GOLDEN_SKILLET_V3 = SkilletManCoreMod.REGISTRATE.item("golden_cuisine_skillet_v3", p -> new GoldenSkilletItem(SMCRegistrateBlocks.GOLDEN_SKILLET.get(), p.stacksTo(1), 3))
+    public static final ItemEntry<GoldenSkilletItemV3> GOLDEN_SKILLET_V3 = SkilletManCoreMod.REGISTRATE.item("golden_cuisine_skillet_v3", p -> new GoldenSkilletItemV3(SMCRegistrateBlocks.GOLDEN_SKILLET.get(), p.stacksTo(1)))
             .model((ctx, pvd) -> pvd.getBuilder(ctx.getName()).parent(new ModelFile.UncheckedModelFile("builtin/entity")))
             .setData(ProviderType.LANG, NonNullBiConsumer.noop()).register();
-    public static final ItemEntry<GoldenSkilletItem> GOLDEN_SKILLET_V4 = SkilletManCoreMod.REGISTRATE.item("golden_cuisine_skillet_v4", p -> new GoldenSkilletItem(SMCRegistrateBlocks.GOLDEN_SKILLET.get(), p.stacksTo(1), 4))
+    public static final ItemEntry<GoldenSkilletItemV4> GOLDEN_SKILLET_V4 = SkilletManCoreMod.REGISTRATE.item("golden_cuisine_skillet_v4", p -> new GoldenSkilletItemV4(SMCRegistrateBlocks.GOLDEN_SKILLET.get(), p.stacksTo(1)))
             .model((ctx, pvd) -> pvd.getBuilder(ctx.getName()).parent(new ModelFile.UncheckedModelFile("builtin/entity")))
             .setData(ProviderType.LANG, NonNullBiConsumer.noop()).register();
-    public static final ItemEntry<GoldenSkilletItem> GOLDEN_SKILLET_V5 = SkilletManCoreMod.REGISTRATE.item("golden_cuisine_skillet_v5", p -> new GoldenSkilletItem(SMCRegistrateBlocks.GOLDEN_SKILLET.get(), p.stacksTo(1), 5))
+    public static final ItemEntry<GoldenSkilletItemV5> GOLDEN_SKILLET_V5 = SkilletManCoreMod.REGISTRATE.item("golden_cuisine_skillet_v5", p -> new GoldenSkilletItemV5(SMCRegistrateBlocks.GOLDEN_SKILLET.get(), p.stacksTo(1)))
             .model((ctx, pvd) -> pvd.getBuilder(ctx.getName()).parent(new ModelFile.UncheckedModelFile("builtin/entity")))
             .setData(ProviderType.LANG, NonNullBiConsumer.noop()).register();
     public static final ItemEntry<DiamondSkilletItem> DIAMOND_SKILLET = SkilletManCoreMod.REGISTRATE.item("diamond_cuisine_skillet", p -> new DiamondSkilletItem(SMCRegistrateBlocks.DIAMOND_SKILLET.get(), p.stacksTo(1)))

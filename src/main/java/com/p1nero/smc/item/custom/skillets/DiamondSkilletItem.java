@@ -9,6 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -28,6 +29,11 @@ public class DiamondSkilletItem extends SMCCuisineSkilletItem {
         super(block, properties);
         star = star.repeat(level);
         this.level = level;
+    }
+
+    @Override
+    public boolean isValidRepairItem(@NotNull ItemStack toRepair, @NotNull ItemStack repair) {
+        return Tiers.DIAMOND.getRepairIngredient().test(repair);
     }
 
     @Override

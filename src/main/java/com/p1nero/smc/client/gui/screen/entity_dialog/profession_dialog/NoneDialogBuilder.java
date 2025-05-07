@@ -1,5 +1,6 @@
 package com.p1nero.smc.client.gui.screen.entity_dialog.profession_dialog;
 
+import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
 import com.p1nero.smc.client.gui.screen.entity_dialog.VillagerDialogScreenHandler;
@@ -29,6 +30,9 @@ public class NoneDialogBuilder extends VillagerDialogScreenHandler.VillagerDialo
     public void createDialog(LinkListStreamDialogueScreenBuilder builder, Villager self) {
         int id = self.getRandom().nextInt(3);
         Player player = Minecraft.getInstance().player;
+        if(!DataManager.firstChangeVillager.get(player)){
+            id = 2;
+        }
         if (player == null) {
             return;
         }
@@ -64,6 +68,9 @@ public class NoneDialogBuilder extends VillagerDialogScreenHandler.VillagerDialo
     public void handle(ServerPlayer serverPlayer, Villager villager, byte interactionID) {
         super.handle(serverPlayer, villager, interactionID);
         if(interactionID >= 4 && interactionID <= 9) {
+            if(!DataManager.firstChangeVillager.get(serverPlayer)){
+                DataManager.firstChangeVillager.put(serverPlayer, true);
+            }
             SMCAdvancementData.finishAdvancement("change_villager", serverPlayer);
             villager.playSound(SMCSounds.VILLAGER_YES.get(), 1.0F, 1.0F);
         }

@@ -44,7 +44,7 @@ public class StartGuideScreenHandler {
         generator.addScreenAns(name, 1, "有朝一日，你觉得力量渐渐回来了，准备前往§c『终界』§r，击败恶龙，夺回属于你的力量，换得主世界永恒的安宁。最终将成为一代宗师，村民们因此称你为——§e平 底 锅 侠§r。");
         generator.addScreenOpt(name, 2, "平底锅侠...好俗的名字...");
         generator.addScreenOpt(name, 3, "这像是作者一拍大腿就想出来的整合包");
-        generator.addScreenAns(name, 2, "没错。这个整合包就是作者一拍大腿想出来的。但这一拍大腿就换来了一个月的爆肝...建议给作者三连。废话少说，快去村庄里寻找落脚点吧！");
+        generator.addScreenAns(name, 2, "没错。这个整合包就是作者一拍大腿想出来的。但这一拍大腿就换来了两三个月的爆肝...建议给作者三连。废话少说，快去村庄里寻找落脚点吧！");
         generator.addScreenOpt(name, 4, "我去，还能吐槽");
         generator.addScreenAns(name, 3, "你确定要跳过这么精彩的对话吗？一旦跳过或按ECS退出后，将只有重建存档才会弹出本对话哦~");
         generator.addScreenOpt(name, 5, "确定");

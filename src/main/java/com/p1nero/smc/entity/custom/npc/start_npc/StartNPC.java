@@ -98,7 +98,7 @@ public class StartNPC extends SMCNpc {
         STAPLE_SET2.addAll(List.of(ModItems.RICE.get().getDefaultInstance(), ModItems.WHEAT_DOUGH.get().getDefaultInstance()));
         VEG_SET2.addAll(List.of(ModItems.BROWN_MUSHROOM_COLONY.get().getDefaultInstance(), ModItems.RED_MUSHROOM_COLONY.get().getDefaultInstance()));
         VEG_SET2.addAll(List.of(Items.MELON.getDefaultInstance(), ModItems.CABBAGE.get().getDefaultInstance(), ModItems.TOMATO.get().getDefaultInstance()));
-        MEAT_SET2.addAll(List.of(Items.PORKCHOP.getDefaultInstance(), Items.BEEF.getDefaultInstance(), Items.MUTTON.getDefaultInstance(), Items.CHICKEN.getDefaultInstance()));
+        MEAT_SET2.addAll(List.of(ModItems.HAM.get().getDefaultInstance(), Items.PORKCHOP.getDefaultInstance(), Items.BEEF.getDefaultInstance(), Items.MUTTON.getDefaultInstance(), Items.CHICKEN.getDefaultInstance()));
         SEAFOOD_SET2.addAll(List.of(Items.SALMON.getDefaultInstance(), Items.COD.getDefaultInstance()));
 
     }
