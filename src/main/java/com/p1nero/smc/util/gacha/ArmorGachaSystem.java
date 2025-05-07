@@ -107,6 +107,6 @@ public class ArmorGachaSystem {
         if (itemPool.isEmpty()) {
             throw new IllegalArgumentException("Item pool cannot be empty");
         }
-        return itemPool.get(random.nextInt(itemPool.size()));
+        return itemPool.get(random.nextInt(itemPool.size())).copy();
     }
 }

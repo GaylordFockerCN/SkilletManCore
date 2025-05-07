@@ -82,7 +82,7 @@ public class LivingEntityListeners {
             SMCPlayer.consumeMoney(10, player);
         }
         if(event.getEntity() instanceof Player) {
-            event.setAmount(event.getAmount() * 0.33F);
+            event.setAmount(event.getAmount() * 0.5F);
         }
     }
 
@@ -94,6 +94,10 @@ public class LivingEntityListeners {
 
         if(event.getEntity() instanceof Villager villager && villager.getVillagerData().getProfession() == VillagerProfession.CLERIC && event.getSource().getEntity() instanceof ServerPlayer serverPlayer) {
             ItemUtil.addItem(serverPlayer, SMCRegistrateItems.END_TELEPORTER.asStack(), true);
+        }
+
+        if(event.getEntity() instanceof ServerPlayer serverPlayer){
+            serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("die_tip"), false);
         }
 
     }

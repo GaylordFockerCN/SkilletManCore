@@ -23,13 +23,18 @@ import com.p1nero.smc.util.SMCRaidManager;
 import dev.xkmc.cuisinedelight.content.item.CuisineSkilletItem;
 import hungteen.htlib.common.world.entity.DummyEntityManager;
 import net.minecraft.ChatFormatting;
+import net.minecraft.ResourceLocationException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.util.StringUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -37,9 +42,15 @@ import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -53,6 +64,7 @@ import yesman.epicfight.api.utils.math.MathUtils;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBlock {
     @Nullable
@@ -141,9 +153,6 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             SMCPlayer.updateWorkingState(true, serverPlayer);
         } else {
             SMCPlayer.updateWorkingState(false, serverPlayer);
-            if(hasSkillet()){
-                serverPlayer.serverLevel().destroyBlock(getSkilletPos(), true);
-            }
             this.clearCustomers();
         }
     }
@@ -170,7 +179,9 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             return;
         }
         //第一天后开始生成随机事件
-        if(level != null && (int)(level.dayTime() / 24000) % 2 == 1 && this.hasSkillet() && DataManager.hasAnySpecialEvent(owner) && !DataManager.specialSolvedToday.get(owner)){
+        if(level != null && (int)(level.dayTime() / 24000) % 2 == 1 && this.hasSkillet() && this.startNPC != null && DataManager.hasAnySpecialEvent(owner) && !DataManager.specialSolvedToday.get(owner)){
+            Vec3 targetPos = this.startNPC.getSpawnPos().getCenter();
+            owner.teleportTo(targetPos.x, targetPos.y, targetPos.z);
             level.destroyBlock(this.getSkilletPos(), true);
             isWorking = false;
             CompoundTag tag = new CompoundTag();
@@ -295,6 +306,9 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
     public void summonRandomRaidFor(ServerPlayer serverPlayer){
         clearCustomers();
         SMCRaidManager.startRandomRaid(serverPlayer);
+        if(hasSkillet()){
+            serverPlayer.serverLevel().destroyBlock(getSkilletPos(), true);
+        }
     }
 
     /**
@@ -321,6 +335,11 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("already_has_owner"), true);
             return;
         }
+//        if(!isWorkingTime()){
+//            CompoundTag tag = new CompoundTag();
+//            tag.putBoolean("pre_cook_tip", true);
+//            PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCBlockDialoguePacket(this.getBlockPos(), tag), serverPlayer);
+//        }
         this.isWorking = true;
     }
 
@@ -350,6 +369,9 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         if(this.level instanceof ServerLevel serverLevel && !DummyEntityManager.getDummyEntities(serverLevel).isEmpty() && this.isWorking) {
             for(ServerPlayer player : serverLevel.players()) {
                 player.displayClientMessage(SkilletManCoreMod.getInfo("raid_no_work"), true);
+                if(hasSkillet()){
+                    level.destroyBlock(this.getSkilletPos(), true);
+                }
             }
             return false;
         }
@@ -359,6 +381,30 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
     public boolean canPlayerLeave(ServerPlayer serverPlayer) {
         //TODO 在试炼则可以离开？
         return false;
+    }
+
+    /**
+     * TODO 和炉子对话以升级店铺
+     */
+    public boolean loadStructure(ServerLevel serverLevel, ResourceLocation structure) {
+        StructureTemplateManager structuretemplatemanager = serverLevel.getStructureManager();
+        Optional<StructureTemplate> optional;
+        try {
+            optional = structuretemplatemanager.get(structure);
+        } catch (ResourceLocationException resourcelocationexception) {
+            return false;
+        }
+        if(optional.isEmpty()){
+            return false;
+        }
+        BlockPos blockpos = this.getBlockPos();
+        StructurePlaceSettings structureplacesettings = (new StructurePlaceSettings()).setMirror(Mirror.NONE).setRotation(Rotation.NONE).setIgnoreEntities(false);
+
+        BlockPos blockPos = blockpos.offset(this.getBlockPos());
+        if(this.startNPC != null){
+            optional.get().placeInWorld(serverLevel, blockPos, blockPos, structureplacesettings, this.startNPC.getRandom(), 2);
+        }
+        return true;
     }
 
     @Override
@@ -381,6 +427,12 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
 
         if(senderData.getBoolean("special_event")){
             builder.start(SkilletManCoreMod.getInfo("special_event_ans"))
+                    .addFinalChoice(SkilletManCoreMod.getInfo("special_event_opt1"), (byte) 0)
+                    .addFinalChoice(SkilletManCoreMod.getInfo("special_event_opt2"), (byte) 0);
+        }
+
+        if(senderData.getBoolean("pre_cook_tip")){
+            builder.start(SkilletManCoreMod.getInfo("no_pre_cook_here"))
                     .addFinalChoice(SkilletManCoreMod.getInfo("special_event_opt1"), (byte) 0)
                     .addFinalChoice(SkilletManCoreMod.getInfo("special_event_opt2"), (byte) 0);
         }

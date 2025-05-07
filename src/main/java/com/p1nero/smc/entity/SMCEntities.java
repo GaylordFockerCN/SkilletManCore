@@ -120,8 +120,8 @@ public class SMCEntities {
         event.put(FAKE_CUSTOMER.get(), StartNPC.setAttributes());
         event.put(HE_SHEN.get(), StartNPC.setAttributes());
         event.put(TWO_KID.get(), StartNPC.setAttributes());
-        event.put(THIEF1.get(), StartNPC.setAttributes());
-        event.put(THIEF2.get(), StartNPC.setAttributes());
+        event.put(THIEF1.get(), Thief1.setAttributes());
+        event.put(THIEF2.get(), Thief1.setAttributes());
         event.put(VIRGIL_VILLAGER.get(), VirgilVillager.createAttributes().build());
     }
 

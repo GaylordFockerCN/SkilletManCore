@@ -25,6 +25,9 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.Brain;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
@@ -60,7 +63,7 @@ public class Thief1 extends SMCNpc implements SpecialNpc {
     }
 
     public Thief1(Player owner, Vec3 pos) {
-        this(SMCEntities.HE_SHEN.get(), owner.level());
+        this(SMCEntities.THIEF1.get(), owner.level());
         this.setPos(pos);
         this.setOwnerUUID(owner.getUUID());
     }
@@ -70,6 +73,16 @@ public class Thief1 extends SMCNpc implements SpecialNpc {
         if (traded && !level().isClientSide) {
             dieTimer = 10;
         }
+    }
+
+    public static AttributeSupplier setAttributes() {
+        return Animal.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 20.0f)
+                .add(Attributes.ATTACK_DAMAGE, 1.0f)
+                .add(Attributes.ATTACK_SPEED, 2.0f)
+                .add(Attributes.MOVEMENT_SPEED, 0.8f)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 114514f)
+                .build();
     }
 
     public void setTalked(boolean talked) {
@@ -181,9 +194,9 @@ public class Thief1 extends SMCNpc implements SpecialNpc {
 
     @Override
     public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
-//        if(this.isSolved() || player!= this.getOwner()) {
-//            return InteractionResult.PASS;
-//        }
+        if(this.isSolved() || player!= this.getOwner()) {
+            return InteractionResult.PASS;
+        }
         if (!level().isClientSide) {
             this.setTalked(true);
         }
@@ -209,17 +222,12 @@ public class Thief1 extends SMCNpc implements SpecialNpc {
 
     @Override
     public void handleNpcInteraction(ServerPlayer player, byte interactionID) {
-        if (interactionID == 0) {
-            this.setConversingPlayer(null);
-            return;
-        }
         if (interactionID == 2) {
             this.playSound(SoundEvents.VILLAGER_AMBIENT, this.getSoundVolume(), this.getVoicePitch());
             return;
         }
         if (interactionID == 1) {
             SMCPlayer.addMoney(800, player);
-            this.setConversingPlayer(null);
             this.setSolved(true);
             if (this.thief2 == null || !this.thief2.isAlive() || this.thief2.isSolved()) {
                 SMCAdvancementData.finishAdvancement("thief", player);
@@ -229,5 +237,6 @@ public class Thief1 extends SMCNpc implements SpecialNpc {
                 SMCPlayer.levelUPPlayer(player);
             }
         }
+        this.setConversingPlayer(null);
     }
 }

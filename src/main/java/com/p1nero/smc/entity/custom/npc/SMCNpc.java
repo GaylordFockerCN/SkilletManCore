@@ -1,13 +1,11 @@
 package com.p1nero.smc.entity.custom.npc;
 
 import com.mojang.serialization.Dynamic;
-import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.archive.SMCArchiveManager;
 import com.p1nero.smc.entity.ai.behavior.VillagerTasks;
 import com.p1nero.smc.entity.ai.goal.NpcDialogueGoal;
 import com.p1nero.smc.entity.api.HomePointEntity;
 import com.p1nero.smc.entity.api.NpcDialogue;
-import com.p1nero.smc.entity.custom.npc.start_npc.StartNPC;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.packet.clientbound.NPCDialoguePacket;
@@ -28,7 +26,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;

@@ -29,6 +29,7 @@ public class WeaponGachaSystem {
         STAR3_LIST.addAll(List.of(Items.IRON_GOLEM_SPAWN_EGG.getDefaultInstance(), Items.SNOW_GOLEM_SPAWN_EGG.getDefaultInstance(), Items.SNOW_GOLEM_SPAWN_EGG.getDefaultInstance()));
         STAR3_LIST.addAll(List.of(CDItems.SPATULA.asStack(), SMCRegistrateItems.SPATULA_V2.asStack(), SMCRegistrateItems.SPATULA_V3.asStack()));
         STAR3_LIST.addAll(List.of(CDItems.SKILLET.asStack(), SMCRegistrateItems.IRON_SKILLET_LEVEL2.asStack(), SMCRegistrateItems.IRON_SKILLET_LEVEL3.asStack()));
+        STAR3_LIST.addAll(List.of(Items.BOW.getDefaultInstance(), Items.ARROW.getDefaultInstance().copyWithCount(16)));
         STAR4_LIST.addAll(List.of(SMCItems.GOOD_SUPER_GOLEM_SPAWN_EGG.get().getDefaultInstance(), SMCItems.GOOD_SUPER_GOLEM_SPAWN_EGG.get().getDefaultInstance()));
         STAR4_LIST.addAll(List.of(SMCRegistrateItems.GOLDEN_SKILLET.asStack(), SMCRegistrateItems.GOLDEN_SKILLET_V2.asStack(), SMCRegistrateItems.GOLDEN_SKILLET_V3.asStack()));
         STAR4_LIST.addAll(List.of(SMCRegistrateItems.GOLDEN_SPATULA.asStack(), SMCRegistrateItems.GOLDEN_SPATULA_V2.asStack(), SMCRegistrateItems.GOLDEN_SPATULA_V3.asStack()));
@@ -97,6 +98,6 @@ public class WeaponGachaSystem {
         if (itemPool.isEmpty()) {
             return Items.AIR.getDefaultInstance();
         }
-        return itemPool.get(random.nextInt(itemPool.size()));
+        return itemPool.get(random.nextInt(itemPool.size())).copy();
     }
 }

@@ -11,6 +11,7 @@ import com.p1nero.smc.client.gui.screen.info_screen.StartGuideScreenHandler;
 import com.p1nero.smc.effect.SMCEffects;
 import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
+import com.p1nero.smc.event.ClientForgeEvents;
 import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.BookManager;
@@ -32,11 +33,17 @@ public class SMCLangGenerator extends SMCLangProvider {
 //                , "【东坡肉颂】\\n慢火熬得琥珀光\\n肥而不腻即文章\\n箸下沉浮三十载\\n方悟此味是柔刚"
 //                , "【青团行】\\n艾草裹住江南春\\n一口咬出剑气横\\n若问清明何处好\\n剑客坟前酒尚温");
 
+        for(int i = 0; i < ClientForgeEvents.TIPS.size(); i++){
+            this.add("screen_tips.smc.tip" + i, ClientForgeEvents.TIPS.get(i));
+        }
+
         this.addInfo("set_time_not_allowed", "§c \"/time set\"命令将影响游戏进度！请使用 \"/time add\"代替！");
 
         this.addInfo("start_work", "§a上班！");
         this.addInfo("end_work", "§c下班！");
         this.add("key.smc.new_shop", "一家新店铺");
+
+        this.addInfo("die_tip", "§6多练习招架和闪避，建议寻找特定村民抽取强力武器，盔甲，技能书！（本包所有伤害都已经降低1/2了哦~）");
 
         this.addInfo("full_score", "§e满分！！");
         this.addInfo("middle_score", "§a优秀！");
@@ -85,7 +92,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("shop_upgrade", "§a店铺已升至 %d §a级！");
         this.addInfo("next_grade_left", "§6距下一游戏阶段还差 %d §6级！");
         this.addInfo("unlock_stage2_info", "村民订购解锁 §a[海鲜大礼包]§r！ 现在可以使用全部武器了！");
-        this.addInfo("meat_available", "村民订购解锁 §a[肉类大礼包]§r！\n §6接下来村民需求将出现混合食物！需多种食材混合，注意把控下锅时间哦~");
+        this.addInfo("meat_available", "村民订购解锁 §a[肉类大礼包]§r！\n §6接下来村民需求将出现更多混合食物！注意把控下锅时间哦~");
         this.addInfo("unlock_game_stage", "§6游戏阶段提升！现在声望等级上限已提升至： %d§6！解锁新的订购列表，并且客户需求种类增加！");
         this.addInfo("working", "营业中");
         this.addInfo("resting", "休息中");
@@ -97,7 +104,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("find_villager_gacha", "进行任意 武器/盔甲/技能书 祈愿");
         this.addInfo("find_villager_gacha2", "最好把村民框起来方便再次祈愿");
         this.addInfo("first_work", "往炉灶上摆上炒锅开始工作！");
-        this.addInfo("first_work2", "GL & HF！");
+        this.addInfo("first_work2", "村民顾客每半分钟生一次，最多存在六位哦~");
         this.addInfo("special_customer", "§6特殊顾客！");
         this.addInfo("level_mul", "声望等级加成！× %.1f");
         this.addInfo("seafood_mul", "海鲜加成！× %.1f");
@@ -185,7 +192,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add("item.smc.diamond_skillet_skill2", "冲刺时 %s %s/%s %s 释放 CREMATORIO");
         this.add("item.smc.diamond_skillet_skill3", "%s %s %s %s %s 释放 SOLAR POLVORA");
         this.add(SMCRegistrateItems.DIRT_PLATE.get(), "脏盘子");
-        this.add(SMCRegistrateItems.DIRT_PLATE.get().getDescriptionId() + ".disc", "上面充满了油渍，对着水右键可以洗干净。或许也可以重复使用？");
+        this.add(SMCRegistrateItems.DIRT_PLATE.get().getDescriptionId() + ".disc", "上面充满了油渍，对着水右键可以洗干净。");
         this.add(SMCBlocks.MAIN_COOK_BLOCK.get(), "核心方块");
 
         this.add(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.get(), "技能书抽奖券");
@@ -256,7 +263,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialog(SMCEntities.START_NPC, 4, "§a已升级！");
         this.addDialog(SMCEntities.START_NPC, 5, "准备好开业了吗！§6由于作者没有建筑水平，因此还特地补偿了一些建筑方块，快去装饰你的店铺吧！§r§c建筑时记得给村民留交易窗口！村民将从四面八方生成！");
         this.addDialog(SMCEntities.START_NPC, 6, "建议优先寻找§6盔甲匠§r和§6武器匠§r抽取盔甲和武器！以获得更好的游玩体验！ 将§6炒锅§r摆上§6炉灶§r以开始营业，长按拆下以下班。右键顾客以查看所需食材，烹饪完成后将食材放至§6主手§r，再次对话以交付食材。根据食材的品质将获得不同奖励。而夜晚可能会有§c袭击事件§r，拿起平底锅保卫村庄！");
-        this.addDialog(SMCEntities.START_NPC, 7, "炒菜时，拿着食材右键§6炒锅§r以把对应的食材丢入锅中，用§6锅铲§r右键即可翻炒。左边的仪表盘提示食物是否§c烧焦§r，请在合适的时候用盘子将其取出！ 使用§a[JEI]§r可查看料理配方。在物品栏可查看食材烹饪时间区间，做好计算再下锅吧！用到的食材越高级，声望等级越高，奖励越丰富！如果手忙脚乱，§6[预制菜]§r 是一个不错的选择。");
+        this.addDialog(SMCEntities.START_NPC, 7, "炒菜时，拿着食材右键§6炒锅§r以把对应的食材丢入锅中，用§6锅铲§r右键即可翻炒。左边的仪表盘提示食物是否§c烧焦§r，请在合适的时候用盘子将其取出！ 使用§a[JEI]§r可查看料理配方。在物品栏可查看食材§6烹饪时间区间§r，做好计算再下锅吧！用到的食材越高级，声望等级越高，奖励越丰富！如果手忙脚乱，§6[预制菜]§r 是一个不错的选择。");
         this.addDialog(SMCEntities.START_NPC, 8, "接待足够多的村民或成功抵御一次袭击，将提升一次店铺声望等级.随着声望等级提升将解锁新的资源和玩法。到一定声望等级时将开启§6突破试炼§r，若试炼成功则可获得大量奖励并且进入下一游戏阶段。");
         this.addDialog(SMCEntities.START_NPC, 9, "Zzz...Zzz...Zzz...(忙碌了一天的员工睡得正香，  此刻也许你会好奇它为什么能够站着睡着。平底锅侠的世界就是如此奇妙，无需那么多为什么。)");
 

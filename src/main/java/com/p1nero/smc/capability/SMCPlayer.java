@@ -3,6 +3,7 @@ package com.p1nero.smc.capability;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.client.sound.SMCSounds;
+import com.p1nero.smc.client.sound.player.RaidMusicPlayer;
 import com.p1nero.smc.client.sound.player.WorkingMusicPlayer;
 import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.entity.custom.CustomColorItemEntity;
@@ -14,12 +15,14 @@ import com.p1nero.smc.util.ItemUtil;
 import com.p1nero.smc.util.gacha.ArmorGachaSystem;
 import com.p1nero.smc.util.gacha.SkillBookGachaSystem;
 import com.p1nero.smc.util.gacha.WeaponGachaSystem;
+import com.yungnickyoung.minecraft.betterendisland.mixin.ServerLevelMixin;
 import dev.xkmc.cuisinedelight.init.registrate.PlateFood;
 import hungteen.htlib.common.world.entity.DummyEntityManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -161,7 +164,7 @@ public class SMCPlayer {
     public static final int STAGE1_REQUIRE = 7;
     public static final int STAGE2_REQUIRE = 20;
     public static final int STAGE3_REQUIRE = 50;
-    public static final List<PlateFood> STAGE0_FOOD_LIST = List.of(PlateFood.FRIED_RICE, PlateFood.FRIED_PASTA, PlateFood.FRIED_MUSHROOM, PlateFood.VEGETABLE_PLATTER);
+    public static final List<PlateFood> STAGE0_FOOD_LIST = List.of(PlateFood.VEGETABLE_FRIED_RICE, PlateFood.FRIED_RICE, PlateFood.FRIED_PASTA, PlateFood.FRIED_MUSHROOM, PlateFood.VEGETABLE_PLATTER);
     public static final List<PlateFood> MEAT_AND_MIX = List.of(PlateFood.VEGETABLE_FRIED_RICE, PlateFood.VEGETABLE_PASTA, PlateFood.SCRAMBLED_EGG_AND_TOMATO,
             PlateFood.MEAT_WITH_VEGETABLES, PlateFood.FRIED_MEAT_AND_MELON, PlateFood.HAM_FRIED_RICE, PlateFood.MEAT_FRIED_RICE,
             PlateFood.MEAT_PASTA, PlateFood.MEAT_PLATTER);
@@ -184,11 +187,11 @@ public class SMCPlayer {
     public static void addExperience(ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         smcPlayer.levelUpLeft++;
-        if(smcPlayer.levelUpLeft > 1 + smcPlayer.stage * 2) {
+        if(smcPlayer.levelUpLeft > 1 + smcPlayer.stage) {
             smcPlayer.levelUpLeft = 0;
             levelUPPlayer(serverPlayer);
         } else {
-            serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("level_up_left", 1 + smcPlayer.stage * 2 - smcPlayer.levelUpLeft + 1), false);
+            serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("level_up_left", 1 + smcPlayer.stage - smcPlayer.levelUpLeft + 1), false);
         }
     }
 
@@ -642,7 +645,18 @@ public class SMCPlayer {
             } else {
                 WorkingMusicPlayer.stopMusic();
             }
+            if(DataManager.inRaid.get(player)){
+                RaidMusicPlayer.playRaidMusic();
+            } else {
+                RaidMusicPlayer.stopMusic();
+            }
+
         } else {
+
+            if(DataManager.inRaid.get(player) && DummyEntityManager.getDummyEntities(((ServerLevel) player.level())).isEmpty()){
+                DataManager.inRaid.put(player, false);
+            }
+
             if (this.currentTalkingEntity != null && this.currentTalkingEntity.isAlive()) {
                 this.currentTalkingEntity.getLookControl().setLookAt(player);
                 this.currentTalkingEntity.getNavigation().stop();
@@ -673,11 +687,11 @@ public class SMCPlayer {
                     this.weaponGachaingCount--;
                     ItemStack itemStack = WeaponGachaSystem.pull(((ServerPlayer) player));
                     CustomColorItemEntity entity = ItemUtil.addItemEntity(player, itemStack);
-                    if(WeaponGachaSystem.STAR5_LIST.contains(itemStack)) {
+                    if(WeaponGachaSystem.STAR5_LIST.stream().anyMatch(itemStackInPool -> itemStackInPool.is(itemStack.getItem()))) {
                         entity.setTeamColor(0xfff66d);
                         entity.setGlowingTag(true);
                         playGoldEffect((ServerPlayer) player, itemStack);
-                    } else if(WeaponGachaSystem.STAR4_LIST.contains(itemStack)) {
+                    } else if(WeaponGachaSystem.STAR4_LIST.stream().anyMatch(itemStack1 -> itemStack1.is(itemStack.getItem()))) {
                         entity.setTeamColor(0xc000ff);
                         entity.setGlowingTag(true);
                         playRareEffect((ServerPlayer) player, itemStack);

@@ -329,11 +329,11 @@ public class StartNPC extends SMCNpc {
                     .addLeaf(dialogueComponentBuilder.opt(13), (byte) 13);
             int stage = senderData.getInt("player_stage");
 
-            if (stage > 1) {
+            if (stage >= 1) {
                 foodBuyer.addLeaf(dialogueComponentBuilder.opt(14), (byte) 14);
             }
 
-            if (stage > 2) {
+            if (stage >= 2) {
                 foodBuyer.addLeaf(dialogueComponentBuilder.opt(15), (byte) 15);
             }
 

@@ -15,22 +15,21 @@ import net.minecraft.world.entity.player.Player;
 public class RaidMusicPlayer {
 
     private static RaidMusic music;
-    private static boolean isRecordPlaying;
 
-    public static void playWorkingMusic() {
+    public static void playRaidMusic() {
         Player player = Minecraft.getInstance().player;
-        if (player != null && SMCSounds.WORKING_BGM != null && player.isAlive()) {
+        if (player != null && SMCSounds.RAID_BGM != null && player.isAlive()) {
             if (music != null) {
-                if (Minecraft.getInstance().options.getSoundSourceVolume(SoundSource.RECORDS) <= 0) {
+                if (Minecraft.getInstance().options.getSoundSourceVolume(SoundSource.MUSIC) <= 0) {
                     music = null;
                 } else if (!DataManager.inRaid.get(player)) {
                     music.player = null;
-                } else if (music.player == null && music.soundEvent == SMCSounds.WORKING_BGM.get()) {
+                } else if (music.player == null && music.soundEvent == SMCSounds.RAID_BGM.get()) {
                     music.player = player;
                 }
             } else {
                 if (DataManager.inRaid.get(player)) {
-                    music = new RaidMusic(SMCSounds.WORKING_BGM.get(), player, player.getRandom());
+                    music = new RaidMusic(SMCSounds.RAID_BGM.get(), player, player.getRandom());
                 } else {
                     music = null;
                 }
@@ -52,14 +51,6 @@ public class RaidMusicPlayer {
         }
     }
 
-    public static boolean isRecordPlaying() {
-        return isRecordPlaying;
-    }
-
-    public static void setIsRecordPlaying(boolean isRecordPlaying) {
-        RaidMusicPlayer.isRecordPlaying = isRecordPlaying;
-    }
-
     private static class RaidMusic extends AbstractTickableSoundInstance {
         public Player player;
         private int ticksExisted = 0;
@@ -72,7 +63,7 @@ public class RaidMusicPlayer {
             this.attenuation = Attenuation.NONE;
             this.looping = true;
             this.delay = 0;
-            this.volume = 0.5F;
+            this.volume = 0.35F;
             this.x = player.getX();
             this.y = player.getY();
             this.z = player.getZ();

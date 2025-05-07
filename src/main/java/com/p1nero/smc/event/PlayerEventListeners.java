@@ -37,6 +37,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.event.TickEvent;
@@ -95,6 +97,7 @@ public class PlayerEventListeners {
                 DataManager.firstJoint.put(serverPlayer, true);
                 CommandSourceStack commandSourceStack = serverPlayer.createCommandSourceStack().withPermission(2);
                 Objects.requireNonNull(serverPlayer.getServer()).getCommands().performPrefixedCommand(commandSourceStack, "gamerule keepInventory true");
+                Objects.requireNonNull(serverPlayer.getServer()).getCommands().performPrefixedCommand(commandSourceStack, "gamerule mobGriefing false");
                 serverPlayer.playSound(SMCSounds.VILLAGER_YES.get());
                 PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new OpenStartGuideScreenPacket(), serverPlayer);
                 serverPlayer.setItemSlot(EquipmentSlot.HEAD, FAItems.THIEF_HELMET.get().getDefaultInstance());
@@ -119,27 +122,6 @@ public class PlayerEventListeners {
                 ItemUtil.addItem(serverPlayer, guard);
                 ItemUtil.addItem(serverPlayer, parrying);
             }
-
-            ItemStack book = BookManager.getDefaultTextBook(3, "洪七", "降龍十八掌"
-                    , " 第一式：見龍在田\\n" +
-                            "    /\\\\_/\\\\\\n" +
-                            "    ( o.o )s\\n" +
-                            "==>===|~"
-                    , "第二式: 飛龍在天\\n" +
-                            "    ^\\n" +
-                            "   / \\\\\\n" +
-                            "~O=====>\\n" +
-                            "\\\\_/"
-                    , "第三式: 龍戰於野\\n" +
-                            "  <><>s\\n" +
-                            "{|==|}  ~~~*\\n" +
-                            " </\\\\>"
-                    , "收勢: 神龍擺尾\\n" +
-                            "  \\\\||/\\n" +
-                            "  ~@~\\n" +
-                            "--<~~*s");
-
-            ItemUtil.addItem(serverPlayer, book, true);
         }
 
     }
@@ -153,9 +135,10 @@ public class PlayerEventListeners {
             ItemStack mainHandItem = event.player.getMainHandItem();
             ServerPlayerPatch serverPlayerPatch = EpicFightCapabilities.getEntityPatch(event.player, ServerPlayerPatch.class);
             if (!EpicFightCapabilities.getItemStackCapability(mainHandItem).isEmpty() && !event.player.isCreative() && serverPlayerPatch != null && serverPlayerPatch.isBattleMode()) {
-                if (!(mainHandItem.getItem() instanceof CuisineSkilletItem || mainHandItem.getItem() instanceof SpatulaItem)) {
+                Item item = mainHandItem.getItem();
+                if (!(item instanceof CuisineSkilletItem ||item instanceof SpatulaItem || item instanceof BowItem)) {
                     SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(event.player);
-                    //stage2才解禁
+                    //stage2才解禁，允许使用弓
                     if (smcPlayer.getLevel() < SMCPlayer.STAGE2_REQUIRE) {
                         event.player.drop(mainHandItem.copy(), true);
                         mainHandItem.shrink(1);

@@ -16,18 +16,19 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.BossEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -36,8 +37,6 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Vindicator;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -45,6 +44,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class VirgilVillager extends Vindicator implements NpcDialogue {
 
+    protected ServerBossEvent bossInfo;
     protected static final EntityDataAccessor<Boolean> TALKED = SynchedEntityData.defineId(VirgilVillager.class, EntityDataSerializers.BOOLEAN);//是否对话过，用来渲染黄色感叹号
     protected static final EntityDataAccessor<Boolean> FIGHTING = SynchedEntityData.defineId(VirgilVillager.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(VirgilVillager.class, EntityDataSerializers.BOOLEAN);
@@ -54,11 +54,30 @@ public class VirgilVillager extends Vindicator implements NpcDialogue {
 
     public VirgilVillager(EntityType<? extends Vindicator> entityType, Level level) {
         super(entityType, level);
+        bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
     }
 
     public VirgilVillager(Player owner, Vec3 pos) {
         this(SMCEntities.VIRGIL_VILLAGER.get(), owner.level());
         this.setPos(pos);
+    }
+
+    @Override
+    protected void customServerAiStep() {
+        super.customServerAiStep();
+        bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
+    }
+
+    @Override
+    public void startSeenByPlayer(@NotNull ServerPlayer player) {
+        super.startSeenByPlayer(player);
+        bossInfo.addPlayer(player);
+    }
+
+    @Override
+    public void stopSeenByPlayer(@NotNull ServerPlayer player) {
+        super.stopSeenByPlayer(player);
+        bossInfo.removePlayer(player);
     }
 
     protected void populateDefaultEquipmentSlots(@NotNull RandomSource randomSource, @NotNull DifficultyInstance instance) {
