@@ -2,7 +2,6 @@ package com.p1nero.smc.datagen;
 
 import com.github.ysbbbbbb.kaleidoscopedoll.init.ModItems;
 import com.p1nero.smc.SkilletManCoreMod;
-import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import dev.xkmc.cuisinedelight.init.registrate.CDItems;
@@ -14,7 +13,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
@@ -24,11 +22,13 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class SMCAdvancementData extends ForgeAdvancementProvider {
+    public static final String FOOD_ADV_PRE = "food_adv_unlock_";
     public SMCAdvancementData(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper helper) {
         super(output, registries, helper, List.of(new SMCAdvancements()));
 
@@ -102,6 +102,29 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement tooManyMouth = registerAdvancement(root, "too_many_mouth", FrameType.TASK, ModItems.DOLL_ICON.get());
             Advancement makeCustomerCry = registerAdvancement(root, "got_fox", FrameType.TASK, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_45"))));
             Advancement preCook = registerAdvancement(startWork, "pre_cook", FrameType.TASK, PlateFood.FRIED_RICE.item);
+
+
+            Advancement foodsRoot = Advancement.Builder.advancement()
+                    .display(CDItems.PLATE.asItem(),
+                            Component.translatable(pre + SkilletManCoreMod.MOD_ID + "_food"),
+                            Component.translatable(pre + SkilletManCoreMod.MOD_ID + "_food" + ".desc"),
+                            new ResourceLocation("textures/block/bricks.png"),
+                            FrameType.TASK, false, false, false)
+                    .addCriterion(SkilletManCoreMod.MOD_ID, new ImpossibleTrigger.TriggerInstance())
+                    .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID + "_food"), existingFileHelper);
+
+            for(PlateFood plateFood : PlateFood.values()){
+                String name = FOOD_ADV_PRE + plateFood.name().toLowerCase(Locale.ROOT);
+                Advancement.Builder.advancement()
+                        .parent(foodsRoot)
+                        .display(plateFood.item,
+                                plateFood.item.asStack().getDisplayName(),
+                                SkilletManCoreMod.getInfo("food_adv_unlock_pre").append(plateFood.item.asStack().getDisplayName()),
+                                null,
+                                FrameType.TASK, true, true, false)
+                        .addCriterion(name, new ImpossibleTrigger.TriggerInstance())
+                        .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, name), existingFileHelper);
+            }
 
         }
 

@@ -16,6 +16,7 @@ import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NoneDialogBuilder extends VillagerDialogScreenHandler.VillagerDialogBuilder {
@@ -88,8 +89,7 @@ public class NoneDialogBuilder extends VillagerDialogScreenHandler.VillagerDialo
                 serverPlayer.level().addFreshEntity(pig);
             }
             case 9 -> {
-                List<VillagerProfession> villagerProfessions = ForgeRegistries.VILLAGER_PROFESSIONS.getValues().stream().toList();
-
+                List<VillagerProfession> villagerProfessions = ForgeRegistries.VILLAGER_PROFESSIONS.getValues().stream().filter(villagerProfession -> villagerProfession.workSound() != null).toList();
                 //备用
 //                List<VillagerProfession> villagerProfessions = List.of(VillagerProfession.FARMER, VillagerProfession.BUTCHER, VillagerProfession.FISHERMAN,
 //                        VillagerProfession.CLERIC, VillagerProfession.LIBRARIAN, VillagerProfession.FLETCHER,

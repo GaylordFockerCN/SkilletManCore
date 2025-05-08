@@ -208,12 +208,12 @@ public class Thief1 extends SMCNpc implements SpecialNpc {
         LinkListStreamDialogueScreenBuilder builder = new LinkListStreamDialogueScreenBuilder(this);
         DialogueComponentBuilder dialogueComponentBuilder = new DialogueComponentBuilder(this);
         builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.ans(0))
-                .execute((byte) 2)
+                .addExecutable((byte) 2)
                 .addChild(new TreeNode(dialogueComponentBuilder.ans(1), dialogueComponentBuilder.opt(0))
-                        .execute((byte) 2)
+                        .addExecutable((byte) 2)
                         .addLeaf(dialogueComponentBuilder.opt(1))
                         .addChild(new TreeNode(dialogueComponentBuilder.ans(2), dialogueComponentBuilder.opt(2))
-                                .execute((byte) 2)
+                                .addExecutable((byte) 2)
                                 .addLeaf(dialogueComponentBuilder.opt(3), (byte) 1))));
         if (!builder.isEmpty()) {
             Minecraft.getInstance().setScreen(builder.build());

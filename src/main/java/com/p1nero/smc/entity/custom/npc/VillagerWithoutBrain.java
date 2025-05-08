@@ -1,5 +1,7 @@
 package com.p1nero.smc.entity.custom.npc;
 
+import com.google.common.collect.ImmutableSet;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.datagen.SMCAdvancementData;
@@ -15,12 +17,15 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.Brain;
+import net.minecraft.world.entity.ai.behavior.VillagerGoalPackages;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * 不会乱跑的村民
@@ -31,13 +36,33 @@ public class VillagerWithoutBrain extends Villager {
     }
 
     protected @NotNull Brain<?> makeBrain(@NotNull Dynamic<?> dynamic) {
-        return this.brainProvider().makeBrain(dynamic);
+        Brain<Villager> brain = this.brainProvider().makeBrain(dynamic);
+        this.registerBrainGoals(brain);
+        return brain;
     }
 
     public void refreshBrain(@NotNull ServerLevel serverLevel) {
         Brain<Villager> brain = this.getBrain();
         brain.stopAll(serverLevel, this);
         this.brain = brain.copyWithoutBehaviors();
+        this.registerBrainGoals(this.getBrain());
+    }
+
+    private void registerBrainGoals(Brain<Villager> p_35425_) {
+        VillagerProfession villagerprofession = this.getVillagerData().getProfession();
+        p_35425_.addActivityWithConditions(Activity.WORK, VillagerGoalPackages.getWorkPackage(villagerprofession, 0.5F), ImmutableSet.of(Pair.of(MemoryModuleType.JOB_SITE, MemoryStatus.VALUE_PRESENT)));
+        p_35425_.addActivity(Activity.CORE, VillagerGoalPackages.getCorePackage(villagerprofession, 0.5F));
+        p_35425_.addActivity(Activity.IDLE, VillagerGoalPackages.getIdlePackage(villagerprofession, 0.5F));
+        p_35425_.setCoreActivities(ImmutableSet.of(Activity.CORE));
+        p_35425_.setDefaultActivity(Activity.IDLE);
+        p_35425_.setActiveActivityIfPossible(Activity.IDLE);
+        p_35425_.updateActivityFromSchedule(this.level().getDayTime(), this.level().getGameTime());
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        this.getNavigation().stop();
     }
 
     /**

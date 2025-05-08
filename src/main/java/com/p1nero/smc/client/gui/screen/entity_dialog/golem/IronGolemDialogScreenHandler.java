@@ -36,7 +36,7 @@ public class IronGolemDialogScreenHandler {
         if(smcPlayer.getMorality() >= 0) {
             root = new TreeNode(builder.ans(0))
                     .addChild(new TreeNode(builder.ans(1), builder.opt(0))
-                            .execute(FLOWER)
+                            .addExecutable(FLOWER)
                             .addLeaf(builder.opt(1)))
                     .addLeaf(builder.opt(1));
         } else {

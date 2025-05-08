@@ -60,6 +60,8 @@ import yesman.epicfight.world.item.EpicFightItems;
 import java.util.List;
 import java.util.Objects;
 
+import static com.p1nero.smc.datagen.SMCAdvancementData.FOOD_ADV_PRE;
+
 @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID)
 public class PlayerEventListeners {
 
@@ -73,9 +75,15 @@ public class PlayerEventListeners {
     @SubscribeEvent
     public static void onPlayerAdvancementEarn(AdvancementEvent.AdvancementEarnEvent event) {
         if(event.getEntity() instanceof ServerPlayer serverPlayer && event.getAdvancement().getId().getNamespace().equals(SkilletManCoreMod.MOD_ID)) {
-            if(!event.getAdvancement().getId().getPath().contains("recipe")) {
-                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("advancement_look_tip"), false);
-                SMCPlayer.addMoney(200, serverPlayer);
+            String path = event.getAdvancement().getId().getPath();
+            if(!path.contains("recipe")) {
+                if(path.contains(FOOD_ADV_PRE)){
+                    serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("advancement_food_unlock_tip"), false);
+                    SMCPlayer.addMoney(300, serverPlayer);
+                } else {
+                    serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("advancement_look_tip"), false);
+                    SMCPlayer.addMoney(200, serverPlayer);
+                }
                 serverPlayer.level().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SoundEvents.VILLAGER_CELEBRATE, serverPlayer.getSoundSource(), 1.0F, 1.0F);
             }
         }
@@ -90,6 +98,7 @@ public class PlayerEventListeners {
             //防止重进后boss的uuid不同
             SMCBoss.SERVER_BOSSES.forEach(((uuid, integer) -> PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new SyncUuidPacket(uuid, integer), serverPlayer)));
             SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID, serverPlayer);
+            SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID + "_food", serverPlayer);
 
             SMCPlayer.updateWorkingState(false, serverPlayer);//重置上班状态，防止假性上班（
 

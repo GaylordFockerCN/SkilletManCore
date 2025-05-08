@@ -318,6 +318,9 @@ public class Customer extends SMCNpc {
             } else {
                 customerData = CUSTOMERS.get(this.getSMCId() % CUSTOMERS.size());
             }
+            if(customerData != null && player instanceof ServerPlayer){
+                customerData.onInteract(((ServerPlayer) player), this);
+            }
         }
         return super.mobInteract(player, hand);
     }
@@ -374,6 +377,7 @@ public class Customer extends SMCNpc {
 
         if(interactionID == CustomerData.SUBMIT_FOOD) {
             //提交食物专用的代码
+            this.setOrder(player.getMainHandItem());
             player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
             ItemUtil.addItem(player, SMCRegistrateItems.DIRT_PLATE.asItem(), 1);
             return;

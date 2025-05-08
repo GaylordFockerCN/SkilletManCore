@@ -13,6 +13,7 @@ import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.event.ClientForgeEvents;
 import com.p1nero.smc.item.SMCItems;
+import com.p1nero.smc.item.custom.CookGuideBookItem;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.BookManager;
 import com.p1nero.smc.worldgen.biome.SMCBiomes;
@@ -83,7 +84,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("trial_required2", "提示：可通过§a[酿造台]§r或对话转化无业村民");
         this.addInfo("game_time_no_enough", "§4游戏时长不足！禁止挑战最终boss！");
         this.addInfo("add_item_tip", "§a获得新物品：%s × %d");
-        this.addInfo("advancement_look_tip", "§a不知道做什么时，可以查看一下进度（默认按 L ）");
+        this.addInfo("advancement_look_tip", "不知道做什么时，可以按§a[L]§r查看进度");
         this.addInfo("unlock_new_order", "§a客户解锁了新的需求！ 当前可能的请求");
         this.addInfo("customer_left", "§c时间太久，顾客离开了一位。。");
         this.addInfo("already_has_owner", "§c您不是本店铺的主人！");
@@ -94,7 +95,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("next_grade_left", "§6距下一游戏阶段还差 %d §6级！");
         this.addInfo("unlock_stage2_info", "村民订购解锁 §a[海鲜大礼包]§r！ 现在可以使用全部武器了！");
         this.addInfo("meat_available", "村民订购解锁 §a[肉类大礼包]§r！\n §6接下来村民需求将出现更多混合食物！注意把控下锅时间哦~");
-        this.addInfo("unlock_game_stage", "§6游戏阶段提升！现在声望等级上限已提升至： %d§6！解锁新的订购列表，并且客户需求种类增加！");
+        this.addInfo("unlock_game_stage", "§6游戏阶段提升！现在声望等级上限已提升至：%d§6！ 解锁新的订购列表，并且客户需求种类增加！");
         this.addInfo("working", "营业中");
         this.addInfo("resting", "休息中");
         this.addInfo("foods_need_cut", "§6该食材需砧板加工处理！");
@@ -125,7 +126,10 @@ public class SMCLangGenerator extends SMCLangProvider {
 
         this.addSkill("better_dodge_display", "完美闪避显示", "成功闪避将留下残影和播放音效，并额外恢复一点耐力");
 
+        this.addInfo("food_adv_unlock_pre", "首次烹饪出： ");
+        this.addInfo("advancement_food_unlock_tip", "解锁了新的图鉴！默认按§a[L]§r查看");
         this.addAdvancement(SkilletManCoreMod.MOD_ID, "临村怀梦", "平底锅侠传奇的一生即将开始");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "_food", "食物图鉴", "制作过的食物将在这里展示出来");
         this.addAdvancement("dirt_plate", "节俭之星", "使用脏盘子盛菜，节俭是一种美德，但是你的顾客可能不会这么想。");
         this.addAdvancement("start_work", "新的开始", "接手一家店铺并开始经营");
         this.addAdvancement("money1000", "一千富翁", "持有 1,000 绿宝石");
@@ -144,6 +148,11 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("first_gacha", "第一抽！", "抽取任意 武器/盔甲/技能书");
         this.addAdvancement("first_5star_skillet", "第一个五星锅！", "将一把平底锅升到五星");
         this.addAdvancement("first_5star_item", "一发入魂！", "抽出第一个五星 武器/盔甲");
+
+        this.addAdvancement("he_shen", "真诚", "完成河神事件");
+        this.addAdvancement("two_kid", "两小儿辩锅", "完成两小儿事件");
+        this.addAdvancement("thief", "小偷", "完成小偷事件");
+        this.addAdvancement("virgil", "抛瓦！", "完成抛瓦事件");
 
 
         this.addAdvancement("end", "结束了？", "击败最终boss");
@@ -170,6 +179,8 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("pre_cook", "预制菜", "在大晚上的做菜卖给谁呢？");
         this.addAdvancement("dog_no_eat", "狗都不吃", "企图给狗吃做坏的食材。");
 
+        this.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get(), "烹饪宝典");
+        CookGuideBookItem.addTranslation(this);
         this.add(SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get(), "左锅右铲");
         this.add(SMCRegistrateItems.SPATULA_V2.get(), "锅铲");
         this.add(SMCRegistrateItems.SPATULA_V3.get(), "锅铲");
@@ -198,7 +209,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add(SMCBlocks.MAIN_COOK_BLOCK.get(), "核心方块");
 
         this.add(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.get(), "技能书抽奖券");
-        this.addItemUsageInfo(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asItem(), "可以在§6图书管理员§r处抽取技能书。");
+        this.addItemUsageInfo(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asItem(), "可以在§6图书管理员§r处抽取技能书。找不到武器匠时可以尝试 在无业村民附近摆放§a[讲台]§r 或 通过对话 转化普通村民");
         this.add(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.get(), "武器抽奖券");
         this.addItemUsageInfo(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asItem(), "可以在§6武器匠§r处抽取武器。找不到武器匠时可以尝试 在无业村民附近摆放§a[砂轮]§r 或 通过对话 转化普通村民");
         this.add(SMCRegistrateItems.ARMOR_RAFFLE_TICKET.get(), "盔甲抽奖券");

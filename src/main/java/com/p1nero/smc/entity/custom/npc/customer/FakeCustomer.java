@@ -15,6 +15,7 @@ import com.p1nero.smc.entity.ai.behavior.VillagerTasks;
 import com.p1nero.smc.entity.custom.npc.SMCNpc;
 import com.p1nero.smc.entity.custom.npc.customer.customer_data.normal.*;
 import com.p1nero.smc.entity.custom.npc.customer.customer_data.special.*;
+import com.p1nero.smc.entity.custom.npc.start_npc.StartNPC;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.NPCBlockDialoguePacket;
@@ -37,6 +38,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
@@ -61,7 +63,7 @@ public class FakeCustomer extends SMCNpc {
         super(entityType, level);
     }
 
-    public FakeCustomer(Player owner, Vec3 pos) {
+    public FakeCustomer(StartNPC owner, Vec3 pos) {
         this(SMCEntities.FAKE_CUSTOMER.get(), owner.level());
         this.setPos(pos);
         this.setOwnerUUID(owner.getUUID());
@@ -111,6 +113,11 @@ public class FakeCustomer extends SMCNpc {
     @Override
     public void tick() {
         super.tick();
+
+        LivingEntity owner = this.getOwner();
+        if(owner != null){
+            this.getLookControl().setLookAt(owner);
+        }
 
         if(this.getUnhappyCounter() > 0) {
             this.addParticlesAroundSelf(ParticleTypes.ANGRY_VILLAGER);

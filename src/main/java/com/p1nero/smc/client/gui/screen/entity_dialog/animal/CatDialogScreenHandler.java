@@ -55,24 +55,24 @@ public class CatDialogScreenHandler {
         if (cat.getOwner() == localPlayer) {
             root = new TreeNode(builder.ans(3), builder.opt(3));
             root.addChild(new TreeNode(builder.ans(4), builder.opt(5))
-                    .execute(SIT_DOWN)
+                    .addExecutable(SIT_DOWN)
                     .addChild(root));
             root.addChild(new TreeNode(builder.ans(5), builder.opt(6))
-                    .execute(SIT_UP)
+                    .addExecutable(SIT_UP)
                     .addChild(root));
             root.addChild(new TreeNode(builder.ans(6), builder.opt(7))
-                    .execute(LYE_DOWN)
+                    .addExecutable(LYE_DOWN)
                     .addChild(root));
             root.addChild(new TreeNode(builder.ans(7), builder.opt(8))
-                    .execute(PET)
+                    .addExecutable(PET)
                     .addChild(root));
         } else {
             root = new TreeNode(builder.ans(0), builder.opt(3))
                     .addChild(new TreeNode(builder.ans(1), builder.opt(0))
-                            .execute(TAME)
+                            .addExecutable(TAME)
                             .addLeaf(builder.opt(4)));
             root.addChild(new TreeNode(builder.ans(2), builder.opt(1))
-                            .execute(KILL)
+                            .addExecutable(KILL)
                             .addChild(root));
         }
         screenBuilder.setAnswerRoot(root);

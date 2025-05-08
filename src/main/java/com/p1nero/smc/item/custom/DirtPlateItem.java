@@ -9,6 +9,8 @@ import dev.xkmc.cuisinedelight.content.logic.CookedFoodData;
 import dev.xkmc.cuisinedelight.content.logic.CookingData;
 import dev.xkmc.cuisinedelight.content.recipe.BaseCuisineRecipe;
 import dev.xkmc.cuisinedelight.init.registrate.CDItems;
+import dev.xkmc.cuisinedelight.init.registrate.PlateFood;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -34,7 +36,12 @@ import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static com.p1nero.smc.datagen.SMCAdvancementData.FOOD_ADV_PRE;
 
 public class DirtPlateItem extends PlateItem {
     public DirtPlateItem(Properties pProperties) {
@@ -58,10 +65,24 @@ public class DirtPlateItem extends PlateItem {
         target.addItem(foodStack);
         target.addExp(food.score * food.size / 100);
         if(target instanceof PlateItem.PlayerTarget playerTarget) {
-            if(playerTarget.player() instanceof ServerPlayer serverPlayer && serverPlayer.serverLevel().isNight()) {
-                SMCAdvancementData.finishAdvancement("pre_cook", serverPlayer);
+            if(playerTarget.player() instanceof ServerPlayer serverPlayer) {
+                AtomicReference<PlateFood> plateFoodAtomicReference = new AtomicReference<>();
+                if(Arrays.stream(PlateFood.values()).anyMatch(plateFood -> {
+                    if(foodStack.is(plateFood.item.asItem())){
+                        plateFoodAtomicReference.set(plateFood);
+                        return true;
+                    }
+                    return false;
+                })){
+                    String name = FOOD_ADV_PRE + plateFoodAtomicReference.get().name().toLowerCase(Locale.ROOT);
+                    SMCAdvancementData.finishAdvancement(name, serverPlayer);
+                }
+
+                if(serverPlayer.serverLevel().isNight()){
+                    SMCAdvancementData.finishAdvancement("pre_cook", serverPlayer);
+                }
             }
-            giveScoreEffect(playerTarget.player(), food.score);
+            DirtPlateItem.giveScoreEffect(playerTarget.player(), food.score);
         }
     }
 
@@ -125,6 +146,6 @@ public class DirtPlateItem extends PlateItem {
     @Override
     public void appendHoverText(@NotNull ItemStack itemStack, @Nullable Level level, @NotNull List<Component> list, @NotNull TooltipFlag flag) {
         super.appendHoverText(itemStack, level, list, flag);
-        list.add(Component.translatable(this.getDescriptionId() + ".disc"));
+        list.add(Component.translatable(this.getDescriptionId() + ".disc").withStyle(ChatFormatting.GRAY));
     }
 }

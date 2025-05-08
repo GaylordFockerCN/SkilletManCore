@@ -6,20 +6,21 @@ import com.p1nero.smc.client.gui.screen.component.DialogueChoiceComponent;
 import com.p1nero.smc.entity.api.NpcDialogue;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * 用多叉树来优化流式对话框（我自己起的名词，就是没有多个分支几乎都是一条直线的对话，不过好像带有分支的也可以用？
  * 如果要构建树状对话就手动设置answerRoot即可
  * 从Command中得到启发{@link net.minecraft.commands.Commands}
  *
- * @author LZY
+ * @author P1nero
  */
 public class LinkListStreamDialogueScreenBuilder {
 
@@ -87,7 +88,7 @@ public class LinkListStreamDialogueScreenBuilder {
 
     /**
      * @param finalOption 最后显示的话
-     * @param returnValue 选项的返回值，默认返回0。用于处理 {@link NpcDialogue#handleNpcInteraction(Player, byte)}
+     * @param returnValue 选项的返回值，默认返回0。用于处理 {@link NpcDialogue#handleNpcInteraction(ServerPlayer, byte)}
      */
     public LinkListStreamDialogueScreenBuilder addFinalChoice(Component finalOption, byte returnValue) {
         if (answerNode == null)
@@ -96,12 +97,20 @@ public class LinkListStreamDialogueScreenBuilder {
         return this;
     }
 
+    public LinkListStreamDialogueScreenBuilder addFinalChoice(Component finalOption) {
+        return addFinalChoice(finalOption, (byte) 0);
+    }
+
     /**
      * @param finalOption 最后显示的话
-     * @param returnValue 选项的返回值，默认返回0。用于处理 {@link NpcDialogue#handleNpcInteraction(Player, byte)}
+     * @param returnValue 选项的返回值，默认返回0。用于处理 {@link NpcDialogue#handleNpcInteraction(ServerPlayer, byte)}
      */
     public LinkListStreamDialogueScreenBuilder addFinalChoice(int finalOption, byte returnValue) {
         return addFinalChoice(DialogueComponentBuilder.BUILDER.opt(entityType, finalOption), returnValue);
+    }
+
+    public LinkListStreamDialogueScreenBuilder addFinalChoice(int finalOption) {
+        return addFinalChoice(finalOption, (byte) 0);
     }
 
     /**
@@ -138,10 +147,10 @@ public class LinkListStreamDialogueScreenBuilder {
     /**
      * 按下按钮后执行
      */
-    public LinkListStreamDialogueScreenBuilder thenExecute(Runnable runnable) {
+    public LinkListStreamDialogueScreenBuilder thenExecute(Consumer<DialogueScreen> consumer) {
         if (answerNode == null)
             return null;
-        answerNode.execute(runnable);
+        answerNode.addExecutable(consumer);
         return this;
     }
 
@@ -149,7 +158,7 @@ public class LinkListStreamDialogueScreenBuilder {
      * 按下按钮后执行。记得在handle的时候不要把玩家设置为null，提前返回，否则可能中断对话！
      */
     public LinkListStreamDialogueScreenBuilder thenExecute(byte returnValue) {
-        answerNode.execute(returnValue);
+        answerNode.addExecutable(returnValue);
         return this;
     }
 
@@ -178,7 +187,7 @@ public class LinkListStreamDialogueScreenBuilder {
             return button -> {
                 screen.finishChat(finalNode.getReturnValue());
                 if (finalNode.canExecute()) {
-                    finalNode.execute();
+                    finalNode.execute(screen);
                 }
             };
         }
@@ -186,7 +195,7 @@ public class LinkListStreamDialogueScreenBuilder {
         //否则继续递归创建按钮
         return button -> {
             if (node.canExecute()) {
-                node.execute();
+                node.execute(screen);
             }
             if (node.canExecuteCode()) {
                 if (node.getExecuteValue() == 0) {

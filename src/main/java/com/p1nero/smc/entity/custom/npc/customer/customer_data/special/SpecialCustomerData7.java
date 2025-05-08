@@ -27,7 +27,7 @@ public class SpecialCustomerData7 extends SpecialCustomerData {
     @Override
     public void onInteract(ServerPlayer player, Customer self) {
         super.onInteract(player, self);
-        self.setVillagerData(self.getVillagerData().setProfession(VillagerProfession.NITWIT));
+        self.setVillagerData(self.getVillagerData().setProfession(VillagerProfession.NITWIT).setLevel(2));
     }
 
     public void generateTranslation(SMCLangGenerator generator) {

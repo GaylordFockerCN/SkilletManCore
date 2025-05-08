@@ -125,7 +125,8 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
                         } else {
                             //生成袭击
                             SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
-                            if(!smcPlayer.isTodayInRaid() && mainCookBlockEntity.getDayTime() >= 3){
+                            int dayTime = mainCookBlockEntity.getDayTime();
+                            if(!smcPlayer.isTodayInRaid() && dayTime >= 3 && dayTime % 2 == 0){
                                 SMCRaidManager.startNightRaid(serverPlayer, smcPlayer);
                                 DataManager.specialSolvedToday.put(serverPlayer, false);
                             }
@@ -174,6 +175,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
     }
 
     public void workingTick(ServerPlayer owner){
+        SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(owner);
         if(!hasSkillet() || !isWorkingTime()){
             isWorking = false;
             return;
@@ -210,7 +212,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
 
         //生成顾客，30s一只，最多6只
         this.customers.removeIf(customer -> customer == null || customer.isRemoved() || !customer.isAlive());
-        if(this.customers.size() < 6 && owner.tickCount % 600 == 0) {
+        if(this.customers.size() < 6 && owner.tickCount % (1200 - smcPlayer.getStage() * 200) == 0) {
             BlockPos spawnPos = getRandomPos(owner, 15, 20);
             while (spawnPos.getY() - owner.getY() > 5){
                 spawnPos = getRandomPos(owner, 15, 20);
@@ -244,8 +246,8 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
      * 生成特殊事件npc
      */
     public void summonSpecial(ServerPlayer owner){
-        BlockPos randomSpawnPos = getRandomPos(owner, 10, 12);
-        BlockPos randomHomePos = getRandomPos(owner, 10, 12);
+        BlockPos randomSpawnPos = getRandomPos(owner, 10, 12).above(2);
+        BlockPos randomHomePos = getRandomPos(owner, 10, 12).above(2);
         if(!DataManager.specialEvent1Solved.get(owner)) {
             HeShen heShen = new HeShen(owner, randomHomePos.getCenter());
             heShen.setSpawnPos(randomSpawnPos);
@@ -279,7 +281,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         } else if(!DataManager.specialEvent4Solved.get(owner)){
             double yRot = MathUtils.getYRotOfVector(randomSpawnPos.getCenter().subtract(owner.position()));
             Direction direction = Direction.fromYRot(yRot);
-            BlockState blockState = SMCRegistrateBlocks.CHAIR.getDefaultState().setValue(BlockStateProperties.HORIZONTAL_FACING, direction);
+            BlockState blockState = SMCRegistrateBlocks.CHAIR.getDefaultState().setValue(BlockStateProperties.HORIZONTAL_FACING, direction.getOpposite());//不知道为嘛反了
             owner.serverLevel().setBlockAndUpdate(randomSpawnPos, blockState);
             VirgilVillager villager = new VirgilVillager(owner, randomSpawnPos.above(1).getCenter());
             float dir = direction.toYRot();

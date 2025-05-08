@@ -46,7 +46,7 @@ public class SpecialCustomerData18 extends SpecialCustomerData {
                             .addLeaf(choice(-2), (byte) -3)));
         } else {
             root.addChild(new TreeNode(answer(0), choice(-1))
-                    .execute(SUBMIT_FOOD)
+                    .addExecutable(SUBMIT_FOOD)
                     .addChild(new TreeNode(answer(1), choice(0))
                             .addLeaf(choice(1), BAD)
                             .addLeaf(choice(2), BEST)));

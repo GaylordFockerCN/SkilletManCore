@@ -10,9 +10,13 @@ import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.util.SMCRaidManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.level.Level;
+
+import java.util.Objects;
 
 /**
  * 主线!
@@ -26,15 +30,18 @@ public class ClericDialogBuilder extends VillagerDialogScreenHandler.VillagerDia
     public void handle(ServerPlayer serverPlayer, Villager villager, byte interactionID) {
         super.handle(serverPlayer, villager, interactionID);
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
-        //试炼 TODO
         if(interactionID == 1) {
             SMCRaidManager.startTrial(serverPlayer, smcPlayer);
         }
 
-        //去末地 TODO
         if(interactionID == 2) {
-            if(smcPlayer.getLevel() <= SMCPlayer.STAGE1_REQUIRE) {
+            if(smcPlayer.getStage() <= 1) {
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("game_time_no_enough"), true);
+            } else {
+                ServerLevel end = serverPlayer.serverLevel().getServer().getLevel(Level.END);
+                if(end != null){
+                    serverPlayer.changeDimension(end);
+                }
             }
         }
 

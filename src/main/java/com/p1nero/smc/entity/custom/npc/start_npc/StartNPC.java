@@ -99,7 +99,7 @@ public class StartNPC extends SMCNpc {
         STAPLE_SET2.addAll(List.of(ModItems.RICE.get().getDefaultInstance(), ModItems.WHEAT_DOUGH.get().getDefaultInstance()));
         VEG_SET2.addAll(List.of(ModItems.BROWN_MUSHROOM_COLONY.get().getDefaultInstance(), ModItems.RED_MUSHROOM_COLONY.get().getDefaultInstance()));
         VEG_SET2.addAll(List.of(Items.MELON.getDefaultInstance(), ModItems.CABBAGE.get().getDefaultInstance(), ModItems.TOMATO.get().getDefaultInstance()));
-        MEAT_SET2.addAll(List.of(ModItems.HAM.get().getDefaultInstance(), Items.PORKCHOP.getDefaultInstance(), Items.BEEF.getDefaultInstance(), Items.MUTTON.getDefaultInstance(), Items.CHICKEN.getDefaultInstance()));
+        MEAT_SET2.addAll(List.of(Items.EGG.getDefaultInstance(), ModItems.HAM.get().getDefaultInstance(), Items.PORKCHOP.getDefaultInstance(), Items.BEEF.getDefaultInstance(), Items.MUTTON.getDefaultInstance(), Items.CHICKEN.getDefaultInstance()));
         SEAFOOD_SET2.addAll(List.of(Items.SALMON.getDefaultInstance(), Items.COD.getDefaultInstance()));
 
     }
@@ -224,7 +224,7 @@ public class StartNPC extends SMCNpc {
                 double spawnZ = centerZ + Math.sin(angle) * radius;
 
                 BlockPos spawnPos = ServerEvents.getSurfaceBlockPos(((ServerLevel) this.level()), (int) spawnX, (int) spawnZ);
-                FakeCustomer customer = new FakeCustomer(serverPlayer, spawnPos.getCenter());
+                FakeCustomer customer = new FakeCustomer(this, spawnPos.getCenter());
                 customer.setHomePos(this.getHomePos());
                 customer.setSpawnPos(spawnPos);
                 customer.getNavigation().moveTo(customer.getNavigation().createPath(this.getHomePos(), 3), 1.0);
@@ -289,7 +289,7 @@ public class StartNPC extends SMCNpc {
 
             if (isWorkingTime()) {
                 TreeNode takeMoney = new TreeNode(dialogueComponentBuilder.ans(3), dialogueComponentBuilder.opt(5))
-                        .execute((byte) 4);
+                        .addExecutable((byte) 4);
                 TreeNode main = new TreeNode(dialogueComponentBuilder.ans(1), dialogueComponentBuilder.opt(7))
                         .addChild(takeMoney)//全部取出
                         .addLeaf(dialogueComponentBuilder.opt(6, this.getUpgradeNeed()), (byte) 5)//升级
@@ -307,13 +307,13 @@ public class StartNPC extends SMCNpc {
             TreeNode ticketExchange = new TreeNode(dialogueComponentBuilder.ans(11), dialogueComponentBuilder.opt(16))
                     .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(17))//武器
                             .addLeaf(dialogueComponentBuilder.opt(18, 160), (byte) 16)
-                            .addLeaf(dialogueComponentBuilder.opt(19, 1599), (byte) 17))
+                            .addLeaf(dialogueComponentBuilder.opt(19, 1499), (byte) 17))
                     .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(24))//盔甲
                             .addLeaf(dialogueComponentBuilder.opt(18, 160), (byte) 26)
-                            .addLeaf(dialogueComponentBuilder.opt(19, 1599), (byte) 27))
+                            .addLeaf(dialogueComponentBuilder.opt(19, 1499), (byte) 27))
                     .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(20))
                             .addLeaf(dialogueComponentBuilder.opt(18, 1600), (byte) 18)
-                            .addLeaf(dialogueComponentBuilder.opt(19, 15800), (byte) 19))
+                            .addLeaf(dialogueComponentBuilder.opt(19, 14999), (byte) 19))
                     .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(21))
                             .addLeaf(dialogueComponentBuilder.opt(18, 1600), (byte) 20)
                             .addLeaf(dialogueComponentBuilder.opt(19, 16000), (byte) 21))
@@ -434,6 +434,7 @@ public class StartNPC extends SMCNpc {
         if (interactionID == 6) {
             DataManager.firstGiftGot.put(player, true);
             player.displayClientMessage(dialogueComponentBuilder.buildEntityAnswer(5), false);
+            ItemUtil.addItem(player, SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.asStack(), true);
             ItemUtil.addItem(player, SMCItems.NO_BRAIN_VILLAGER_SPAWN_EGG.get().getDefaultInstance(), true);
             ItemUtil.addItem(player, ModItems.CUTTING_BOARD.get().getDefaultInstance(), true);
             ItemUtil.addItem(player, ModItems.IRON_KNIFE.get().getDefaultInstance(), true);
@@ -478,14 +479,14 @@ public class StartNPC extends SMCNpc {
             addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asStack()), 160, 1);
         }
         if (interactionID == 17) {
-            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asStack()), 1599, 10);
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asStack()), 1499, 10);
         }
         //技能书抽奖券
         if (interactionID == 18) {
             addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asStack()), 1600, 1);
         }
         if (interactionID == 19) {
-            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asStack()), 15800, 10);
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asStack()), 14999, 10);
         }
         //宠物
         if (interactionID == 20) {
@@ -510,10 +511,10 @@ public class StartNPC extends SMCNpc {
         }
         //盔甲
         if (interactionID == 26) {
-            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asStack()), 160, 1);
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asStack()), 160, 1);
         }
         if (interactionID == 27) {
-            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asStack()), 1599, 10);
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asStack()), 1499, 10);
         }
 
         this.setConversingPlayer(null);

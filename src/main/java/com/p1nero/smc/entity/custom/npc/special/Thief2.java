@@ -12,9 +12,6 @@ import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.SMCVillagers;
 import com.p1nero.smc.entity.ai.behavior.VillagerTasks;
 import com.p1nero.smc.entity.custom.npc.SMCNpc;
-import com.p1nero.smc.registrate.SMCRegistrateItems;
-import com.p1nero.smc.util.ItemUtil;
-import dev.xkmc.cuisinedelight.content.item.CuisineSkilletItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -24,7 +21,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -199,12 +195,12 @@ public class Thief2 extends SMCNpc implements SpecialNpc {
         LinkListStreamDialogueScreenBuilder builder = new LinkListStreamDialogueScreenBuilder(this);
         DialogueComponentBuilder dialogueComponentBuilder = new DialogueComponentBuilder(this);
         builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.ans(0))
-                .execute((byte) 2)
+                .addExecutable((byte) 2)
                 .addChild(new TreeNode(dialogueComponentBuilder.ans(1), dialogueComponentBuilder.opt(0))
-                        .execute((byte) 2)
+                        .addExecutable((byte) 2)
                         .addLeaf(dialogueComponentBuilder.opt(1))
                         .addChild(new TreeNode(dialogueComponentBuilder.ans(2), dialogueComponentBuilder.opt(2))
-                                .execute((byte) 2)
+                                .addExecutable((byte) 2)
                                 .addLeaf(dialogueComponentBuilder.opt(3), (byte) 1))));
 
         if (!builder.isEmpty()) {

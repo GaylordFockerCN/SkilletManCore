@@ -1,10 +1,12 @@
 package com.p1nero.smc.client.gui;
 
+import com.p1nero.smc.client.gui.screen.DialogueScreen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * 为什么就没有现成的库呢因为太简单了吗
@@ -15,7 +17,7 @@ public class TreeNode {
     protected Component option = Component.empty();
 
     @Nullable
-    protected Runnable runnable;//要执行的操作
+    protected Consumer<DialogueScreen> screenConsumer;//要执行的操作
 
     public byte getExecuteValue() {
         return executeValue;
@@ -23,21 +25,18 @@ public class TreeNode {
 
     protected byte executeValue = (byte) -114514;//要执行的操作代码 ，114514 代表无操作
 
-    @Nullable
-    protected List<TreeNode> options;
+    protected List<TreeNode> options = new ArrayList<>();
 
     /**
      * 根节点不应该有选项。
      * */
     public TreeNode(Component answer) {
         this.answer = answer;
-        this.options = new ArrayList<>();
     }
 
     public TreeNode(Component answer, Component option) {
         this.answer = answer;
         this.option = option;
-        this.options = new ArrayList<>();
     }
 
     public TreeNode addLeaf(Component option, byte returnValue) {
@@ -63,22 +62,24 @@ public class TreeNode {
         return this;
     }
 
-    public TreeNode execute(Runnable runnable) {
-        this.runnable = runnable;
+    public TreeNode addExecutable(Consumer<DialogueScreen> runnable) {
+        this.screenConsumer = runnable;
         return this;
     }
 
-    public TreeNode execute(byte executeValue) {
+    public TreeNode addExecutable(byte executeValue) {
         this.executeValue = executeValue;
         return this;
     }
 
-    public void execute() {
-        runnable.run();
+    public void execute(DialogueScreen screen) {
+        if(screenConsumer != null){
+            screenConsumer.accept(screen);
+        }
     }
 
     public boolean canExecute(){
-        return runnable!=null;
+        return screenConsumer !=null;
     }
 
     public boolean canExecuteCode(){
@@ -93,14 +94,12 @@ public class TreeNode {
         return option;
     }
 
-    @Nullable
     public List<TreeNode> getChildren(){
         return options;
     }
 
     public static class FinalNode extends TreeNode{
-
-        private byte returnValue;
+        private final byte returnValue;
         public FinalNode(Component finalOption, byte returnValue) {
             super(Component.empty());//最终节点不需要回答
             this.option = finalOption;

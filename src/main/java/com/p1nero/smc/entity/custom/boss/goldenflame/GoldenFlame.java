@@ -1,6 +1,7 @@
 package com.p1nero.smc.entity.custom.boss.goldenflame;
 
 import com.p1nero.smc.SMCConfig;
+import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.effect.SMCEffects;
 import com.p1nero.smc.entity.api.IWanderableEntity;
 import com.p1nero.smc.entity.ai.epicfight.api.TimeStampedEvent;
@@ -338,7 +339,7 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity {
 
     @Override
     public @Nullable SoundEvent getFightMusic() {
-        return null;
+        return SMCSounds.RAID_BGM.get();
     }
 
 }

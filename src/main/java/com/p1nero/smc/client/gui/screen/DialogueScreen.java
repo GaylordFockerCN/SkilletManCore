@@ -17,6 +17,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -33,6 +35,7 @@ import java.util.Set;
  * 搬运了相关类
  */
 public class DialogueScreen extends Screen {
+    protected ResourceLocation PICTURE_LOCATION = null;
     protected final DialogueAnswerComponent dialogueAnswer;
     @Nullable
     protected Entity entity;
@@ -75,6 +78,10 @@ public class DialogueScreen extends Screen {
     @Override
     protected void init() {
         positionDialogue();//不填的话用builder创造出来的对话框第一个对话会错误显示
+    }
+
+    public void setPicture(ResourceLocation resourceLocation) {
+        this.PICTURE_LOCATION = resourceLocation;
     }
 
     public void setupDialogueChoices(List<DialogueChoiceComponent> options) {
@@ -127,7 +134,7 @@ public class DialogueScreen extends Screen {
     }
 
     /**
-     * Sends an NPC interaction to the server, which is sent through a packet to be handled in {@link NpcDialogue#handleNpcInteraction(Player, byte)}.
+     * Sends an NPC interaction to the server, which is sent through a packet to be handled in {@link NpcDialogue#handleNpcInteraction(ServerPlayer, byte)}.
      * @param interactionID A code for which interaction was performed on the client.<br>
      *                      0 - "What can you tell me about this place?"<br>
      *                      1 - "I wish to fight you!"<br>
@@ -140,6 +147,7 @@ public class DialogueScreen extends Screen {
             PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new NpcBlockPlayerInteractPacket(pos, interactionID));
         }
         PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new NpcPlayerInteractPacket(this.entity == null ? NpcPlayerInteractPacket.NO_ENTITY :this.entity.getId(), interactionID));
+        PICTURE_LOCATION = null;
         super.onClose();
     }
 
@@ -153,8 +161,7 @@ public class DialogueScreen extends Screen {
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(guiGraphics);
-        //guiGraphics.blit(MY_BACKGROUND_LOCATION, this.width/2 - 214/2, this.height/2 - 252/2, 0, 0, 214, 252);
-
+        this.renderPicture(guiGraphics);
         if(SMCConfig.ENABLE_TYPEWRITER_EFFECT.get() && typewriterTimer < 0) {
             this.dialogueAnswer.updateTypewriterDialogue();
             positionDialogue();
@@ -174,13 +181,18 @@ public class DialogueScreen extends Screen {
         }
     }
 
+    private void renderPicture(GuiGraphics guiGraphics) {
+        if(PICTURE_LOCATION != null){
+            guiGraphics.blit(PICTURE_LOCATION, this.width/2 - 256/2, (int) (this.height/2 - 144 / 1.4F), 256, 144, 0, 0, 256, 144, 256, 144);
+        }
+    }
+
     /**
      * [CODE COPY] - {@link Screen#renderBackground(GuiGraphics)}.<br><br>
      * Remove code for dark gradient and dirt background.
      */
     @Override
     public void renderBackground(@NotNull GuiGraphics guiGraphics) {
-
     }
 
     @Override

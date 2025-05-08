@@ -2,7 +2,6 @@ package com.p1nero.smc.entity.custom.npc.special;
 
 import com.mojang.serialization.Dynamic;
 import com.p1nero.smc.archive.DataManager;
-import com.p1nero.smc.archive.SMCArchiveManager;
 import com.p1nero.smc.block.entity.MainCookBlockEntity;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.DialogueComponentBuilder;
@@ -26,7 +25,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -251,32 +249,32 @@ public class TwoKid extends SMCNpc implements SpecialNpc {
             return;
         }
         builder.setAnswerRoot(new TreeNode(dBuilder.ans(0, localPlayer.getGameProfile().getName()))
-                .execute((byte) 2)
+                .addExecutable((byte) 2)
                 .addChild(new TreeNode(dBuilder.ans(1), dBuilder.opt(0))
-                        .execute((byte) 2)
+                        .addExecutable((byte) 2)
                         .addChild(new TreeNode(dBuilder.ans(2), dBuilder.opt(0))
-                                .execute((byte) 2)
+                                .addExecutable((byte) 2)
                                 .addChild(new TreeNode(dBuilder.ans(3), dBuilder.opt(0))
-                                        .execute((byte) 2)
+                                        .addExecutable((byte) 2)
                                         .addChild(new TreeNode(dBuilder.ans(4), dBuilder.opt(0))
-                                                .execute((byte) 1)
+                                                .addExecutable((byte) 1)
                                                 .addChild(new TreeNode(dBuilder.ans(5), dBuilder.opt(1))
-                                                        .execute((byte) 2)
+                                                        .addExecutable((byte) 2)
                                                         .addLeaf(dBuilder.opt(-1), (byte) 3)//好了小朋友
                                                         .addLeaf(dBuilder.opt(-2), (byte) 3)//玩够了该把锅还我了
                                                 )
                                                 .addChild(new TreeNode(dBuilder.ans(5), dBuilder.opt(2))
-                                                        .execute((byte) 2)
+                                                        .addExecutable((byte) 2)
                                                         .addLeaf(dBuilder.opt(-1), (byte) 3)//好了小朋友
                                                         .addLeaf(dBuilder.opt(-2), (byte) 3)//玩够了该把锅还我了
                                                 )
                                                 .addChild(new TreeNode(dBuilder.ans(5), dBuilder.opt(3))
-                                                        .execute((byte) 2)
+                                                        .addExecutable((byte) 2)
                                                         .addLeaf(dBuilder.opt(-1), (byte) 3)//好了小朋友
                                                         .addLeaf(dBuilder.opt(-2), (byte) 3)//玩够了该把锅还我了
                                                 )
                                                 .addChild(new TreeNode(dBuilder.ans(5), dBuilder.opt(4))
-                                                        .execute((byte) 2)
+                                                        .addExecutable((byte) 2)
                                                         .addLeaf(dBuilder.opt(-1), (byte) 3)//好了小朋友
                                                         .addLeaf(dBuilder.opt(-2), (byte) 3)//玩够了该把锅还我了
                                                 )

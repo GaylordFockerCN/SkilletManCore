@@ -31,6 +31,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.Nullable;
+import reascer.wom.main.WeaponsOfMinecraft;
+import yesman.epicfight.skill.Skill;
 import yesman.epicfight.world.item.EpicFightItems;
 import yesman.epicfight.world.item.SkillBookItem;
 
@@ -703,7 +705,8 @@ public class SMCPlayer {
                     this.skillBookGachaingCount--;
                     ItemStack itemStack = SkillBookGachaSystem.pull(((ServerPlayer) player));
                     CustomColorItemEntity entity = ItemUtil.addItemEntity(player, itemStack);
-                    if(SkillBookGachaSystem.RARE_LIST.stream().anyMatch(itemStackInPool -> itemStackInPool.is(itemStack.getItem()))) {
+                    Skill skill = SkillBookItem.getContainSkill(itemStack);
+                    if(skill != null && skill.getRegistryName().getNamespace().equals(WeaponsOfMinecraft.MODID)) {
                         entity.setTeamColor(0xc000ff);
                         entity.setGlowingTag(true);
                         playRareEffect((ServerPlayer) player, itemStack);

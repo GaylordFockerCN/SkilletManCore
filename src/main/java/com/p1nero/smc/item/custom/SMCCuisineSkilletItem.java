@@ -33,4 +33,8 @@ public class SMCCuisineSkilletItem extends CuisineSkilletItem {
         consumer.accept(SMCSkilletBEWLR.EXTENSIONS);
     }
 
+    @Override
+    public boolean isDamageable(ItemStack stack) {
+        return false;
+    }
 }

@@ -3,16 +3,21 @@ package com.p1nero.smc.event;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
+import com.p1nero.smc.entity.SMCEntities;
+import com.p1nero.smc.entity.custom.boss.goldenflame.GoldenFlame;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
 import hungteen.htlib.common.event.events.DummyEntityEvent;
 import hungteen.htlib.common.world.raid.DefaultRaid;
 import net.minecraft.ChatFormatting;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.animal.Cat;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
@@ -26,6 +31,7 @@ import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -113,6 +119,14 @@ public class LivingEntityListeners {
 
     @SubscribeEvent
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
+
+        if(event.getEntity() instanceof EnderDragon enderDragon) {
+            if(event.getLevel() instanceof ServerLevel serverLevel){
+                SMCEntities.GOLDEN_FLAME.get().spawn(serverLevel, enderDragon.getOnPos(), MobSpawnType.SPAWNER);
+            }
+            event.setCanceled(true);
+            event.setResult(Event.Result.DENY);
+        }
 
         if(event.getEntity() instanceof ServerPlayer serverPlayer) {
             SMCCapabilityProvider.syncPlayerDataToClient(serverPlayer);

@@ -1,6 +1,5 @@
 package com.p1nero.smc.entity.custom.npc.customer.customer_data.special;
 
-import com.github.ysbbbbbb.kaleidoscopedoll.init.ModItems;
 import com.p1nero.smc.client.gui.DialogueComponentBuilder;
 import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
@@ -8,7 +7,6 @@ import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.customer.customer_data.SpecialCustomerData;
-import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
 import net.minecraft.client.resources.language.I18n;
@@ -86,7 +84,7 @@ public class SpecialCustomerData6 extends SpecialCustomerData {
                                         .addChild(new TreeNode(answer(2), choice(1))
                                                 .addChild(new TreeNode(answer(3, foodName), choice(2))
                                                         .addChild(new TreeNode(answer(4), choice(3))
-                                                                .execute(SUBMIT_FOOD)
+                                                                .addExecutable(SUBMIT_FOOD)
                                                                 .addChild(new TreeNode(answer(5), choice(4))
                                                                         .addChild(new TreeNode(answer(6), choice(5))
                                                                                 .addLeaf(choice(6), BEST))))
@@ -97,7 +95,7 @@ public class SpecialCustomerData6 extends SpecialCustomerData {
                                         .addChild(new TreeNode(answer(2), choice(1))
                                                 .addChild(new TreeNode(answer(3, foodName), choice(2))
                                                         .addChild(new TreeNode(answer(7), choice(3))
-                                                                .execute(SUBMIT_FOOD)
+                                                                .addExecutable(SUBMIT_FOOD)
                                                                 .addChild(new TreeNode(answer(8), choice(7))
                                                                         .addChild(new TreeNode(answer(9), choice(8))
                                                                                 .addLeaf(choice(9), MIDDLE))))
@@ -108,7 +106,7 @@ public class SpecialCustomerData6 extends SpecialCustomerData {
                                         .addChild(new TreeNode(answer(2), choice(1))
                                                 .addChild(new TreeNode(answer(3, foodName), choice(2))
                                                         .addChild(new TreeNode(answer(10), choice(3))
-                                                                .execute(SUBMIT_FOOD)
+                                                                .addExecutable(SUBMIT_FOOD)
                                                                 .addChild(new TreeNode(answer(11), choice(10))
                                                                         .addChild(new TreeNode(answer(12), choice(11))
                                                                                 .addLeaf(choice(12), BAD))))

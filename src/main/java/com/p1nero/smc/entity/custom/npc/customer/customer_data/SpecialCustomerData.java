@@ -35,7 +35,6 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
 
     @Override
     public void onInteract(ServerPlayer player, Customer self) {
-
     }
 
     @Override
@@ -85,21 +84,21 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
                 case BEST:
                     root.addChild(new TreeNode(answer(0, foodName), choice(-1))
                             .addChild(new TreeNode(answer(1), choice(0))
-                                    .execute(SUBMIT_FOOD)
+                                    .addExecutable(SUBMIT_FOOD)
                                     .addLeaf(choice(1), BEST))
                             .addLeaf(choice(-3), (byte) -3));
                     break;
                 case MIDDLE:
                     root.addChild(new TreeNode(answer(0, foodName), choice(-1))
                             .addChild(new TreeNode(answer(2), choice(0))
-                                    .execute(SUBMIT_FOOD)
+                                    .addExecutable(SUBMIT_FOOD)
                                     .addLeaf(choice(2), MIDDLE))
                             .addLeaf(choice(-3), (byte) -3));
                     break;
                 default:
                     root.addChild(new TreeNode(answer(0, foodName), choice(-1))
                             .addChild(new TreeNode(answer(3), choice(0))
-                                    .execute(SUBMIT_FOOD)
+                                    .addExecutable(SUBMIT_FOOD)
                                     .addLeaf(choice(3), BAD))
                             .addLeaf(choice(-3), (byte) -3));
             }
@@ -161,9 +160,28 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
 
 
     protected void onMiddle(ServerPlayer serverPlayer, Customer self) {
-        SMCPlayer.addMoney(100, serverPlayer);
+        CookedFoodData cookedFoodData = BaseFoodItem.getData(self.getOrder());
+        SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+        float mul = 1.0F + smcPlayer.getLevel();
+        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("level_mul", smcPlayer.getLevel() + 1), false);
+        if (cookedFoodData != null) {
+            mul *= cookedFoodData.types.size();
+            serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("type_mul", cookedFoodData.types.size()), false);
+            if (cookedFoodData.types.contains(FoodType.MEAT)) {
+                mul *= 1.2F;
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("meat_mul", 1.2F), false);
+            }
+            if (cookedFoodData.types.contains(FoodType.SEAFOOD)) {
+                mul *= 1.4F;
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("seafood_mul", 1.4F), false);
+            }
+            if(cookedFoodData.size > 0){
+                mul *= cookedFoodData.size;
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("size_mul", cookedFoodData.size), false);
+            }
+        }
+        SMCPlayer.addMoney((int) (100 * mul), serverPlayer);
         serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SoundEvents.VILLAGER_TRADE, serverPlayer.getSoundSource(), 1.0F, 1.0F);
-
     }
 
 

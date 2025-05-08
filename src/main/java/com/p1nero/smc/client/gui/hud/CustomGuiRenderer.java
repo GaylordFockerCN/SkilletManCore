@@ -21,6 +21,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class CustomGuiRenderer {
     public static final ResourceLocation SPATULA_TEXTURE = new ResourceLocation(CuisineDelight.MODID, "textures/item/spatula.png");
+    public static final ResourceLocation SPATULA_TEXTURE2 = new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/item/golden_spatula.png");
+    public static final ResourceLocation SPATULA_TEXTURE3 = new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/item/diamond_spatula.png");
     public static final ResourceLocation MONEY_TEXTURE = new ResourceLocation("textures/item/emerald.png");
 
     public static boolean shouldRender() {
@@ -53,7 +55,12 @@ public class CustomGuiRenderer {
             case 3 -> 0xfb4ee9;
             default -> 16777215;
         };
-        guiGraphics.blit(SPATULA_TEXTURE, x - offsetX, y - 25, 20, 20, 0.0F, 0.0F, 1, 1, 1, 1);
+        ResourceLocation spatulaTexture = switch (smcPlayer.getStage()){
+            case 0 -> SPATULA_TEXTURE;
+            case 1 -> SPATULA_TEXTURE2;
+            default -> SPATULA_TEXTURE3;
+        };
+        guiGraphics.blit(spatulaTexture, x - offsetX, y - 25, 20, 20, 0.0F, 0.0F, 1, 1, 1, 1);
         guiGraphics.drawString(font, ": " + smcPlayer.getLevel(), x + 20 - offsetX, y - 20, stageColor, true);
 
         int lineHeight = font.lineHeight + 6;

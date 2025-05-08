@@ -197,18 +197,18 @@ public class HeShen extends SMCNpc implements SpecialNpc {
         DialogueComponentBuilder dialogueComponentBuilder = new DialogueComponentBuilder(this);
 
         builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.ans(0))
-                        .execute((byte) 4)
+                        .addExecutable((byte) 4)
                 .addChild(new TreeNode(dialogueComponentBuilder.ans(1), dialogueComponentBuilder.opt(0))//普通
-                        .execute((byte) 1)
+                        .addExecutable((byte) 1)
                         .addLeaf(dialogueComponentBuilder.opt(-1)))
                 .addChild(new TreeNode(dialogueComponentBuilder.ans(2), dialogueComponentBuilder.opt(1))//黄金
-                        .execute((byte) 2)
+                        .addExecutable((byte) 2)
                         .addLeaf(dialogueComponentBuilder.opt(-2)))
                 .addChild(new TreeNode(dialogueComponentBuilder.ans(3), dialogueComponentBuilder.opt(2))//钻石
-                        .execute((byte) 3)
+                        .addExecutable((byte) 3)
                         .addLeaf(dialogueComponentBuilder.opt(-3)))
                 .addChild(new TreeNode(dialogueComponentBuilder.ans(3), dialogueComponentBuilder.opt(3))//都是
-                        .execute((byte) 3)
+                        .addExecutable((byte) 3)
                         .addLeaf(dialogueComponentBuilder.opt(-3))));
 
         if (!builder.isEmpty()) {

@@ -27,6 +27,7 @@ public class SpecialCustomerData2 extends SpecialCustomerData {
     public void onInteract(ServerPlayer player, Customer self) {
         super.onInteract(player, self);
         self.setAge(-114514);
+        self.setBaby(true);
     }
 
     public void generateTranslation(SMCLangGenerator generator) {
