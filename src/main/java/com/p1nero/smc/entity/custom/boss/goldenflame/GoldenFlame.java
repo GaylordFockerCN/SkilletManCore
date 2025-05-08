@@ -7,6 +7,9 @@ import com.p1nero.smc.entity.api.IWanderableEntity;
 import com.p1nero.smc.entity.ai.epicfight.api.TimeStampedEvent;
 import com.p1nero.smc.entity.ai.goal.CustomWanderGoal;
 import com.p1nero.smc.entity.custom.boss.SMCBoss;
+import com.p1nero.smc.network.PacketRelay;
+import com.p1nero.smc.network.SMCPacketHandler;
+import com.p1nero.smc.network.packet.clientbound.OpenEndScreenPacket;
 import com.p1nero.smc.util.EntityUtil;
 import net.kenddie.fantasyarmor.item.FAItems;
 import net.minecraft.core.particles.ParticleTypes;
@@ -14,6 +17,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -333,7 +337,15 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity {
     @Override
     public void die(@NotNull DamageSource source) {
         level().playSound(null, getX(), getY(), getZ(), SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.BLOCKS, 1, 1);
-        //TODO 通关动画
+        if(source.getEntity() instanceof ServerPlayer serverPlayer){
+            PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new OpenEndScreenPacket(), serverPlayer);//终末之诗
+            if(this.getServer() != null){
+                ServerLevel serverLevel = this.getServer().getLevel(Level.OVERWORLD);
+                if(serverLevel != null){
+                    serverPlayer.changeDimension(serverLevel);
+                }
+            }
+        }
         super.die(source);
     }
 

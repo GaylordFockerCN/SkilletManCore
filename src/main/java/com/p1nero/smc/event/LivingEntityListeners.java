@@ -5,6 +5,7 @@ import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.custom.boss.goldenflame.GoldenFlame;
+import com.p1nero.smc.mixin.EndDragonFightAccessor;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
@@ -26,6 +27,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.dimension.end.EndDragonFight;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -40,6 +42,7 @@ import yesman.epicfight.world.item.EpicFightItems;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID)
 public class LivingEntityListeners {
@@ -118,14 +121,28 @@ public class LivingEntityListeners {
     }
 
     @SubscribeEvent
+    public static void onLivingTick(LivingEvent.LivingTickEvent event){
+        if(event.getEntity() instanceof EnderDragon enderDragon){
+            //以下俩都没法隐藏自然生的血条
+            ((EndDragonFightAccessor) Objects.requireNonNull(enderDragon.getDragonFight())).getDragonEvent().setVisible(false);
+            ((EndDragonFightAccessor) Objects.requireNonNull(enderDragon.getDragonFight())).getDragonEvent().removeAllPlayers();
+            if(enderDragon.tickCount > 100) {
+                enderDragon.discard();
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
 
         if(event.getEntity() instanceof EnderDragon enderDragon) {
             if(event.getLevel() instanceof ServerLevel serverLevel){
                 SMCEntities.GOLDEN_FLAME.get().spawn(serverLevel, enderDragon.getOnPos(), MobSpawnType.SPAWNER);
             }
-            event.setCanceled(true);
-            event.setResult(Event.Result.DENY);
+            ((EndDragonFightAccessor) Objects.requireNonNull(enderDragon.getDragonFight())).getDragonEvent().setVisible(false);
+            ((EndDragonFightAccessor) Objects.requireNonNull(enderDragon.getDragonFight())).getDragonEvent().removeAllPlayers();
+            enderDragon.setHealth(0);//直接移除血条不会丢
+            return;
         }
 
         if(event.getEntity() instanceof ServerPlayer serverPlayer) {

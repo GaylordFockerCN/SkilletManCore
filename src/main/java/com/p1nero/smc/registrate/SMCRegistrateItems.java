@@ -160,7 +160,7 @@ public class SMCRegistrateItems {
             .defaultModel()
             .defaultLang().register();
 
-    public static final ItemEntry<TeleporterItem> END_TELEPORTER = SkilletManCoreMod.REGISTRATE.item("end_teleporter", p -> new TeleporterItem(p.stacksTo(1)))
+    public static final ItemEntry<TeleporterItem> END_TELEPORTER = SkilletManCoreMod.REGISTRATE.item("end_teleporter", p -> new TeleporterItem(p.stacksTo(1).rarity(Rarity.EPIC)))
             .model((ctx, pvd) -> pvd.getBuilder(ctx.getName()).parent(new ModelFile.UncheckedModelFile("minecraft:item/ender_eye")))
             .defaultLang().register();
     public static final ItemEntry<CookGuideBookItem> COOK_GUIDE_BOOK_ITEM = SkilletManCoreMod.REGISTRATE.item("cook_guide_book", p -> new CookGuideBookItem(p.stacksTo(1).rarity(Rarity.EPIC)))

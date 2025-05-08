@@ -32,6 +32,9 @@ import java.util.Set;
 public class ClientForgeEvents {
     @SubscribeEvent
     public static void onRenderBossBar(CustomizeGuiOverlayEvent.BossEventProgress event) {
+        if(event.getBossEvent().getName().contains(Component.translatable("entity.minecraft.ender_dragon"))){
+            event.setCanceled(true);
+        }
         if(BossBarHandler.renderBossBar(event.getGuiGraphics(), event.getBossEvent(), event.getX(), event.getY())){
             event.setCanceled(true);
         }

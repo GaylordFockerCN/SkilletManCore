@@ -15,6 +15,7 @@
     "CowMixin",
     "CuisineSkilletBlockMixin",
     "CuisineSkilletItemMixin",
+    "EndDragonFightAccessor",
     "FoodDataMixin",
     "HumanoidMobPatchMixin",
     "HurtEventMixin",
