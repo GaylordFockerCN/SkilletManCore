@@ -89,7 +89,7 @@ public interface SMCWaveComponents {
                 wave2builder.add(Pair.of(ConstantInt.of(50), reference));
                 wave3builder.add(Pair.of(ConstantInt.of(50), reference));
             });
-            if(i > 1) {
+            if(i > 3) {
                 spawns.get(SMCSpawnComponents.SPIDERS.get(i)).ifPresent(reference -> {
                     wave1builder.add(Pair.of(ConstantInt.of(70), reference));
                     wave2builder.add(Pair.of(ConstantInt.of(70), reference));
@@ -101,7 +101,7 @@ public interface SMCWaveComponents {
                     wave3builder.add(Pair.of(ConstantInt.of(70), reference));
                 });
             }
-            if(i > 3) {
+            if(i > 5) {
                 spawns.get(SMCSpawnComponents.WITCHES.get(i)).ifPresent(reference -> {
                     wave2builder.add(Pair.of(ConstantInt.of(90), reference));
                     wave3builder.add(Pair.of(ConstantInt.of(90), reference));
@@ -111,7 +111,7 @@ public interface SMCWaveComponents {
                     wave3builder.add(Pair.of(ConstantInt.of(90), reference));
                 });
             }
-            if(i > 5) {
+            if(i > 7) {
                 spawns.get(SMCSpawnComponents.VINDICATORS.get(i)).ifPresent(reference -> {
                     wave2builder.add(Pair.of(ConstantInt.of(100), reference));
                     wave3builder.add(Pair.of(ConstantInt.of(100), reference));
@@ -119,11 +119,11 @@ public interface SMCWaveComponents {
                 spawns.get(SMCSpawnComponents.EVOKERS.get(i)).ifPresent(reference -> wave3builder.add(Pair.of(ConstantInt.of(100), reference)));
             }
 
-            if(i > 7) {
+            if(i > 9) {
                 spawns.get(SMCSpawnComponents.WITHER_SKELETONS.get(i)).ifPresent(reference -> wave3builder.add(Pair.of(ConstantInt.of(100), reference)));
                 spawns.get(SMCSpawnComponents.BLAZES.get(i)).ifPresent(reference -> wave3builder.add(Pair.of(ConstantInt.of(100), reference)));
             }
-            if(i > 9) {
+            if(i > 11) {
                 spawns.get(SMCSpawnComponents.ENDER_MANS.get(i)).ifPresent(reference -> wave3builder.add(Pair.of(ConstantInt.of(100), reference)));
             }
 
@@ -138,13 +138,13 @@ public interface SMCWaveComponents {
                     .build(),
                     wave1builder.build()));
             context.register(RAID_WAVES_2.get(i), new CommonWave(HTWaveComponents.builder()
-                    .prepare(300)
+                    .prepare(100)
                     .wave(9600)
                     .placement(raidPosition)
                     .build(),
                     wave2builder.build()));
             context.register(RAID_WAVES_3.get(i), new CommonWave(HTWaveComponents.builder()
-                    .prepare(300)
+                    .prepare(100)
                     .wave(12800)
                     .placement(raidPosition)
                     .build(),

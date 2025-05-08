@@ -5,6 +5,7 @@ import com.p1nero.smc.client.gui.BossBarHandler;
 import com.p1nero.smc.client.gui.hud.CustomGuiRenderer;
 import com.p1nero.smc.client.gui.hud.HealthBarRenderer;
 import com.p1nero.smc.client.gui.screen.DialogueScreen;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.GenericDirtMessageScreen;
@@ -78,7 +79,7 @@ public class ClientForgeEvents {
         if(screen instanceof GenericDirtMessageScreen || screen instanceof LevelLoadingScreen || screen instanceof PauseScreen){
             GuiGraphics guiGraphics = event.getGuiGraphics();
             int tipIndex = (int) (System.currentTimeMillis() / 5000) % TIPS.size();
-            guiGraphics.drawString(screen.getMinecraft().font, Component.translatable("screen_tips.smc.tip" + tipIndex), 10, 10, 16777215, true);
+            guiGraphics.drawString(screen.getMinecraft().font, Component.translatable("screen_tips.smc.tip" + tipIndex).withStyle(ChatFormatting.GOLD), 10, 10, 16777215, true);
         }
     }
 

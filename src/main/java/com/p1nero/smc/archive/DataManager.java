@@ -71,7 +71,7 @@ public class DataManager {
     }
 
     public static SMCPlayer getSMCPlayer(Player player) {
-        return player.getCapability(SMCCapabilityProvider.SMC_PLAYER).orElseThrow(() -> new IllegalStateException("Player " + player.getName().getContents() + " has no SMC Player Capability!"));
+        return player.getCapability(SMCCapabilityProvider.SMC_PLAYER).orElse(new SMCPlayer());
     }
 
 

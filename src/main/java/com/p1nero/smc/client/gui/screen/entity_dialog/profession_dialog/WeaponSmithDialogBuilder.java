@@ -10,14 +10,19 @@ import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
+import net.kenddie.fantasyarmor.item.FAItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import reascer.wom.world.item.WOMItems;
 
 /**
  * 武器抽卡
@@ -70,6 +75,66 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
             }
         }
 
+        if(interactionID == 4){
+            this.startTrade(serverPlayer, villager);
+        }
+
+    }
+
+    public void startTrade(ServerPlayer serverPlayer, Villager villager) {
+        villager.setTradingPlayer(serverPlayer);
+        MerchantOffers merchantOffers = new MerchantOffers();
+
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(WOMItems.AGONY.get(), 1),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(WOMItems.MOONLESS.get(), 1),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(WOMItems.SATSUJIN.get(), 1),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(WOMItems.SOLAR.get(), 1),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(WOMItems.RUINE.get(), 1),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(WOMItems.TORMENTED_MIND.get(), 1),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(WOMItems.ANTITHEUS.get(), 1),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
+                new ItemStack(WOMItems.ENDER_BLASTER.get(), 1),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(WOMItems.HERRSCHER.get(), 1),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(WOMItems.GESETZ.get(), 1),
+                142857, 0, 0));
+
+        villager.setOffers(merchantOffers);
+        villager.openTradingScreen(serverPlayer, answer(6), 1);
     }
 
     @Override
@@ -104,13 +169,14 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
             if (itemStack.hasTag()) {
                 level = itemStack.getOrCreateTag().getInt(SkilletManCoreMod.WEAPON_LEVEL_KEY);
             }
-            TreeNode weaponUpdate = new TreeNode(answer(5, (int)(Math.pow(1.145, (level)) * 1600)), choice(6))
+            TreeNode weaponUpdate = new TreeNode(answer(5, (int) (Math.pow(1.145, (level)) * 1600)), choice(6))
                     .addLeaf(choice(4), (byte) 3)
                     .addLeaf(choice(5));
 
             builder.setAnswerRoot(new TreeNode(answer(0))
                     .addChild(pull)
                     .addChild(weaponUpdate)
+                    .addLeaf(choice(7), (byte) 4)
                     .addLeaf(choice(1)));
         }
     }
@@ -129,7 +195,9 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
         generator.addVillagerOpt(this.profession, 4, "确定");
         generator.addVillagerOpt(this.profession, 5, "取消");
         generator.addVillagerOpt(this.profession, 6, "§a武器升级");
+        generator.addVillagerOpt(this.profession, 7, "武器购买");
         generator.addVillagerAns(this.profession, 5, "是否花费 %d 绿宝石 对当前§a主手§r物品进行升级？");
+        generator.addVillagerAns(this.profession, 6, "阶段2后才可使用奇迹武器！");
     }
 
 

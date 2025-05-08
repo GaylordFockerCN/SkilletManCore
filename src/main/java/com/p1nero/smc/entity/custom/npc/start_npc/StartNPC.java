@@ -55,6 +55,7 @@ import org.jetbrains.annotations.Nullable;
 import vectorwing.farmersdelight.common.registry.ModItems;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.p1nero.smc.block.entity.MainCookBlockEntity.PROFESSION_LIST;
 
@@ -531,11 +532,22 @@ public class StartNPC extends SMCNpc {
             this.playSound(SMCSounds.VILLAGER_YES.get());
             List<ItemStack> itemList = new ArrayList<>(itemStackSet);
             List<ItemStack> applyItems = new ArrayList<>();
+            AtomicBoolean contain = new AtomicBoolean(false);
             for (int i = 0; i < foodCount; i++) {
-                applyItems.add(itemList.get(random.nextInt(itemList.size())));
+                ItemStack newItem = itemList.get(random.nextInt(itemList.size()));
+                contain.set(false);
+                applyItems.forEach(itemStack -> {
+                    if(itemStack.is(newItem.getItem())){
+                        itemStack.setCount(itemStack.getCount() + 1);
+                        contain.set(true);
+                    }
+                });
+                if(!contain.get()){
+                    applyItems.add(newItem.copy());
+                }
             }
             for (ItemStack itemStack : applyItems) {
-                ItemUtil.addItemEntity(player, itemStack);
+                ItemUtil.addItem(player, itemStack, true);
             }
         }
     }

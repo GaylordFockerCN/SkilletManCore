@@ -125,7 +125,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
                         } else {
                             //生成袭击
                             SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
-                            if(!smcPlayer.isTodayInRaid()){
+                            if(!smcPlayer.isTodayInRaid() && mainCookBlockEntity.getDayTime() >= 3){
                                 SMCRaidManager.startNightRaid(serverPlayer, smcPlayer);
                                 DataManager.specialSolvedToday.put(serverPlayer, false);
                             }
@@ -351,6 +351,13 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         this.isWorking = false;
         this.updateWorkingState(serverPlayer);
         return true;
+    }
+
+    public int getDayTime(){
+        if(level == null){
+            return 0;
+        }
+        return (int) (level.getDayTime() / 24000);
     }
 
     /**

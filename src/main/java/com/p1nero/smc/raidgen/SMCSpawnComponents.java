@@ -72,7 +72,7 @@ public interface SMCSpawnComponents {
                                     NBTHelper.armorTag(List.of(ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(FAItems.TWINNED_HELMET.get()))),
                                     NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 10.0 + i * 2))),
                                     NBTHelper.healthTag(10.0F + i * 2))).build()
-                    , 40 * (2 + i / 3), 40, 1, 0));
+                    , 40 * (i / 3), 40, 1, 0));
 
             context.register(SKELETONS.get(i), new DurationSpawn(HTSpawnComponents.builder()
                     .entityType(EntityType.SKELETON)
@@ -82,85 +82,85 @@ public interface SMCSpawnComponents {
                                     NBTHelper.armorTag(List.of(ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(FAItems.CRUCIBLE_KNIGHT_HELMET.get()))),
                                     NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 10.0 + i * 2))),
                                     NBTHelper.healthTag(10.0F + i * 2))).build()
-                    , 40 * (2 + i / 3), 40, 1, 0));
+                    , 40 * (i / 3), 40, 1, 0));
 
-            //1天后开始出现蜘蛛苦力怕
-            if(i > 1) {
+            //3天后开始出现蜘蛛苦力怕
+            if(i > 3) {
                 context.register(SPIDERS.get(i), new DurationSpawn(HTSpawnComponents.builder()
                         .entityType(EntityType.SPIDER)
                         .placement(positions.getOrThrow(SMCPositionComponents.RAID))
                         .nbt(NBTHelper
                                 .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 18.0 + i * 2))),
                                         NBTHelper.healthTag(18.0F + i * 2))).build()
-                        , 40 * (1 + i / 3), 40, 1, 0));
+                        , 40 * (i / 3), 40, 1, 0));
                 context.register(CREEPERS.get(i), new DurationSpawn(HTSpawnComponents.builder()
                         .entityType(EntityType.CREEPER)
                         .placement(positions.getOrThrow(SMCPositionComponents.RAID))
                         .nbt(NBTHelper
                                 .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 18.0 + i * 2))),
                                         NBTHelper.healthTag(18.0F + i * 2))).build()
-                        , 40 * (1 + i / 3), 40, 1, 0));
+                        , 40 * (i / 3), 40, 1, 0));
             }
-            //3天后开始出现女巫，灾厄村民
-            if(i > 3) {
+            //5天后开始出现女巫，灾厄村民
+            if(i > 5) {
                 context.register(WITCHES.get(i), new DurationSpawn(HTSpawnComponents.builder()
                         .entityType(EntityType.WITCH)
                         .placement(positions.getOrThrow(SMCPositionComponents.RAID))
                         .nbt(NBTHelper
                                 .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 18.0 + i * 2))),
                                         NBTHelper.healthTag(18.0F + i * 2))).build()
-                        , 40 * (1 + i / 5), 40, 1, 0));
+                        , 40 * (i / 5), 40, 1, 0));
                 context.register(PILLAGERS.get(i), new DurationSpawn(HTSpawnComponents.builder()
                         .entityType(EntityType.PILLAGER)
                         .placement(positions.getOrThrow(SMCPositionComponents.RAID))
                         .nbt(NBTHelper
                                 .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 18.0 + i * 2))),
                                         NBTHelper.healthTag(18.0F + i * 2))).build()
-                        , 40 * (1 + i / 5), 40, 1, 0));
+                        , 40 * (i / 5), 40, 1, 0));
             }
-            //5天后开始出现卫道士唤魔者
-            if(i > 5) {
+            //7天后开始出现卫道士唤魔者
+            if(i > 7) {
                 context.register(VINDICATORS.get(i), new DurationSpawn(HTSpawnComponents.builder()
                         .entityType(EntityType.VINDICATOR)
                         .placement(positions.getOrThrow(SMCPositionComponents.RAID))
                         .nbt(NBTHelper
                                 .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 18.0 + i * 2))),
                                         NBTHelper.healthTag(18.0F + i * 2))).build()
-                        , 40 * (1 + i / 10), 40, 1, 0));
+                        , 40 * (i / 7), 40, 1, 0));
                 context.register(EVOKERS.get(i), new DurationSpawn(HTSpawnComponents.builder()
                         .entityType(EntityType.EVOKER)
                         .placement(positions.getOrThrow(SMCPositionComponents.RAID))
                         .nbt(NBTHelper
                                 .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 18.0 + i * 2))),
                                         NBTHelper.healthTag(18.0F + i * 2))).build()
-                        , 40 * (1 + i / 10), 40, 1, 0));
+                        , 40 * (i / 7), 40, 1, 0));
             }
-            //7天后开始凋零骷髅，烈焰人
-            if(i >= 7) {
+            //9天后开始凋零骷髅，烈焰人
+            if(i >= 9) {
                 context.register(WITHER_SKELETONS.get(i), new DurationSpawn(HTSpawnComponents.builder()
                         .entityType(EntityType.WITHER_SKELETON)
                         .placement(positions.getOrThrow(SMCPositionComponents.RAID))
                         .nbt(NBTHelper
                                 .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 18.0 + i * 2))),
                                         NBTHelper.healthTag(18.0F + i * 2))).build()
-                        , 40 * (1 + i / 10), 40, 1, 0));
+                        , 40 * (i / 9), 40, 1, 0));
                 context.register(BLAZES.get(i), new DurationSpawn(HTSpawnComponents.builder()
                         .entityType(EntityType.BLAZE)
                         .placement(positions.getOrThrow(SMCPositionComponents.RAID))
                         .nbt(NBTHelper
                                 .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 18.0 + i * 2))),
                                         NBTHelper.healthTag(18.0F + i * 2))).build()
-                        , 40 * (1 + i / 10), 40, 1, 0));
+                        , 40 * (i / 9), 40, 1, 0));
             }
-            //9天后开始生成末影人
-            if(i > 9) {
+            //11天后开始生成末影人
+            if(i > 11) {
                 context.register(ENDER_MANS.get(i), new DurationSpawn(HTSpawnComponents.builder()
                         .entityType(EntityType.ENDERMAN)
                         .placement(positions.getOrThrow(SMCPositionComponents.RAID))
                         .nbt(NBTHelper
                                 .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 18.0 + i * 2))),
                                         NBTHelper.healthTag(18.0F + i * 2))).build()
-                        , 40 * (1 + i / 10), 40, 1, 0));
+                        , 40 * (i / 11), 40, 1, 0));
             }
         }
 
@@ -168,24 +168,24 @@ public interface SMCSpawnComponents {
                 .entityType(EntityType.WITHER)
                 .placement(positions.getOrThrow(SMCPositionComponents.RAID))
                 .nbt(NBTHelper
-                        .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 400.0))),
-                                NBTHelper.healthTag(400))).build()
+                        .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 200.0))),
+                                NBTHelper.healthTag(200))).build()
                 , ConstantInt.of(1)));
 
         context.register(SUPER_GOLEM_1, new OnceSpawn(HTSpawnComponents.builder()
                 .entityType(SMCEntities.SUPER_GOLEM.get())
                 .placement(positions.getOrThrow(SMCPositionComponents.TRIAL))
                 .nbt(NBTHelper
-                        .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 100.0))),
-                                NBTHelper.healthTag(100.0F))).build()
+                        .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 50.0))),
+                                NBTHelper.healthTag(50.0F))).build()
                 , ConstantInt.of(1)));
 
         context.register(SUPER_GOLEM_2, new OnceSpawn(HTSpawnComponents.builder()
                 .entityType(SMCEntities.SUPER_GOLEM.get())
                 .placement(positions.getOrThrow(SMCPositionComponents.TRIAL))
                 .nbt(NBTHelper
-                        .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 300.0))),
-                                NBTHelper.healthTag(300.0F))).build()
+                        .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 150.0))),
+                                NBTHelper.healthTag(150.0F))).build()
                 , ConstantInt.of(2)));
     }
 

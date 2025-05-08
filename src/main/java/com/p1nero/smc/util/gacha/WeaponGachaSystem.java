@@ -16,7 +16,7 @@ import java.util.Random;
 public class WeaponGachaSystem {
 
     private static final double BASE_5STAR_RATE = 0.006;    // 0.6%
-    private static final double BASE_4STAR_RATE = 0.051;    // 5.1%
+    private static final double BASE_4STAR_RATE = 0.101;    // 10.1%
     private static final int SOFT_PITY_5STAR_START = 73;
     private static final double RATE_INCREMENT_5STAR = 0.06; // 6% per pull after 73
 

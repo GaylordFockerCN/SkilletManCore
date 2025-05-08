@@ -58,10 +58,14 @@ public class SMCMobCombatBehaviors {
 
     public static final CombatBehaviors.Builder<HumanoidMobPatch<?>> HUMANOID_KATANA = CombatBehaviors.<HumanoidMobPatch<?>>builder()
             .newBehaviorSeries(
-                    BehaviorSeries.<HumanoidMobPatch<?>>builder().weight(100.0F).canBeInterrupted(true).looping(false)
+                    BehaviorSeries.<HumanoidMobPatch<?>>builder().weight(100.0F).cooldown(100).canBeInterrupted(true).looping(false)
                             .nextBehavior(Behavior.<HumanoidMobPatch<?>>builder().animationBehavior(Animations.BIPED_MOB_UCHIGATANA1).withinEyeHeight().withinDistance(0.0D, 2.5D))
                             .nextBehavior(Behavior.<HumanoidMobPatch<?>>builder().animationBehavior(Animations.BIPED_MOB_UCHIGATANA2).withinEyeHeight().withinDistance(0.0D, 2.5D))
                             .nextBehavior(Behavior.<HumanoidMobPatch<?>>builder().animationBehavior(Animations.BIPED_MOB_UCHIGATANA3).withinEyeHeight().withinDistance(0.0D, 2.5D))
+            ).newBehaviorSeries(
+                    BehaviorSeries.<HumanoidMobPatch<?>>builder().weight(100.0F).canBeInterrupted(false).looping(false).cooldown(60)
+                            .nextBehavior(Behavior.<HumanoidMobPatch<?>>builder().animationBehavior(Animations.BIPED_MOB_LONGSWORD1).withinEyeHeight().withinDistance(0.0D, 2.5D))
+                            .nextBehavior(Behavior.<HumanoidMobPatch<?>>builder().animationBehavior(Animations.BIPED_MOB_LONGSWORD2).randomChance(0.4F).withinEyeHeight().withinDistance(0.0D, 2.5D))
             );
 
     public static final CombatBehaviors.Builder<HumanoidMobPatch<?>> HUMANOID_LONGSWORD = CombatBehaviors.<HumanoidMobPatch<?>>builder()

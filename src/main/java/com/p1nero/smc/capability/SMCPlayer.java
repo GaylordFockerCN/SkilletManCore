@@ -671,11 +671,11 @@ public class SMCPlayer {
                     this.armorGachaingCount--;
                     ItemStack itemStack = ArmorGachaSystem.pull(((ServerPlayer) player));
                     CustomColorItemEntity entity = ItemUtil.addItemEntity(player, itemStack);
-                    if(ArmorGachaSystem.STAR5_LIST.contains(itemStack)) {
+                    if(ArmorGachaSystem.STAR5_LIST.stream().anyMatch(itemStackInPool -> itemStackInPool.is(itemStack.getItem()))) {
                         entity.setTeamColor(0xfff66d);
                         entity.setGlowingTag(true);
                         playGoldEffect((ServerPlayer) player, itemStack);
-                    } else if(ArmorGachaSystem.STAR4_LIST.contains(itemStack)) {
+                    } else if(ArmorGachaSystem.STAR4_LIST.stream().anyMatch(itemStackInPool -> itemStackInPool.is(itemStack.getItem()))) {
                         entity.setTeamColor(0xc000ff);
                         entity.setGlowingTag(true);
                         playRareEffect((ServerPlayer) player, itemStack);
@@ -703,7 +703,7 @@ public class SMCPlayer {
                     this.skillBookGachaingCount--;
                     ItemStack itemStack = SkillBookGachaSystem.pull(((ServerPlayer) player));
                     CustomColorItemEntity entity = ItemUtil.addItemEntity(player, itemStack);
-                    if(SkillBookGachaSystem.RARE_LIST.contains(itemStack)) {
+                    if(SkillBookGachaSystem.RARE_LIST.stream().anyMatch(itemStackInPool -> itemStackInPool.is(itemStack.getItem()))) {
                         entity.setTeamColor(0xc000ff);
                         entity.setGlowingTag(true);
                         playRareEffect((ServerPlayer) player, itemStack);
