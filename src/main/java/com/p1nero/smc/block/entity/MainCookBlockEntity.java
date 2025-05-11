@@ -73,6 +73,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
     public static final int WORKING_RADIUS = 8;
     private final List<Customer> customers = new ArrayList<>();
     public static final List<VillagerProfession> PROFESSION_LIST = ForgeRegistries.VILLAGER_PROFESSIONS.getValues().stream().toList();
+    public boolean firstCustomerSummoned = false;//摆锅马上就有客户
 
     public MainCookBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(SMCBlockEntities.MAIN_COOK_BLOCK_ENTITY.get(), blockPos, blockState);
@@ -126,7 +127,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
                             //生成袭击
                             SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
                             int dayTime = mainCookBlockEntity.getDayTime();
-                            if(!smcPlayer.isTodayInRaid() && dayTime >= 3 && dayTime % 2 == 0){
+                            if(!smcPlayer.isTodayInRaid() && dayTime >= 2 && dayTime % 2 == 0){
                                 SMCRaidManager.startNightRaid(serverPlayer, smcPlayer);
                                 DataManager.specialSolvedToday.put(serverPlayer, false);
                             }
@@ -153,6 +154,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         if (this.isWorking) {
             SMCPlayer.updateWorkingState(true, serverPlayer);
         } else {
+            firstCustomerSummoned = false;
             SMCPlayer.updateWorkingState(false, serverPlayer);
             this.clearCustomers();
         }
@@ -212,7 +214,8 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
 
         //生成顾客，30s一只，最多6只
         this.customers.removeIf(customer -> customer == null || customer.isRemoved() || !customer.isAlive());
-        if(this.customers.size() < 6 && owner.tickCount % (1200 - smcPlayer.getStage() * 200) == 0) {
+        if(this.customers.size() < 6 && (owner.tickCount % (1200 - smcPlayer.getStage() * 100) == 0 || !firstCustomerSummoned)) {
+            firstCustomerSummoned = true;
             BlockPos spawnPos = getRandomPos(owner, 15, 20);
             while (spawnPos.getY() - owner.getY() > 5){
                 spawnPos = getRandomPos(owner, 15, 20);

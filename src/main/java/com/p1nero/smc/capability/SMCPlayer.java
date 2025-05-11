@@ -11,13 +11,16 @@ import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.SyncSMCPlayerPacket;
+import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
 import com.p1nero.smc.util.gacha.ArmorGachaSystem;
 import com.p1nero.smc.util.gacha.SkillBookGachaSystem;
 import com.p1nero.smc.util.gacha.WeaponGachaSystem;
+import com.simibubi.create.AllItems;
 import com.yungnickyoung.minecraft.betterendisland.mixin.ServerLevelMixin;
 import dev.xkmc.cuisinedelight.init.registrate.PlateFood;
 import hungteen.htlib.common.world.entity.DummyEntityManager;
+import net.kenddie.fantasyarmor.item.FAItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -28,8 +31,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.p3pp3rf1y.sophisticatedbackpacks.init.ModItems;
 import org.jetbrains.annotations.Nullable;
 import reascer.wom.main.WeaponsOfMinecraft;
 import yesman.epicfight.skill.Skill;
@@ -174,6 +179,7 @@ public class SMCPlayer {
     public static final List<PlateFood> SEAFOOD_LIST = List.of(PlateFood.MEAT_WITH_SEAFOOD, PlateFood.SEAFOOD_FRIED_RICE, PlateFood.SEAFOOD_PASTA, PlateFood.SEAFOOD_PLATTER,
             PlateFood.SEAFOOD_WITH_VEGETABLES, PlateFood.MIXED_FRIED_RICE, PlateFood.MIXED_PASTA);
     public static final List<PlateFood> STAGE2_FOOD_LIST = new ArrayList<>();
+    public static final List<List<Item>> LEVEL_UP_ITEMS = new ArrayList<>();
 
     static {
         STAGE1_FOOD_LIST.addAll(STAGE0_FOOD_LIST);
@@ -184,6 +190,13 @@ public class SMCPlayer {
         STAGE2_FOOD_LIST.addAll(SEAFOOD_LIST);
         STAGE2_FOOD_LIST.addAll(SEAFOOD_LIST);
         STAGE2_FOOD_LIST.addAll(SEAFOOD_LIST);//增加概率
+
+        LEVEL_UP_ITEMS.add(List.of(SMCRegistrateItems.IRON_SKILLET_LEVEL5.get()));//5
+        LEVEL_UP_ITEMS.add(List.of(SMCRegistrateItems.GOLDEN_SPATULA_V5.get()));//10
+        LEVEL_UP_ITEMS.add(List.of(SMCRegistrateItems.GOLDEN_SKILLET_V5.get()));//15
+        LEVEL_UP_ITEMS.add(List.of(SMCRegistrateItems.DIAMOND_SPATULA_V4.get()));//20
+        LEVEL_UP_ITEMS.add(List.of(SMCRegistrateItems.DIAMOND_SKILLET_V4.get()));//25
+        LEVEL_UP_ITEMS.add(List.of(SMCRegistrateItems.DIAMOND_SKILLET_V5.get(), FAItems.HERO_HELMET.get(), FAItems.HERO_CHESTPLATE.get(), FAItems.HERO_LEGGINGS.get(), FAItems.HERO_BOOTS.get()));//30
     }
 
     public static void addExperience(ServerPlayer serverPlayer) {
@@ -291,6 +304,16 @@ public class SMCPlayer {
             return;
         }
         smcPlayer.setLevel(currentLevel + 1);
+        if(smcPlayer.level % 5 == 0){
+            SMCAdvancementData.finishAdvancement("level" + smcPlayer.level, serverPlayer);
+            int index = smcPlayer.level / 5 - 1;
+            if(index >= 0 && index < LEVEL_UP_ITEMS.size()){
+                for(Item item : LEVEL_UP_ITEMS.get(index)){
+                    ItemUtil.addItem(serverPlayer, item.getDefaultInstance(), true);
+                }
+            }
+        }
+
         ItemUtil.addItem(serverPlayer, Items.ENCHANTED_GOLDEN_APPLE.getDefaultInstance(), true);
         SMCPlayer.addMoney(200, serverPlayer);
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("shop_upgrade", smcPlayer.level), false);
@@ -351,7 +374,7 @@ public class SMCPlayer {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("raid_loss_tip"), false);
         int dayTime = (int) (serverPlayer.serverLevel().dayTime() / 24000);
-        consumeMoney(100 * (1 + dayTime), serverPlayer);
+        consumeMoney(800 * (1 + dayTime), serverPlayer);
     }
 
     public void unlockStage1(ServerPlayer serverPlayer) {
@@ -360,7 +383,9 @@ public class SMCPlayer {
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("unlock_game_stage", STAGE2_REQUIRE), false);
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("meat_available"), false);
         ItemUtil.addItem(serverPlayer, SMCItems.NO_BRAIN_VILLAGER_SPAWN_EGG.get(), 5, true);
-        //TODO 解锁和牧师的对话，解锁最终boss战，弹窗引导对话
+        ItemUtil.addItem(serverPlayer, ModItems.FEEDING_UPGRADE.get().getDefaultInstance(), true);
+        SMCAdvancementData.finishAdvancement("level5_1", serverPlayer);
+        SMCAdvancementData.finishAdvancement("level5_2", serverPlayer);
     }
 
     public void unlockStage2(ServerPlayer serverPlayer) {
@@ -368,11 +393,22 @@ public class SMCPlayer {
         addMoney(5000, serverPlayer);
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("unlock_game_stage", STAGE3_REQUIRE), false);
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("unlock_stage2_info"), false);
+
+        ItemUtil.addItem(serverPlayer, ModItems.ADVANCED_FEEDING_UPGRADE.get().getDefaultInstance(), true);
+        ItemUtil.addItem(serverPlayer, AllItems.GOGGLES.asStack(), true);
+        SMCAdvancementData.finishAdvancement("level10_1", serverPlayer);
+        SMCAdvancementData.finishAdvancement("level10_2", serverPlayer);
     }
 
     public void unlockStage3(ServerPlayer serverPlayer) {
         this.stage = 3;
         addMoney(20000, serverPlayer);
+
+        //屠龙套装
+        for(Item item : List.of(FAItems.DRAGONSLAYER_HELMET.get(), FAItems.DRAGONSLAYER_CHESTPLATE.get(), FAItems.DRAGONSLAYER_LEGGINGS.get(), FAItems.DRAGONSLAYER_BOOTS.get())){
+            ItemUtil.addItem(serverPlayer, item.getDefaultInstance(), true);
+        }
+        SMCAdvancementData.finishAdvancement("level20_1", serverPlayer);
         //TODO 弹对话
     }
 
@@ -418,6 +454,9 @@ public class SMCPlayer {
     public static void consumeMoney(int moneyCount, ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         smcPlayer.moneyCount -= moneyCount;
+        if(smcPlayer.moneyCount < 0) {
+            SMCAdvancementData.finishAdvancement("no_money", serverPlayer);
+        }
         serverPlayer.displayClientMessage(Component.literal("-" + moneyCount).withStyle(ChatFormatting.BOLD, ChatFormatting.RED), false);
         smcPlayer.syncToClient(serverPlayer);
     }
@@ -654,7 +693,7 @@ public class SMCPlayer {
             }
 
         } else {
-
+            ServerPlayer serverPlayer = (ServerPlayer) player;
             if(DataManager.inRaid.get(player) && DummyEntityManager.getDummyEntities(((ServerLevel) player.level())).isEmpty()){
                 DataManager.inRaid.put(player, false);
             }
@@ -671,12 +710,12 @@ public class SMCPlayer {
                 //1s抽出一个
                 if(this.armorGachaingCount > 0) {
                     this.armorGachaingCount--;
-                    ItemStack itemStack = ArmorGachaSystem.pull(((ServerPlayer) player));
+                    ItemStack itemStack = ArmorGachaSystem.pull(serverPlayer);
                     CustomColorItemEntity entity = ItemUtil.addItemEntity(player, itemStack);
                     if(ArmorGachaSystem.STAR5_LIST.stream().anyMatch(itemStackInPool -> itemStackInPool.is(itemStack.getItem()))) {
                         entity.setTeamColor(0xfff66d);
                         entity.setGlowingTag(true);
-                        playGoldEffect((ServerPlayer) player, itemStack);
+                        playGoldEffect(serverPlayer, itemStack);
                     } else if(ArmorGachaSystem.STAR4_LIST.stream().anyMatch(itemStackInPool -> itemStackInPool.is(itemStack.getItem()))) {
                         entity.setTeamColor(0xc000ff);
                         entity.setGlowingTag(true);
@@ -687,31 +726,31 @@ public class SMCPlayer {
                 }
                 if(this.weaponGachaingCount > 0) {
                     this.weaponGachaingCount--;
-                    ItemStack itemStack = WeaponGachaSystem.pull(((ServerPlayer) player));
+                    ItemStack itemStack = WeaponGachaSystem.pull(serverPlayer);
                     CustomColorItemEntity entity = ItemUtil.addItemEntity(player, itemStack);
                     if(WeaponGachaSystem.STAR5_LIST.stream().anyMatch(itemStackInPool -> itemStackInPool.is(itemStack.getItem()))) {
                         entity.setTeamColor(0xfff66d);
                         entity.setGlowingTag(true);
-                        playGoldEffect((ServerPlayer) player, itemStack);
+                        playGoldEffect(serverPlayer, itemStack);
                     } else if(WeaponGachaSystem.STAR4_LIST.stream().anyMatch(itemStack1 -> itemStack1.is(itemStack.getItem()))) {
                         entity.setTeamColor(0xc000ff);
                         entity.setGlowingTag(true);
-                        playRareEffect((ServerPlayer) player, itemStack);
+                        playRareEffect(serverPlayer, itemStack);
                     } else {
-                        playCommonEffect((ServerPlayer) player);
+                        playCommonEffect(serverPlayer);
                     }
                 }
                 if(this.skillBookGachaingCount > 0) {
                     this.skillBookGachaingCount--;
-                    ItemStack itemStack = SkillBookGachaSystem.pull(((ServerPlayer) player));
+                    ItemStack itemStack = SkillBookGachaSystem.pull((serverPlayer));
                     CustomColorItemEntity entity = ItemUtil.addItemEntity(player, itemStack);
                     Skill skill = SkillBookItem.getContainSkill(itemStack);
                     if(skill != null && skill.getRegistryName().getNamespace().equals(WeaponsOfMinecraft.MODID)) {
                         entity.setTeamColor(0xc000ff);
                         entity.setGlowingTag(true);
-                        playRareEffect((ServerPlayer) player, itemStack);
+                        playRareEffect(serverPlayer, itemStack);
                     } else {
-                        playCommonEffect((ServerPlayer) player);
+                        playCommonEffect(serverPlayer);
                     }
                 }
             }

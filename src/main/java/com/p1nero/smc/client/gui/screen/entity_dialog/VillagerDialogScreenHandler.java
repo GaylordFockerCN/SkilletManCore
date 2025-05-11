@@ -6,6 +6,7 @@ import com.p1nero.smc.client.gui.screen.entity_dialog.profession_dialog.*;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -102,7 +103,7 @@ public class VillagerDialogScreenHandler {
             return Component.translatable("villager.smc." + getTranslationKey().toLowerCase(Locale.ROOT) + ".key");
         }
 
-        public Component answer(int id, Object... objects) {
+        public MutableComponent answer(int id, Object... objects) {
             Component component = Component.translatable("villager.smc." + getTranslationKey().toLowerCase(Locale.ROOT) + ".ans." + id, objects);
             return Component.literal("\n").append(component);
         }

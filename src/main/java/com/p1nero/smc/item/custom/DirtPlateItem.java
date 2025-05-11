@@ -52,7 +52,7 @@ public class DirtPlateItem extends PlateItem {
         if(score > 95) {
             player.displayClientMessage(SkilletManCoreMod.getInfo("full_score"), true);
             player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_LEVELUP, player.getSoundSource(), 1.0F, 1.0F);
-        } else if(score < 60){
+        } else if(score < 70){
             player.displayClientMessage(SkilletManCoreMod.getInfo("bad_score"), true);
             player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.GLASS_BREAK, player.getSoundSource(), 1.0F, 1.0F);
         } else {

@@ -13,6 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.PrimedTnt;
+import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.gameevent.GameEvent;
 import yesman.epicfight.gameasset.EpicFightSounds;
@@ -21,6 +22,12 @@ public class SpecialCustomerData3 extends SpecialCustomerData {
 
     public SpecialCustomerData3() {
         super(3);
+    }
+
+    @Override
+    public void onInteract(ServerPlayer player, Customer self) {
+        super.onInteract(player, self);
+        self.setVillagerData(self.getVillagerData().setProfession(VillagerProfession.WEAPONSMITH).setLevel(2));
     }
 
     public void generateTranslation(SMCLangGenerator generator) {

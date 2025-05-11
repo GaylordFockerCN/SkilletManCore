@@ -81,6 +81,14 @@ public class SMCSetPlayerDataCommand {
                                 )
                         )
                 )
+                .then(Commands.literal("levelUp").requires((commandSourceStack) -> commandSourceStack.hasPermission(2))
+                        .then(Commands.argument("player", EntityArgument.player())
+                                .executes((context) -> {
+                                    SMCPlayer.levelUPPlayer(EntityArgument.getPlayer(context, "player"));
+                                    return 0;
+                                })
+                        )
+                )
                 .then(Commands.literal("stageUp").requires((commandSourceStack) -> commandSourceStack.hasPermission(2))
                         .then(Commands.argument("player", EntityArgument.player())
                                 .executes((context) -> {

@@ -4,9 +4,12 @@ import com.p1nero.invincible.client.keymappings.InvincibleKeyMappings;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.item.custom.SMCCuisineSkilletItem;
+import dev.xkmc.cuisinedelight.content.logic.CookingData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tiers;
@@ -29,6 +32,20 @@ public class DiamondSkilletItem extends SMCCuisineSkilletItem {
         super(block, properties);
         star = star.repeat(level);
         this.level = level;
+    }
+
+    @Override
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+        super.use(level, player, hand);
+        ItemStack skilletStack = player.getItemInHand(hand);
+        if(canUse(skilletStack, player, level)){
+            CookingData data = getData(skilletStack);
+            if(data != null){
+                data.setSpeed(0.5F);
+                setData(skilletStack, data);
+            }
+        }
+        return InteractionResultHolder.fail(skilletStack);
     }
 
     @Override
@@ -65,6 +82,7 @@ public class DiamondSkilletItem extends SMCCuisineSkilletItem {
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> list, @NotNull TooltipFlag flag) {
         super.appendHoverText(stack, level, list, flag);
+        list.add(SkilletManCoreMod.getInfo("diamond_skillet_tip"));
         list.add(SkilletManCoreMod.getInfo("diamond_weapon_tip"));
         list.add(Component.translatable("item.smc.diamond_skillet_skill1", InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey2(), InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey1()).withStyle(ChatFormatting.GRAY));
         list.add(Component.translatable("item.smc.diamond_skillet_skill2", InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey2(), InvincibleKeyMappings.getTranslatableKey2()).withStyle(ChatFormatting.GRAY));

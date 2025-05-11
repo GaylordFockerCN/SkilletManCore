@@ -11,6 +11,7 @@ import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.entity.custom.boss.SMCBoss;
 import com.p1nero.smc.gameasset.skill.SMCSkills;
+import com.p1nero.smc.item.custom.LeftSkilletRightSpatula;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.packet.SyncArchivePacket;
@@ -76,13 +77,22 @@ public class PlayerEventListeners {
     public static void onPlayerAdvancementEarn(AdvancementEvent.AdvancementEarnEvent event) {
         if(event.getEntity() instanceof ServerPlayer serverPlayer && event.getAdvancement().getId().getNamespace().equals(SkilletManCoreMod.MOD_ID)) {
             String path = event.getAdvancement().getId().getPath();
+            if(path.contains(SkilletManCoreMod.MOD_ID + "_weapon")
+                    || path.contains(SkilletManCoreMod.MOD_ID + "_food")
+                    || path.contains(SkilletManCoreMod.MOD_ID + "_armor")
+                    || path.contains(SkilletManCoreMod.MOD_ID + "_skill")
+                    || path.contains(SkilletManCoreMod.MOD_ID + "_level")){
+                return;
+            }
             if(!path.contains("recipe")) {
                 if(path.contains(FOOD_ADV_PRE)){
                     serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("advancement_food_unlock_tip"), false);
                     SMCPlayer.addMoney(300, serverPlayer);
                 } else {
-                    serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("advancement_look_tip"), false);
-                    SMCPlayer.addMoney(200, serverPlayer);
+                    if(!path.contains("skill_adv_")){
+                        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("advancement_look_tip"), false);
+                        SMCPlayer.addMoney(200, serverPlayer);
+                    }
                 }
                 serverPlayer.level().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SoundEvents.VILLAGER_CELEBRATE, serverPlayer.getSoundSource(), 1.0F, 1.0F);
             }
@@ -99,6 +109,10 @@ public class PlayerEventListeners {
             SMCBoss.SERVER_BOSSES.forEach(((uuid, integer) -> PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new SyncUuidPacket(uuid, integer), serverPlayer)));
             SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID, serverPlayer);
             SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID + "_food", serverPlayer);
+            SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID + "_weapon", serverPlayer);
+            SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID + "_armor", serverPlayer);
+            SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID + "_skill", serverPlayer);
+            SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID + "_level", serverPlayer);
 
             SMCPlayer.updateWorkingState(false, serverPlayer);//重置上班状态，防止假性上班（
 
@@ -145,7 +159,7 @@ public class PlayerEventListeners {
             ServerPlayerPatch serverPlayerPatch = EpicFightCapabilities.getEntityPatch(event.player, ServerPlayerPatch.class);
             if (!EpicFightCapabilities.getItemStackCapability(mainHandItem).isEmpty() && !event.player.isCreative() && serverPlayerPatch != null && serverPlayerPatch.isBattleMode()) {
                 Item item = mainHandItem.getItem();
-                if (!(item instanceof CuisineSkilletItem ||item instanceof SpatulaItem || item instanceof BowItem)) {
+                if (!(item instanceof CuisineSkilletItem ||item instanceof SpatulaItem || item instanceof BowItem || item instanceof LeftSkilletRightSpatula)) {
                     SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(event.player);
                     //stage2才解禁，允许使用弓
                     if (smcPlayer.getLevel() < SMCPlayer.STAGE2_REQUIRE) {
@@ -166,7 +180,7 @@ public class PlayerEventListeners {
     @SubscribeEvent
     public static void onPlayerAttack(LivingAttackEvent event) {
         if (event.getSource().getEntity() instanceof Player player) {
-            if (!EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class).isBattleMode()) {
+            if (!EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class).isBattleMode() && !event.getSource().isIndirect()) {
                 if(player.level().isClientSide) {
                     player.displayClientMessage(SkilletManCoreMod.getInfo("please_in_battle_mode", EpicFightKeyMappings.SWITCH_MODE.getTranslatedKeyMessage().copy().withStyle(ChatFormatting.YELLOW)), true);
                 }

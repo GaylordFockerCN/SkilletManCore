@@ -3,9 +3,12 @@ package com.p1nero.smc.item.custom.skillets;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.item.custom.SMCCuisineSkilletItem;
+import dev.xkmc.cuisinedelight.content.logic.CookingData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tiers;
@@ -59,6 +62,20 @@ public class GoldenSkilletItem extends SMCCuisineSkilletItem {
                 SMCAdvancementData.finishAdvancement("first_5star_skillet", serverPlayer);
             }
         }
+    }
+
+    @Override
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+        super.use(level, player, hand);
+        ItemStack skilletStack = player.getItemInHand(hand);
+        if(canUse(skilletStack, player, level)){
+            CookingData data = getData(skilletStack);
+            if(data != null){
+                data.setSpeed(0.5F);
+                setData(skilletStack, data);
+            }
+        }
+        return InteractionResultHolder.fail(skilletStack);
     }
 
     @Override

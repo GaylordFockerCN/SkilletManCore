@@ -184,15 +184,15 @@ public abstract class SMCBoss extends SMCMonster implements HomePointEntity, IWa
         if(level().isClientSide && this.isAlive()){
             BossMusicPlayer.playBossMusic(this, getFightMusic(), 32);
         } else {
-            if(!SMCConfig.ALLOW_BVB.get()){
-                if(level().getBlockEntity(getHomePos()) instanceof BossSpawnerBlockEntity<?> bossSpawnerBlockEntity){
-                    if(bossSpawnerBlockEntity.getMyEntity() == null || !bossSpawnerBlockEntity.getMyEntity().getType().equals(this.getType())){
-                        explodeAndDiscard();
-                    }
-                } else {
-                    explodeAndDiscard();
-                }
-            }
+//            if(!SMCConfig.ALLOW_BVB.get()){
+//                if(level().getBlockEntity(getHomePos()) instanceof BossSpawnerBlockEntity<?> bossSpawnerBlockEntity){
+//                    if(bossSpawnerBlockEntity.getMyEntity() == null || !bossSpawnerBlockEntity.getMyEntity().getType().equals(this.getType())){
+//                        explodeAndDiscard();
+//                    }
+//                } else {
+//                    explodeAndDiscard();
+//                }
+//            }
         }
 
     }

@@ -17,6 +17,7 @@ import com.p1nero.smc.item.custom.CookGuideBookItem;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.BookManager;
 import com.p1nero.smc.worldgen.biome.SMCBiomes;
+import dev.xkmc.cuisinedelight.init.registrate.CDItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.entity.EntityType;
 
@@ -38,13 +39,16 @@ public class SMCLangGenerator extends SMCLangProvider {
             this.add("screen_tips.smc.tip" + i, ClientForgeEvents.TIPS.get(i));
         }
 
+        this.addInfo("need_shift_see_combo", "按下shift以查看武器连招");
+
+        this.addInfo("wear_effect", "§e套装效果：§r");
         this.addInfo("set_time_not_allowed", "§c \"/time set\"命令将影响游戏进度！请使用 \"/time add\"代替！");
 
         this.addInfo("start_work", "§a上班！");
         this.addInfo("end_work", "§c下班！");
         this.add("key.smc.new_shop", "一家新店铺");
 
-        this.addInfo("die_tip", "§6多练习招架和闪避，建议寻找特定村民抽取强力武器，盔甲，技能书！（本包所有伤害都已经降低1/2了哦~）");
+        this.addInfo("die_tip", "§6建议多练习招架和闪避\n金币充足时，建议寻找特定村民抽取强力武器，盔甲，技能书！\n（本包所有伤害都已经降低1/2了哦~）");
 
         this.addInfo("full_score", "§e满分！！");
         this.addInfo("middle_score", "§a优秀！");
@@ -60,7 +64,8 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("special_event_opt1", "大胆！何方小贼！");
         this.addInfo("special_event_opt2", "灶爷，我去去就回！");
 
-        this.addInfo("golden_skillet_tip", "§e翻炒冷却降低至 15tick");
+        this.addInfo("golden_skillet_tip", "§e烹饪速度降低至0.66");
+        this.addInfo("diamond_skillet_tip", "§e烹饪速度降低至0.33");
         this.addInfo("diamond_weapon_tip", "§b每段攻击都应该尝试一下 [KEY2] （默认右键），摸索出最合适的连招！");
         this.addInfo("golden_spatula_tip", "§e翻炒冷却降低至 15tick");
         this.addInfo("diamond_spatula_tip", "§b翻炒冷却降低至 10tick");
@@ -112,7 +117,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("seafood_mul", "海鲜加成！× %.1f");
         this.addInfo("meat_mul", "肉类加成！× %.1f");
         this.addInfo("type_mul", "品种加成！× %.1f");
-        this.addInfo("size_mul", "分量加成！× %.1f");
+        this.addInfo("size_mul", "份量加成！× %.1f");
         this.addInfo("all_taken", "已全部取出！");
         this.addInfo("customer_is_first", "§c顾客就是上帝！");
         this.addInfo("no_your_power", "Oh 不, 这份力量并不属于你...设定上你只能使用平底锅和锅铲");
@@ -129,7 +134,55 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("food_adv_unlock_pre", "首次烹饪出： ");
         this.addInfo("advancement_food_unlock_tip", "解锁了新的图鉴！默认按§a[L]§r查看");
         this.addAdvancement(SkilletManCoreMod.MOD_ID, "临村怀梦", "平底锅侠传奇的一生即将开始");
-        this.addAdvancement(SkilletManCoreMod.MOD_ID + "_food", "食物图鉴", "制作过的食物将在这里展示出来");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "_food", "料理图鉴", "制作过的食物将在这里展示出来");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "_weapon", "武器图鉴", "在武器匠处可能抽取到的武器，获得过的武器将被点亮");
+        this.addItemAdvancementDesc(CDItems.SPATULA, "很普通的锅铲");
+        this.addItemAdvancementDesc(SMCRegistrateItems.SPATULA_V2, "很普通的锅铲，伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.SPATULA_V3, "很普通的锅铲，新增一段普通攻击，伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.SPATULA_V4, "很普通的锅铲，伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.SPATULA_V5, "很普通的锅铲，新增一段普通攻击，伤害提高");
+        this.addItemAdvancementDesc(CDItems.SKILLET, "很普通的平底锅");
+        this.addItemAdvancementDesc(SMCRegistrateItems.IRON_SKILLET_LEVEL2, "很普通的平底锅，伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.IRON_SKILLET_LEVEL3, "很普通的平底锅，新增一段普攻，伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.IRON_SKILLET_LEVEL4, "很普通的平底锅，伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.IRON_SKILLET_LEVEL5, "很普通的平底锅，新增技能【钢铁旋风】，伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.GOLDEN_SPATULA, "金闪闪的锅铲");
+        this.addItemAdvancementDesc(SMCRegistrateItems.GOLDEN_SPATULA_V2, "金闪闪的锅铲，伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.GOLDEN_SPATULA_V3, "金闪闪的锅铲，普通攻击新增一段强力的击飞，改变冲刺攻击和跳跃攻击，伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.GOLDEN_SPATULA_V4, "金闪闪的锅铲，伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.GOLDEN_SPATULA_V5, "金闪闪的锅铲，新增强力武器技能，可震慑周边敌人。伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.GOLDEN_SKILLET, "金闪闪的平底锅");
+        this.addItemAdvancementDesc(SMCRegistrateItems.GOLDEN_SKILLET_V2, "金闪闪的平底锅，伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.GOLDEN_SKILLET_V3, "金闪闪的平底锅，改变冲刺攻击和跳跃攻击，伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.GOLDEN_SKILLET_V4, "金闪闪的平底锅，伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.GOLDEN_SKILLET_V5, "金闪闪的平底锅，新增强力武器技能，可震慑周边敌人，短时间内霸体。伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.DIAMOND_SPATULA, "钻石闪闪的锅铲，有着独特的搓招方式。");
+        this.addItemAdvancementDesc(SMCRegistrateItems.DIAMOND_SPATULA_V2, "钻石闪闪的锅铲，攻速、伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.DIAMOND_SPATULA_V3, "钻石闪闪的锅铲，攻速、伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.DIAMOND_SPATULA_V4, "钻石闪闪的锅铲，攻速、伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.DIAMOND_SPATULA_V5, "钻石闪闪的锅铲，攻速、伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.DIAMOND_SKILLET, "钻石闪闪的平底锅，有着独特的搓招方式。");
+        this.addItemAdvancementDesc(SMCRegistrateItems.DIAMOND_SKILLET_V2, "钻石闪闪的平底锅，攻速、伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.DIAMOND_SKILLET_V3, "钻石闪闪的平底锅，攻速、伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.DIAMOND_SKILLET_V4, "钻石闪闪的平底锅，攻速、伤害提高");
+        this.addItemAdvancementDesc(SMCRegistrateItems.DIAMOND_SKILLET_V5, "钻石闪闪的平底锅，攻速、伤害提高");
+        this.addItemAdvancementDesc(SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get(), "左锅右铲！全新定制！独一无二的攻击模板！");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "_armor", "盔甲图鉴", "在盔甲匠处可能抽取到的盔甲，获得的盔甲将被点亮");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "_skill", "技能书图鉴", "在图书管理员处可能抽取到的技能书，学过的技能将被点亮");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "_level", "声望等级奖励", "随着声望等级提升，将获得不同的奖励");
+        this.addAdvancement("level5", "声望等级5 奖励", "炒锅 §6⭐⭐⭐⭐⭐ ：其实五星的普通炒锅可能比一星的黄金武器还好用...");
+        this.addAdvancement("level5_1", "突破奖励", "§6喂食升级§a：解放双手，专注于工作和战斗！");
+        this.addAdvancement("level5_2", "突破奖励", "§6无脑村民刷怪蛋 × 5§a：在家里也能抽卡！");
+        this.addAdvancement("level10", "声望等级10 奖励", "§e黄金锅铲 §6⭐⭐⭐⭐⭐");
+        this.addAdvancement("level10_1", "突破奖励", "§6高级喂食升级§a：背包可自动喂食，更多配置项");
+        this.addAdvancement("level10_2", "突破奖励", "§6工程师护目镜§a：提醒你一下本包有机械动力。差不多该步入机械时代了，快去找机械师（工具匠）搞点材料吧~");
+        this.addAdvancement("level15", "声望等级15 奖励", "§e黄金平底锅 §6⭐⭐⭐⭐⭐");
+        this.addAdvancement("level20", "声望等级20 奖励", "§b钻石锅铲 §5⭐⭐⭐⭐");
+        this.addAdvancement("level20_1", "突破奖励", "§d屠龙套装");
+        this.addAdvancement("level20_2", "突破奖励", "§d屠龙套装");
+        this.addAdvancement("level25", "声望等级25 奖励", "§b钻石平底锅 §5⭐⭐⭐⭐");
+        this.addAdvancement("level30", "声望等级30 奖励", "§6左锅右铲§r + §6英雄套装");
+
         this.addAdvancement("dirt_plate", "节俭之星", "使用脏盘子盛菜，节俭是一种美德，但是你的顾客可能不会这么想。");
         this.addAdvancement("start_work", "新的开始", "接手一家店铺并开始经营");
         this.addAdvancement("money1000", "一千富翁", "持有 1,000 绿宝石");
@@ -138,9 +191,9 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("special_customer_1", "大亨", "接待10位特殊客户");
         this.addAdvancement("special_customer_2", "超级大亨", "接待20位特殊客户");
         this.addAdvancement("special_customer_3", "超级超级大亨", "接待50位特殊客户");
-        this.addAdvancement("level1", "崭露头角", "经营等级达到一级");
-        this.addAdvancement("level2", "信手拈来", "经营等级达到二级");
-        this.addAdvancement("level3", "厨神", "经营等级达到三级。那么喜欢做菜，还不去打最终boss？");
+        this.addAdvancement("stage1", "崭露头角", "经营等级达到一级");
+        this.addAdvancement("stage2", "信手拈来", "经营等级达到二级");
+        this.addAdvancement("stage3", "厨神", "经营等级达到三级。那么喜欢做菜，还不去打最终boss？");
 
         this.addAdvancement("change_villager", "给我上班！", "和无业游民对话转换其职业");
         this.addAdvancement("talk_to_cleric", "神的指示", "和牧师对话，了解终界的事");
@@ -275,7 +328,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialog(SMCEntities.START_NPC, 3, "§a已全部取出！");
         this.addDialog(SMCEntities.START_NPC, 4, "§a已升级！");
         this.addDialog(SMCEntities.START_NPC, 5, "准备好开业了吗！§6由于作者没有建筑水平，因此还特地补偿了一些建筑方块，快去装饰你的店铺吧！§r§c建筑时记得给村民留交易窗口！村民将从四面八方生成！");
-        this.addDialog(SMCEntities.START_NPC, 6, "建议优先寻找§6盔甲匠§r和§6武器匠§r抽取盔甲和武器！以获得更好的游玩体验！ 将§6炒锅§r摆上§6炉灶§r以开始营业，长按拆下以下班。右键顾客以查看所需食材，烹饪完成后将食材放至§6主手§r，再次对话以交付食材。根据食材的品质将获得不同奖励。而§c第三天后夜晚会有袭击事件§r，拿起平底锅保卫村庄！");
+        this.addDialog(SMCEntities.START_NPC, 6, "建议优先寻找§6盔甲匠§r和§6武器匠§r抽取盔甲和武器！以获得更好的游玩体验！ 将§6炒锅§r摆上§6炉灶§r以开始营业，长按拆下以下班。右键顾客以查看所需食材，烹饪完成后将食材放至§6主手§r，再次对话以交付食材。根据食材的品质将获得不同奖励。而§c第二天开始夜晚会有袭击事件§r，拿起平底锅保卫村庄！");
         this.addDialog(SMCEntities.START_NPC, 7, "炒菜时，拿着食材右键§6炒锅§r以把对应的食材丢入锅中，用§6锅铲§r右键即可翻炒。左边的仪表盘提示食物是否§c烧焦§r，请在合适的时候用盘子将其取出！ 使用§a[JEI]§r可查看料理配方。在物品栏可查看食材§6烹饪时间区间§r，做好计算再下锅吧！用到的食材越高级，声望等级越高，奖励越丰富！如果手忙脚乱，§6[预制菜]§r 是一个不错的选择。");
         this.addDialog(SMCEntities.START_NPC, 8, "接待足够多的村民或成功抵御一次袭击，将提升一次店铺声望等级.随着声望等级提升将解锁新的资源和玩法。到一定声望等级时将开启§6突破试炼§r，若试炼成功则可获得大量奖励并且进入下一游戏阶段。");
         this.addDialog(SMCEntities.START_NPC, 9, "Zzz...Zzz...Zzz...(忙碌了一天的员工睡得正香，  此刻也许你会好奇它为什么能够站着睡着。平底锅侠的世界就是如此奇妙，无需那么多为什么。)");

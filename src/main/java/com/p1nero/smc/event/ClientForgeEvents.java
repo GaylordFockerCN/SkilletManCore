@@ -72,6 +72,8 @@ public class ClientForgeEvents {
         TIPS.add("不要吝啬于升级你的武器，多抽取武器盔甲和技能书以获取更好的体验！");
         TIPS.add("炒混合菜品时，可先查看烹饪时间区间，计算好下锅顺序再开始！");
         TIPS.add("顾客村民初始一分钟生成一次，随店铺等级升高，客流量会增加");
+        TIPS.add("默认 Z + 鼠标和滚轮可调节视角 —— Leawind Third Person");
+        TIPS.add("任何时候开始学机械动力都不晚！");
     }
     /**
      * 画提示

@@ -283,7 +283,7 @@ public class Customer extends SMCNpc {
                 int score = cookedFoodData.score;
                 if(score >= 90) {
                     this.foodLevel = CustomerData.BEST;
-                } else if(score >= 60){
+                } else if(score >= 70){
                     this.foodLevel = CustomerData.MIDDLE;
                 } else {
                     this.foodLevel = CustomerData.BAD;

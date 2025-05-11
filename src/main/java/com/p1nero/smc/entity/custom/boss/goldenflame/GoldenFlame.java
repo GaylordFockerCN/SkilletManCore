@@ -1,7 +1,9 @@
 package com.p1nero.smc.entity.custom.boss.goldenflame;
 
 import com.p1nero.smc.SMCConfig;
+import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.sound.SMCSounds;
+import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.effect.SMCEffects;
 import com.p1nero.smc.entity.api.IWanderableEntity;
 import com.p1nero.smc.entity.ai.epicfight.api.TimeStampedEvent;
@@ -293,12 +295,12 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity {
 
     public static AttributeSupplier setAttributes() {
         return Animal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 351.27)
+                .add(Attributes.MAX_HEALTH, 1151.27)
                 .add(Attributes.ATTACK_DAMAGE, 2.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
                 .add(Attributes.MOVEMENT_SPEED, 0.3f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 114514f)
-                .add(Attributes.ARMOR, 10.0f)
+                .add(Attributes.ARMOR, 0)
                 .add(EpicFightAttributes.MAX_STRIKES.get(), 4)
                 .add(EpicFightAttributes.WEIGHT.get(), 3)
                 .build();
@@ -343,6 +345,8 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity {
                 ServerLevel serverLevel = this.getServer().getLevel(Level.OVERWORLD);
                 if(serverLevel != null){
                     serverPlayer.changeDimension(serverLevel);
+                    SMCPlayer.addMoney(2000000, serverPlayer);
+                    SMCAdvancementData.finishAdvancement("end", serverPlayer);
                 }
             }
         }

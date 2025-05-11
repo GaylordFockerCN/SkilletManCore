@@ -24,7 +24,7 @@ public class HealthBarRenderer {
             Font font = Minecraft.getInstance().font;
             float scale = 0.83333F;
             float rate = localPlayer.getHealth() / localPlayer.getMaxHealth();
-            double offset = rate < 0.1 ? Math.random() * 2 - 1 : 0;
+            double offset = rate < 0.2 ? Math.random() * 2 - 1 : 0;
             int width = (int) (114 * scale);
             int height = (int) (13 * scale);
             int x = (int) (window.getGuiScaledWidth() / 2.0F - width * 0.95);

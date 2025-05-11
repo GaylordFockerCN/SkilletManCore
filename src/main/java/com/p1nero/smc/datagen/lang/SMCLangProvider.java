@@ -1,7 +1,7 @@
 package com.p1nero.smc.datagen.lang;
 
 import com.p1nero.smc.SkilletManCoreMod;
-import com.p1nero.smc.util.BookManager;
+import com.p1nero.smc.datagen.SMCAdvancementData;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
@@ -10,6 +10,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraftforge.common.data.LanguageProvider;
@@ -124,6 +125,10 @@ public abstract class SMCLangProvider extends LanguageProvider {
 
     public void addStructure(ResourceKey<Structure> biome, String name) {
         this.add("structure." + SkilletManCoreMod.MOD_ID + "." + biome.location().getPath(), name);
+    }
+
+    public void addItemAdvancementDesc(ItemLike itemLike, String desc) {
+        this.add(SMCAdvancementData.PRE + "item." + itemLike.asItem() + ".desc", desc);
     }
 
     public void addAdvancement(String key, String title, String desc) {

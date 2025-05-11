@@ -2,6 +2,7 @@ package com.p1nero.smc.entity.custom.super_golem;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -43,6 +44,14 @@ public class SuperBadIronGolem extends IronGolem {
     @Override
     protected @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         return InteractionResult.PASS;
+    }
+
+    @Override
+    public boolean hurt(@NotNull DamageSource damageSource, float p_28849_) {
+        if(damageSource.getEntity() instanceof SuperBadIronGolem){
+            return false;
+        }
+        return super.hurt(damageSource, p_28849_);
     }
 
     @Override

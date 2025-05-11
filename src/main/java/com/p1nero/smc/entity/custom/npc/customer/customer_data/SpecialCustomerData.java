@@ -153,7 +153,7 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("size_mul", cookedFoodData.size), false);
             }
         }
-        SMCPlayer.addMoney(((int) (200 * mul)), serverPlayer);
+        SMCPlayer.addMoney(((int) (100 * mul)), serverPlayer);
         serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
         self.level().broadcastEntityEvent(self, (byte) 14);//播放开心的粒子
     }
@@ -165,14 +165,14 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
         float mul = 1.0F + smcPlayer.getLevel();
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("level_mul", smcPlayer.getLevel() + 1), false);
         if (cookedFoodData != null) {
-            mul *= cookedFoodData.types.size();
+            mul += cookedFoodData.types.size();
             serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("type_mul", cookedFoodData.types.size()), false);
             if (cookedFoodData.types.contains(FoodType.MEAT)) {
-                mul *= 1.2F;
+                mul += 1.2F;
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("meat_mul", 1.2F), false);
             }
             if (cookedFoodData.types.contains(FoodType.SEAFOOD)) {
-                mul *= 1.4F;
+                mul += 1.4F;
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("seafood_mul", 1.4F), false);
             }
             if(cookedFoodData.size > 0){
@@ -180,13 +180,13 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("size_mul", cookedFoodData.size), false);
             }
         }
-        SMCPlayer.addMoney((int) (100 * mul), serverPlayer);
+        SMCPlayer.addMoney((int) (50 * mul), serverPlayer);
         serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SoundEvents.VILLAGER_TRADE, serverPlayer.getSoundSource(), 1.0F, 1.0F);
     }
 
 
     protected void onBad(ServerPlayer serverPlayer, Customer self) {
-        SMCPlayer.consumeMoney(200, serverPlayer);
+        SMCPlayer.consumeMoney(400, serverPlayer);
         serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SoundEvents.VILLAGER_NO, serverPlayer.getSoundSource(), 1.0F, 1.0F);
         self.setUnhappyCounter(40);
     }

@@ -442,10 +442,10 @@ public class StartNPC extends SMCNpc {
             ItemUtil.addItem(player, CDItems.PLATE.asStack(10), true);
             ItemUtil.addItem(player, Blocks.CRAFTING_TABLE.asItem(), 1);
             ItemUtil.addItem(player, Blocks.JUKEBOX.asItem(), 1);
-            ItemUtil.addItem(player, Blocks.OAK_WOOD.asItem(), 64);
-            ItemUtil.addItem(player, Blocks.STONE.asItem().asItem(), 64);
-            ItemUtil.addItem(player, Blocks.COBBLESTONE.asItem().asItem(), 64);
-            ItemUtil.addItem(player, Blocks.BRICKS.asItem().asItem(), 64);
+//            ItemUtil.addItem(player, Blocks.OAK_WOOD.asItem(), 64);
+//            ItemUtil.addItem(player, Blocks.STONE.asItem().asItem(), 64);
+//            ItemUtil.addItem(player, Blocks.COBBLESTONE.asItem().asItem(), 64);
+//            ItemUtil.addItem(player, Blocks.BRICKS.asItem().asItem(), 64);
             ItemUtil.addItem(player, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asStack(10), true);
             ItemUtil.addItem(player, SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asStack(10), true);
 

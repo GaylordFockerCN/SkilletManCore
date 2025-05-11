@@ -62,8 +62,8 @@ public class GoldenFlamePatch extends SMCBossPatch<GoldenFlame> {
     public AttackResult attack(EpicFightDamageSource damageSource, Entity target, InteractionHand hand) {
         AttackResult result = super.attack(damageSource, target, hand);
         if (result.resultType.dealtDamage()) {
-            this.getOriginal().setHealth((float) (this.getOriginal().getHealth() + Math.max(this.getOriginal().getMaxHealth() * 0.005, result.damage * (SMCArchiveManager.getWorldLevel() + 1.1 - this.getOriginal().getHealthRatio()))));
-            target.setSecondsOnFire(10);
+//            this.getOriginal().setHealth((float) (this.getOriginal().getHealth() + Math.max(this.getOriginal().getMaxHealth() * 0.001, result.damage * (1.1 - this.getOriginal().getHealthRatio()))));
+            target.setSecondsOnFire(1);
             if (damageSource.getAnimation().equals(WOMAnimations.TORMENT_AUTO_4)) {
                 onTormentAuto4Hit = true;
             }
