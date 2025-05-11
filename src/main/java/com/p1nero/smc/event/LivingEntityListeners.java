@@ -54,31 +54,6 @@ public class LivingEntityListeners {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onEntityDimChanged(EntityTravelToDimensionEvent event) {
-
-        //维度内且为观察者则禁止传送
-        if(event.getEntity().isSpectator() && event.getEntity().level().dimension() == SMCDimension.P_SKY_ISLAND_LEVEL_KEY){
-            event.setCanceled(true);
-        }
-        //进维度换冒险
-        if(event.getDimension() == SMCDimension.P_SKY_ISLAND_LEVEL_KEY){
-            if(FMLEnvironment.production) {
-                //开发环境不受影响
-                return;
-            }
-            if(event.getEntity() instanceof ServerPlayer serverPlayer){
-                serverPlayer.setGameMode(GameType.ADVENTURE);
-            }
-        }
-        //出维度还原为生存
-        if(event.getEntity().level().dimension() == SMCDimension.P_SKY_ISLAND_LEVEL_KEY){
-            if(event.getEntity() instanceof ServerPlayer serverPlayer){
-                serverPlayer.setGameMode(GameType.SURVIVAL);
-            }
-        }
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onEntityHurt(LivingHurtEvent event) {
         if(event.getEntity() instanceof Villager villager && villager.getVillagerData().getProfession() != VillagerProfession.CLERIC && event.getSource().getEntity() instanceof ServerPlayer player) {
             event.setAmount(0);
@@ -136,6 +111,7 @@ public class LivingEntityListeners {
                 }
             }
             enderDragon.setHealth(0);//直接移除血条不会丢
+            enderDragon.discard();
             return;
         }
 

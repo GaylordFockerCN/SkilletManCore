@@ -1,24 +1,20 @@
 [
   {
-    "section": "Duel of the End dimension DLC",
+    "section": "演员表 Cast",
     "disciplines": [
       {
-        "discipline": "Textures & Model",
+        "discipline": "主演 Lead Actor/Actress",
         "titles": [
           {
             "title": "",
             "names": [
-              "Jobin Ghy",
-              "Ink Hiro",
-              "NHblock (白露)",
-              "RSGed",
-              "ⅩⅧ凌"
+              "PLAYERNAME"
             ]
           }
         ]
       },
       {
-        "discipline": "Programming",
+        "discipline": "配角 Supporting Role",
         "titles": [
           {
             "title": "World",
@@ -38,7 +34,7 @@
           {
             "title": "",
             "names": [
-              "NHblock (白露)"
+              "P1nero"
             ]
           }
         ]

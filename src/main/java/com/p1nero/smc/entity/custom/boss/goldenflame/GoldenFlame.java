@@ -13,6 +13,7 @@ import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.OpenEndScreenPacket;
 import com.p1nero.smc.util.EntityUtil;
+import com.p1nero.smc.worldgen.portal.SMCTeleporter;
 import net.kenddie.fantasyarmor.item.FAItems;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -256,7 +257,7 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity {
                         entity.setSecondsOnFire(5);
                         if(entity instanceof LivingEntity livingEntity){
                             livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100));
-                            livingEntity.addEffect(new MobEffectInstance(SMCEffects.BURNT.get(), 100, 1));
+                            livingEntity.addEffect(new MobEffectInstance(SMCEffects.BURNT.get(), 100, 1, false, false));
                         }
                     }
                 } else {
@@ -318,21 +319,24 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity {
 
     @Override
     public boolean hurt(@NotNull DamageSource source, float value) {
-        //为了bvb
-        if(SMCConfig.ALLOW_BVB.get() && (source.getEntity() instanceof LivingEntity) && !source.isIndirect()){
-            return super.hurt(source, value);
-        }
+
         //防止雷劈火烧等bug，以及免疫所有远程，别想逃课！
         if(!(source.getEntity() instanceof Player) || source.isIndirect()){
             return false;
         }
 
+        if(source.isCreativePlayer()) {
+            super.hurt(source, Integer.MAX_VALUE);
+        }
+
         if (!shouldRender()) {
             return false;
         }
+
         if(getHealthRatio() <= 0.2 && healthLock){
             value = Math.min(value, getMaxHealth() * 0.01F);
         }
+
         return super.hurt(source, value);
     }
 
@@ -340,15 +344,16 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity {
     public void die(@NotNull DamageSource source) {
         level().playSound(null, getX(), getY(), getZ(), SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.BLOCKS, 1, 1);
         if(source.getEntity() instanceof ServerPlayer serverPlayer){
-            PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new OpenEndScreenPacket(), serverPlayer);//终末之诗
-            if(this.getServer() != null){
-                ServerLevel serverLevel = this.getServer().getLevel(Level.OVERWORLD);
-                if(serverLevel != null){
-                    serverPlayer.changeDimension(serverLevel);
+            if(this.getServer() != null && level().dimension() != Level.OVERWORLD){
+                ServerLevel overworld = this.getServer().getLevel(Level.OVERWORLD);
+                if(overworld != null){
+                    serverPlayer.changeDimension(overworld, new SMCTeleporter(overworld.getSharedSpawnPos()));
+                    serverPlayer.setRespawnPosition(Level.OVERWORLD, overworld.getSharedSpawnPos(), 0.0F, false, true);
                     SMCPlayer.addMoney(2000000, serverPlayer);
                     SMCAdvancementData.finishAdvancement("end", serverPlayer);
                 }
             }
+            PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new OpenEndScreenPacket(), serverPlayer);//终末之诗
         }
         super.die(source);
     }

@@ -1,0 +1,303 @@
+[
+  {
+    "section": "演员表",
+    "disciplines": [
+      {
+        "discipline": "领衔主演",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "平底锅侠 - PLAYERNAME 饰",
+              "终界领主 - 金焰神王 饰",
+              "旁白 - P1nero 饰"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "配角",
+        "titles": [
+          {
+            "title": "村民团队",
+            "names": [
+              "美好生活小助手村民",
+              "牧师村民",
+              "传奇盔甲匠",
+              "魁梧的武器匠",
+              "传奇机械师",
+              "图书管理员",
+              "小孩村民",
+              "屠夫村民",
+              "渔夫村民",
+              "农民村民",
+              "牧羊人村民",
+              "铁傀儡",
+              "超雄铁哥"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "客串",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "充满抛瓦的村民",
+              "Rāna Kaname"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "群演",
+        "titles": [
+          {
+            "title": "村民团队",
+            "names": [
+              "人畜无害的流浪商人",
+              "人畜无害的村民客户",
+              "无业游民甲",
+              "无业游民乙",
+              "无业游民丙"
+            ]
+          },
+          {
+            "title": "怪物团队",
+            "names": [
+              "僵尸",
+              "小白",
+              "蜘蛛",
+              "苦力怕",
+              "女巫",
+              "凋零骷髅",
+              "烈焰人",
+              "卫道士",
+              "唤魔者",
+              "末影人"
+            ]
+          },
+          {
+            "title": "动物团队",
+            "names": [
+              "鸡哥",
+              "狼",
+              "猫",
+              "猪",
+              "牛",
+              "羊"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "section": "制作团队",
+    "disciplines": [
+      {
+        "discipline": "作者",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "P1nero"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "策划",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "P1nero"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "程序",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "P1nero"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "任务、图鉴、引导 制作",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "P1nero"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "对话设计",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "P1nero"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "美术",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "P1nero"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "背景设定",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "P1nero"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "外援",
+        "titles": [
+          {
+            "title": "最终Boss",
+            "names": [
+              "太阳照常升起（LittleSun2048）"
+            ]
+          },
+          {
+            "title": "动画",
+            "names": [
+              "merlin204"
+            ]
+          },
+          {
+            "title": "建筑",
+            "names": [
+              "荒梦"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "设备支持",
+        "titles": [
+          {
+            "title": "服务器赞助",
+            "names": [
+              "白露（NHBlock）"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "section": "内测贡献",
+    "disciplines": [
+      {
+        "discipline": "",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "紫斗",
+              "佩拉瑞斯"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "section": "广告招租",
+    "disciplines": [
+      {
+        "discipline": "广告招租",
+        "titles": [
+          {
+            "title": "广告招租",
+            "names": [
+              "广告招租"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "section": "特别鸣谢",
+    "disciplines": [
+      {
+        "discipline": "",
+        "titles": [
+          {
+            "title": "整合包所用到的其他模组",
+            "names": [
+              "Minecraft",
+              "Minecraft Forge",
+              "Epic Fight",
+              "Weapons of Miracles",
+              "Epic Fight - Impactful",
+              "Epic Fight - Super Golem",
+              "Fantasy Armor",
+              "Hung Teen's Lib",
+              "Farmer's Delight",
+              "Cuisine Delight",
+              "Create",
+              "Create: Connected",
+              "JEI",
+              "Xaero's Map",
+              "Waystone",
+              "YUNG's Better End Island",
+              "Kaleidoscope Doll",
+              "Epic Terrain",
+              "Leawind Third Person",
+              "TrashSlot",
+              "Sophisticated Backpacks",
+              "Spice of Life: Carrot Edition",
+              "Oculus",
+              "Embeddium"
+            ]
+          },
+          {
+            "title": "对话系统所借鉴的项目",
+            "names": [
+              "The Aether"
+            ]
+          },
+          {
+            "title": "部分素材来源网站",
+            "names": [
+              "pixabay",
+              "爱给网"
+            ]
+          },
+          {
+            "title": "翻译",
+            "names": [
+              "deepseek"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

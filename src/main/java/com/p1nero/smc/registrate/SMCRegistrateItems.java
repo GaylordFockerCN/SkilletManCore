@@ -1,10 +1,7 @@
 package com.p1nero.smc.registrate;
 
 import com.p1nero.smc.SkilletManCoreMod;
-import com.p1nero.smc.item.custom.CookGuideBookItem;
-import com.p1nero.smc.item.custom.DirtPlateItem;
-import com.p1nero.smc.item.custom.SimpleDescriptionFoilItem;
-import com.p1nero.smc.item.custom.TeleporterItem;
+import com.p1nero.smc.item.custom.*;
 import com.p1nero.smc.item.custom.skillets.*;
 import com.p1nero.smc.item.custom.spatulas.*;
 import com.tterrag.registrate.providers.ProviderType;
@@ -170,6 +167,10 @@ public class SMCRegistrateItems {
             .model((ctx, pvd) -> pvd.getBuilder(ctx.getName()).parent(new ModelFile.UncheckedModelFile("minecraft:item/ender_eye")))
             .defaultLang().register();
     public static final ItemEntry<CookGuideBookItem> COOK_GUIDE_BOOK_ITEM = SkilletManCoreMod.REGISTRATE.item("cook_guide_book", p -> new CookGuideBookItem(p.stacksTo(1).rarity(Rarity.EPIC)))
+            .defaultModel()
+            .defaultLang().register();
+
+    public static final ItemEntry<CreateCookGuideBookItem> CREATE_COOK_GUIDE_BOOK_ITEM = SkilletManCoreMod.REGISTRATE.item("create_cook_guide_book", p -> new CreateCookGuideBookItem(p.stacksTo(1).rarity(Rarity.EPIC)))
             .defaultModel()
             .defaultLang().register();
 

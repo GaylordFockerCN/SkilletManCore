@@ -14,6 +14,7 @@ import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.event.ClientForgeEvents;
 import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.item.custom.CookGuideBookItem;
+import com.p1nero.smc.item.custom.CreateCookGuideBookItem;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.BookManager;
 import com.p1nero.smc.worldgen.biome.SMCBiomes;
@@ -234,6 +235,9 @@ public class SMCLangGenerator extends SMCLangProvider {
 
         this.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get(), "烹饪宝典");
         CookGuideBookItem.addTranslation(this);
+        this.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get(), "论机械动力与料理乐事相结合（新手向）");
+        CreateCookGuideBookItem.addTranslation(this);
+
         this.add(SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get(), "左锅右铲");
         this.add(SMCRegistrateItems.SPATULA_V2.get(), "锅铲");
         this.add(SMCRegistrateItems.SPATULA_V3.get(), "锅铲");
@@ -331,7 +335,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialog(SMCEntities.START_NPC, 2, "本店亏损已久，承蒙大侠相助！");
         this.addDialog(SMCEntities.START_NPC, 3, "§a已全部取出！");
         this.addDialog(SMCEntities.START_NPC, 4, "§a已升级！");
-        this.addDialog(SMCEntities.START_NPC, 5, "准备好开业了吗！§6由于作者没有建筑水平，因此还特地补偿了一些建筑方块，快去装饰你的店铺吧！§r§c建筑时记得给村民留交易窗口！村民将从四面八方生成！");
+        this.addDialog(SMCEntities.START_NPC, 5, "准备好开业了吗！记得留意四周哦，村民将从四面八方生成！");
         this.addDialog(SMCEntities.START_NPC, 6, "建议优先寻找§6盔甲匠§r和§6武器匠§r抽取盔甲和武器！以获得更好的游玩体验！ 将§6炒锅§r摆上§6炉灶§r以开始营业，长按拆下以下班。右键顾客以查看所需食材，烹饪完成后将食材放至§6主手§r，再次对话以交付食材。根据食材的品质将获得不同奖励。而§c第二天开始夜晚会有袭击事件§r，拿起平底锅保卫村庄！");
         this.addDialog(SMCEntities.START_NPC, 7, "炒菜时，拿着食材右键§6炒锅§r以把对应的食材丢入锅中，用§6锅铲§r右键即可翻炒。左边的仪表盘提示食物是否§c烧焦§r，请在合适的时候用盘子将其取出！ 使用§a[JEI]§r可查看料理配方。在物品栏可查看食材§6烹饪时间区间§r，做好计算再下锅吧！用到的食材越高级，声望等级越高，奖励越丰富！如果手忙脚乱，§6[预制菜]§r 是一个不错的选择。");
         this.addDialog(SMCEntities.START_NPC, 8, "接待足够多的村民或成功抵御一次袭击，将提升一次店铺声望等级.随着声望等级提升将解锁新的资源和玩法。到一定声望等级时将开启§6突破试炼§r，若试炼成功则可获得大量奖励并且进入下一游戏阶段。");

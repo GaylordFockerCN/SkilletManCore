@@ -190,8 +190,8 @@ dependencies {
 
     //相机
     implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
-//    implementation fg.deobf("curse.maven:leawind-third-person-930880:5961735")
-//    implementation fg.deobf("libs:eflw:20.9.0")
+    implementation fg.deobf("curse.maven:leawind-third-person-930880:5961735")
+    implementation fg.deobf("libs:eflw:20.9.0")
 
     compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
     runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))

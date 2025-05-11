@@ -27,6 +27,7 @@ public class SMCItemTabs {
 
                 output.accept(SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get());
                 output.accept(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get());
+                output.accept(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get());
 
 				output.accept(SMCRegistrateItems.IRON_SKILLET_LEVEL2);
                 output.accept(SMCRegistrateItems.IRON_SKILLET_LEVEL3);

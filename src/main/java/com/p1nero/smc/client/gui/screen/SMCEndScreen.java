@@ -36,10 +36,10 @@ import java.util.Iterator;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class EndScreen extends Screen {
+public class SMCEndScreen extends Screen {
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final ResourceLocation VIGNETTE_LOCATION = new ResourceLocation("textures/misc/vignette.png");
-    public static final ResourceLocation BACKGROUND_LOCATION = new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/block/bg.png");
+    public static final ResourceLocation BACKGROUND_LOCATION = new ResourceLocation("textures/block/bricks.png");
     private static final Component SECTION_HEADING;
     private static final String OBFUSCATE_TOKEN;
     private final boolean poem;
@@ -55,7 +55,7 @@ public class EndScreen extends Screen {
     private int direction;
     private final LogoRenderer logoRenderer = new LogoRenderer(false);
 
-    public EndScreen(boolean poem, Runnable onFinished) {
+    public SMCEndScreen(boolean poem, Runnable onFinished) {
         super(GameNarrator.NO_TITLE);
         this.poem = poem;
         this.onFinished = onFinished;
@@ -128,8 +128,8 @@ public class EndScreen extends Screen {
         if (this.lines == null) {
             this.lines = Lists.newArrayList();
             this.centeredLines = new IntOpenHashSet();
+            String currentLang = this.minecraft.getLanguageManager().getSelected();
             if (this.poem && this.minecraft != null) {
-                String currentLang = this.minecraft.getLanguageManager().getSelected();
                 if(currentLang.equals("zh_cn")){
                     this.wrapCreditsIO(SkilletManCoreMod.MOD_ID + ":texts/end_" + this.minecraft.getLanguageManager().getSelected() + ".txt", this::addPoemFile);
                 } else {
@@ -137,10 +137,13 @@ public class EndScreen extends Screen {
                 }
             }
 
-            this.wrapCreditsIO(SkilletManCoreMod.MOD_ID + ":texts/credits.json", this::addCreditsFile);
+            if(currentLang.equals("zh_cn")){
+                this.wrapCreditsIO(SkilletManCoreMod.MOD_ID + ":texts/credits_zh_cn.json", this::addCreditsFile);
+            } else {
+                this.wrapCreditsIO(SkilletManCoreMod.MOD_ID + ":texts/credits_en_us.json", this::addCreditsFile);
+            }
 
             if (this.poem && this.minecraft != null) {
-                String currentLang = this.minecraft.getLanguageManager().getSelected();
                 if(currentLang.equals("zh_cn")){
                     this.wrapCreditsIO(SkilletManCoreMod.MOD_ID + ":texts/postcredits_" + this.minecraft.getLanguageManager().getSelected() + ".txt", this::addPoemFile);
                 } else {
@@ -226,20 +229,16 @@ public class EndScreen extends Screen {
                 }
 
                 JsonArray $$9 = $$7.getAsJsonArray("titles");
-                Iterator var13 = $$9.iterator();
 
-                while(var13.hasNext()) {
-                    JsonElement $$10 = (JsonElement)var13.next();
+                for (JsonElement $$10 : $$9) {
                     JsonObject $$11 = $$10.getAsJsonObject();
                     String $$12 = $$11.get("title").getAsString();
                     JsonArray $$13 = $$11.getAsJsonArray("names");
                     this.addCreditsLine(Component.literal($$12).withStyle(ChatFormatting.GRAY), false);
-                    Iterator var18 = $$13.iterator();
 
-                    while(var18.hasNext()) {
-                        JsonElement $$14 = (JsonElement)var18.next();
-                        String $$15 = $$14.getAsString();
-                        this.addCreditsLine(Component.literal("           ").append($$15).withStyle(ChatFormatting.WHITE), false);
+                    for (JsonElement $$14 : $$13) {
+                        String name = $$14.getAsString();
+                        this.addCreditsLine(Component.literal("           ").append(name.replaceAll("PLAYERNAME", this.minecraft.getUser().getName())).withStyle(ChatFormatting.WHITE), false);
                     }
 
                     this.addEmptyLine();
@@ -308,7 +307,7 @@ public class EndScreen extends Screen {
             }
 
             if ((float)$$7 + $$6 + 12.0F + 8.0F > 0.0F && (float)$$7 + $$6 < (float)this.height) {
-                FormattedCharSequence $$10 = (FormattedCharSequence)this.lines.get($$8);
+                FormattedCharSequence $$10 = this.lines.get($$8);
                 if (this.centeredLines.contains($$8)) {
                     guiGraphics.drawCenteredString(this.font, $$10, $$4 + 128, $$7, 16777215);
                 } else {

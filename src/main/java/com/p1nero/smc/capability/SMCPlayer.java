@@ -398,6 +398,7 @@ public class SMCPlayer {
         ItemUtil.addItem(serverPlayer, ModItems.ADVANCED_FEEDING_UPGRADE.get().getDefaultInstance(), true);
         ItemUtil.addItem(serverPlayer, AllItems.GOGGLES.asStack(), true);
         ItemUtil.addItem(serverPlayer, SMCRegistrateItems.CREATE_RAFFLE.asStack(5), true);
+        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.asStack(), true);
         SMCAdvancementData.finishAdvancement("level10_1", serverPlayer);
         SMCAdvancementData.finishAdvancement("level10_2", serverPlayer);
     }

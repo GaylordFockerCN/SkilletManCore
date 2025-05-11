@@ -17,8 +17,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class CookGuideBookItem extends Item {
-    public CookGuideBookItem(Properties properties) {
+public class CreateCookGuideBookItem extends Item {
+    public CreateCookGuideBookItem(Properties properties) {
         super(properties);
     }
 
@@ -62,16 +62,16 @@ public class CookGuideBookItem extends Item {
     }
 
     public static void addTranslation(SMCLangGenerator generator){
-        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(0), "在§aJEI§r（物品栏右下方）中搜索对应菜品，点击即可查看所需食材，注意看食材下方提示的§6§l比例！");
-        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(1), "下一页");
-        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(2), "一些食材需要切后才能下锅，将食材放在副手，主手拿§6刀§r，对着§6砧板§r右键即可切之");
-        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(3), "对于左侧的刻度，§a绿色§r表示未煮熟，§e黄色§r表示煮熟刚刚好，§c红色§r表示煮过头 对于右侧的刻度，§a绿色§r表示未烧焦，§c红色§r表示烧焦");
-        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(4), "对于§6混合菜品§r（由两种以上食材烹饪而成），下锅时应§6先下§r最短烹饪时间较长的物品，其次再下最短烹饪时间较短的物品，以免烧焦");
-        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(5), "使用锅铲对着炒锅右键以翻炒食材，翻炒将重置右边的刻度。 使用食材对着炒锅右键 或将食材丢入炒锅上方以添加食材。§6份量加成§r不容忽视。");
-        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(6), "使用盘子对着炒锅右键以盛出");
-        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(7), "当没有食材时，可直接向§b小助手§r快速订购食材，不过小助手提供的食材有限");
-        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(8), "将出锅的食物置于主手，对着客户村民右键对话以完成交易。菜品份量，所用的食材越丰富，奖励将越高！");
-        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(9), "合上");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(0), "在§aJEI§r（物品栏右下方）中搜索对应菜品，点击即可查看所需食材，注意看食材下方提示的§6§l比例！");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(1), "下一页");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(2), "一些食材需要切后才能下锅，将食材放在副手，主手拿§6刀§r，对着§6砧板§r右键即可切之");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(3), "对于左侧的刻度，§a绿色§r表示未煮熟，§e黄色§r表示煮熟刚刚好，§c红色§r表示煮过头 对于右侧的刻度，§a绿色§r表示未烧焦，§c红色§r表示烧焦");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(4), "对于§6混合菜品§r（由两种以上食材烹饪而成），下锅时应§6先下§r最短烹饪时间较长的物品，其次再下最短烹饪时间较短的物品，以免烧焦");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(5), "使用锅铲对着炒锅右键以翻炒食材，翻炒将重置右边的刻度。 使用食材对着炒锅右键以添加食材。§6份量加成§r不容忽视。");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(6), "使用盘子对着炒锅右键以盛出");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(7), "当没有食材时，可直接向§b小助手§r快速订购食材，不过小助手提供的食材有限");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(8), "将出锅的食物置于主手，对着客户村民右键对话以完成交易。菜品份量，所用的食材越丰富，奖励将越高！");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(9), "合上");
     }
 
 }

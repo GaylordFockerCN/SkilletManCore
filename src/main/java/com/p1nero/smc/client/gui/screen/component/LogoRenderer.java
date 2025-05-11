@@ -24,9 +24,10 @@ public class LogoRenderer {
         p_281856_.setColor(1.0F, 1.0F, 1.0F, this.keepLogoThroughFade ? 1.0F : p_281290_);
         int $$4 = p_281512_ / 2 - 128;
         p_281856_.blit(MINECRAFT_LOGO, $$4, p_282296_, 0.0F, 0.0F, 256, 44, 256, 64);
-        int $$5 = p_281512_ / 2 - 64;
-        int $$6 = p_282296_ + 44 - 7;
-        p_281856_.blit(MINECRAFT_EDITION, $$5, $$6, 0.0F, 0.0F, 128, 14, 128, 16);
+        int size = 80;
+        int $$5 = p_281512_ / 2 - size / 2;
+        int $$6 = p_282296_ + 20;
+        p_281856_.blit(MINECRAFT_EDITION, $$5, $$6, size, size, 0.0F, 0.0F, 388, 388, 388, 388);
         p_281856_.setColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 }

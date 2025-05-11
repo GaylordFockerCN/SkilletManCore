@@ -41,9 +41,6 @@ public class SMCTeleporter implements ITeleporter {
         while (!destinationLevel.getBlockState(thisPos).is(Blocks.AIR)){
             thisPos = thisPos.above();
         }
-        if(entity instanceof ServerPlayer player){
-            player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 200, 1, false, true));
-        }
         pos = new PortalInfo(thisPos.getCenter(), Vec3.ZERO, entity.getYRot(), entity.getXRot());
         return pos;
     }
