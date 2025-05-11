@@ -159,6 +159,12 @@ public class SMCRegistrateItems {
     public static final ItemEntry<SimpleDescriptionFoilItem> DOLL_RAFFLE_TICKET = SkilletManCoreMod.REGISTRATE.item("doll_raffle_ticket", properties -> new SimpleDescriptionFoilItem(properties.fireResistant().rarity(Rarity.EPIC)))
             .defaultModel()
             .defaultLang().register();
+    public static final ItemEntry<SimpleDescriptionFoilItem> CREATE_RAFFLE = SkilletManCoreMod.REGISTRATE.item("create_raffle", properties -> new SimpleDescriptionFoilItem(properties.fireResistant().rarity(Rarity.EPIC)))
+            .defaultModel()
+            .defaultLang().register();
+    public static final ItemEntry<SimpleDescriptionFoilItem> REDSTONE_RAFFLE = SkilletManCoreMod.REGISTRATE.item("redstone_raffle", properties -> new SimpleDescriptionFoilItem(properties.fireResistant().rarity(Rarity.EPIC)))
+            .defaultModel()
+            .defaultLang().register();
 
     public static final ItemEntry<TeleporterItem> END_TELEPORTER = SkilletManCoreMod.REGISTRATE.item("end_teleporter", p -> new TeleporterItem(p.stacksTo(1).rarity(Rarity.EPIC)))
             .model((ctx, pvd) -> pvd.getBuilder(ctx.getName()).parent(new ModelFile.UncheckedModelFile("minecraft:item/ender_eye")))

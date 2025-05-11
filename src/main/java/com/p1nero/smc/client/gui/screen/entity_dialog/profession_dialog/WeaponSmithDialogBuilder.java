@@ -134,7 +134,7 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
                 142857, 0, 0));
 
         villager.setOffers(merchantOffers);
-        villager.openTradingScreen(serverPlayer, answer(6), 1);
+        villager.openTradingScreen(serverPlayer, choice(8), 5);
     }
 
     @Override
@@ -197,7 +197,7 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
         generator.addVillagerOpt(this.profession, 6, "§a武器升级");
         generator.addVillagerOpt(this.profession, 7, "武器购买");
         generator.addVillagerAns(this.profession, 5, "是否花费 %d 绿宝石 对当前§a主手§r物品进行升级？");
-        generator.addVillagerAns(this.profession, 6, "阶段2后才可使用奇迹武器！");
+        generator.addVillagerOpt(this.profession, 8, "§c阶段2后才可使用非锅类武器！");
     }
 
 

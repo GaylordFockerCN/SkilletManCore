@@ -40,12 +40,12 @@ public class FishmanDialogBuilder extends VillagerDialogScreenHandler.VillagerDi
     @Override
     public void onGenerateLang(SMCLangGenerator generator) {
         generator.addVillagerName(this.profession, " §b友善的渔夫§r ");
-        generator.addVillagerAns(this.profession, 0, "（村民并没有像你想的那样弹出交易窗口，取而代之的是对话框。你不禁有些担心交易系统会不会被作者给取代掉。）");
+        generator.addVillagerAns(this.profession, 0, "（授人以鱼不如卖人以鱼，有了渔夫就不用下海抓食材咯）");
         generator.addVillagerOpt(this.profession, 0, "购买");
         generator.addVillagerOpt(this.profession, 1, "离开");
-        generator.addVillagerAns(this.profession, 1, "（恭喜你发现了本整合包唯一提前获取海鲜的办法！正常需要等到阶段2才可解锁）");
+        generator.addVillagerAns(this.profession, 1, "恭喜你发现了本整合包提前获取海鲜的办法！正常需要等到阶段2才可在订购里解锁！要来点什么呢？");
         generator.addVillagerOpt(this.profession, 2, "怎么还是大礼包？");
-        generator.addVillagerAns(this.profession, 2, "是这样的，本整合包无处不在的抽卡系统。");
+        generator.addVillagerAns(this.profession, 2, "是这样的，本整合包无处不在的抽卡系统。但是我这儿能买到的种类可比订购到的多多了！");
         generator.addVillagerOpt(this.profession, 3, "海鲜超级大礼包 §a50000 绿宝石");
     }
 

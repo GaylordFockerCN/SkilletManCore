@@ -1,0 +1,12 @@
+{
+  "attributes":
+  {
+    "common":
+    {
+      "impact":2.8,
+      "max_strikes":3,
+      "damage_bonus":5
+    }
+  },
+  "type":"skillet_man_core:potato_cannon"
+}

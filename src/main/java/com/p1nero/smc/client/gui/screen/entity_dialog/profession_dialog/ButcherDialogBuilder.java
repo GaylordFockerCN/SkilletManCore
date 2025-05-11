@@ -40,12 +40,12 @@ public class ButcherDialogBuilder extends VillagerDialogScreenHandler.VillagerDi
     @Override
     public void onGenerateLang(SMCLangGenerator generator) {
         generator.addVillagerName(this.profession, " §c魁梧的屠夫§r ");
-        generator.addVillagerAns(this.profession, 0, "（村民并没有像你想的那样弹出交易窗口，取而代之的是对话框。你不禁有些担心交易系统会不会被作者给取代掉。）");
-        generator.addVillagerOpt(this.profession, 0, "尝试购买");
+        generator.addVillagerAns(this.profession, 0, "（杀猪宰羊不在话下，或许在这儿可以买到更好的肉？）");
+        generator.addVillagerOpt(this.profession, 0, "购买");
         generator.addVillagerOpt(this.profession, 1, "离开");
-        generator.addVillagerAns(this.profession, 1, "少侠来点什么？（看来交易并没有被取代，而是换成了繁琐的对话）");
+        generator.addVillagerAns(this.profession, 1, "少侠来点什么？");
         generator.addVillagerOpt(this.profession, 2, "怎么还是大礼包？");
-        generator.addVillagerAns(this.profession, 2, "是这样的，本整合包无处不在的抽卡系统。");
+        generator.addVillagerAns(this.profession, 2, "是这样的，本整合包无处不在的抽卡系统。但是我这儿能抽到的肉类的种类比订购到的多多了！");
         generator.addVillagerOpt(this.profession, 3, "肉类超级大礼包 §a10000 绿宝石");
     }
 

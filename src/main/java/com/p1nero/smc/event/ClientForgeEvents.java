@@ -5,6 +5,7 @@ import com.p1nero.smc.client.gui.BossBarHandler;
 import com.p1nero.smc.client.gui.hud.CustomGuiRenderer;
 import com.p1nero.smc.client.gui.hud.HealthBarRenderer;
 import com.p1nero.smc.client.gui.screen.DialogueScreen;
+import com.simibubi.create.AllItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -14,6 +15,7 @@ import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderGuiEvent;
@@ -22,6 +24,9 @@ import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import yesman.epicfight.api.animation.LivingMotions;
+import yesman.epicfight.api.client.forgeevent.UpdatePlayerMotionEvent;
+import yesman.epicfight.client.world.capabilites.entitypatch.player.AbstractClientPlayerPatch;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,6 +35,7 @@ import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID, value = Dist.CLIENT)
 public class ClientForgeEvents {
+
     @SubscribeEvent
     public static void onRenderBossBar(CustomizeGuiOverlayEvent.BossEventProgress event) {
         if(event.getBossEvent().getName().contains(Component.translatable("entity.minecraft.ender_dragon"))){

@@ -240,7 +240,7 @@ public class ArmorerDialogBuilder extends VillagerDialogScreenHandler.VillagerDi
                 new ItemStack(FAItems.SUNSET_WINGS_LEGGINGS.get(), 1),
                 142857, 0, 0));
         villager.setOffers(merchantOffers);
-        villager.openTradingScreen(serverPlayer, Component.empty(), 1);
+        villager.openTradingScreen(serverPlayer, getName(), 5);
     }
 
     @Override

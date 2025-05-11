@@ -1,14 +1,10 @@
 package com.p1nero.smc.entity.custom.npc.customer.customer_data.special;
 
-import com.p1nero.smc.client.gui.DialogueComponentBuilder;
-import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.customer.customer_data.SpecialCustomerData;
-import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;

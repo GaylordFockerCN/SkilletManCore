@@ -448,6 +448,7 @@ public class StartNPC extends SMCNpc {
 //            ItemUtil.addItem(player, Blocks.BRICKS.asItem().asItem(), 64);
             ItemUtil.addItem(player, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asStack(10), true);
             ItemUtil.addItem(player, SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asStack(10), true);
+            ItemUtil.addItem(player, SMCRegistrateItems.REDSTONE_RAFFLE.asStack(2), true);
 
             player.playSound(SoundEvents.PLAYER_LEVELUP);
         }

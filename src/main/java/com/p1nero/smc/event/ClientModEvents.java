@@ -15,7 +15,9 @@ import com.p1nero.smc.entity.custom.npc.special.virgil.client.VirgilVillagerRend
 import com.p1nero.smc.entity.custom.super_golem.client.SuperGolemRenderer;
 import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.item.custom.client.LeftSkilletRightSpatulaRenderer;
+import com.p1nero.smc.item.custom.client.PotatoCannonRenderer;
 import com.p1nero.smc.item.model.SMCSkilletBEWLR;
+import com.simibubi.create.AllItems;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
@@ -103,6 +105,7 @@ public class ClientModEvents{
 
         //Item
         event.addItemRenderer(SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get(), new LeftSkilletRightSpatulaRenderer());
+        event.addItemRenderer(AllItems.POTATO_CANNON.asItem(), new PotatoCannonRenderer());
 
     }
 

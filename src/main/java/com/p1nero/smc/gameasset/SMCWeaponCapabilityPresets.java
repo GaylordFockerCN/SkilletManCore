@@ -1,6 +1,7 @@
 package com.p1nero.smc.gameasset;
 
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.capability.epicfight.PotatoCannonWeaponCapability;
 import com.p1nero.smc.gameasset.skill.SMCSkills;
 import com.p1nero.smc.gameasset.skill.combo.SkilletCombos;
 import com.p1nero.smc.gameasset.skill.combo.SpatulaCombos;
@@ -17,13 +18,28 @@ import yesman.epicfight.gameasset.EpicFightSkills;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
+import yesman.epicfight.world.capabilities.item.CrossbowCapability;
+import yesman.epicfight.world.capabilities.item.RangedWeaponCapability;
 import yesman.epicfight.world.capabilities.item.WeaponCapability;
 
 import java.util.function.Function;
 
 @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class SMCWeaponCapabilityPresets {
-
+    public static final Function<Item, CapabilityItem.Builder> POTATO_CANNON = (item) ->
+            RangedWeaponCapability.builder().zoomInType(CapabilityItem.ZoomInType.CUSTOM)
+                    .addAnimationsModifier(LivingMotions.IDLE, Animations.BIPED_CROSSBOW_AIM)
+                    .addAnimationsModifier(LivingMotions.KNEEL, Animations.BIPED_CROSSBOW_AIM)
+                    .addAnimationsModifier(LivingMotions.WALK, Animations.BIPED_CROSSBOW_AIM)
+                    .addAnimationsModifier(LivingMotions.RUN, Animations.BIPED_CROSSBOW_AIM)
+                    .addAnimationsModifier(LivingMotions.SNEAK, Animations.BIPED_CROSSBOW_AIM)
+                    .addAnimationsModifier(LivingMotions.SWIM, Animations.BIPED_CROSSBOW_AIM)
+                    .addAnimationsModifier(LivingMotions.FLOAT, Animations.BIPED_CROSSBOW_AIM)
+                    .addAnimationsModifier(LivingMotions.FALL, Animations.BIPED_CROSSBOW_AIM)
+                    .addAnimationsModifier(LivingMotions.RELOAD, Animations.BIPED_CROSSBOW_RELOAD)
+                    .addAnimationsModifier(LivingMotions.AIM, Animations.BIPED_CROSSBOW_AIM)
+                    .addAnimationsModifier(LivingMotions.SHOT, Animations.BIPED_CROSSBOW_SHOT)
+                    .constructor(PotatoCannonWeaponCapability::new);
     public static final Function<Item, CapabilityItem.Builder> IRON_SKILLET_V1 = (item) ->
             (CapabilityItem.Builder) WeaponCapability.builder().category(CapabilityItem.WeaponCategories.SWORD)
                     .styleProvider((playerPatch) -> CapabilityItem.Styles.TWO_HAND).collider(SMCColliders.SKILLET)
@@ -324,6 +340,7 @@ public class SMCWeaponCapabilityPresets {
         event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "golden_spatula_v5"), GOLDEN_SPATULA_V5);
 
         event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "diamond_spatula"), DIAMOND_SPATULA);
+        event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "potato_cannon"), POTATO_CANNON);
     }
 
 }

@@ -1,19 +1,19 @@
 package com.p1nero.smc.client.gui.screen.entity_dialog.profession_dialog;
 
+import com.hlysine.create_connected.CCItems;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
 import com.p1nero.smc.client.gui.screen.entity_dialog.VillagerDialogScreenHandler;
-import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
-import net.kenddie.fantasyarmor.item.FAItems;
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -21,6 +21,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraftforge.api.distmarker.Dist;
@@ -31,7 +32,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.VillagerDialogBuilder {
     public ToolSmithDialogBuilder() {
-        super(VillagerProfession.ARMORER);
+        super(VillagerProfession.TOOLSMITH);
     }
 
     @Override
@@ -39,210 +40,255 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
         super.handle(serverPlayer, villager, interactionID);
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         if (interactionID == 1) {
-            int ticketCount = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asItem(), 1);
-            if (ticketCount == 0) {
-                if (SMCPlayer.hasMoney(serverPlayer, 160, true)) {
-                    SMCPlayer.consumeMoney(160, serverPlayer);
-                    smcPlayer.setArmorGachaingCount(1);
-                }
-            } else {
-                serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
-                smcPlayer.setArmorGachaingCount(1);
+            if (SMCPlayer.hasMoney(serverPlayer, 16000, true)) {
+                SMCPlayer.consumeMoney(16000, serverPlayer);
+                ItemUtil.addItem(serverPlayer, SMCRegistrateItems.REDSTONE_RAFFLE.asStack(10), true);
             }
         }
         if (interactionID == 2) {
-            int ticketCount = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asItem(), 10);
-            if (ticketCount < 10) {
-                int need = 10 - ticketCount;
-                if (SMCPlayer.hasMoney(serverPlayer, 160 * need, true)) {
-                    SMCPlayer.consumeMoney(160 * need, serverPlayer);
-                    smcPlayer.setArmorGachaingCount(10);
-                }
-            } else {
-                serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
-                smcPlayer.setArmorGachaingCount(10);
+            if (SMCPlayer.hasMoney(serverPlayer, 160000, true)) {
+                SMCPlayer.consumeMoney(160000, serverPlayer);
+                ItemUtil.addItem(serverPlayer, SMCRegistrateItems.REDSTONE_RAFFLE.asStack(100), true);
             }
         }
         if (interactionID == 3) {
-            this.startTrade(serverPlayer, villager);
+            if (SMCPlayer.hasMoney(serverPlayer, 16000, true)) {
+                SMCPlayer.consumeMoney(16000, serverPlayer);
+                ItemUtil.addItem(serverPlayer, SMCRegistrateItems.CREATE_RAFFLE.asStack(10), true);
+            }
+        }
+        if (interactionID == 4) {
+            if (SMCPlayer.hasMoney(serverPlayer, 160000, true)) {
+                SMCPlayer.consumeMoney(160000, serverPlayer);
+                ItemUtil.addItem(serverPlayer, SMCRegistrateItems.CREATE_RAFFLE.asStack(100), true);
+            }
+        }
+        if (interactionID == 5) {
+            this.startVanillaTrade(serverPlayer, villager);
+        }
+        if(interactionID == 6) {
+            this.startCreateTrade(serverPlayer, villager, smcPlayer);
         }
     }
 
-    public void startTrade(ServerPlayer serverPlayer, Villager villager) {
+    public void startVanillaTrade(ServerPlayer serverPlayer, Villager villager) {
         villager.setTradingPlayer(serverPlayer);
         MerchantOffers merchantOffers = new MerchantOffers();
 
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.HERO_HELMET.get(), 1),
-                new ItemStack(FAItems.HERO_CHESTPLATE.get(), 1),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 4),
+                new ItemStack(Items.SAND, 64),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.HERO_CHESTPLATE.get(), 1),
-                new ItemStack(FAItems.HERO_LEGGINGS.get(), 1),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 1),
+                new ItemStack(Items.OAK_LOG, 64),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.HERO_LEGGINGS.get(), 1),
-                new ItemStack(FAItems.HERO_BOOTS.get(), 1),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 2),
+                new ItemStack(Items.STONE, 64),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.HERO_BOOTS.get(), 1),
-                new ItemStack(FAItems.HERO_HELMET.get(), 1),
-                142857, 0, 0));
-
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.DARK_COVER_HELMET.get(), 1),
-                new ItemStack(FAItems.DARK_COVER_CHESTPLATE.get(), 1),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 1),
+                new ItemStack(Items.COBBLESTONE, 64),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.DARK_COVER_CHESTPLATE.get(), 1),
-                new ItemStack(FAItems.DARK_COVER_LEGGINGS.get(), 1),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 2),
+                new ItemStack(Items.WHITE_WOOL, 64),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.DARK_COVER_LEGGINGS.get(), 1),
-                new ItemStack(FAItems.DARK_COVER_BOOTS.get(), 1),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 4),
+                new ItemStack(Items.GLASS, 64),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.DARK_COVER_BOOTS.get(), 1),
-                new ItemStack(FAItems.DARK_COVER_HELMET.get(), 1),
-                142857, 0, 0));
-
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.SPARK_OF_DAWN_HELMET.get(), 1),
-                new ItemStack(FAItems.SPARK_OF_DAWN_CHESTPLATE.get(), 1),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 4),
+                new ItemStack(Items.COAL_BLOCK, 64),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.SPARK_OF_DAWN_CHESTPLATE.get(), 1),
-                new ItemStack(FAItems.SPARK_OF_DAWN_LEGGINGS.get(), 1),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 4),
+                new ItemStack(Items.STRING, 64),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.SPARK_OF_DAWN_LEGGINGS.get(), 1),
-                new ItemStack(FAItems.SPARK_OF_DAWN_BOOTS.get(), 1),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 4),
+                new ItemStack(Items.DRIED_KELP, 64),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.SPARK_OF_DAWN_BOOTS.get(), 1),
-                new ItemStack(FAItems.SPARK_OF_DAWN_HELMET.get(), 1),
-                142857, 0, 0));
-
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.GILDED_HUNT_HELMET.get(), 1),
-                new ItemStack(FAItems.GILDED_HUNT_CHESTPLATE.get(), 1),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 4),
+                new ItemStack(Items.PAPER, 64),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.GILDED_HUNT_CHESTPLATE.get(), 1),
-                new ItemStack(FAItems.GILDED_HUNT_LEGGINGS.get(), 1),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 8),
+                new ItemStack(Items.HONEY_BLOCK, 64),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.GILDED_HUNT_LEGGINGS.get(), 1),
-                new ItemStack(FAItems.GILDED_HUNT_BOOTS.get(), 1),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 8),
+                new ItemStack(Items.SLIME_BLOCK, 64),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.GILDED_HUNT_BOOTS.get(), 1),
-                new ItemStack(FAItems.GILDED_HUNT_HELMET.get(), 1),
-                142857, 0, 0));
-
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.LADY_MARIA_HELMET.get(), 1),
-                new ItemStack(FAItems.LADY_MARIA_CHESTPLATE.get(), 1),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 16),
+                new ItemStack(Items.IRON_BLOCK, 64),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.LADY_MARIA_CHESTPLATE.get(), 1),
-                new ItemStack(FAItems.LADY_MARIA_HELMET.get(), 1),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 16),
+                new ItemStack(Items.COPPER_BLOCK, 64),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.LADY_MARIA_LEGGINGS.get(), 1),
-                new ItemStack(FAItems.LADY_MARIA_BOOTS.get(), 1),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 32),
+                new ItemStack(Items.GOLD_BLOCK, 64),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.LADY_MARIA_BOOTS.get(), 1),
-                new ItemStack(FAItems.LADY_MARIA_LEGGINGS.get(), 1),
-                142857, 0, 0));
-
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.GOLDEN_EXECUTION_HELMET.get(), 1),
-                new ItemStack(FAItems.GOLDEN_EXECUTION_CHESTPLATE.get(), 1),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 32),
+                new ItemStack(Items.REDSTONE_BLOCK, 64),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.GOLDEN_EXECUTION_CHESTPLATE.get(), 1),
-                new ItemStack(FAItems.GOLDEN_EXECUTION_HELMET.get(), 1),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 16),
+                new ItemStack(Items.QUARTZ, 64),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.GOLDEN_EXECUTION_LEGGINGS.get(), 1),
-                new ItemStack(FAItems.GOLDEN_EXECUTION_BOOTS.get(), 1),
-                142857, 0, 0));
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.GOLDEN_EXECUTION_BOOTS.get(), 1),
-                new ItemStack(FAItems.GOLDEN_EXECUTION_LEGGINGS.get(), 1),
-                142857, 0, 0));
-
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.ECLIPSE_SOLDIER_HELMET.get(), 1),
-                new ItemStack(FAItems.ECLIPSE_SOLDIER_CHESTPLATE.get(), 1),
-                142857, 0, 0));
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.ECLIPSE_SOLDIER_CHESTPLATE.get(), 1),
-                new ItemStack(FAItems.ECLIPSE_SOLDIER_HELMET.get(), 1),
-                142857, 0, 0));
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.ECLIPSE_SOLDIER_LEGGINGS.get(), 1),
-                new ItemStack(FAItems.ECLIPSE_SOLDIER_BOOTS.get(), 1),
-                142857, 0, 0));
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.ECLIPSE_SOLDIER_BOOTS.get(), 1),
-                new ItemStack(FAItems.ECLIPSE_SOLDIER_LEGGINGS.get(), 1),
-                142857, 0, 0));
-
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.DRAGONSLAYER_HELMET.get(), 1),
-                new ItemStack(FAItems.DRAGONSLAYER_CHESTPLATE.get(), 1),
-                142857, 0, 0));
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.DRAGONSLAYER_CHESTPLATE.get(), 1),
-                new ItemStack(FAItems.DRAGONSLAYER_HELMET.get(), 1),
-                142857, 0, 0));
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.DRAGONSLAYER_LEGGINGS.get(), 1),
-                new ItemStack(FAItems.DRAGONSLAYER_BOOTS.get(), 1),
-                142857, 0, 0));
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.DRAGONSLAYER_BOOTS.get(), 1),
-                new ItemStack(FAItems.DRAGONSLAYER_LEGGINGS.get(), 1),
-                142857, 0, 0));
-
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.CHESS_BOARD_KNIGHT_HELMET.get(), 1),
-                new ItemStack(FAItems.CHESS_BOARD_KNIGHT_CHESTPLATE.get(), 1),
-                142857, 0, 0));
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.CHESS_BOARD_KNIGHT_CHESTPLATE.get(), 1),
-                new ItemStack(FAItems.CHESS_BOARD_KNIGHT_HELMET.get(), 1),
-                142857, 0, 0));
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.CHESS_BOARD_KNIGHT_LEGGINGS.get(), 1),
-                new ItemStack(FAItems.CHESS_BOARD_KNIGHT_BOOTS.get(), 1),
-                142857, 0, 0));
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.CHESS_BOARD_KNIGHT_BOOTS.get(), 1),
-                new ItemStack(FAItems.CHESS_BOARD_KNIGHT_LEGGINGS.get(), 1),
-                142857, 0, 0));
-
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.SUNSET_WINGS_HELMET.get(), 1),
-                new ItemStack(FAItems.SUNSET_WINGS_CHESTPLATE.get(), 1),
-                142857, 0, 0));
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.SUNSET_WINGS_CHESTPLATE.get(), 1),
-                new ItemStack(FAItems.SUNSET_WINGS_HELMET.get(), 1),
-                142857, 0, 0));
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.SUNSET_WINGS_LEGGINGS.get(), 1),
-                new ItemStack(FAItems.SUNSET_WINGS_BOOTS.get(), 1),
-                142857, 0, 0));
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(FAItems.SUNSET_WINGS_BOOTS.get(), 1),
-                new ItemStack(FAItems.SUNSET_WINGS_LEGGINGS.get(), 1),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 16),
+                new ItemStack(Items.AMETHYST_SHARD, 64),
                 142857, 0, 0));
         villager.setOffers(merchantOffers);
-        villager.openTradingScreen(serverPlayer, answer(3), 1);
+        villager.openTradingScreen(serverPlayer, getName(), 5);
+    }
+
+    public void startCreateTrade(ServerPlayer serverPlayer, Villager villager, SMCPlayer smcPlayer) {
+        villager.setTradingPlayer(serverPlayer);
+        MerchantOffers merchantOffers = new MerchantOffers();
+        MutableComponent desc = choice(9);
+
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 1),
+                new ItemStack(AllItems.WRENCH, 1),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 1),
+                new ItemStack(AllItems.GOGGLES, 1),
+                142857, 0, 0));
+
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 1),
+                new ItemStack(AllItems.EMPTY_SCHEMATIC, 1),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 1),
+                new ItemStack(AllItems.SCHEMATIC_AND_QUILL, 1),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 2),
+                new ItemStack(AllBlocks.SCHEMATICANNON, 1),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 2),
+                new ItemStack(AllBlocks.SCHEMATIC_TABLE, 1),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 1),
+                new ItemStack(AllItems.CRAFTING_BLUEPRINT, 1),
+                142857, 0, 0));
+
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 12),
+                new ItemStack(AllBlocks.COPPER_CASING, 10),
+                142857, 0, 0));
+
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 12),
+                new ItemStack(AllBlocks.ANDESITE_CASING, 10),
+                142857, 0, 0));
+
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 2),
+                new ItemStack(AllItems.BELT_CONNECTOR, 10),
+                142857, 0, 0));
+
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 10),
+                new ItemStack(AllItems.IRON_SHEET, 10),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 10),
+                new ItemStack(AllItems.COPPER_SHEET, 10),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
+                new ItemStack(AllItems.GOLDEN_SHEET, 10),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 10),
+                new ItemStack(AllItems.ZINC_INGOT, 10),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 10),
+                new ItemStack(AllItems.ZINC_INGOT, 10),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 10),
+                new ItemStack(AllItems.ANDESITE_ALLOY, 10),
+                142857, 0, 0));
+
+        if(smcPlayer.getLevel() > SMCPlayer.STAGE2_REQUIRE){
+            merchantOffers.add(new MerchantOffer(
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 2),
+                    new ItemStack(AllBlocks.BRASS_CASING, 10),
+                    142857, 0, 0));
+            merchantOffers.add(new MerchantOffer(
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 2),
+                    new ItemStack(AllItems.BRASS_SHEET, 8),
+                    142857, 0, 0));
+            merchantOffers.add(new MerchantOffer(
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 2),
+                    new ItemStack(AllItems.BRASS_INGOT, 10),
+                    142857, 0, 0));
+            merchantOffers.add(new MerchantOffer(
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
+                    new ItemStack(AllBlocks.DEPLOYER, 1),
+                    142857, 0, 0));
+        }
+
+        if(smcPlayer.getLevel() > SMCPlayer.STAGE3_REQUIRE){
+            desc = choice(10);
+
+            merchantOffers.add(new MerchantOffer(
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
+                    new ItemStack(Items.BLAZE_ROD, 2),
+                    new ItemStack(AllBlocks.BLAZE_BURNER, 1),
+                    142857, 0, 0));
+            merchantOffers.add(new MerchantOffer(
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 10),
+                    new ItemStack(AllItems.ELECTRON_TUBE, 1),
+                    142857, 0, 0));
+            merchantOffers.add(new MerchantOffer(
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 10),
+                    new ItemStack(AllItems.ELECTRON_TUBE, 1),
+                    142857, 0, 0));
+            merchantOffers.add(new MerchantOffer(
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
+                    new ItemStack(AllItems.PRECISION_MECHANISM, 1),
+                    142857, 0, 0));
+            merchantOffers.add(new MerchantOffer(
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
+                    new ItemStack(CCItems.CONTROL_CHIP, 1),
+                    142857, 0, 0));
+            merchantOffers.add(new MerchantOffer(
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
+                    new ItemStack(AllItems.STURDY_SHEET, 1),
+                    142857, 0, 0));
+            merchantOffers.add(new MerchantOffer(
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
+                    new ItemStack(AllBlocks.ROSE_QUARTZ_LAMP, 10),
+                    142857, 0, 0));
+            merchantOffers.add(new MerchantOffer(
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
+                    new ItemStack(AllItems.TRANSMITTER, 1),
+                    142857, 0, 0));
+            merchantOffers.add(new MerchantOffer(
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
+                    new ItemStack(AllItems.POTATO_CANNON, 1),
+                    142857, 0, 0));
+        }
+
+        villager.setOffers(merchantOffers);
+        villager.openTradingScreen(serverPlayer, desc, 5);
     }
 
     @Override
@@ -259,13 +305,14 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
                                     .addLeaf(choice(5), (byte) 1)//兑换原版通票 x 10
                                     .addLeaf(choice(6), (byte) 2)//兑换原版通票 x 100
                             )
-                            .addChild(new TreeNode(answer(2), choice(4)))
+                            .addChild(new TreeNode(answer(2), choice(4))
                                     .addLeaf(choice(5), (byte) 3)//兑换机械通票 x 10
                                     .addLeaf(choice(6), (byte) 4)//兑换机械通票 x 100
-                            );
+                            )
+                    );
 
-            MutableComponent opt5 = choice(5).copy();
-            MutableComponent opt6 = choice(6).copy();
+            MutableComponent opt5 = choice(1).copy();
+            MutableComponent opt6 = choice(2).copy();
             if(playerLevel < 6) {
                 Style style = opt5.getStyle();
                 opt5.setStyle(style.applyFormat(ChatFormatting.RED).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, choice(8))));
@@ -278,8 +325,7 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
                 root.addLeaf(opt6, (byte) 6);//打开机械动力交易表
             }
 
-            builder.setAnswerRoot(new TreeNode(answer(0))
-                    .addLeaf(choice(1)));
+            builder.setAnswerRoot(root);
         }
     }
 
@@ -298,7 +344,8 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
         generator.addVillagerOpt(this.profession, 6, "兑换 100 张 §a160000绿宝石");
         generator.addVillagerOpt(this.profession, 7, "离开");
         generator.addVillagerOpt(this.profession, 8, "§a声望等级达到6级解锁");
-        generator.addVillagerAns(this.profession, 3, "§6货物将随声望等级提高而增多！");
+        generator.addVillagerOpt(this.profession, 9, "§c当前还有货物未解锁");
+        generator.addVillagerOpt(this.profession, 10, "§6已全部解锁！");
     }
 
 

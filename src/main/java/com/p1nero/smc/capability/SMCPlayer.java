@@ -37,6 +37,7 @@ import net.minecraft.world.item.Items;
 import net.p3pp3rf1y.sophisticatedbackpacks.init.ModItems;
 import org.jetbrains.annotations.Nullable;
 import reascer.wom.main.WeaponsOfMinecraft;
+import yesman.epicfight.client.ClientEngine;
 import yesman.epicfight.skill.Skill;
 import yesman.epicfight.world.item.EpicFightItems;
 import yesman.epicfight.world.item.SkillBookItem;
@@ -194,9 +195,9 @@ public class SMCPlayer {
         LEVEL_UP_ITEMS.add(List.of(SMCRegistrateItems.IRON_SKILLET_LEVEL5.get()));//5
         LEVEL_UP_ITEMS.add(List.of(SMCRegistrateItems.GOLDEN_SPATULA_V5.get()));//10
         LEVEL_UP_ITEMS.add(List.of(SMCRegistrateItems.GOLDEN_SKILLET_V5.get()));//15
-        LEVEL_UP_ITEMS.add(List.of(SMCRegistrateItems.DIAMOND_SPATULA_V4.get()));//20
+        LEVEL_UP_ITEMS.add(List.of(AllItems.POTATO_CANNON.get()));//20
         LEVEL_UP_ITEMS.add(List.of(SMCRegistrateItems.DIAMOND_SKILLET_V4.get()));//25
-        LEVEL_UP_ITEMS.add(List.of(SMCRegistrateItems.DIAMOND_SKILLET_V5.get(), FAItems.HERO_HELMET.get(), FAItems.HERO_CHESTPLATE.get(), FAItems.HERO_LEGGINGS.get(), FAItems.HERO_BOOTS.get()));//30
+        LEVEL_UP_ITEMS.add(List.of(SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get(), FAItems.HERO_HELMET.get(), FAItems.HERO_CHESTPLATE.get(), FAItems.HERO_LEGGINGS.get(), FAItems.HERO_BOOTS.get()));//30
     }
 
     public static void addExperience(ServerPlayer serverPlayer) {
@@ -396,6 +397,7 @@ public class SMCPlayer {
 
         ItemUtil.addItem(serverPlayer, ModItems.ADVANCED_FEEDING_UPGRADE.get().getDefaultInstance(), true);
         ItemUtil.addItem(serverPlayer, AllItems.GOGGLES.asStack(), true);
+        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.CREATE_RAFFLE.asStack(5), true);
         SMCAdvancementData.finishAdvancement("level10_1", serverPlayer);
         SMCAdvancementData.finishAdvancement("level10_2", serverPlayer);
     }
@@ -409,7 +411,7 @@ public class SMCPlayer {
             ItemUtil.addItem(serverPlayer, item.getDefaultInstance(), true);
         }
         SMCAdvancementData.finishAdvancement("level20_1", serverPlayer);
-        //TODO 弹对话
+        SMCAdvancementData.finishAdvancement("level20_2", serverPlayer);
     }
 
     public List<PlateFood> getOrderList() {
@@ -690,6 +692,15 @@ public class SMCPlayer {
                 RaidMusicPlayer.playRaidMusic();
             } else {
                 RaidMusicPlayer.stopMusic();
+            }
+
+            //土豆加农炮逻辑
+            if(player.getMainHandItem().is(AllItems.POTATO_CANNON.get())){
+                if(!player.getCooldowns().isOnCooldown(AllItems.POTATO_CANNON.get())){
+                    ClientEngine.getInstance().renderEngine.zoomIn();
+                } else {
+                    ClientEngine.getInstance().renderEngine.zoomOut(40);
+                }
             }
 
         } else {

@@ -263,7 +263,7 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
      */
     public void startTrade(ServerPlayer serverPlayer){
         setTradingPlayer(serverPlayer);
-        openTradingScreen(serverPlayer, Component.empty(), 1);
+        openTradingScreen(serverPlayer, Component.empty(), 5);
     }
 
     @Override

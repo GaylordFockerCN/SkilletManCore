@@ -47,7 +47,7 @@ public class FarmerDialogBuilder extends VillagerDialogScreenHandler.VillagerDia
         generator.addVillagerOpt(this.profession, 1, "离开");
         generator.addVillagerAns(this.profession, 1, "店里直接订购已经不能满足你了吗，少侠要来些什么？");
         generator.addVillagerOpt(this.profession, 2, "怎么还是大礼包？");
-        generator.addVillagerAns(this.profession, 2, "是这样的，本整合包无处不在的抽卡系统。");
+        generator.addVillagerAns(this.profession, 2, "是这样的，本整合包无处不在的抽卡系统。但是我这儿能抽到的果蔬的种类比订购到的多多了！");
         generator.addVillagerOpt(this.profession, 3, "主食超级大礼包 §a500 绿宝石");
         generator.addVillagerOpt(this.profession, 4, "果蔬超级大礼包 §a500 绿宝石");
     }

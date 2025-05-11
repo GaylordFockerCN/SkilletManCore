@@ -32,6 +32,7 @@ public class VillagerDialogScreenHandler {
         PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.put(VillagerProfession.CLERIC, new ClericDialogBuilder());
         PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.put(VillagerProfession.ARMORER, new ArmorerDialogBuilder());
         PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.put(VillagerProfession.WEAPONSMITH, new WeaponSmithDialogBuilder());
+        PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.put(VillagerProfession.TOOLSMITH, new ToolSmithDialogBuilder());
     }
 
     public static void onLanguageGen(SMCLangGenerator generator) {
@@ -108,7 +109,7 @@ public class VillagerDialogScreenHandler {
             return Component.literal("\n").append(component);
         }
 
-        public Component choice(int id, Object... objects) {
+        public MutableComponent choice(int id, Object... objects) {
             return Component.translatable("villager.smc." + getTranslationKey().toLowerCase(Locale.ROOT) + ".opt." + id, objects);
         }
 

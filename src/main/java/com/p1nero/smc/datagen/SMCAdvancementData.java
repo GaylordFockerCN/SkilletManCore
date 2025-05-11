@@ -280,9 +280,9 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement level10_1 = registerAdvancement(level10, "level10_1", FrameType.GOAL, net.p3pp3rf1y.sophisticatedbackpacks.init.ModItems.ADVANCED_FEEDING_UPGRADE.get(), true, true, false);
             Advancement level10_2 = registerAdvancement(level10, "level10_2", FrameType.GOAL, AllItems.GOGGLES, true, true, false);
             Advancement level15 = registerAdvancement(level10_2, "level15", FrameType.GOAL, SMCRegistrateItems.GOLDEN_SKILLET_V5, true, true,  false);
-            Advancement level20 = registerAdvancement(level15, "level20", FrameType.GOAL, SMCRegistrateItems.DIAMOND_SPATULA_V4, true, true, false);
+            Advancement level20 = registerAdvancement(level15, "level20", FrameType.GOAL, AllItems.POTATO_CANNON, true, true, false);
             Advancement level20_1 = registerAdvancement(level20, "level20_1", FrameType.GOAL, FAItems.DRAGONSLAYER_HELMET.get(), true, true, false);//突破奖励
-            Advancement level20_2 = registerAdvancement(level20, "level20_2", FrameType.GOAL, FAItems.DRAGONSLAYER_CHESTPLATE.get(), true, true, false);//突破奖励
+            Advancement level20_2 = registerAdvancement(level20, "level20_2", FrameType.GOAL, AllItems.WRENCH, true, true, false);//突破奖励
             Advancement level25 = registerAdvancement(level20_2, "level25", FrameType.GOAL, SMCRegistrateItems.DIAMOND_SKILLET_V4, true, true, false);
             Advancement level30 = registerAdvancement(level25, "level30", FrameType.GOAL, SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get(), true, true, false);
 

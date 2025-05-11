@@ -170,16 +170,16 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement(SkilletManCoreMod.MOD_ID + "_armor", "盔甲图鉴", "在盔甲匠处可能抽取到的盔甲，获得的盔甲将被点亮");
         this.addAdvancement(SkilletManCoreMod.MOD_ID + "_skill", "技能书图鉴", "在图书管理员处可能抽取到的技能书，学过的技能将被点亮");
         this.addAdvancement(SkilletManCoreMod.MOD_ID + "_level", "声望等级奖励", "随着声望等级提升，将获得不同的奖励");
-        this.addAdvancement("level5", "声望等级5 奖励", "炒锅 §6⭐⭐⭐⭐⭐ ：其实五星的普通炒锅可能比一星的黄金武器还好用...");
-        this.addAdvancement("level5_1", "突破奖励", "§6喂食升级§a：解放双手，专注于工作和战斗！");
+        this.addAdvancement("level5", "声望等级5 奖励", "炒锅 §6⭐⭐⭐⭐⭐： §a其实五星的普通炒锅可能比一星的黄金武器还好用...");
+        this.addAdvancement("level5_1", "突破奖励", "§6喂食升级：§a解放双手，专注于工作和战斗！");
         this.addAdvancement("level5_2", "突破奖励", "§6无脑村民刷怪蛋 × 5§a：在家里也能抽卡！");
         this.addAdvancement("level10", "声望等级10 奖励", "§e黄金锅铲 §6⭐⭐⭐⭐⭐");
-        this.addAdvancement("level10_1", "突破奖励", "§6高级喂食升级§a：背包可自动喂食，更多配置项");
-        this.addAdvancement("level10_2", "突破奖励", "§6工程师护目镜§a：提醒你一下本包有机械动力。差不多该步入机械时代了，快去找机械师（工具匠）搞点材料吧~");
+        this.addAdvancement("level10_1", "突破奖励", "§6高级喂食升级：§a背包可自动喂食，更多配置项");
+        this.addAdvancement("level10_2", "突破奖励", "§6工程师护目镜：§a提醒你一下本包有机械动力。差不多该步入机械时代了，快去找机械师（工具匠）搞点材料吧~");
         this.addAdvancement("level15", "声望等级15 奖励", "§e黄金平底锅 §6⭐⭐⭐⭐⭐");
-        this.addAdvancement("level20", "声望等级20 奖励", "§b钻石锅铲 §5⭐⭐⭐⭐");
+        this.addAdvancement("level20", "声望等级20 奖励", "§6土豆加农炮：§a大人，时代变了");
         this.addAdvancement("level20_1", "突破奖励", "§d屠龙套装");
-        this.addAdvancement("level20_2", "突破奖励", "§d屠龙套装");
+        this.addAdvancement("level20_2", "突破奖励", "§6大机械时代！\n§a机械师处解锁全部机械动力交易");
         this.addAdvancement("level25", "声望等级25 奖励", "§b钻石平底锅 §5⭐⭐⭐⭐");
         this.addAdvancement("level30", "声望等级30 奖励", "§6左锅右铲§r + §6英雄套装");
 
@@ -272,7 +272,11 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add(SMCRegistrateItems.PET_RAFFLE_TICKET.get(), "宠物抽奖券");
         this.addItemUsageInfo(SMCRegistrateItems.PET_RAFFLE_TICKET.asItem(), "可以在§6牧羊人§r处抽取宠物。找不到牧羊人时可以尝试 在无业村民附近摆放§a[织布机]§r 或 通过对话 转化普通村民。 §b图标很可爱对吧(〃'▽'〃)");
         this.add(SMCRegistrateItems.DISC_RAFFLE_TICKET.get(), "唱片抽奖券");
-        this.addItemUsageInfo(SMCRegistrateItems.DISC_RAFFLE_TICKET.asItem(), "可以在§6制图师§r处抽取唱片。找不到6制图师时可以尝试 在无业村民附近摆放§a[制图台]§r 或 通过对话 转化普通村民。");
+        this.addItemUsageInfo(SMCRegistrateItems.DISC_RAFFLE_TICKET.asItem(), "可以在§6制图师§r处抽取唱片。找不到制图师时可以尝试 在无业村民附近摆放§a[制图台]§r 或 通过对话 转化普通村民。");
+        this.add(SMCRegistrateItems.CREATE_RAFFLE.get(), "机械动力通票");
+        this.addItemUsageInfo(SMCRegistrateItems.CREATE_RAFFLE.asItem(), "可以在§6机械师§r处兑换机械动力材料，可交易内容将随等级提高而提高。找不到机械师时可以尝试 在无业村民附近摆放§a[锻造台]§r 或 通过对话 转化普通村民。");
+        this.add(SMCRegistrateItems.REDSTONE_RAFFLE.get(), "雷石东通票");
+        this.addItemUsageInfo(SMCRegistrateItems.REDSTONE_RAFFLE.asItem(), "可以在§6机械师§r处兑换来自原版的材料，找不到机械师时可以尝试 在无业村民附近摆放§a[锻造台]§r 或 通过对话 转化普通村民。");
 
         this.add(SMCRegistrateItems.END_TELEPORTER.get(), "末地传送石");
         this.addItemUsageInfo(SMCRegistrateItems.END_TELEPORTER.asItem(), "击杀牧师获得，潜行时右键以传送至末地主岛。为何牧师身上会有这玩意儿？");
