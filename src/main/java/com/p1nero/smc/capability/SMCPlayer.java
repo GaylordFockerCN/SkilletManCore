@@ -10,12 +10,14 @@ import com.p1nero.smc.entity.custom.CustomColorItemEntity;
 import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
+import com.p1nero.smc.network.packet.clientbound.OpenEndScreenPacket;
 import com.p1nero.smc.network.packet.clientbound.SyncSMCPlayerPacket;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
 import com.p1nero.smc.util.gacha.ArmorGachaSystem;
 import com.p1nero.smc.util.gacha.SkillBookGachaSystem;
 import com.p1nero.smc.util.gacha.WeaponGachaSystem;
+import com.p1nero.smc.worldgen.portal.SMCTeleporter;
 import com.simibubi.create.AllItems;
 import com.yungnickyoung.minecraft.betterendisland.mixin.ServerLevelMixin;
 import dev.xkmc.cuisinedelight.init.registrate.PlateFood;
@@ -34,6 +36,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.p3pp3rf1y.sophisticatedbackpacks.init.ModItems;
 import org.jetbrains.annotations.Nullable;
 import reascer.wom.main.WeaponsOfMinecraft;
@@ -157,6 +160,7 @@ public class SMCPlayer {
     }
     //============================================================================================
 
+    private int tickAfterBossDieLeft;
     private int specialCustomerMet;
     private boolean todayInRaid;
     private int morality = 0;
@@ -209,6 +213,10 @@ public class SMCPlayer {
         } else {
             serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("level_up_left", 1 + smcPlayer.stage - smcPlayer.levelUpLeft + 1), false);
         }
+    }
+
+    public void setTickAfterBossDieLeft(int tickAfterBossDieLeft) {
+        this.tickAfterBossDieLeft = tickAfterBossDieLeft;
     }
 
     public int getSpecialCustomerMet() {
@@ -648,6 +656,8 @@ public class SMCPlayer {
 
     public void copyFrom(SMCPlayer old) {
         this.data = old.data;
+
+        this.tickAfterBossDieLeft = old.tickAfterBossDieLeft;
         this.specialCustomerMet = old.specialCustomerMet;
 
         this.todayInRaid = old.todayInRaid;
@@ -706,6 +716,27 @@ public class SMCPlayer {
 
         } else {
             ServerPlayer serverPlayer = (ServerPlayer) player;
+            if(tickAfterBossDieLeft > 0) {
+                tickAfterBossDieLeft--;
+                if(tickAfterBossDieLeft % 40 == 0) {
+                    player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 0.8F, 0.5F + tickAfterBossDieLeft / 400.0F);
+                    player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BELL_BLOCK, SoundSource.BLOCKS, 0.8F, 0.5F + tickAfterBossDieLeft / 400.0F);
+                }
+                player.displayClientMessage(SkilletManCoreMod.getInfo("second_after_boss_die_left", tickAfterBossDieLeft / 20).withStyle(ChatFormatting.BOLD, ChatFormatting.RED), true);
+                if(tickAfterBossDieLeft == 0) {
+                    if(player.getServer() != null && player.level().dimension() != Level.OVERWORLD){
+                        ServerLevel overworld = player.getServer().getLevel(Level.OVERWORLD);
+                        if(overworld != null){
+                            serverPlayer.changeDimension(overworld, new SMCTeleporter(overworld.getSharedSpawnPos()));
+                            serverPlayer.setRespawnPosition(Level.OVERWORLD, overworld.getSharedSpawnPos(), 0.0F, false, true);
+                            SMCPlayer.addMoney(2000000, serverPlayer);
+                            SMCAdvancementData.finishAdvancement("end", serverPlayer);
+                        }
+                    }
+                    PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new OpenEndScreenPacket(), serverPlayer);//终末之诗
+                }
+            }
+
             if(DataManager.inRaid.get(player) && DummyEntityManager.getDummyEntities(((ServerLevel) player.level())).isEmpty()){
                 DataManager.inRaid.put(player, false);
             }

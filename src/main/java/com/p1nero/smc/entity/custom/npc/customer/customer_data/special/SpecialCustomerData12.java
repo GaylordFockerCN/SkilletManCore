@@ -25,8 +25,8 @@ public class SpecialCustomerData12 extends SpecialCustomerData {
     public void generateTranslation(SMCLangGenerator generator) {// 健忘村民
         generator.add(nameTranslationKey, "健忘的村民");
         generator.add(choicePre(-3), "马上做！");
-        generator.add(answerPre(-2), "（挠头）这个...是不是...（突然拍脑袋）啊！又忘了！麻烦重来。");
-        generator.add(choicePre(-2), "（这人能记住自己叫啥吗）重新准备。");
+        generator.add(answerPre(-2), "（挠头）这个...是不是...（突然拍脑袋）啊！又忘了！反正肯定不是我要吃的！麻烦重做一份~");
+        generator.add(choicePre(-2), "重新准备");
 
         generator.add(answerPre(-1), "（眼前这个村民欲言又止，似乎脑子不太好使）");
         generator.add(choicePre(-1), "客官要点啥？");
@@ -34,14 +34,14 @@ public class SpecialCustomerData12 extends SpecialCustomerData {
         generator.add(answerPre(0), "有没有...（看纸条） %s ？（突然又忘）啊对，就是这个...");
         generator.add(choicePre(0), "提交");
 
-        generator.add(answerPre(1), "（突然眼睛一亮）哦！对了！我要送你什么来着...但是我忘了 （此时你发现他的小本本留在了店里，你忍不住捡起来看）");
+        generator.add(answerPre(1), "（突然眼睛一亮）哦！美味！对了！我要送你什么来着...但是我忘了...不管了，再见！ （此时你发现他的小本本留在了店里，你迫不及待地想捡起来看）");
         generator.add(choicePre(1), "告辞！（快走！我要偷窥小本本！）");
 
-        generator.add(answerPre(2), "（看纸条）好像...差点意思...（突然忘）啊对，差点意思...");
+        generator.add(answerPre(2), "好像...差点意思...（看纸条）啊对，差点意思...这菜烧糊了可不好吃");
         generator.add(choicePre(2), "下次一定改进！");
 
-        generator.add(answerPre(3), "（惊慌）啊！这是什么？！（突然又忘）啊对，这是...");
-        generator.add(choicePre(3), "（无奈）送客，下次一定。");
+        generator.add(answerPre(3), "（惊慌）啊！这是什么？！（突然又忘）啊对，这是...这么难吃真的是我要的吗");
+        generator.add(choicePre(3), "（无奈）下次一定！");
     }
 
     @Override

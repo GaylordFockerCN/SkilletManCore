@@ -441,6 +441,7 @@ public class StartNPC extends SMCNpc {
             ItemUtil.addItem(player, SOLCarrotItems.FOOD_BOOK.get(), 1);
             ItemUtil.addItem(player, CDItems.PLATE.asStack(10), true);
             ItemUtil.addItem(player, Blocks.CRAFTING_TABLE.asItem(), 1);
+            ItemUtil.addItem(player, Blocks.STONECUTTER.asItem(), 1);
             ItemUtil.addItem(player, Blocks.JUKEBOX.asItem(), 1);
 //            ItemUtil.addItem(player, Blocks.OAK_WOOD.asItem(), 64);
 //            ItemUtil.addItem(player, Blocks.STONE.asItem().asItem(), 64);

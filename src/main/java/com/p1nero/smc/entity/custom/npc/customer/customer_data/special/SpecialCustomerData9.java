@@ -40,7 +40,7 @@ public class SpecialCustomerData9 extends SpecialCustomerData {
         generator.add(choicePre(2), "告退");
 
         generator.add(answerPre(3), "（冷哼一声）废物。别让我再看见这种东西。");
-        generator.add(choicePre(3), "不敢，就此别过。");
+        generator.add(choicePre(3), "不敢不敢！就此别过。");
     }
 
     @Override

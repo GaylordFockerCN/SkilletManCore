@@ -28,22 +28,16 @@ public class CreateCookGuideBookItem extends Item {
             LinkListStreamDialogueScreenBuilder builder = new LinkListStreamDialogueScreenBuilder(null, this.getDescription().copy().withStyle(ChatFormatting.LIGHT_PURPLE));
             builder.start(ans(0))
                     .addChoice(opt(1), ans(2))
-                    .thenExecute((screen -> screen.setPicture(new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/cook_guide_book/cook_guide_2.png"))))
+                    .thenExecute((screen -> screen.setPicture(new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/2.png"))))
                     .addChoice(opt(1), ans(3))
-                    .thenExecute((screen -> screen.setPicture(new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/cook_guide_book/cook_guide_3.png"))))
+                    .thenExecute((screen -> screen.setPicture(new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/3.png"))))
                     .addChoice(opt(1), ans(4))
-                    .thenExecute((screen -> screen.setPicture(new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/cook_guide_book/cook_guide_4.png"))))
+                    .thenExecute((screen -> screen.setPicture(new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/4.png"))))
                     .addChoice(opt(1), ans(5))
-                    .thenExecute((screen -> screen.setPicture(new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/cook_guide_book/cook_guide_5.png"))))
-                    .addChoice(opt(1), ans(6))
-                    .thenExecute((screen -> screen.setPicture(new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/cook_guide_book/cook_guide_6.png"))))
-                    .addChoice(opt(1), ans(7))
-                    .thenExecute((screen -> screen.setPicture(new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/cook_guide_book/cook_guide_7.png"))))
-                    .addChoice(opt(1), ans(8))
-                    .thenExecute((screen -> screen.setPicture(new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/cook_guide_book/cook_guide_8.png"))))
-                    .addFinalChoice(opt(9));
+                    .thenExecute((screen -> screen.setPicture(new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/5.png"))))
+                    .addFinalChoice(opt(6));
             DialogueScreen screen = builder.build();
-            screen.setPicture(new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/cook_guide_book/cook_guide_1.png"));
+            screen.setPicture(new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/1.png"));
             Minecraft.getInstance().setScreen(builder.build());
         }
         return super.use(level, p_41433_, p_41434_);
@@ -62,16 +56,13 @@ public class CreateCookGuideBookItem extends Item {
     }
 
     public static void addTranslation(SMCLangGenerator generator){
-        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(0), "在§aJEI§r（物品栏右下方）中搜索对应菜品，点击即可查看所需食材，注意看食材下方提示的§6§l比例！");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(0), "§6机械手§r是机械动力结合料理乐事不可或缺的一环，它将模拟玩家炒菜。将§a锅铲§r置于机械手上，并§c输入动力§r，它便可以模拟我们翻炒！");
         generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(1), "下一页");
-        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(2), "一些食材需要切后才能下锅，将食材放在副手，主手拿§6刀§r，对着§6砧板§r右键即可切之");
-        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(3), "对于左侧的刻度，§a绿色§r表示未煮熟，§e黄色§r表示煮熟刚刚好，§c红色§r表示煮过头 对于右侧的刻度，§a绿色§r表示未烧焦，§c红色§r表示烧焦");
-        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(4), "对于§6混合菜品§r（由两种以上食材烹饪而成），下锅时应§6先下§r最短烹饪时间较长的物品，其次再下最短烹饪时间较短的物品，以免烧焦");
-        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(5), "使用锅铲对着炒锅右键以翻炒食材，翻炒将重置右边的刻度。 使用食材对着炒锅右键以添加食材。§6份量加成§r不容忽视。");
-        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(6), "使用盘子对着炒锅右键以盛出");
-        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(7), "当没有食材时，可直接向§b小助手§r快速订购食材，不过小助手提供的食材有限");
-        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(8), "将出锅的食物置于主手，对着客户村民右键对话以完成交易。菜品份量，所用的食材越丰富，奖励将越高！");
-        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(9), "合上");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(2), "同理我们可以使用§6机械手§r模拟盘子取食物，上下行过滤器设置为盘子即可，如此一来只有盘子能输入机械手，只有非盘子（即烹饪好的料理）能输出机械手。");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(3), "§6机械手§r遇到§c红石信号§r时会暂停工作。利用红石信号控制机械手，来计算最适合的取出时间吧！");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(4), "本整合包使炒锅在工作且未满时可以像漏斗一样接收它上方的物品，使输入方式更加多样化！因此你可以使用传送带传送食物，当然，用机械手模拟玩家摆放食物也是可行的。");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(5), "现在，该动用你的大脑制作一台自动炒菜机啦！ 本整合包自带了由§6JackNeksa§r大大所制作的炒菜机蓝图提供借鉴。");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(6), "合上");
     }
 
 }

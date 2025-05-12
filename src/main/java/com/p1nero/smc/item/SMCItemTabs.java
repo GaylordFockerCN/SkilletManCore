@@ -24,7 +24,7 @@ public class SMCItemTabs {
                 return new ItemStack(SMCRegistrateItems.DIAMOND_SPATULA_V5.get());
             }).withTabsBefore(CDItems.TAB.getKey()).displayItems((params, output) -> {
                 output.accept(SMCBlocks.MAIN_COOK_BLOCK.get());
-
+                output.accept(SMCRegistrateItems.END_TELEPORTER.get());
                 output.accept(SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get());
                 output.accept(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get());
                 output.accept(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get());

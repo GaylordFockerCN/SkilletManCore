@@ -43,14 +43,14 @@ public class SpecialCustomerData7 extends SpecialCustomerData {
         generator.add(choicePre(0), "递上食物");
 
 
-        generator.add(answerPre(1), "（惊恐后退）啊！怪物食物！你当我傻呢！（你赶忙解释安抚）");
-        generator.add(choicePre(1), "别怕别怕！");
+        generator.add(answerPre(1), "（突然欢呼）哇哦！好吃好吃！这个金闪闪之物送你！这是我最宝贵的东西！");
+        generator.add(choicePre(1), "收下");
 
-        generator.add(answerPre(2), "（困惑挠头）嗯...不太对...");
-        generator.add(choicePre(2), "对的对的，再见！");
+        generator.add(answerPre(2), "（突然欢呼）哇哦！好吃好吃！");
+        generator.add(choicePre(2), "收下");
 
-        generator.add(answerPre(3), "（突然欢呼）哇哦！好吃好吃！这个金闪闪之物送你！这是我最宝贵的东西！");
-        generator.add(choicePre(3), "微笑着收下");
+        generator.add(answerPre(3), "（困惑挠头）嗯...不太对...");
+        generator.add(choicePre(3), "结束交易");
     }
 
     @Override

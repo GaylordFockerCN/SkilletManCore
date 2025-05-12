@@ -30,16 +30,11 @@ public class SMCLangGenerator extends SMCLangProvider {
     @Override
     protected void addTranslations() {
 
-//        this.addBookAndAuthorAndContents(BookManager.FOOD_SONG, "富有诗性的村民", "《食物之歌·卷一》"
-//                , "【豆腐谣】\\n黄豆化玉凝清光\\n白刃千击柔克刚\\n箸尖一点山河震\\n笑问宗师可敢尝？"
-//                , "【叫花鸡赋】\\n黄泥为甲火为裳\\n腹藏乾坤百味香\\n撕得金甲三千片\\n方知江湖即酒囊"
-//                , "【东坡肉颂】\\n慢火熬得琥珀光\\n肥而不腻即文章\\n箸下沉浮三十载\\n方悟此味是柔刚"
-//                , "【青团行】\\n艾草裹住江南春\\n一口咬出剑气横\\n若问清明何处好\\n剑客坟前酒尚温");
-
         for(int i = 0; i < ClientForgeEvents.TIPS.size(); i++){
             this.add("screen_tips.smc.tip" + i, ClientForgeEvents.TIPS.get(i));
         }
 
+        this.addInfo("second_after_boss_die_left", "将在 %d 秒后返回主世界");
         this.addInfo("need_shift_see_combo", "按下shift以查看武器连招");
 
         this.addInfo("wear_effect", "§e套装效果：§r");
@@ -55,7 +50,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("middle_score", "§a优秀！");
         this.addInfo("bad_score", "§c不合格！！");
 
-        this.addInfo("first_food_bad", "\n §e胡来！胡来！这样的菜怎么能给客人吃！速速找NPC再去学习一番怎么做菜！！！第一道菜就这么烂，怎么行！下菜也要有个先后！");
+        this.addInfo("first_food_bad", "\n §e胡来！胡来！这样的菜怎么能给客人吃！速速再去多翻几遍烹饪宝典学习一番怎么做菜！！！第一道菜就这么烂，怎么行！");
         this.addInfo("sorry", "呜呜呜我错了灶王爷我下次再也不敢了！");
         this.addInfo("give_me_another_chance", "伟大的炉神啊！再赐予我一次机会吧！");
         this.addInfo("cannot_left_customers", "\n §e嘿小子，你不能丢下你的顾客不管！");
@@ -110,9 +105,10 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("find_villager_first2", "最好找个好位置，让客人能找到你");
         this.addInfo("find_villager_first3", "本包不需要撸树挖矿，不要乱跑哦");
         this.addInfo("find_villager_gacha", "进行任意 武器/盔甲/技能书 祈愿");
-        this.addInfo("find_villager_gacha2", "最好把村民框起来方便再次祈愿");
+        this.addInfo("find_villager_gacha2", "最好把村民框起来，方便再次祈愿");
+        this.addInfo("find_villager_gacha3", "建议使用[不会乱动的村民刷怪蛋]哦");
         this.addInfo("first_work", "往炉灶上摆上炒锅开始工作！");
-        this.addInfo("first_work2", "别忘了看新手教程哦~");
+        this.addInfo("first_work2", "记得趁白天哦~");
         this.addInfo("special_customer", "§6特殊顾客！");
         this.addInfo("level_mul", "声望等级加成！× %.1f");
         this.addInfo("seafood_mul", "海鲜加成！× %.1f");

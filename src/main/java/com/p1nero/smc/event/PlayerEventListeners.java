@@ -20,6 +20,7 @@ import com.p1nero.smc.network.packet.clientbound.SyncUuidPacket;
 import com.p1nero.smc.util.BookManager;
 import com.p1nero.smc.util.ItemUtil;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
+import com.teamtea.eclipticseasons.common.registry.ItemRegistry;
 import dev.xkmc.cuisinedelight.content.item.CuisineSkilletItem;
 import dev.xkmc.cuisinedelight.content.item.SpatulaItem;
 import dev.xkmc.cuisinedelight.events.FoodEatenEvent;
@@ -129,6 +130,7 @@ public class PlayerEventListeners {
                 ItemUtil.addItem(serverPlayer, ModItems.NETHERITE_BACKPACK.get(), 1);
                 ItemUtil.addItem(serverPlayer, CDItems.SKILLET.asItem(), 1);
                 ItemUtil.addItem(serverPlayer, CDItems.SPATULA.asItem(), 1);
+                ItemUtil.addItem(serverPlayer, ItemRegistry.calendar_item.get(), 1);
                 ItemStack step = new ItemStack(EpicFightItems.SKILLBOOK.get());
                 step.getOrCreateTag().putString("skill", EpicFightSkills.STEP.toString());
                 ItemStack parrying = new ItemStack(EpicFightItems.SKILLBOOK.get());

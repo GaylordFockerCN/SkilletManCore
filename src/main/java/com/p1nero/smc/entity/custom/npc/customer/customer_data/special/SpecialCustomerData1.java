@@ -29,7 +29,7 @@ public class SpecialCustomerData1 extends SpecialCustomerData {
         generator.add(choicePre(1), "恭敬收下");//高品质的时候顾客回答后 的玩家选项
         generator.add(answerPre(2), "（摇头）火候尚欠一甲子修为");//中品质的时候顾客的回答
         generator.add(choicePre(2), "（这老登真不识货）");//中品质的时候顾客回答后 的玩家选项
-        generator.add(answerPre(3), "（震碎碗碟）岂敢拿猪食欺我！（设定上你是行侠仗义之人，可不能和普通人打起来，于是你只能求饶）");//低品质的时候顾客的回答
+        generator.add(answerPre(3), "（震碎碗碟）岂敢拿猪食欺我！（虽然你是平底锅侠，但设定上你是行侠仗义之人，可不能和普通人打起来，于是你只能求饶）");//低品质的时候顾客的回答
         generator.add(choicePre(3), "妈妈救我！");//低品质的时候顾客回答后 的玩家选项
     }
 

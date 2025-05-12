@@ -31,6 +31,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
@@ -58,6 +59,7 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
     public SMCNpc(EntityType<? extends Villager> entityType, Level level) {
         super(entityType, level);
         setHomePos(getOnPos());
+        ((GroundPathNavigation)this.getNavigation()).setCanOpenDoors(true);
     }
 
     public void setSpawnPos(BlockPos pos) {

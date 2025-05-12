@@ -128,7 +128,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
                             SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
                             int dayTime = mainCookBlockEntity.getDayTime();
                             //2天后每两天来一次袭击，10天后每天都将生成袭击
-                            if(!smcPlayer.isTodayInRaid() && dayTime >= 2 &&  (dayTime % 2 == 0 || dayTime > 10)){
+                            if(!smcPlayer.isTodayInRaid() && dayTime > 2 &&  (dayTime % 2 == 1 || dayTime > 10)){
                                 SMCRaidManager.startNightRaid(serverPlayer, smcPlayer);
                                 DataManager.specialSolvedToday.put(serverPlayer, false);
                             }
@@ -183,8 +183,9 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             isWorking = false;
             return;
         }
+        int dayTime = this.getDayTime();
         //第一天后开始生成随机事件
-        if(level != null && (int)(level.dayTime() / 24000) % 2 == 1 && this.hasSkillet() && this.startNPC != null && DataManager.hasAnySpecialEvent(owner) && !DataManager.specialSolvedToday.get(owner)){
+        if(level != null && dayTime > 0 && dayTime % 2 == 0 && this.hasSkillet() && this.startNPC != null && DataManager.hasAnySpecialEvent(owner) && !DataManager.specialSolvedToday.get(owner)){
             if(this.getBlockPos().getCenter().distanceTo(owner.position()) > WORKING_RADIUS){
                 Vec3 targetPos = this.startNPC.getSpawnPos().getCenter();
                 owner.teleportTo(targetPos.x, targetPos.y, targetPos.z);
@@ -213,9 +214,16 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             owner.serverLevel().playSound(null, owner.getX(), owner.getY(), owner.getZ(), SoundEvents.VILLAGER_NO, owner.getSoundSource(), 1.0F, 1.0F);
         }
 
-        //生成顾客，30s一只，最多6只
         this.customers.removeIf(customer -> customer == null || customer.isRemoved() || !customer.isAlive());
-        if(this.customers.size() < 6 && (owner.tickCount % (1200 - smcPlayer.getStage() * 100) == 0 || !firstCustomerSummoned)) {
+        if(owner.tickCount % (1200 - smcPlayer.getStage() * 100) == 0 || !firstCustomerSummoned){
+            summonCustomer(owner, 6);
+        }
+
+    }
+
+    public void summonCustomer(ServerPlayer owner, int sizeLimit){
+        //生成顾客，30s一只，最多6只
+        if(this.customers.size() < sizeLimit) {
             firstCustomerSummoned = true;
             BlockPos spawnPos = getRandomPos(owner, 15, 20);
             while (spawnPos.getY() - owner.getY() > 5){
@@ -322,8 +330,9 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
 
     }
 
-    public void onNPCFinishTrade(Customer customer){
+    public void onNPCFinishTrade(ServerPlayer serverPlayer, Customer customer, int result){
         this.customers.remove(customer);
+        summonCustomer(serverPlayer, 1);
     }
 
     public void onSkilletPlace(ServerPlayer serverPlayer) {

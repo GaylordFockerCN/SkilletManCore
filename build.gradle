@@ -173,6 +173,10 @@ dependencies {
     implementation fg.deobf("curse.maven:hungteens-lib-794622:5782587")
 
     implementation fg.deobf("curse.maven:epic-terrain-compatible-1137535:6439744")
+    implementation fg.deobf("curse.maven:biomes-o-plenty-220318:6364065")
+    implementation fg.deobf("curse.maven:terrablender-563928:6290448")
+    implementation fg.deobf("curse.maven:glitchcore-955399:5787839")
+    implementation fg.deobf("curse.maven:ecliptic-seasons-1118306:6522681")
 
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.20.1:4.4.7")
     implementation fg.deobf("curse.maven:fantasy-armor-1083998:6385161")
@@ -190,11 +194,16 @@ dependencies {
 
     //相机
     implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
-    implementation fg.deobf("curse.maven:leawind-third-person-930880:5961735")
-    implementation fg.deobf("libs:eflw:20.9.0")
+//    implementation fg.deobf("curse.maven:leawind-third-person-930880:5961735")
+//    implementation fg.deobf("libs:eflw:20.9.0")
 
     compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
     runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+
+    //菜单
+    implementation fg.deobf("curse.maven:fancymenu-367706:6408859")
+    implementation fg.deobf("curse.maven:konkrete-410295:5028413")
+    implementation fg.deobf("curse.maven:melody-938643:5109692")
 
 
     compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")

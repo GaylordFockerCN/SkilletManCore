@@ -1,6 +1,7 @@
 package com.p1nero.smc.entity.custom.boss.goldenflame;
 
 import com.p1nero.smc.SMCConfig;
+import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.datagen.SMCAdvancementData;
@@ -343,17 +344,10 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity {
     @Override
     public void die(@NotNull DamageSource source) {
         level().playSound(null, getX(), getY(), getZ(), SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.BLOCKS, 1, 1);
-        if(source.getEntity() instanceof ServerPlayer serverPlayer){
-            if(this.getServer() != null && level().dimension() != Level.OVERWORLD){
-                ServerLevel overworld = this.getServer().getLevel(Level.OVERWORLD);
-                if(overworld != null){
-                    serverPlayer.changeDimension(overworld, new SMCTeleporter(overworld.getSharedSpawnPos()));
-                    serverPlayer.setRespawnPosition(Level.OVERWORLD, overworld.getSharedSpawnPos(), 0.0F, false, true);
-                    SMCPlayer.addMoney(2000000, serverPlayer);
-                    SMCAdvancementData.finishAdvancement("end", serverPlayer);
-                }
+        if(level() instanceof ServerLevel serverLevel) {
+            for(ServerPlayer serverPlayer : serverLevel.players()){
+                SMCCapabilityProvider.getSMCPlayer(serverPlayer).setTickAfterBossDieLeft(200);
             }
-            PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new OpenEndScreenPacket(), serverPlayer);//终末之诗
         }
         super.die(source);
     }

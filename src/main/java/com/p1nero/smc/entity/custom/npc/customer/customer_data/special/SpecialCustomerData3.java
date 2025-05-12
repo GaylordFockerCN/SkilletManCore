@@ -44,7 +44,7 @@ public class SpecialCustomerData3 extends SpecialCustomerData {
         generator.add(choicePre(1), "收下钻石");
         generator.add(answerPre(2), "（剔牙）怎么像娘们吃的玩意儿");
         generator.add(choicePre(2), "好嘛");
-        generator.add(answerPre(3), "（大怒）喂狗的东西也敢拿给爷爷！（设定上你是行侠仗义之人，可不能和普通人打起来，于是你只能求饶）");
+        generator.add(answerPre(3), "（大怒）喂狗的东西也敢拿给爷爷！（虽然你是平底锅侠，但设定上你是行侠仗义之人，可不能和普通人打起来，于是你只能求饶）");
         generator.add(choicePre(3), "饶命！饶命！");
     }
 
@@ -61,10 +61,10 @@ public class SpecialCustomerData3 extends SpecialCustomerData {
         super.onBad(serverPlayer, self);
         serverPlayer.playSound(EpicFightSounds.BLADE_HIT.get());
         serverPlayer.hurt(serverPlayer.damageSources().magic(), 0.5F);
-        PrimedTnt primedtnt = new PrimedTnt(serverPlayer.level(), self.getX() + 0.5D, self.getY(), self.getZ() + 0.5D, self);
-        primedtnt.setFuse(142857);
-        serverPlayer.level().addFreshEntity(primedtnt);
-        serverPlayer.level().playSound(null, primedtnt.getX(), primedtnt.getY(), primedtnt.getZ(), SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0F, 1.0F);
-        serverPlayer.level().gameEvent(self, GameEvent.PRIME_FUSE, self.getOnPos());
+//        PrimedTnt primedtnt = new PrimedTnt(serverPlayer.level(), self.getX() + 0.5D, self.getY(), self.getZ() + 0.5D, self);
+//        primedtnt.setFuse(142857);
+//        serverPlayer.level().addFreshEntity(primedtnt);
+        serverPlayer.level().playSound(null, self.getX(), self.getY(), self.getZ(), SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0F, 1.0F);
+//        serverPlayer.level().gameEvent(self, GameEvent.PRIME_FUSE, self.getOnPos());
     }
 }

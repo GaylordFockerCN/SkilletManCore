@@ -4,6 +4,7 @@ import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.customer.customer_data.SpecialCustomerData;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
+import com.p1nero.smc.util.BookManager;
 import com.p1nero.smc.util.ItemUtil;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
@@ -25,7 +26,7 @@ public class SpecialCustomerData10 extends SpecialCustomerData {
         generator.add(answerPre(-2), "（推推眼镜，精打细算地）这个？不不不，这个太浪费了！要节约，节约...");
         generator.add(choicePre(-2), "（这老头比我还抠）");
 
-        generator.add(answerPre(-1), "（紧紧抱着钱袋，眼神警惕，看起来很怕你的食物夺走了他的财产。）");
+        generator.add(answerPre(-1), "（眼前这位村民紧紧抱着钱袋，眼神警惕，看起来很怕你的食物夺走了他的财产。）");
         generator.add(choicePre(-1), "客官要看菜单吗？");
 
         generator.add(answerPre(0), "有没有...（压低声音）能用最少食材做出最多食物的 %s ？");
@@ -35,10 +36,10 @@ public class SpecialCustomerData10 extends SpecialCustomerData {
         generator.add(choicePre(1), "（表面道谢，内心吐槽）多谢，告辞。");
 
         generator.add(answerPre(2), "（皱眉）浪费，太浪费了...食材没利用好...");
-        generator.add(choicePre(2), "下次一定改进");
+        generator.add(choicePre(2), "下次一定改进！");
 
         generator.add(answerPre(3), "（暴跳如雷）你这是在浪费粮食！你知道这能做多少便宜料理吗？！（你慌忙道歉）");
-        generator.add(choicePre(3), "（心虚）下次一定注意，告辞。");
+        generator.add(choicePre(3), "（心虚）下次一定注意！");
     }
 
     @Override
@@ -46,15 +47,8 @@ public class SpecialCustomerData10 extends SpecialCustomerData {
         super.onBest(serverPlayer, self);
         ItemUtil.addItem(serverPlayer, new ItemStack(SMCRegistrateItems.DOLL_RAFFLE_TICKET.get(), 3), true);
 
-        ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-        ListTag bookPages = new ListTag();
-
-        bookPages.add(StringTag.valueOf("节俭的首要在于节约墨水，"));
-
-        book.addTagElement("pages", bookPages);//页数
-        book.addTagElement("generation", IntTag.valueOf(3));//破损度
-        book.addTagElement("author", StringTag.valueOf("节俭的村民"));
-        book.addTagElement("title", StringTag.valueOf("节俭之道"));
+        ItemStack book = BookManager.getDefaultTextBook(3, "节俭的村民", "节俭之道"
+                , "节俭的首要在于节约墨水，");
 
         ItemUtil.addItem(serverPlayer, book);
     }

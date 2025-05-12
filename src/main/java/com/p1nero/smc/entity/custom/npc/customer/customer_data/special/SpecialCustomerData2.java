@@ -33,11 +33,11 @@ public class SpecialCustomerData2 extends SpecialCustomerData {
     public void generateTranslation(SMCLangGenerator generator) {
         super.generateTranslation(generator);
         generator.add(nameTranslationKey, "娇俏可爱的村民");
-        generator.add(answerPre(-2), "（小姑娘踮脚看了看你的托盘）这个不能当点心吃的呀");
+        generator.add(answerPre(-2), "（小朋友踮脚看了看你的托盘）这个不能当点心吃的呀");
         generator.add(choicePre(-2), "吐舌头");
         generator.add(choicePre(-3), "这就去！");
-        generator.add(answerPre(-1), "（眼前这位村民看起来很娇俏可爱，虽然是突然变小的）§6（有一说一，很难想象面前  这个大鼻子村民是小萝莉...或许以后可以给它换个模型） ");
-        generator.add(choicePre(-1), "小妹妹要尝尝新点心吗？");
+        generator.add(answerPre(-1), "（眼前这位村民看起来很娇俏可爱，虽然是突然变小的）§6（有一说一，很难想象面前  这个大鼻子村民是娇俏可爱的小朋友...或许以后可以给它换个模型） ");
+        generator.add(choicePre(-1), "小朋友要尝尝新点心吗？");
         generator.add(answerPre(0), "听说你们有甜滋滋的 %s ？");
         generator.add(choicePre(0), "端上");
         generator.add(answerPre(1), "（眼睛弯成月牙）这个比娘亲做的蜜饯还香！这个小狐狸送你玩～");
@@ -45,7 +45,7 @@ public class SpecialCustomerData2 extends SpecialCustomerData {
         generator.add(answerPre(2), "（嘟嘴）像是糖霜放少了三钱呢");
         generator.add(choicePre(2), "下次再来玩呀~");
         generator.add(answerPre(3), "（突然嚎啕大哭）苦苦的东西最讨厌了！");
-        generator.add(choicePre(3), "诶！妹妹别走！");
+        generator.add(choicePre(3), "诶！小孩别走！");
     }
 
     @Override
