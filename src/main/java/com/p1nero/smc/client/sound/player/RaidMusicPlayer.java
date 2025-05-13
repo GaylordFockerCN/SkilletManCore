@@ -20,7 +20,7 @@ public class RaidMusicPlayer {
         Player player = Minecraft.getInstance().player;
         if (player != null && SMCSounds.RAID_BGM != null && player.isAlive()) {
             if (music != null) {
-                if (Minecraft.getInstance().options.getSoundSourceVolume(SoundSource.MUSIC) <= 0) {
+                if (Minecraft.getInstance().options.getSoundSourceVolume(SoundSource.RECORDS) <= 0) {
                     music = null;
                 } else if (!DataManager.inRaid.get(player)) {
                     music.player = null;
@@ -57,7 +57,7 @@ public class RaidMusicPlayer {
         public final SoundEvent soundEvent;
 
         public RaidMusic(SoundEvent bgm, Player player, RandomSource random) {
-            super(bgm, SoundSource.MUSIC, random);
+            super(bgm, SoundSource.RECORDS, random);
             this.player = player;
             this.soundEvent = bgm;
             this.attenuation = Attenuation.NONE;

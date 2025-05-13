@@ -24,7 +24,7 @@ public class WorkingMusicPlayer {
         if (player != null && SMCSounds.WORKING_BGM != null && player.isAlive()) {
             SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
             if (music != null) {
-                if (Minecraft.getInstance().options.getSoundSourceVolume(SoundSource.MUSIC) <= 0) {
+                if (Minecraft.getInstance().options.getSoundSourceVolume(SoundSource.RECORDS) <= 0) {
                     music = null;
                 } else if (!smcPlayer.isWorking()) {
                     music.player = null;
@@ -73,7 +73,7 @@ public class WorkingMusicPlayer {
         public final SoundEvent soundEvent;
 
         public WorkingMusic(SoundEvent bgm, Player player, RandomSource random) {
-            super(bgm, SoundSource.MUSIC, random);
+            super(bgm, SoundSource.RECORDS, random);
             this.player = player;
             this.soundEvent = bgm;
             this.attenuation = Attenuation.NONE;

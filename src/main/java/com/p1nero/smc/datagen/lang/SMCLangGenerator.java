@@ -34,6 +34,7 @@ public class SMCLangGenerator extends SMCLangProvider {
             this.add("screen_tips.smc.tip" + i, ClientForgeEvents.TIPS.get(i));
         }
 
+        this.addInfo("error_when_try_to_upgrade_shop", "§c升级店铺外观时出现意外！");
         this.addInfo("second_after_boss_die_left", "将在 %d 秒后返回主世界");
         this.addInfo("need_shift_see_combo", "按下shift以查看武器连招");
 
@@ -106,7 +107,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("find_villager_first3", "本包不需要撸树挖矿，不要乱跑哦");
         this.addInfo("find_villager_gacha", "进行任意 武器/盔甲/技能书 祈愿");
         this.addInfo("find_villager_gacha2", "最好把村民框起来，方便再次祈愿");
-        this.addInfo("find_villager_gacha3", "建议使用[不会乱动的村民刷怪蛋]哦");
+        this.addInfo("find_villager_gacha3", "建议使用§a[不会乱动的村民刷怪蛋]§r哦");
         this.addInfo("first_work", "往炉灶上摆上炒锅开始工作！");
         this.addInfo("first_work2", "记得趁白天哦~");
         this.addInfo("special_customer", "§6特殊顾客！");
@@ -326,6 +327,8 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialogChoice(SMCEntities.START_NPC, 22, "碟片抽奖券");
         this.addDialogChoice(SMCEntities.START_NPC, 23, "玩偶抽奖券");
         this.addDialogChoice(SMCEntities.START_NPC, 24, "盔甲抽奖券");
+
+        this.addDialogChoice(SMCEntities.START_NPC, 25, "§f修缮外观§r %d绿宝石");
 
         this.addDialog(SMCEntities.START_NPC, 1, "今天要做些什么呢？");
         this.addDialog(SMCEntities.START_NPC, 2, "本店亏损已久，承蒙大侠相助！");

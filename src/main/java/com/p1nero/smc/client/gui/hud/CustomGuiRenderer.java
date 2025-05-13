@@ -88,7 +88,7 @@ public class CustomGuiRenderer {
             Component info2 = SkilletManCoreMod.getInfo("find_villager_gacha2").withStyle(ChatFormatting.GRAY);
             Component info3 = SkilletManCoreMod.getInfo("find_villager_gacha3").withStyle(ChatFormatting.GRAY);
             int maxWidth = Math.max(Math.max(font.width(info), font.width(info2)), font.width(info3));
-            guiGraphics.fillGradient(8, y + lineHeight * 2 - 2, 8 + maxWidth + 2, y + lineHeight * 4, 0x66000000, 0x66000000);
+            guiGraphics.fillGradient(8, y + lineHeight * 2 - 2, 8 + maxWidth + 2, y + lineHeight * 5, 0x66000000, 0x66000000);
             guiGraphics.drawString(font, info, 10, y + lineHeight * 2, 0x00ff00, true);
             guiGraphics.drawString(font, info2, 10, y + lineHeight * 3, 0x00ff00, true);
             guiGraphics.drawString(font, info3, 10, y + lineHeight * 4, 0x00ff00, true);

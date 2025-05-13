@@ -314,4 +314,11 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
         return SoundEvents.EXPERIENCE_ORB_PICKUP;
     }
 
+    /**
+     * 跳，不要怕
+     */
+    @Override
+    public int getMaxFallDistance() {
+        return 48;
+    }
 }

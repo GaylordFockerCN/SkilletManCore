@@ -226,9 +226,6 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         if(this.customers.size() < sizeLimit) {
             firstCustomerSummoned = true;
             BlockPos spawnPos = getRandomPos(owner, 15, 20);
-            while (spawnPos.getY() - owner.getY() > 5){
-                spawnPos = getRandomPos(owner, 15, 20);
-            }
             Customer customer = new Customer(owner, spawnPos.getCenter());
             customer.setHomePos(this.getBlockPos());
             customer.setSpawnPos(spawnPos);

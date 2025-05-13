@@ -25,6 +25,7 @@ import dev.xkmc.cuisinedelight.content.item.BaseFoodItem;
 import dev.xkmc.cuisinedelight.content.logic.CookedFoodData;
 import dev.xkmc.cuisinedelight.init.registrate.PlateFood;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -35,6 +36,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -45,7 +47,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -125,6 +130,18 @@ public class FakeCustomer extends SMCNpc {
 
         if(this.getConversingPlayer() == null) {
             this.getNavigation().moveTo(this.getNavigation().createPath(this.isTraded() ? this.getSpawnPos() : this.getHomePos(), 3), 1.0F);
+            //开门
+            Path path = this.getNavigation().getPath();
+            if(path != null && path.getNextNodeIndex() < path.getNodeCount()) {
+                BlockPos pos = path.getNextNode().asBlockPos();
+                BlockState blockState = level().getBlockState(pos);
+                if (blockState.is(BlockTags.WOODEN_DOORS, (base) -> base.getBlock() instanceof DoorBlock)) {
+                    DoorBlock block = (DoorBlock)blockState.getBlock();
+                    if (!block.isOpen(blockState)) {
+                        block.setOpen(this, level(), blockState, pos, true);
+                    }
+                }
+            }
         }
 
         if(!this.isTraded() && this.position().distanceTo(this.getHomePos().getCenter()) < 5 && this.tickCount > 600) {

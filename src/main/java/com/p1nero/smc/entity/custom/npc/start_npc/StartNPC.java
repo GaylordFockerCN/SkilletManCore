@@ -25,17 +25,22 @@ import dev.xkmc.cuisinedelight.content.logic.FoodType;
 import dev.xkmc.cuisinedelight.content.logic.IngredientConfig;
 import dev.xkmc.cuisinedelight.init.registrate.CDItems;
 import net.minecraft.ChatFormatting;
+import net.minecraft.ResourceLocationException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -48,10 +53,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import vectorwing.farmersdelight.common.registry.ModBlocks;
 import vectorwing.farmersdelight.common.registry.ModItems;
 
 import java.util.*;
@@ -63,9 +75,12 @@ import static com.p1nero.smc.block.entity.MainCookBlockEntity.PROFESSION_LIST;
  * 凝渊人，引导的npc
  */
 public class StartNPC extends SMCNpc {
+    private static final ResourceLocation PLAIN_V2SHOP_LOCATION = new ResourceLocation(SkilletManCoreMod.MOD_ID, "village/plains/houses/plains_butcher_shop_lv2");
+    private static final ResourceLocation PLAIN_V3SHOP_LOCATION = new ResourceLocation(SkilletManCoreMod.MOD_ID, "village/plains/houses/plains_butcher_shop_lv3");
     protected static final EntityDataAccessor<Integer> INCOME = SynchedEntityData.defineId(StartNPC.class, EntityDataSerializers.INT);//收入
     protected static final EntityDataAccessor<Integer> INCOME_SPEED = SynchedEntityData.defineId(StartNPC.class, EntityDataSerializers.INT);//收入速度 / 店铺等级
     protected static final EntityDataAccessor<Integer> STATE = SynchedEntityData.defineId(StartNPC.class, EntityDataSerializers.INT);//状态
+    protected static final EntityDataAccessor<Integer> SHOP_LEVEL = SynchedEntityData.defineId(StartNPC.class, EntityDataSerializers.INT);//是否升级过店铺
 
     public static final Set<ItemStack> STAPLE_SET = new HashSet<>();
     public static final Set<ItemStack> VEG_SET = new HashSet<>();
@@ -127,6 +142,7 @@ public class StartNPC extends SMCNpc {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
+        this.getEntityData().define(SHOP_LEVEL, 0);
         this.getEntityData().define(INCOME, 0);
         this.getEntityData().define(INCOME_SPEED, 1);
         this.getEntityData().define(STATE, 0);
@@ -135,6 +151,8 @@ public class StartNPC extends SMCNpc {
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+
+        this.getEntityData().set(SHOP_LEVEL, tag.getInt("shop_level"));
         this.getEntityData().set(INCOME, tag.getInt("income"));
         this.getEntityData().set(INCOME_SPEED, tag.getInt("income_speed"));
         this.getEntityData().set(STATE, tag.getInt("shop_state"));
@@ -143,9 +161,18 @@ public class StartNPC extends SMCNpc {
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
+        tag.putInt("shop_level", this.getEntityData().get(SHOP_LEVEL));
         tag.putInt("income", this.getEntityData().get(INCOME));
         tag.putInt("income_speed", this.getEntityData().get(INCOME_SPEED));
         tag.putInt("shop_state", this.getEntityData().get(STATE));
+    }
+
+    public int getShopLevel(){
+        return this.getEntityData().get(SHOP_LEVEL);
+    }
+
+    public void setShopLevel(int level){
+        this.getEntityData().set(SHOP_LEVEL, level);
     }
 
     public boolean isHired() {
@@ -338,28 +365,34 @@ public class StartNPC extends SMCNpc {
                 foodBuyer.addLeaf(dialogueComponentBuilder.opt(15), (byte) 15);
             }
 
+            TreeNode root = new TreeNode(dialogueComponentBuilder.ans(1));
+
             //入职给予新手福利，锅铲和锅，建筑方块，初始食材订购机等等
             if (senderData.getBoolean("first_gift_got")) {
-                builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.ans(1))
-                        .addChild(ticketExchange)
+                root.addChild(ticketExchange)
                         .addChild(foodBuyer)//食材订购机
                         // 新手帮助
                         .addChild(new TreeNode(dialogueComponentBuilder.ans(6), dialogueComponentBuilder.opt(4))
                                 .addChild(new TreeNode(dialogueComponentBuilder.ans(7), dialogueComponentBuilder.opt(8))
                                         .addChild(new TreeNode(dialogueComponentBuilder.ans(8), dialogueComponentBuilder.opt(8))
-                                                .addLeaf(dialogueComponentBuilder.opt(2), (byte) 3))))
-                        .addLeaf(dialogueComponentBuilder.opt(2), (byte) 3)); //告辞
+                                                .addLeaf(dialogueComponentBuilder.opt(2), (byte) 3))));
             } else {
-                builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.ans(1))
+                root = new TreeNode(dialogueComponentBuilder.ans(1))
                         .addLeaf(dialogueComponentBuilder.opt(3), (byte) 6) //新手福利
                         .addChild(foodBuyer)//食材订购机
                         // 新手帮助
                         .addChild(new TreeNode(dialogueComponentBuilder.ans(6), dialogueComponentBuilder.opt(4))
                                 .addChild(new TreeNode(dialogueComponentBuilder.ans(7), dialogueComponentBuilder.opt(8))
                                         .addChild(new TreeNode(dialogueComponentBuilder.ans(8), dialogueComponentBuilder.opt(8))
-                                                .addLeaf(dialogueComponentBuilder.opt(2), (byte) 3))))
-                        .addLeaf(dialogueComponentBuilder.opt(2), (byte) 3)); //告辞
+                                                .addLeaf(dialogueComponentBuilder.opt(2), (byte) 3))));
             }
+            if(getShopLevel() == 0) {
+                root.addLeaf(dialogueComponentBuilder.opt(25, 20000).withStyle(ChatFormatting.GREEN), (byte) 28);//修缮外观
+            } else if(getShopLevel() == 1) {
+                root.addLeaf(dialogueComponentBuilder.opt(25, 100000).withStyle(ChatFormatting.GREEN), (byte) 28);//修缮外观
+            }
+            root.addLeaf(dialogueComponentBuilder.opt(2), (byte) 3); //告辞
+            builder.setAnswerRoot(root);
         } else {
             //初始态
             builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.ans(0))
@@ -519,10 +552,84 @@ public class StartNPC extends SMCNpc {
             addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asStack()), 1499, 10);
         }
 
+        if(interactionID == 28){
+            if(this.getShopLevel() == 0){
+                if(SMCPlayer.hasMoney(player, 20000, true)) {
+                    if(tryPlaceShopPart(player, PLAIN_V2SHOP_LOCATION, -6, -1, -9)){
+                        this.setShopLevel(1);
+                    }
+                }
+            } else if(this.getShopLevel() == 1) {
+                if(SMCPlayer.hasMoney(player, 100000, true)) {
+                    if(tryPlaceShopPart(player, PLAIN_V3SHOP_LOCATION, -6, -1, 1)){
+                        this.setShopLevel(2);
+                    }
+                }
+            }
+        }
+
         this.setConversingPlayer(null);
     }
 
-    public void addShopToMap(ServerPlayer serverPlayer){
+    public ResourceLocation getShopLocation(){
+        VillagerType villagerType = this.getVillagerData().getType();
+        return PLAIN_V2SHOP_LOCATION;
+    }
+
+    public boolean tryPlaceShopPart(ServerPlayer serverPlayer, ResourceLocation location, int offsetX, int offsetY, int offsetZ){
+        BlockPos mainCookBlockPos = this.getHomePos();
+        BlockState stove = level().getBlockState(mainCookBlockPos.above());
+        if(!stove.is(ModBlocks.STOVE.get())){
+            serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("error_when_try_to_upgrade_shop"), false);
+            return false;
+        }
+        Direction direction = stove.getValue(BlockStateProperties.HORIZONTAL_FACING);
+        Rotation rotation = switch (direction){
+            case EAST -> Rotation.CLOCKWISE_90;
+            case SOUTH -> Rotation.CLOCKWISE_180;
+            case WEST -> Rotation.COUNTERCLOCKWISE_90;
+            default -> Rotation.NONE;
+        };
+        ServerLevel serverLevel = serverPlayer.serverLevel();
+
+        serverLevel.sendParticles(ParticleTypes.EXPLOSION_EMITTER, getX(), getY(), getZ(), 50, 0.1D, 0.1D, 0.1D, 0.1);
+        serverLevel.playSound(null, getX(), getY(), getZ(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1, 1);
+        serverLevel.playSound(null, getX(), getY(), getZ(), SoundEvents.VILLAGER_WORK_ARMORER, SoundSource.BLOCKS, 1, 1);
+        serverLevel.playSound(null, getX(), getY(), getZ(), SoundEvents.VILLAGER_WORK_WEAPONSMITH, SoundSource.BLOCKS, 1, 1);
+        serverLevel.playSound(null, getX(), getY(), getZ(), SoundEvents.VILLAGER_WORK_TOOLSMITH, SoundSource.BLOCKS, 1, 1);
+
+
+        StructureTemplateManager structureManager = serverLevel.getStructureManager();
+
+        BlockPos placePos = switch (direction) {
+            case EAST -> mainCookBlockPos.offset(offsetZ, offsetY, offsetX);
+            case SOUTH -> mainCookBlockPos.offset(-offsetX, offsetY, -offsetZ);
+            case WEST -> mainCookBlockPos.offset(-offsetZ, offsetY, -offsetX);
+            default -> mainCookBlockPos.offset(offsetX, offsetY, offsetZ);
+        };
+        Optional<?> optional = Optional.empty();
+        try {
+            optional = structureManager.get(location);
+        } catch (ResourceLocationException e) {
+            serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("error_when_try_to_upgrade_shop"), false);
+        }
+
+        if (optional.isPresent()) {
+            StructureTemplate template = (StructureTemplate)optional.get();
+            StructurePlaceSettings placeSettings = new StructurePlaceSettings().setRotation(rotation);
+            boolean success = template.placeInWorld(serverLevel, placePos, placePos, placeSettings, this.random, 2);
+            if(success) {
+                serverLevel.playSound(null, getX(), getY(), getZ(), SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.BLOCKS, 2, 1);
+                return true;
+            } else {
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("error_when_try_to_upgrade_shop"), false);
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public void addShopToMap(ServerPlayer serverPlayer) {
         PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new AddWaypointPacket("A New Shop", this.getHomePos()), serverPlayer);
     }
 
@@ -540,12 +647,12 @@ public class StartNPC extends SMCNpc {
                 ItemStack newItem = itemList.get(random.nextInt(itemList.size()));
                 contain.set(false);
                 applyItems.forEach(itemStack -> {
-                    if(itemStack.is(newItem.getItem())){
+                    if (itemStack.is(newItem.getItem())) {
                         itemStack.setCount(itemStack.getCount() + 1);
                         contain.set(true);
                     }
                 });
-                if(!contain.get()){
+                if (!contain.get()) {
                     applyItems.add(newItem.copy());
                 }
             }
