@@ -37,6 +37,7 @@
     "TimeCommandMixin",
     "VillagerGoalPackagesMixin",
     "VillagerMixin",
+    "VillageStructuresMixin",
     "WanderingTraderMixin",
     "WolfMixin",
     "WOMAnimationsMixin",

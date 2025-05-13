@@ -17,6 +17,7 @@ import com.p1nero.smc.entity.custom.npc.start_npc.StartNPC;
 import com.p1nero.smc.event.ServerEvents;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
+import com.p1nero.smc.network.packet.clientbound.AddWaypointPacket;
 import com.p1nero.smc.network.packet.clientbound.NPCBlockDialoguePacket;
 import com.p1nero.smc.registrate.SMCRegistrateBlocks;
 import com.p1nero.smc.util.SMCRaidManager;
@@ -59,6 +60,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
+import xaero.hud.minimap.waypoint.WaypointColor;
 import yesman.epicfight.api.utils.math.MathUtils;
 
 import java.util.ArrayList;
@@ -91,6 +93,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         if(level.isClientSide) {
             return;
         }
+        ServerLevel serverLevel = (ServerLevel) level;
         if (t instanceof MainCookBlockEntity mainCookBlockEntity) {
             if (mainCookBlockEntity.startNPC == null) {
                 //优先附近找，找不到再生一只。
@@ -108,6 +111,12 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
                     startNPC1.setVillagerData(startNPC1.getVillagerData().setType(VillagerType.byBiome(startNPC1.level().getBiome(pos))));
                     level.addFreshEntity(startNPC1);
                 }
+            }
+
+            //若无主人则3s通知一次附近玩家
+            if(mainCookBlockEntity.startNPC.getOwner() == null && mainCookBlockEntity.startNPC.tickCount % 60 == 0) {
+                serverLevel.players().stream().filter(serverPlayer -> serverPlayer.position().distanceTo(mainCookBlockEntity.getBlockPos().getCenter()) < 200)
+                        .forEach(serverPlayer -> PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new AddWaypointPacket(SkilletManCoreMod.getInfoKey("no_owner_shop"), pos, WaypointColor.RED), serverPlayer));
             }
 
             if (mainCookBlockEntity.startNPC.isGuider()) {
@@ -149,6 +158,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
     public void load(@NotNull CompoundTag compoundTag) {
         super.load(compoundTag);
         isWorking = compoundTag.getBoolean("isWorking");
+
     }
 
     public void updateWorkingState(ServerPlayer serverPlayer) {

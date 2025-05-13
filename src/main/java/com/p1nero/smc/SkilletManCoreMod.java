@@ -42,7 +42,7 @@ public class SkilletManCoreMod {
     public static final String REGISTRY_NAMESPACE = "smc";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public SkilletManCoreMod(){
+    public SkilletManCoreMod() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
         SMCSounds.REGISTRY.register(bus);
@@ -67,15 +67,19 @@ public class SkilletManCoreMod {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, SMCConfig.CLIENT_SPEC);
     }
 
-    public static MutableComponent getInfo(String key){
-        return Component.translatable("info.smc."+key);
+    public static MutableComponent getInfo(String key) {
+        return Component.translatable("info.smc." + key);
     }
 
-    public static MutableComponent getInfo(String key, Object... objects){
-        return Component.translatable("info.smc."+key, objects);
+    public static String getInfoKey(String key) {
+        return "info.smc." + key;
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event){
+    public static MutableComponent getInfo(String key, Object... objects) {
+        return Component.translatable("info.smc." + key, objects);
+    }
+
+    private void commonSetup(final FMLCommonSetupEvent event) {
         SMCPacketHandler.register();
         WeaponGachaSystem.initItemList();
         SkillBookGachaSystem.initItemList();

@@ -19,6 +19,7 @@ import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.AddWaypointPacket;
+import com.p1nero.smc.network.packet.clientbound.RemoveWaypointPacket;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
 import dev.xkmc.cuisinedelight.content.logic.FoodType;
@@ -585,9 +586,9 @@ public class StartNPC extends SMCNpc {
         }
         Direction direction = stove.getValue(BlockStateProperties.HORIZONTAL_FACING);
         Rotation rotation = switch (direction){
-            case EAST -> Rotation.CLOCKWISE_90;
-            case SOUTH -> Rotation.CLOCKWISE_180;
             case WEST -> Rotation.COUNTERCLOCKWISE_90;
+            case SOUTH -> Rotation.CLOCKWISE_180;
+            case EAST -> Rotation.CLOCKWISE_90;
             default -> Rotation.NONE;
         };
         ServerLevel serverLevel = serverPlayer.serverLevel();
@@ -602,9 +603,9 @@ public class StartNPC extends SMCNpc {
         StructureTemplateManager structureManager = serverLevel.getStructureManager();
 
         BlockPos placePos = switch (direction) {
-            case EAST -> mainCookBlockPos.offset(offsetZ, offsetY, offsetX);
+            case WEST -> mainCookBlockPos.offset(offsetZ, offsetY, -offsetX);
             case SOUTH -> mainCookBlockPos.offset(-offsetX, offsetY, -offsetZ);
-            case WEST -> mainCookBlockPos.offset(-offsetZ, offsetY, -offsetX);
+            case EAST -> mainCookBlockPos.offset(-offsetZ, offsetY, offsetX);
             default -> mainCookBlockPos.offset(offsetX, offsetY, offsetZ);
         };
         Optional<?> optional = Optional.empty();
@@ -630,7 +631,8 @@ public class StartNPC extends SMCNpc {
     }
 
     public void addShopToMap(ServerPlayer serverPlayer) {
-        PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new AddWaypointPacket("A New Shop", this.getHomePos()), serverPlayer);
+        PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new RemoveWaypointPacket(SkilletManCoreMod.getInfoKey("no_owner_shop"), this.getHomePos()), serverPlayer);
+        PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new AddWaypointPacket(SkilletManCoreMod.getInfoKey("my_new_shop"), this.getHomePos(), null), serverPlayer);
     }
 
     public void addIngredient(SMCPlayer smcPlayer, ServerPlayer player, Set<ItemStack> itemStackSet, int moneyNeed, int foodCount) {

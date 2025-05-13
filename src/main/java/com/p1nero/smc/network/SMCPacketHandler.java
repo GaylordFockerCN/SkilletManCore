@@ -23,6 +23,7 @@ public class SMCPacketHandler {
     public static synchronized void register() {
         // 发给客户端
         register(AddWaypointPacket.class, AddWaypointPacket::decode);
+        register(RemoveWaypointPacket.class, RemoveWaypointPacket::decode);
         register(NPCDialoguePacket.class, NPCDialoguePacket::decode);
         register(NPCBlockDialoguePacket.class, NPCBlockDialoguePacket::decode);
         register(SyncSMCPlayerPacket.class, SyncSMCPlayerPacket::decode);

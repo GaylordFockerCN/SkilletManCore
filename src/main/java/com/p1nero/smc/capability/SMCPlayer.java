@@ -24,6 +24,9 @@ import dev.xkmc.cuisinedelight.init.registrate.PlateFood;
 import hungteen.htlib.common.world.entity.DummyEntityManager;
 import net.kenddie.fantasyarmor.item.FAItems;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -37,14 +40,23 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.p3pp3rf1y.sophisticatedbackpacks.init.ModItems;
 import org.jetbrains.annotations.Nullable;
 import reascer.wom.main.WeaponsOfMinecraft;
+import xaero.common.XaeroMinimapSession;
+import xaero.common.core.IXaeroMinimapClientPlayNetHandler;
+import xaero.common.minimap.waypoints.Waypoint;
+import xaero.common.minimap.waypoints.WaypointVisibilityType;
+import xaero.common.minimap.waypoints.WaypointsManager;
+import xaero.common.settings.ModSettings;
+import xaero.minimap.XaeroMinimap;
 import yesman.epicfight.client.ClientEngine;
 import yesman.epicfight.skill.Skill;
 import yesman.epicfight.world.item.EpicFightItems;
 import yesman.epicfight.world.item.SkillBookItem;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -118,6 +130,7 @@ public class SMCPlayer {
     public void resetSkillBookPity() {
         skillBookPity = 0;
     }
+
     //============================================================================================
     private int weaponGachaingCount;
     private int weaponPity4Star;
@@ -207,7 +220,7 @@ public class SMCPlayer {
     public static void addExperience(ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         smcPlayer.levelUpLeft++;
-        if(smcPlayer.levelUpLeft > 1 + smcPlayer.stage) {
+        if (smcPlayer.levelUpLeft > 1 + smcPlayer.stage) {
             smcPlayer.levelUpLeft = 0;
             levelUPPlayer(serverPlayer);
         } else {
@@ -278,16 +291,17 @@ public class SMCPlayer {
     public boolean isWorking() {
         return isWorking;
     }
+
     public static void addParryCount(ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         smcPlayer.parryCounter += 1;
-        if(smcPlayer.parryCounter > 10) {
+        if (smcPlayer.parryCounter > 10) {
             SMCAdvancementData.finishAdvancement("parry_master", serverPlayer);
         }
-        if(smcPlayer.parryCounter > 100){
+        if (smcPlayer.parryCounter > 100) {
             SMCAdvancementData.finishAdvancement("parry_master2", serverPlayer);
         }
-        if(smcPlayer.parryCounter > 1000){
+        if (smcPlayer.parryCounter > 1000) {
             SMCAdvancementData.finishAdvancement("parry_master3", serverPlayer);
         }
     }
@@ -295,13 +309,13 @@ public class SMCPlayer {
     public static void addDodgeCount(ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         smcPlayer.dodgeCounter += 1;
-        if(smcPlayer.dodgeCounter > 10) {
+        if (smcPlayer.dodgeCounter > 10) {
             SMCAdvancementData.finishAdvancement("dodge_master", serverPlayer);
         }
-        if(smcPlayer.dodgeCounter > 100){
+        if (smcPlayer.dodgeCounter > 100) {
             SMCAdvancementData.finishAdvancement("dodge_master2", serverPlayer);
         }
-        if(smcPlayer.dodgeCounter > 1000){
+        if (smcPlayer.dodgeCounter > 1000) {
             SMCAdvancementData.finishAdvancement("dodge_master3", serverPlayer);
         }
     }
@@ -309,15 +323,15 @@ public class SMCPlayer {
     public static void levelUPPlayer(ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         int currentLevel = smcPlayer.level;
-        if(smcPlayer.isTrialRequired()) {
+        if (smcPlayer.isTrialRequired()) {
             return;
         }
         smcPlayer.setLevel(currentLevel + 1);
-        if(smcPlayer.level % 5 == 0){
+        if (smcPlayer.level % 5 == 0) {
             SMCAdvancementData.finishAdvancement("level" + smcPlayer.level, serverPlayer);
             int index = smcPlayer.level / 5 - 1;
-            if(index >= 0 && index < LEVEL_UP_ITEMS.size()){
-                for(Item item : LEVEL_UP_ITEMS.get(index)){
+            if (index >= 0 && index < LEVEL_UP_ITEMS.size()) {
+                for (Item item : LEVEL_UP_ITEMS.get(index)) {
                     ItemUtil.addItem(serverPlayer, item.getDefaultInstance(), true);
                 }
             }
@@ -331,11 +345,11 @@ public class SMCPlayer {
     }
 
     public int getNextStageLeft() {
-        if(this.level < STAGE1_REQUIRE) {
+        if (this.level < STAGE1_REQUIRE) {
             return STAGE1_REQUIRE - this.level;
-        } else if(this.level < STAGE2_REQUIRE){
+        } else if (this.level < STAGE2_REQUIRE) {
             return STAGE2_REQUIRE - this.level;
-        } else if(this.level < STAGE3_REQUIRE) {
+        } else if (this.level < STAGE3_REQUIRE) {
             return STAGE3_REQUIRE - this.level;
         } else {
             return -1;
@@ -345,16 +359,16 @@ public class SMCPlayer {
     public static void stageUp(ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         int currentLevel = smcPlayer.level;
-        if(currentLevel == STAGE1_REQUIRE || currentLevel == STAGE2_REQUIRE || currentLevel == STAGE3_REQUIRE) {
+        if (currentLevel == STAGE1_REQUIRE || currentLevel == STAGE2_REQUIRE || currentLevel == STAGE3_REQUIRE) {
             smcPlayer.setLevel(currentLevel + 1);
 
-            if(currentLevel == STAGE1_REQUIRE) {
+            if (currentLevel == STAGE1_REQUIRE) {
                 smcPlayer.unlockStage1(serverPlayer);
             }
-            if(currentLevel == STAGE2_REQUIRE) {
+            if (currentLevel == STAGE2_REQUIRE) {
                 smcPlayer.unlockStage2(serverPlayer);
             }
-            if(currentLevel == STAGE3_REQUIRE) {
+            if (currentLevel == STAGE3_REQUIRE) {
                 smcPlayer.unlockStage3(serverPlayer);
             }
         }
@@ -366,11 +380,11 @@ public class SMCPlayer {
         int dayTime = (int) (serverPlayer.serverLevel().dayTime() / 24000);
 
         SMCAdvancementData.finishAdvancement("start_fight", serverPlayer);
-        if(dayTime >= 30) {
+        if (dayTime >= 30) {
             SMCAdvancementData.finishAdvancement("raid30d", serverPlayer);
-        } else if(dayTime >= 20) {
+        } else if (dayTime >= 20) {
             SMCAdvancementData.finishAdvancement("raid20d", serverPlayer);
-        } else if(dayTime >= 10) {
+        } else if (dayTime >= 10) {
             SMCAdvancementData.finishAdvancement("raid10d", serverPlayer);
         }
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("raid_success_for_day", dayTime), false);
@@ -416,7 +430,7 @@ public class SMCPlayer {
         addMoney(20000, serverPlayer);
 
         //屠龙套装
-        for(Item item : List.of(FAItems.DRAGONSLAYER_HELMET.get(), FAItems.DRAGONSLAYER_CHESTPLATE.get(), FAItems.DRAGONSLAYER_LEGGINGS.get(), FAItems.DRAGONSLAYER_BOOTS.get())){
+        for (Item item : List.of(FAItems.DRAGONSLAYER_HELMET.get(), FAItems.DRAGONSLAYER_CHESTPLATE.get(), FAItems.DRAGONSLAYER_LEGGINGS.get(), FAItems.DRAGONSLAYER_BOOTS.get())) {
             ItemUtil.addItem(serverPlayer, item.getDefaultInstance(), true);
         }
         SMCAdvancementData.finishAdvancement("level20_1", serverPlayer);
@@ -434,7 +448,7 @@ public class SMCPlayer {
     public static void updateWorkingState(boolean isWorking, ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         if (smcPlayer.isWorking != isWorking) {
-            if(isWorking && !DummyEntityManager.getDummyEntities(serverPlayer.serverLevel()).isEmpty()) {
+            if (isWorking && !DummyEntityManager.getDummyEntities(serverPlayer.serverLevel()).isEmpty()) {
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("raid_no_work"), true);
                 return;
             }
@@ -442,7 +456,7 @@ public class SMCPlayer {
             if (isWorking) {
                 smcPlayer.setTodayInRaid(false);
                 DataManager.inRaid.put(serverPlayer, false);
-                if(!DataManager.firstWork.get(serverPlayer)){
+                if (!DataManager.firstWork.get(serverPlayer)) {
                     DataManager.firstWork.put(serverPlayer, true);
                 }
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("start_work").withStyle(ChatFormatting.BOLD), true);
@@ -450,7 +464,7 @@ public class SMCPlayer {
             } else {
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("end_work").withStyle(ChatFormatting.BOLD), true);
                 serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
-                if(serverPlayer.serverLevel().isNight()) {
+                if (serverPlayer.serverLevel().isNight()) {
                     smcPlayer.setSpecialAlive(false);
                 }
             }
@@ -465,7 +479,7 @@ public class SMCPlayer {
     public static void consumeMoney(int moneyCount, ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         smcPlayer.moneyCount -= moneyCount;
-        if(smcPlayer.moneyCount < 0) {
+        if (smcPlayer.moneyCount < 0) {
             SMCAdvancementData.finishAdvancement("no_money", serverPlayer);
         }
         serverPlayer.displayClientMessage(Component.literal("-" + moneyCount).withStyle(ChatFormatting.BOLD, ChatFormatting.RED), false);
@@ -477,13 +491,13 @@ public class SMCPlayer {
         smcPlayer.moneyCount += count;
         serverPlayer.displayClientMessage(Component.literal("+" + count).withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN), false);
         smcPlayer.syncToClient(serverPlayer);
-        if(smcPlayer.moneyCount > 1000) {
+        if (smcPlayer.moneyCount > 1000) {
             SMCAdvancementData.finishAdvancement("money1000", serverPlayer);
         }
-        if(smcPlayer.moneyCount > 1000000){
+        if (smcPlayer.moneyCount > 1000000) {
             SMCAdvancementData.finishAdvancement("money1000000", serverPlayer);
         }
-        if(smcPlayer.moneyCount > 1000000000){
+        if (smcPlayer.moneyCount > 1000000000) {
             SMCAdvancementData.finishAdvancement("money1000000000", serverPlayer);
         }
         serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.EARN_MONEY.get(), serverPlayer.getSoundSource(), 0.4F, 1.0F);
@@ -495,10 +509,10 @@ public class SMCPlayer {
     }
 
     public static boolean hasMoney(ServerPlayer serverPlayer, int moneyNeed, boolean playSound) {
-        if(!playSound) {
+        if (!playSound) {
             return hasMoney(serverPlayer, moneyNeed);
         }
-        if(hasMoney(serverPlayer, moneyNeed)) {
+        if (hasMoney(serverPlayer, moneyNeed)) {
             serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
             return true;
         }
@@ -518,26 +532,27 @@ public class SMCPlayer {
     public void setLevel(int level) {
         this.level = level;
     }
+
     public void setLevelSync(int level, ServerPlayer serverPlayer) {
-        if(level < 0) {
+        if (level < 0) {
             return;
         }
-        if(this.level < level) {
+        if (this.level < level) {
             this.level = level;
-            if(this.level < STAGE1_REQUIRE) {
+            if (this.level < STAGE1_REQUIRE) {
                 setStage(0);
-            } else if(this.level < STAGE2_REQUIRE) {
+            } else if (this.level < STAGE2_REQUIRE) {
                 setStage(1);
-            } else if(this.level < STAGE3_REQUIRE) {
+            } else if (this.level < STAGE3_REQUIRE) {
                 setStage(2);
             }
         } else {
             this.level = level;
-            if(this.level > STAGE3_REQUIRE) {
+            if (this.level > STAGE3_REQUIRE) {
                 setStage(3);
-            } else if(this.level > STAGE2_REQUIRE) {
+            } else if (this.level > STAGE2_REQUIRE) {
                 setStage(2);
-            } else if(this.level > STAGE1_REQUIRE) {
+            } else if (this.level > STAGE1_REQUIRE) {
                 setStage(1);
             }
         }
@@ -690,43 +705,62 @@ public class SMCPlayer {
         PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new SyncSMCPlayerPacket(saveNBTData(new CompoundTag())), serverPlayer);
     }
 
+    @SuppressWarnings("deprecation")
     public void tick(Player player) {
-        if(player.level().isClientSide){
-            if(isWorking) {
-                if(!WorkingMusicPlayer.isRecordPlaying()) {
+        if (player.level().isClientSide) {
+            if (isWorking) {
+                if (!WorkingMusicPlayer.isRecordPlaying()) {
                     WorkingMusicPlayer.playWorkingMusic();
                 }
             } else {
                 WorkingMusicPlayer.stopMusic();
             }
-            if(DataManager.inRaid.get(player)){
+            if (DataManager.inRaid.get(player)) {
                 RaidMusicPlayer.playRaidMusic();
             } else {
                 RaidMusicPlayer.stopMusic();
             }
 
             //土豆加农炮逻辑
-            if(player.getMainHandItem().is(AllItems.POTATO_CANNON.get())){
-                if(!player.getCooldowns().isOnCooldown(AllItems.POTATO_CANNON.get())){
+            if (player.getMainHandItem().is(AllItems.POTATO_CANNON.get())) {
+                if (!player.getCooldowns().isOnCooldown(AllItems.POTATO_CANNON.get())) {
                     ClientEngine.getInstance().renderEngine.zoomIn();
                 } else {
                     ClientEngine.getInstance().renderEngine.zoomOut(40);
                 }
             }
 
+            //移除过远的无效路标点
+            IXaeroMinimapClientPlayNetHandler clientLevel = (IXaeroMinimapClientPlayNetHandler) ((LocalPlayer) player).connection;
+            XaeroMinimapSession session = clientLevel.getXaero_minimapSession();
+            WaypointsManager waypointsManager = session.getWaypointsManager();
+            String name = SkilletManCoreMod.getInfoKey("no_owner_shop");
+            List<Waypoint> list = waypointsManager.getWaypoints().getList();
+            int beforeSize = list.size();
+            list.removeIf((waypoint -> {
+                Vec3 waypointPos = new Vec3(waypoint.getX(), waypoint.getY(), waypoint.getZ());
+                return  waypoint.getName().equals(name) && player.position().distanceTo(waypointPos) > 200;
+            }));
+            if (list.size() != beforeSize) {
+                try {
+                    XaeroMinimap.instance.getSettings().saveWaypoints(waypointsManager.getCurrentWorld());
+                } catch (IOException ignored) {
+                }
+            }
+
         } else {
             ServerPlayer serverPlayer = (ServerPlayer) player;
-            if(tickAfterBossDieLeft > 0) {
+            if (tickAfterBossDieLeft > 0) {
                 tickAfterBossDieLeft--;
-                if(tickAfterBossDieLeft % 40 == 0) {
+                if (tickAfterBossDieLeft % 40 == 0) {
                     player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 0.8F, 0.5F + tickAfterBossDieLeft / 400.0F);
                     player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BELL_BLOCK, SoundSource.BLOCKS, 0.8F, 0.5F + tickAfterBossDieLeft / 400.0F);
                 }
                 player.displayClientMessage(SkilletManCoreMod.getInfo("second_after_boss_die_left", tickAfterBossDieLeft / 20).withStyle(ChatFormatting.BOLD, ChatFormatting.RED), true);
-                if(tickAfterBossDieLeft == 0) {
-                    if(player.getServer() != null && player.level().dimension() != Level.OVERWORLD){
+                if (tickAfterBossDieLeft == 0) {
+                    if (player.getServer() != null && player.level().dimension() != Level.OVERWORLD) {
                         ServerLevel overworld = player.getServer().getLevel(Level.OVERWORLD);
-                        if(overworld != null){
+                        if (overworld != null) {
                             serverPlayer.changeDimension(overworld, new SMCTeleporter(overworld.getSharedSpawnPos()));
                             serverPlayer.setRespawnPosition(Level.OVERWORLD, overworld.getSharedSpawnPos(), 0.0F, false, true);
                             SMCPlayer.addMoney(2000000, serverPlayer);
@@ -737,29 +771,29 @@ public class SMCPlayer {
                 }
             }
 
-            if(DataManager.inRaid.get(player) && DummyEntityManager.getDummyEntities(((ServerLevel) player.level())).isEmpty()){
+            if (DataManager.inRaid.get(player) && DummyEntityManager.getDummyEntities(((ServerLevel) player.level())).isEmpty()) {
                 DataManager.inRaid.put(player, false);
             }
 
             if (this.currentTalkingEntity != null && this.currentTalkingEntity.isAlive()) {
                 this.currentTalkingEntity.getLookControl().setLookAt(player);
                 this.currentTalkingEntity.getNavigation().stop();
-                if(this.currentTalkingEntity.distanceTo(player) > 8) {
+                if (this.currentTalkingEntity.distanceTo(player) > 8) {
                     this.currentTalkingEntity = null;
                 }
             }
 
-            if(player.tickCount % 20 == 0) {
+            if (player.tickCount % 20 == 0) {
                 //1s抽出一个
-                if(this.armorGachaingCount > 0) {
+                if (this.armorGachaingCount > 0) {
                     this.armorGachaingCount--;
                     ItemStack itemStack = ArmorGachaSystem.pull(serverPlayer);
                     CustomColorItemEntity entity = ItemUtil.addItemEntity(player, itemStack);
-                    if(ArmorGachaSystem.STAR5_LIST.stream().anyMatch(itemStackInPool -> itemStackInPool.is(itemStack.getItem()))) {
+                    if (ArmorGachaSystem.STAR5_LIST.stream().anyMatch(itemStackInPool -> itemStackInPool.is(itemStack.getItem()))) {
                         entity.setTeamColor(0xfff66d);
                         entity.setGlowingTag(true);
                         playGoldEffect(serverPlayer, itemStack);
-                    } else if(ArmorGachaSystem.STAR4_LIST.stream().anyMatch(itemStackInPool -> itemStackInPool.is(itemStack.getItem()))) {
+                    } else if (ArmorGachaSystem.STAR4_LIST.stream().anyMatch(itemStackInPool -> itemStackInPool.is(itemStack.getItem()))) {
                         entity.setTeamColor(0xc000ff);
                         entity.setGlowingTag(true);
                         playRareEffect((ServerPlayer) player, itemStack);
@@ -767,15 +801,15 @@ public class SMCPlayer {
                         playCommonEffect((ServerPlayer) player);
                     }
                 }
-                if(this.weaponGachaingCount > 0) {
+                if (this.weaponGachaingCount > 0) {
                     this.weaponGachaingCount--;
                     ItemStack itemStack = WeaponGachaSystem.pull(serverPlayer);
                     CustomColorItemEntity entity = ItemUtil.addItemEntity(player, itemStack);
-                    if(WeaponGachaSystem.STAR5_LIST.stream().anyMatch(itemStackInPool -> itemStackInPool.is(itemStack.getItem()))) {
+                    if (WeaponGachaSystem.STAR5_LIST.stream().anyMatch(itemStackInPool -> itemStackInPool.is(itemStack.getItem()))) {
                         entity.setTeamColor(0xfff66d);
                         entity.setGlowingTag(true);
                         playGoldEffect(serverPlayer, itemStack);
-                    } else if(WeaponGachaSystem.STAR4_LIST.stream().anyMatch(itemStack1 -> itemStack1.is(itemStack.getItem()))) {
+                    } else if (WeaponGachaSystem.STAR4_LIST.stream().anyMatch(itemStack1 -> itemStack1.is(itemStack.getItem()))) {
                         entity.setTeamColor(0xc000ff);
                         entity.setGlowingTag(true);
                         playRareEffect(serverPlayer, itemStack);
@@ -783,12 +817,12 @@ public class SMCPlayer {
                         playCommonEffect(serverPlayer);
                     }
                 }
-                if(this.skillBookGachaingCount > 0) {
+                if (this.skillBookGachaingCount > 0) {
                     this.skillBookGachaingCount--;
                     ItemStack itemStack = SkillBookGachaSystem.pull((serverPlayer));
                     CustomColorItemEntity entity = ItemUtil.addItemEntity(player, itemStack);
                     Skill skill = SkillBookItem.getContainSkill(itemStack);
-                    if(skill != null && skill.getRegistryName().getNamespace().equals(WeaponsOfMinecraft.MODID)) {
+                    if (skill != null && skill.getRegistryName().getNamespace().equals(WeaponsOfMinecraft.MODID)) {
                         entity.setTeamColor(0xc000ff);
                         entity.setGlowingTag(true);
                         playRareEffect(serverPlayer, itemStack);
@@ -800,14 +834,16 @@ public class SMCPlayer {
 
         }
     }
+
     private void playCommonEffect(ServerPlayer player) {
         SMCAdvancementData.finishAdvancement("first_gacha", player);
-        if(!DataManager.firstGachaGot.get(player)) {
+        if (!DataManager.firstGachaGot.get(player)) {
             DataManager.firstGachaGot.put(player, true);
         }
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 0.5F, 2.0F);
         player.serverLevel().sendParticles(ParticleTypes.TOTEM_OF_UNDYING, player.getX(), player.getY(), player.getZ(), 10, 1.0, 1.0, 1.0, 0.2);
     }
+
     private void playRareEffect(ServerPlayer player, ItemStack itemStack) {
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 2.0F, 2.0F);
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 2.0F, 2.0F);

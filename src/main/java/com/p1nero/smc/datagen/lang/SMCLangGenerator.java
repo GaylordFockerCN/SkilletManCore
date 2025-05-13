@@ -34,6 +34,8 @@ public class SMCLangGenerator extends SMCLangProvider {
             this.add("screen_tips.smc.tip" + i, ClientForgeEvents.TIPS.get(i));
         }
 
+        this.addInfo("no_owner_shop", "无主的店铺");
+        this.addInfo("my_new_shop", "我的新店铺");
         this.addInfo("error_when_try_to_upgrade_shop", "§c升级店铺外观时出现意外！");
         this.addInfo("second_after_boss_die_left", "将在 %d 秒后返回主世界");
         this.addInfo("need_shift_see_combo", "按下shift以查看武器连招");
@@ -103,7 +105,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("foods_need_cut", "§6该食材需砧板加工处理！");
         this.addInfo("raid_no_work", "§c§l世界某处正在遭遇袭击！紧急下班！");
         this.addInfo("find_villager_first", "在村庄找到店铺并领取新手福利");
-        this.addInfo("find_villager_first2", "最好找个好位置，让客人能找到你");
+        this.addInfo("find_villager_first2", "可在小地图查看空店铺，建议找较为平缓的位置");
         this.addInfo("find_villager_first3", "本包不需要撸树挖矿，不要乱跑哦");
         this.addInfo("find_villager_gacha", "进行任意 武器/盔甲/技能书 祈愿");
         this.addInfo("find_villager_gacha2", "最好把村民框起来，方便再次祈愿");

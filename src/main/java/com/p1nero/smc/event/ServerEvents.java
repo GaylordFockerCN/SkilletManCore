@@ -1,5 +1,6 @@
 package com.p1nero.smc.event;
 
+import com.mojang.datafixers.util.Pair;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.archive.SMCArchiveManager;
 import com.p1nero.smc.entity.custom.npc.start_npc.StartNPC;
@@ -9,19 +10,26 @@ import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.level.BaseCommandBlock;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.WorldOptions;
+import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
+import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.level.LevelEvent;
@@ -34,7 +42,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import vectorwing.farmersdelight.FarmersDelight;
+import vectorwing.farmersdelight.common.Configuration;
+import vectorwing.farmersdelight.common.registry.ModBlocks;
+import vectorwing.farmersdelight.common.world.VillageStructures;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -56,6 +69,7 @@ public class ServerEvents {
     @SubscribeEvent
     public static void onServerAboutToStart(ServerAboutToStartEvent event){
         StartNPC.initIngredients();
+        addNewVillageBuilding(event);
         //服务端读取，客户端从Mixin读
         if(event.getServer().isDedicatedServer()){
             if(SMCBiomeProvider.worldName.isEmpty()){
@@ -65,6 +79,18 @@ public class ServerEvents {
                 SMCArchiveManager.read(levelName);
             }
         }
+    }
+
+    public static void addNewVillageBuilding(final ServerAboutToStartEvent event) {
+        Registry<StructureTemplatePool> templatePools = event.getServer().registryAccess().registry(Registries.TEMPLATE_POOL).get();
+        Registry<StructureProcessorList> processorLists = event.getServer().registryAccess().registry(Registries.PROCESSOR_LIST).get();
+
+        VillageStructures.addBuildingToPool(templatePools, processorLists, new ResourceLocation("minecraft:village/plains/houses"), SkilletManCoreMod.MOD_ID + ":village/plains/houses/plains_butcher_shop_lv1", 10);
+        VillageStructures.addBuildingToPool(templatePools, processorLists, new ResourceLocation("minecraft:village/snowy/houses"), SkilletManCoreMod.MOD_ID + ":village/houses/snowy_butcher_shop_lv1", 10);
+        VillageStructures.addBuildingToPool(templatePools, processorLists, new ResourceLocation("minecraft:village/savanna/houses"), SkilletManCoreMod.MOD_ID + ":village/houses/savanna_butcher_shop_lv1", 10);
+        VillageStructures.addBuildingToPool(templatePools, processorLists, new ResourceLocation("minecraft:village/desert/houses"), SkilletManCoreMod.MOD_ID + ":village/houses/desert_butcher_shop_lv1", 10);
+        VillageStructures.addBuildingToPool(templatePools, processorLists, new ResourceLocation("minecraft:village/taiga/houses"), SkilletManCoreMod.MOD_ID + ":village/houses/taiga_butcher_shop_lv1", 10);
+
     }
 
     /**
