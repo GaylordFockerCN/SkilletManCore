@@ -132,6 +132,10 @@ dependencies {
         jarJar.ranged(it, "[1.2.0,)")
     }
 
+    //TODO 临时导入！
+    implementation fg.deobf("curse.maven:panoramica-426082:4019292")
+    implementation fg.deobf("curse.maven:copycats-968398:6462507")
+
 //    implementation fg.deobf("curse.maven:polymorph-388800:6450982")
 
     //史诗战斗
@@ -167,9 +171,6 @@ dependencies {
     implementation fg.deobf("curse.maven:create-328085:6323270")
     implementation fg.deobf("curse.maven:create-connected-947914:6401676")
 
-    implementation fg.deobf("curse.maven:copycats-968398:6462507")//TODO runData补全用的，记得丢之
-
-
     implementation fg.deobf("curse.maven:kaleidoscope-doll-1233277:6373592")
 
     implementation fg.deobf("curse.maven:hungteens-lib-794622:5782587")
@@ -186,6 +187,9 @@ dependencies {
     //背包
     implementation fg.deobf("curse.maven:sophisticated-core-618298:6266807")
     implementation fg.deobf("curse.maven:sophisticated-backpacks-422301:6246607")
+    implementation fg.deobf("curse.maven:inventory-profiles-next-495267:6095062")
+    implementation fg.deobf("curse.maven:libipn-679177:5208511")
+    implementation fg.deobf("curse.maven:kotlin-for-forge-351264:5402061")
 
     implementation fg.deobf("curse.maven:yungs-better-end-island-901344:5193815")
     implementation fg.deobf("curse.maven:yungs-api-421850:5769971")

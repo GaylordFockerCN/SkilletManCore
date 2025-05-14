@@ -55,7 +55,7 @@ public class WanderingTraderDialogBuilder extends VillagerDialogScreenHandler.Vi
             SMCRaidManager.startRandomRaid(serverPlayer);
         }
         if(interactId == 2) {
-            SMCPlayer.addMoney(200 * (1 + smcPlayer.getLevel()), serverPlayer);
+            SMCPlayer.addMoney((int) (200 * smcPlayer.getLevelMoneyRate()), serverPlayer);
             self.setHealth(0);
             smcPlayer.consumeMorality();
             smcPlayer.consumeMorality();

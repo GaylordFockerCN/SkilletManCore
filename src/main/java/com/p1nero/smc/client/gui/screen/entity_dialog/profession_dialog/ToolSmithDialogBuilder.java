@@ -40,7 +40,7 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
         super.handle(serverPlayer, villager, interactionID);
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         double moneyRate = smcPlayer.getLevelMoneyRate();
-        int moneyBase = (int) (16000 * moneyRate);
+        int moneyBase = (int) (1600 * moneyRate);
         if (interactionID == 1) {
             if (SMCPlayer.hasMoney(serverPlayer, moneyBase, true)) {
                 SMCPlayer.consumeMoney(moneyBase, serverPlayer);
@@ -300,7 +300,7 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
         if (localPlayer != null) {
             SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(localPlayer);
             int playerLevel = smcPlayer.getLevel();
-            int moneyBase = (int) (16000 * smcPlayer.getLevelMoneyRate());
+            int moneyBase = (int) (1600 * smcPlayer.getLevelMoneyRate());
 
             TreeNode root = new TreeNode(answer(0))
                     .addChild(new TreeNode(answer(1), choice(0))

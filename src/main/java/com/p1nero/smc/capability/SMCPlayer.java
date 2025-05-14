@@ -347,6 +347,7 @@ public class SMCPlayer {
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("shop_upgrade", smcPlayer.level), false);
         int nextStageLeft = smcPlayer.getNextStageLeft();
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("next_grade_left", nextStageLeft), false);
+        serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SoundEvents.PLAYER_LEVELUP, SoundSource.BLOCKS, 1.0F, 1.0F);
     }
 
     public int getNextStageLeft() {
@@ -569,7 +570,7 @@ public class SMCPlayer {
     }
 
     public double getLevelMoneyRate() {
-        return 1 + 0.8 * level;
+        return 1 + 0.5 * level;
     }
 
     public boolean isTrialRequired() {

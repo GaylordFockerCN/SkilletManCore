@@ -293,7 +293,7 @@ public class StartNPC extends SMCNpc {
     }
 
     public int getUpgradeShopNeed(){
-        return (int) (400 * Math.pow(5, this.getShopLevel()));
+        return (int) (500 * Math.pow(10, this.getShopLevel()));
     }
 
     @Override
@@ -319,7 +319,7 @@ public class StartNPC extends SMCNpc {
             return;
         }
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(localPlayer);
-        double moneyRate = smcPlayer.getLevelMoneyRate();
+        int moneyRate = (int) smcPlayer.getLevelMoneyRate();
         DialogueComponentBuilder dialogueComponentBuilder = new DialogueComponentBuilder(this);
 
         TreeNode upgrade = null;
@@ -356,36 +356,36 @@ public class StartNPC extends SMCNpc {
 
             TreeNode ticketExchange = new TreeNode(dialogueComponentBuilder.ans(11), dialogueComponentBuilder.opt(16))
                     .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(17))//武器
-                            .addLeaf(dialogueComponentBuilder.opt(18, 160 * moneyRate), (byte) 16)
-                            .addLeaf(dialogueComponentBuilder.opt(19, 1499 * moneyRate), (byte) 17))
+                            .addLeaf(dialogueComponentBuilder.opt(18, (160 * moneyRate)), (byte) 16)
+                            .addLeaf(dialogueComponentBuilder.opt(19, (1499 * moneyRate)), (byte) 17))
                     .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(24))//盔甲
-                            .addLeaf(dialogueComponentBuilder.opt(18, 160 * moneyRate), (byte) 26)
-                            .addLeaf(dialogueComponentBuilder.opt(19, 1499 * moneyRate), (byte) 27))
+                            .addLeaf(dialogueComponentBuilder.opt(18, (160 * moneyRate)), (byte) 26)
+                            .addLeaf(dialogueComponentBuilder.opt(19, (1499 * moneyRate)), (byte) 27))
                     .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(20))
-                            .addLeaf(dialogueComponentBuilder.opt(18, 1600 * moneyRate), (byte) 18)
-                            .addLeaf(dialogueComponentBuilder.opt(19, 14999 * moneyRate), (byte) 19))
+                            .addLeaf(dialogueComponentBuilder.opt(18, (1600 * moneyRate)), (byte) 18)
+                            .addLeaf(dialogueComponentBuilder.opt(19, (14999 * moneyRate)), (byte) 19))
                     .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(21))
-                            .addLeaf(dialogueComponentBuilder.opt(18, 16000 * moneyRate), (byte) 20)
-                            .addLeaf(dialogueComponentBuilder.opt(19, 160000 * moneyRate), (byte) 21))
+                            .addLeaf(dialogueComponentBuilder.opt(18, (16000 * moneyRate)), (byte) 20)
+                            .addLeaf(dialogueComponentBuilder.opt(19, (160000 * moneyRate)), (byte) 21))
                     .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(22))
-                            .addLeaf(dialogueComponentBuilder.opt(18, 1600 * moneyRate), (byte) 22)
-                            .addLeaf(dialogueComponentBuilder.opt(19, 16000 * moneyRate), (byte) 23))
+                            .addLeaf(dialogueComponentBuilder.opt(18, (1600 * moneyRate)), (byte) 22)
+                            .addLeaf(dialogueComponentBuilder.opt(19, (16000 * moneyRate)), (byte) 23))
                     .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(23))
-                            .addLeaf(dialogueComponentBuilder.opt(18, 1600 * moneyRate), (byte) 24)
-                            .addLeaf(dialogueComponentBuilder.opt(19, 16000 * moneyRate), (byte) 25));
+                            .addLeaf(dialogueComponentBuilder.opt(18, (1600 * moneyRate)), (byte) 24)
+                            .addLeaf(dialogueComponentBuilder.opt(19, (16000 * moneyRate)), (byte) 25));
 
 
             TreeNode foodBuyer = new TreeNode(dialogueComponentBuilder.ans(10), dialogueComponentBuilder.opt(11))
-                    .addLeaf(dialogueComponentBuilder.opt(12), (byte) 12)
-                    .addLeaf(dialogueComponentBuilder.opt(13), (byte) 13);
+                    .addLeaf(dialogueComponentBuilder.opt(12, (100 * moneyRate)), (byte) 12)
+                    .addLeaf(dialogueComponentBuilder.opt(13, (100 * moneyRate)), (byte) 13);
             int stage = senderData.getInt("player_stage");
 
             if (stage >= 1) {
-                foodBuyer.addLeaf(dialogueComponentBuilder.opt(14), (byte) 14);
+                foodBuyer.addLeaf(dialogueComponentBuilder.opt(14, (2000 * moneyRate)), (byte) 14);
             }
 
             if (stage >= 2) {
-                foodBuyer.addLeaf(dialogueComponentBuilder.opt(15), (byte) 15);
+                foodBuyer.addLeaf(dialogueComponentBuilder.opt(15, (5000 * moneyRate)), (byte) 15);
             }
 
             TreeNode root = new TreeNode(dialogueComponentBuilder.ans(1));

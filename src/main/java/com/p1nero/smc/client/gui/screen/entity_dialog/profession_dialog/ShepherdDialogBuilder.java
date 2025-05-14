@@ -49,7 +49,7 @@ public class ShepherdDialogBuilder extends VillagerDialogScreenHandler.VillagerD
         if (interactionID == 1) {
             int petTicketCnt = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.PET_RAFFLE_TICKET.asItem(), 1);
             if (petTicketCnt == 0) {
-                if (ItemUtil.tryAddRandomItem(serverPlayer, List.of(Items.LEAD.getDefaultInstance()), (int)(16000 * moneyRate), 1)) {
+                if (ItemUtil.tryAddRandomItem(serverPlayer, List.of(Items.LEAD.getDefaultInstance()), (int)(5000 * moneyRate), 1)) {
                     getPet(serverPlayer, villager);
                 }
             } else {
@@ -116,7 +116,7 @@ public class ShepherdDialogBuilder extends VillagerDialogScreenHandler.VillagerD
             int petTicketCnt = localPlayer.getInventory().countItem(SMCRegistrateItems.DOLL_RAFFLE_TICKET.asItem());
             int dollTicketCnt = localPlayer.getInventory().countItem(SMCRegistrateItems.PET_RAFFLE_TICKET.asItem());
             if (petTicketCnt < 1) {
-                root.addChild(new TreeNode(answer(1, (int)(16000 * moneyRate)), choice(0))
+                root.addChild(new TreeNode(answer(1, (int)(5000 * moneyRate)), choice(0))
                         .addLeaf(choice(2), (byte) 1)
                         .addLeaf(choice(3)));
             } else {

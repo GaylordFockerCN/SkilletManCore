@@ -110,6 +110,7 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement noYourPower = registerAdvancement(root, "no_your_power", FrameType.TASK, Blocks.BARRIER);
             Advancement fakeSleep = registerAdvancement(root, "fake_sleep", FrameType.TASK, Items.RED_BED);
             Advancement tryPush = registerAdvancement(root, "try_push", FrameType.TASK, Blocks.PISTON);
+            Advancement upgradeAir = registerAdvancement(root, "upgrade_air", FrameType.TASK, Items.GLASS_BOTTLE, true, true, true);
             Advancement selfEat = registerAdvancement(root, "self_eat", FrameType.TASK, Items.BREAD);
             Advancement tooManyMouth = registerAdvancement(root, "too_many_mouth", FrameType.TASK, ModItems.DOLL_ICON.get());
             Advancement makeCustomerCry = registerAdvancement(root, "got_fox", FrameType.TASK, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_45"))));

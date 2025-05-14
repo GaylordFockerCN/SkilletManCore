@@ -17,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class CookGuideBookItem extends Item {
+public class CookGuideBookItem extends SimpleDescriptionFoilItem {
     public CookGuideBookItem(Properties properties) {
         super(properties);
     }

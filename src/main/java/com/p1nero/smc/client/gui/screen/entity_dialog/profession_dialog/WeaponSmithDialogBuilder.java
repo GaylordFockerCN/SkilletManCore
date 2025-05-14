@@ -7,6 +7,7 @@ import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
 import com.p1nero.smc.client.gui.screen.entity_dialog.VillagerDialogScreenHandler;
 import com.p1nero.smc.client.sound.SMCSounds;
+import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
@@ -76,6 +77,9 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
             int need = (int) (Math.pow(upgradeRate, (level)) * 1600);
             if (SMCPlayer.hasMoney(serverPlayer, need, true)) {
                 SMCPlayer.consumeMoney(need, serverPlayer);
+                if(itemStack.isEmpty()){
+                    SMCAdvancementData.finishAdvancement("upgrade_air", serverPlayer);
+                }
                 itemStack.getOrCreateTag().putInt(SkilletManCoreMod.WEAPON_LEVEL_KEY, level + 1);
             }
         }
@@ -90,6 +94,10 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
         villager.setTradingPlayer(serverPlayer);
         MerchantOffers merchantOffers = new MerchantOffers();
 
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
+                new ItemStack(WOMItems.ENDER_BLASTER.get(), 1),
+                142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
                 new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
                 new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
@@ -124,10 +132,6 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
                 new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
                 new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
                 new ItemStack(WOMItems.ANTITHEUS.get(), 1),
-                142857, 0, 0));
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
-                new ItemStack(WOMItems.ENDER_BLASTER.get(), 1),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
                 new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),

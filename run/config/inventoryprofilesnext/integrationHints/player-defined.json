@@ -1,0 +1,15 @@
+{
+    "net.minecraft.client.gui.screens.inventory.InventoryScreen": {
+        "buttonHints": {
+            "PROFILE_SELECTOR": {
+                "bottom": 27
+            },
+            "SHOW_EDITOR": {
+                "top": 210
+            },
+            "SETTINGS": {
+                "top": 212
+            }
+        }
+    }
+}

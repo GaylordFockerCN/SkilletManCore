@@ -95,7 +95,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("already_has_owner", "§c您不是本店铺的主人！");
         this.addInfo("please_in_battle_mode", "§c按 §e[%s§e] §c键打开战斗模式！！");
         this.addInfo("no_enough_money", "§c余额不足！！");
-        this.addInfo("shop_upgrade", "§a店铺已升至 %d §a级！");
+        this.addInfo("shop_upgrade", "§a声望等级已升至 %d §a级！");
 
         this.addInfo("next_grade_left", "§6距下一游戏阶段还差 %d §6级！");
         this.addInfo("unlock_stage2_info", "村民订购解锁 §a[海鲜大礼包]§r！ 现在可以使用全部武器了！");
@@ -107,7 +107,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("raid_no_work", "§c§l世界某处正在遭遇袭击！紧急下班！");
         this.addInfo("find_villager_first", "在村庄找到店铺并领取新手福利");
         this.addInfo("find_villager_first2", "可在小地图查看附近的无主的店铺");
-        this.addInfo("find_villager_first3", "建议找较为平缓的位置，方便客户靠近");
+        this.addInfo("find_villager_first3", "建议找较为低平的位置，方便客户靠近");
         this.addInfo("find_villager_first4", "本包不需要撸树挖矿，不要乱跑哦");
         this.addInfo("find_villager_gacha", "进行任意 武器/盔甲/技能书 祈愿");
         this.addInfo("find_villager_gacha2", "最好把村民框起来，方便再次祈愿");
@@ -221,20 +221,6 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("dodge_master2", "闪避大师2", "完美闪避100次");
         this.addAdvancement("dodge_master3", "闪避大师3", "完美闪避1000次");
         this.addAdvancement("parry_master", "招架大师", "完美招架10次");
-        this.addAdvancement("parry_master2", "招架大师2", "完美招架100次");
-        this.addAdvancement("parry_master3", "招架大师3", "完美招架1000次");
-
-        this.addAdvancement("hijack_customer", "拐走！", "抢走其他玩家的顾客");
-        this.addAdvancement("no_your_power", "忠于平底锅", "企图使用其他武器的力量");
-        this.addAdvancement("fake_sleep", "睡觉时间到！", "企图唤醒你的员工，但你永远无法唤醒一个正在装睡的人。");
-        this.addAdvancement("try_push", "碰碰车", "企图推开核心NPC，太可恶了！");
-        this.addAdvancement("no_money", "亿万负翁", "钱达到负数（到底是怎么做到的。。。）");
-        this.addAdvancement("self_eat", "自产自销", "吃下自己做的食物");
-        this.addAdvancement("too_many_mouth", "工伤请求", "接待话很多的村民");
-        this.addAdvancement("pre_cook", "预制菜", "在大晚上的做菜卖给谁呢？");
-        this.addAdvancement("dog_no_eat", "狗都不吃", "企图给狗吃做坏的食材。");
-
-        this.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get(), "烹饪宝典");
         CookGuideBookItem.addTranslation(this);
         this.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get(), "论机械动力与料理乐事相结合（新手向）");
         CreateCookGuideBookItem.addTranslation(this);
@@ -307,7 +293,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialogChoice(SMCEntities.START_NPC, 0, "入职 §a花费 %d 绿宝石");
         this.addDialogChoice(SMCEntities.START_NPC, 1, "雇佣 §a花费 %d 绿宝石");
         this.addDialogChoice(SMCEntities.START_NPC, 2, "告辞");
-        this.addDialogChoice(SMCEntities.START_NPC, 3, "领取新手福利");
+        this.addDialogChoice(SMCEntities.START_NPC, 3, "§6领取新手福利");
         this.addDialogChoice(SMCEntities.START_NPC, 4, "§a新手帮助");
         this.addDialogChoice(SMCEntities.START_NPC, 5, "领取全部收入");
         this.addDialogChoice(SMCEntities.START_NPC, 6, "升级店铺 §a花费 %d 绿宝石");
@@ -317,10 +303,10 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialogChoice(SMCEntities.START_NPC, 10, "醒醒！Go work！");
 
         this.addDialogChoice(SMCEntities.START_NPC, 11, "订购食材");
-        this.addDialogChoice(SMCEntities.START_NPC, 12, "订购 主食大礼包 §a花费 100 绿宝石");
-        this.addDialogChoice(SMCEntities.START_NPC, 13, "订购 果蔬大礼包 §a花费 100 绿宝石");
-        this.addDialogChoice(SMCEntities.START_NPC, 14, "订购 肉类大礼包 §a花费 2000 绿宝石");
-        this.addDialogChoice(SMCEntities.START_NPC, 15, "订购 海鲜大礼包 §a花费 5000 绿宝石");
+        this.addDialogChoice(SMCEntities.START_NPC, 12, "订购 主食大礼包 §a花费 %d §a绿宝石");
+        this.addDialogChoice(SMCEntities.START_NPC, 13, "订购 果蔬大礼包 §a花费 %d §a绿宝石");
+        this.addDialogChoice(SMCEntities.START_NPC, 14, "订购 肉类大礼包 §a花费 %d §a绿宝石");
+        this.addDialogChoice(SMCEntities.START_NPC, 15, "订购 海鲜大礼包 §a花费 %d §a绿宝石");
 
         this.addDialogChoice(SMCEntities.START_NPC, 16, "兑换抽奖券");
         this.addDialogChoice(SMCEntities.START_NPC, 17, "武器抽奖券");
@@ -334,7 +320,7 @@ public class SMCLangGenerator extends SMCLangProvider {
 
         this.addDialogChoice(SMCEntities.START_NPC, 25, "§a修缮外观");
 
-        this.addDialog(SMCEntities.START_NPC, 1, "今天要做些什么呢？");
+        this.addDialog(SMCEntities.START_NPC, 1, "今天要做些什么呢？（觉得我占位置可以把我推开点哦）");
         this.addDialog(SMCEntities.START_NPC, 2, "本店亏损已久，承蒙大侠相助！");
         this.addDialog(SMCEntities.START_NPC, 3, "§a已全部取出！");
         this.addDialog(SMCEntities.START_NPC, 4, "§a已升级！");
