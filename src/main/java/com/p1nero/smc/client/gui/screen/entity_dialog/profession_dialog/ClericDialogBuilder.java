@@ -1,6 +1,7 @@
 package com.p1nero.smc.client.gui.screen.entity_dialog.profession_dialog;
 
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.TreeNode;

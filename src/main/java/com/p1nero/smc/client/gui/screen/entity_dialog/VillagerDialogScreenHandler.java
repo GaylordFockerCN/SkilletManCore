@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraftforge.api.distmarker.Dist;
@@ -46,7 +47,7 @@ public class VillagerDialogScreenHandler {
         LinkListStreamDialogueScreenBuilder screenBuilder;
         VillagerDialogBuilder villagerDialogBuilder = PROFESSION_VILLAGER_DIALOG_BUILDER_MAP.get(villager.getVillagerData().getProfession());
         if(villagerDialogBuilder == null) {
-            screenBuilder = new LinkListStreamDialogueScreenBuilder(villager);
+            screenBuilder = new LinkListStreamDialogueScreenBuilder(EntityType.VILLAGER);//防止无脑村民丢对话
             buildDefaultDialog(screenBuilder);
         } else {
             if(villager.isBaby()) {

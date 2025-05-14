@@ -34,6 +34,7 @@ public class SMCLangGenerator extends SMCLangProvider {
             this.add("screen_tips.smc.tip" + i, ClientForgeEvents.TIPS.get(i));
         }
 
+        this.addInfo("weapon_level_max", "武器已达最大等级！无法继续提升！");
         this.addInfo("no_owner_shop", "无主的店铺");
         this.addInfo("my_new_shop", "我的新店铺");
         this.addInfo("error_when_try_to_upgrade_shop", "§c升级店铺外观时出现意外！");
@@ -105,8 +106,9 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("foods_need_cut", "§6该食材需砧板加工处理！");
         this.addInfo("raid_no_work", "§c§l世界某处正在遭遇袭击！紧急下班！");
         this.addInfo("find_villager_first", "在村庄找到店铺并领取新手福利");
-        this.addInfo("find_villager_first2", "可在小地图查看空店铺，建议找较为平缓的位置");
-        this.addInfo("find_villager_first3", "本包不需要撸树挖矿，不要乱跑哦");
+        this.addInfo("find_villager_first2", "可在小地图查看附近的无主的店铺");
+        this.addInfo("find_villager_first3", "建议找较为平缓的位置，方便客户靠近");
+        this.addInfo("find_villager_first4", "本包不需要撸树挖矿，不要乱跑哦");
         this.addInfo("find_villager_gacha", "进行任意 武器/盔甲/技能书 祈愿");
         this.addInfo("find_villager_gacha2", "最好把村民框起来，方便再次祈愿");
         this.addInfo("find_villager_gacha3", "建议使用§a[不会乱动的村民刷怪蛋]§r哦");
@@ -279,7 +281,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add(SMCRegistrateItems.CREATE_RAFFLE.get(), "机械动力通票");
         this.addItemUsageInfo(SMCRegistrateItems.CREATE_RAFFLE.asItem(), "可以在§6机械师§r处兑换机械动力材料，可交易内容将随等级提高而提高。找不到机械师时可以尝试 在无业村民附近摆放§a[锻造台]§r 或 通过对话 转化普通村民。");
         this.add(SMCRegistrateItems.REDSTONE_RAFFLE.get(), "雷石东通票");
-        this.addItemUsageInfo(SMCRegistrateItems.REDSTONE_RAFFLE.asItem(), "可以在§6机械师§r处兑换来自原版的材料，找不到机械师时可以尝试 在无业村民附近摆放§a[锻造台]§r 或 通过对话 转化普通村民。");
+        this.addItemUsageInfo(SMCRegistrateItems.REDSTONE_RAFFLE.asItem(), "可以在§6机械师§r处兑换来自原版的材料，包括原木，石头，铁等。找不到机械师时可以尝试 在无业村民附近摆放§a[锻造台]§r 或 通过对话 转化普通村民。");
 
         this.add(SMCRegistrateItems.END_TELEPORTER.get(), "末地传送石");
         this.addItemUsageInfo(SMCRegistrateItems.END_TELEPORTER.asItem(), "击杀牧师获得，潜行时右键以传送至末地主岛。为何牧师身上会有这玩意儿？");
@@ -330,7 +332,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialogChoice(SMCEntities.START_NPC, 23, "玩偶抽奖券");
         this.addDialogChoice(SMCEntities.START_NPC, 24, "盔甲抽奖券");
 
-        this.addDialogChoice(SMCEntities.START_NPC, 25, "§f修缮外观§r %d绿宝石");
+        this.addDialogChoice(SMCEntities.START_NPC, 25, "§a修缮外观");
 
         this.addDialog(SMCEntities.START_NPC, 1, "今天要做些什么呢？");
         this.addDialog(SMCEntities.START_NPC, 2, "本店亏损已久，承蒙大侠相助！");
@@ -345,6 +347,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialog(SMCEntities.START_NPC, 10, "这是目前可以订购的食材大礼包的列表，本列表将随着游戏阶段的提升而增加。");
         this.addDialog(SMCEntities.START_NPC, 11, "要兑换哪种抽奖券呢？");
         this.addDialog(SMCEntities.START_NPC, 12, "兑换几张呢？");
+        this.addDialog(SMCEntities.START_NPC, 13, "注意，升级会强行覆盖周边建筑，更高的升级可能重置整个建筑，升级前请先确定建筑内或周边无贵重物品！本次修缮花费 %d ，确定升级吗？");
 
         this.add(SMCEntities.HE_SHEN.get(), "一位路过的神明");
         this.addDialog(SMCEntities.HE_SHEN, 0, "年轻人，你丢的，是这把金平底锅呢？还是这把钻石平底锅呢？还是这把普通的平底锅呢？");

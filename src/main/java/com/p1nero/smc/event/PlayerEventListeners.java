@@ -20,6 +20,8 @@ import com.p1nero.smc.network.packet.clientbound.SyncUuidPacket;
 import com.p1nero.smc.util.BookManager;
 import com.p1nero.smc.util.ItemUtil;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
+import com.teamtea.eclipticseasons.api.constant.solar.SolarTerm;
+import com.teamtea.eclipticseasons.api.util.EclipticUtil;
 import com.teamtea.eclipticseasons.common.registry.ItemRegistry;
 import dev.xkmc.cuisinedelight.content.item.CuisineSkilletItem;
 import dev.xkmc.cuisinedelight.content.item.SpatulaItem;
@@ -33,6 +35,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
+import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -103,6 +106,8 @@ public class PlayerEventListeners {
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
+            SolarTerm solarTerm = EclipticUtil.getNowSolarTerm(serverPlayer.serverLevel());
+            serverPlayer.connection.send(new ClientboundSetTitleTextPacket(solarTerm.getTranslation().withStyle(solarTerm.getSeason().getColor())));//显示当天节气
             //同步客户端数据
             PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new SyncArchivePacket(SMCArchiveManager.toNbt()), serverPlayer);
             SMCCapabilityProvider.syncPlayerDataToClient(serverPlayer);

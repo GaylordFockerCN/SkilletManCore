@@ -69,7 +69,7 @@ public class ServerEvents {
     @SubscribeEvent
     public static void onServerAboutToStart(ServerAboutToStartEvent event){
         StartNPC.initIngredients();
-        addNewVillageBuilding(event);
+//        addNewVillageBuilding(event);
         //服务端读取，客户端从Mixin读
         if(event.getServer().isDedicatedServer()){
             if(SMCBiomeProvider.worldName.isEmpty()){
@@ -81,15 +81,19 @@ public class ServerEvents {
         }
     }
 
+    /**
+     * 换用lithostitched
+     */
+    @Deprecated
     public static void addNewVillageBuilding(final ServerAboutToStartEvent event) {
         Registry<StructureTemplatePool> templatePools = event.getServer().registryAccess().registry(Registries.TEMPLATE_POOL).get();
         Registry<StructureProcessorList> processorLists = event.getServer().registryAccess().registry(Registries.PROCESSOR_LIST).get();
 
-        VillageStructures.addBuildingToPool(templatePools, processorLists, new ResourceLocation("minecraft:village/plains/houses"), SkilletManCoreMod.MOD_ID + ":village/plains/houses/plains_butcher_shop_lv1", 10);
-        VillageStructures.addBuildingToPool(templatePools, processorLists, new ResourceLocation("minecraft:village/snowy/houses"), SkilletManCoreMod.MOD_ID + ":village/houses/snowy_butcher_shop_lv1", 10);
-        VillageStructures.addBuildingToPool(templatePools, processorLists, new ResourceLocation("minecraft:village/savanna/houses"), SkilletManCoreMod.MOD_ID + ":village/houses/savanna_butcher_shop_lv1", 10);
-        VillageStructures.addBuildingToPool(templatePools, processorLists, new ResourceLocation("minecraft:village/desert/houses"), SkilletManCoreMod.MOD_ID + ":village/houses/desert_butcher_shop_lv1", 10);
-        VillageStructures.addBuildingToPool(templatePools, processorLists, new ResourceLocation("minecraft:village/taiga/houses"), SkilletManCoreMod.MOD_ID + ":village/houses/taiga_butcher_shop_lv1", 10);
+        VillageStructures.addBuildingToPool(templatePools, processorLists, new ResourceLocation("minecraft:village/plains/houses"), SkilletManCoreMod.MOD_ID + ":village/plains/houses/plains_butcher_shop_lv1", 30);
+        VillageStructures.addBuildingToPool(templatePools, processorLists, new ResourceLocation("minecraft:village/snowy/houses"), SkilletManCoreMod.MOD_ID + ":village/snowy/houses/snowy_butcher_shop_lv1", 20);
+        VillageStructures.addBuildingToPool(templatePools, processorLists, new ResourceLocation("minecraft:village/savanna/houses"), SkilletManCoreMod.MOD_ID + ":village/savanna/houses/savanna_butcher_shop_lv1", 30);
+        VillageStructures.addBuildingToPool(templatePools, processorLists, new ResourceLocation("minecraft:village/desert/houses"), SkilletManCoreMod.MOD_ID + ":village/desert/houses/desert_butcher_shop_lv1", 40);
+        VillageStructures.addBuildingToPool(templatePools, processorLists, new ResourceLocation("minecraft:village/taiga/houses"), SkilletManCoreMod.MOD_ID + ":village/taiga/houses/taiga_butcher_shop_lv1", 20);
 
     }
 

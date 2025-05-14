@@ -19,6 +19,8 @@ import com.p1nero.smc.util.gacha.SkillBookGachaSystem;
 import com.p1nero.smc.util.gacha.WeaponGachaSystem;
 import com.p1nero.smc.worldgen.portal.SMCTeleporter;
 import com.simibubi.create.AllItems;
+import com.teamtea.eclipticseasons.api.constant.solar.SolarTerm;
+import com.teamtea.eclipticseasons.api.util.EclipticUtil;
 import com.yungnickyoung.minecraft.betterendisland.mixin.ServerLevelMixin;
 import dev.xkmc.cuisinedelight.init.registrate.PlateFood;
 import hungteen.htlib.common.world.entity.DummyEntityManager;
@@ -30,6 +32,9 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -476,9 +481,9 @@ public class SMCPlayer {
         return moneyCount;
     }
 
-    public static void consumeMoney(int moneyCount, ServerPlayer serverPlayer) {
+    public static void consumeMoney(double moneyCount, ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
-        smcPlayer.moneyCount -= moneyCount;
+        smcPlayer.moneyCount -= (int) moneyCount;
         if (smcPlayer.moneyCount < 0) {
             SMCAdvancementData.finishAdvancement("no_money", serverPlayer);
         }
@@ -561,6 +566,10 @@ public class SMCPlayer {
 
     public int getLevel() {
         return level;
+    }
+
+    public double getLevelMoneyRate() {
+        return 1 + 0.8 * level;
     }
 
     public boolean isTrialRequired() {
@@ -750,6 +759,12 @@ public class SMCPlayer {
 
         } else {
             ServerPlayer serverPlayer = (ServerPlayer) player;
+
+            if(serverPlayer.serverLevel().getDayTime() % 24000 == 100) {
+                SolarTerm solarTerm = EclipticUtil.getNowSolarTerm(serverPlayer.serverLevel());
+                serverPlayer.connection.send(new ClientboundSetTitleTextPacket(solarTerm.getTranslation().withStyle(solarTerm.getSeason().getColor())));//显示当天节气
+            }
+
             if (tickAfterBossDieLeft > 0) {
                 tickAfterBossDieLeft--;
                 if (tickAfterBossDieLeft % 40 == 0) {

@@ -42,6 +42,7 @@ public interface SMCSpawnComponents {
     List<ResourceKey<ISpawnComponent>> BLAZES = new ArrayList<>();
     List<ResourceKey<ISpawnComponent>> ENDER_MANS = new ArrayList<>();
     ResourceKey<ISpawnComponent> WITHER = create("wither");//突破试炼和袭击都可以用
+    ResourceKey<ISpawnComponent> WITHER2 = create("wither2");//突破试炼和袭击都可以用
     ResourceKey<ISpawnComponent> SUPER_GOLEM_1 = create("super_golem_1");//突破试炼用
     ResourceKey<ISpawnComponent> SUPER_GOLEM_2 = create("super_golem_2");//突破试炼用
 
@@ -168,8 +169,15 @@ public interface SMCSpawnComponents {
                 .entityType(EntityType.WITHER)
                 .placement(positions.getOrThrow(SMCPositionComponents.RAID))
                 .nbt(NBTHelper
-                        .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 200.0))),
-                                NBTHelper.healthTag(200))).build()
+                        .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 50.0))),
+                                NBTHelper.healthTag(50.0F))).build()
+                , ConstantInt.of(1)));
+        context.register(WITHER2, new OnceSpawn(HTSpawnComponents.builder()
+                .entityType(EntityType.WITHER)
+                .placement(positions.getOrThrow(SMCPositionComponents.RAID))
+                .nbt(NBTHelper
+                        .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 400.0))),
+                                NBTHelper.healthTag(400))).build()
                 , ConstantInt.of(1)));
 
         context.register(SUPER_GOLEM_1, new OnceSpawn(HTSpawnComponents.builder()

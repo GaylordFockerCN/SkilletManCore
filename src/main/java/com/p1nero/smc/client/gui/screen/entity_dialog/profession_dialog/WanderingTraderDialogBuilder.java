@@ -47,17 +47,18 @@ public class WanderingTraderDialogBuilder extends VillagerDialogScreenHandler.Vi
     }
 
     public void handle(ServerPlayer serverPlayer, WanderingTrader self, byte interactId){
+        SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         if(interactId == 1) {
             self.setHealth(0);
-            SMCCapabilityProvider.getSMCPlayer(serverPlayer).consumeMorality();
+            smcPlayer.consumeMorality();
             self.playSound(SoundEvents.WANDERING_TRADER_DEATH);
             SMCRaidManager.startRandomRaid(serverPlayer);
         }
         if(interactId == 2) {
-            SMCPlayer.addMoney(20000, serverPlayer);
+            SMCPlayer.addMoney(200 * (1 + smcPlayer.getLevel()), serverPlayer);
             self.setHealth(0);
-            SMCCapabilityProvider.getSMCPlayer(serverPlayer).consumeMorality();
-            SMCCapabilityProvider.getSMCPlayer(serverPlayer).consumeMorality();
+            smcPlayer.consumeMorality();
+            smcPlayer.consumeMorality();
             self.playSound(SoundEvents.WANDERING_TRADER_DEATH);
             SMCRaidManager.startRandomRaid(serverPlayer);
         }

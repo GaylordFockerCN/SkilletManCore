@@ -38,6 +38,7 @@ public interface SMCWaveComponents {
         HolderGetter<ISpawnComponent> spawns = HTSpawnComponents.registry().helper().lookup(context);
         HolderGetter<IPositionComponent> positions = HTPositionComponents.registry().helper().lookup(context);
         Holder<ISpawnComponent> wither = spawns.getOrThrow(SMCSpawnComponents.WITHER);
+        Holder<ISpawnComponent> wither2 = spawns.getOrThrow(SMCSpawnComponents.WITHER2);
         Holder<ISpawnComponent> superGolem1 = spawns.getOrThrow(SMCSpawnComponents.SUPER_GOLEM_1);
         Holder<ISpawnComponent> superGolem2 = spawns.getOrThrow(SMCSpawnComponents.SUPER_GOLEM_2);
         Holder<IPositionComponent> raidPosition = positions.getOrThrow(SMCPositionComponents.RAID);
@@ -70,7 +71,7 @@ public interface SMCWaveComponents {
                 .wave(9600)
                 .placement(raidPosition)
                 .build(),
-                List.of(Pair.of(ConstantInt.of(10), superGolem2), Pair.of(ConstantInt.of(500), wither), Pair.of(ConstantInt.of(600), wither))));
+                List.of(Pair.of(ConstantInt.of(10), superGolem2), Pair.of(ConstantInt.of(500), wither), Pair.of(ConstantInt.of(600), wither2))));
 
         for(int i = 0; i <= 30; i ++) {
             RAID_WAVES_1.add(create("raid_wave_" + i));
@@ -128,7 +129,7 @@ public interface SMCWaveComponents {
             }
 
             if(i > 1 && i % 10 == 0) {
-                wave1builder.add(Pair.of(ConstantInt.of(10), spawns.getOrThrow(SMCSpawnComponents.WITHER)));
+                wave1builder.add(Pair.of(ConstantInt.of(10), wither2));
             }
 
             context.register(RAID_WAVES_1.get(i), new CommonWave(HTWaveComponents.builder()

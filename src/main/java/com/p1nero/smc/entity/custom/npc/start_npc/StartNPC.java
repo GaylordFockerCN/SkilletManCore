@@ -22,12 +22,14 @@ import com.p1nero.smc.network.packet.clientbound.AddWaypointPacket;
 import com.p1nero.smc.network.packet.clientbound.RemoveWaypointPacket;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
+import de.keksuccino.konkrete.json.jsonpath.internal.function.numeric.Min;
 import dev.xkmc.cuisinedelight.content.logic.FoodType;
 import dev.xkmc.cuisinedelight.content.logic.IngredientConfig;
 import dev.xkmc.cuisinedelight.init.registrate.CDItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -76,8 +78,6 @@ import static com.p1nero.smc.block.entity.MainCookBlockEntity.PROFESSION_LIST;
  * 凝渊人，引导的npc
  */
 public class StartNPC extends SMCNpc {
-    private static final ResourceLocation PLAIN_V2SHOP_LOCATION = new ResourceLocation(SkilletManCoreMod.MOD_ID, "village/plains/houses/plains_butcher_shop_lv2");
-    private static final ResourceLocation PLAIN_V3SHOP_LOCATION = new ResourceLocation(SkilletManCoreMod.MOD_ID, "village/plains/houses/plains_butcher_shop_lv3");
     protected static final EntityDataAccessor<Integer> INCOME = SynchedEntityData.defineId(StartNPC.class, EntityDataSerializers.INT);//收入
     protected static final EntityDataAccessor<Integer> INCOME_SPEED = SynchedEntityData.defineId(StartNPC.class, EntityDataSerializers.INT);//收入速度 / 店铺等级
     protected static final EntityDataAccessor<Integer> STATE = SynchedEntityData.defineId(StartNPC.class, EntityDataSerializers.INT);//状态
@@ -143,7 +143,7 @@ public class StartNPC extends SMCNpc {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.getEntityData().define(SHOP_LEVEL, 0);
+        this.getEntityData().define(SHOP_LEVEL, 1);
         this.getEntityData().define(INCOME, 0);
         this.getEntityData().define(INCOME_SPEED, 1);
         this.getEntityData().define(STATE, 0);
@@ -168,11 +168,11 @@ public class StartNPC extends SMCNpc {
         tag.putInt("shop_state", this.getEntityData().get(STATE));
     }
 
-    public int getShopLevel(){
+    public int getShopLevel() {
         return this.getEntityData().get(SHOP_LEVEL);
     }
 
-    public void setShopLevel(int level){
+    public void setShopLevel(int level) {
         this.getEntityData().set(SHOP_LEVEL, level);
     }
 
@@ -288,8 +288,12 @@ public class StartNPC extends SMCNpc {
         return compoundTag;
     }
 
-    public int getUpgradeNeed() {
+    public int getUpgradeNpcNeed() {
         return (int) (5000 * Math.pow(1.1, this.getIncomeSpeed()));
+    }
+
+    public int getUpgradeShopNeed(){
+        return (int) (400 * Math.pow(5, this.getShopLevel()));
     }
 
     @Override
@@ -310,8 +314,23 @@ public class StartNPC extends SMCNpc {
     @OnlyIn(Dist.CLIENT)
     public void openDialogueScreen(CompoundTag senderData) {
         LinkListStreamDialogueScreenBuilder builder = new LinkListStreamDialogueScreenBuilder(this, name.copy().append(": "));
-
+        LocalPlayer localPlayer = Minecraft.getInstance().player;
+        if(localPlayer == null) {
+            return;
+        }
+        SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(localPlayer);
+        double moneyRate = smcPlayer.getLevelMoneyRate();
         DialogueComponentBuilder dialogueComponentBuilder = new DialogueComponentBuilder(this);
+
+        TreeNode upgrade = null;
+        if (getShopLevel() <= 3) {
+            upgrade = new TreeNode(dialogueComponentBuilder.ans(13, Component.literal(String.valueOf(getUpgradeShopNeed())).withStyle(ChatFormatting.GREEN)), dialogueComponentBuilder.opt(25));
+        }
+
+        if (upgrade != null) {
+            upgrade.addLeaf(dialogueComponentBuilder.opt(8), (byte) 28)
+                    .addLeaf(dialogueComponentBuilder.opt(7));
+        }
 
         if (isHired()) {
 
@@ -320,8 +339,11 @@ public class StartNPC extends SMCNpc {
                         .addExecutable((byte) 4);
                 TreeNode main = new TreeNode(dialogueComponentBuilder.ans(1), dialogueComponentBuilder.opt(7))
                         .addChild(takeMoney)//全部取出
-                        .addLeaf(dialogueComponentBuilder.opt(6, this.getUpgradeNeed()), (byte) 5)//升级
-                        .addLeaf(dialogueComponentBuilder.opt(2), (byte) 3);//告辞
+                        .addLeaf(dialogueComponentBuilder.opt(6, this.getUpgradeNpcNeed()), (byte) 5);//升级
+                if (upgrade != null) {
+                    main.addChild(upgrade);
+                }
+                main.addLeaf(dialogueComponentBuilder.opt(2), (byte) 3);//告辞
                 takeMoney.addChild(main);
                 builder.setAnswerRoot(main);//告辞
             } else {
@@ -334,23 +356,23 @@ public class StartNPC extends SMCNpc {
 
             TreeNode ticketExchange = new TreeNode(dialogueComponentBuilder.ans(11), dialogueComponentBuilder.opt(16))
                     .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(17))//武器
-                            .addLeaf(dialogueComponentBuilder.opt(18, 160), (byte) 16)
-                            .addLeaf(dialogueComponentBuilder.opt(19, 1499), (byte) 17))
+                            .addLeaf(dialogueComponentBuilder.opt(18, 160 * moneyRate), (byte) 16)
+                            .addLeaf(dialogueComponentBuilder.opt(19, 1499 * moneyRate), (byte) 17))
                     .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(24))//盔甲
-                            .addLeaf(dialogueComponentBuilder.opt(18, 160), (byte) 26)
-                            .addLeaf(dialogueComponentBuilder.opt(19, 1499), (byte) 27))
+                            .addLeaf(dialogueComponentBuilder.opt(18, 160 * moneyRate), (byte) 26)
+                            .addLeaf(dialogueComponentBuilder.opt(19, 1499 * moneyRate), (byte) 27))
                     .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(20))
-                            .addLeaf(dialogueComponentBuilder.opt(18, 1600), (byte) 18)
-                            .addLeaf(dialogueComponentBuilder.opt(19, 14999), (byte) 19))
+                            .addLeaf(dialogueComponentBuilder.opt(18, 1600 * moneyRate), (byte) 18)
+                            .addLeaf(dialogueComponentBuilder.opt(19, 14999 * moneyRate), (byte) 19))
                     .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(21))
-                            .addLeaf(dialogueComponentBuilder.opt(18, 1600), (byte) 20)
-                            .addLeaf(dialogueComponentBuilder.opt(19, 16000), (byte) 21))
+                            .addLeaf(dialogueComponentBuilder.opt(18, 16000 * moneyRate), (byte) 20)
+                            .addLeaf(dialogueComponentBuilder.opt(19, 160000 * moneyRate), (byte) 21))
                     .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(22))
-                            .addLeaf(dialogueComponentBuilder.opt(18, 1600), (byte) 22)
-                            .addLeaf(dialogueComponentBuilder.opt(19, 16000), (byte) 23))
+                            .addLeaf(dialogueComponentBuilder.opt(18, 1600 * moneyRate), (byte) 22)
+                            .addLeaf(dialogueComponentBuilder.opt(19, 16000 * moneyRate), (byte) 23))
                     .addChild(new TreeNode(dialogueComponentBuilder.ans(12), dialogueComponentBuilder.opt(23))
-                            .addLeaf(dialogueComponentBuilder.opt(18, 1600), (byte) 24)
-                            .addLeaf(dialogueComponentBuilder.opt(19, 16000), (byte) 25));
+                            .addLeaf(dialogueComponentBuilder.opt(18, 1600 * moneyRate), (byte) 24)
+                            .addLeaf(dialogueComponentBuilder.opt(19, 16000 * moneyRate), (byte) 25));
 
 
             TreeNode foodBuyer = new TreeNode(dialogueComponentBuilder.ans(10), dialogueComponentBuilder.opt(11))
@@ -387,10 +409,8 @@ public class StartNPC extends SMCNpc {
                                         .addChild(new TreeNode(dialogueComponentBuilder.ans(8), dialogueComponentBuilder.opt(8))
                                                 .addLeaf(dialogueComponentBuilder.opt(2), (byte) 3))));
             }
-            if(getShopLevel() == 0) {
-                root.addLeaf(dialogueComponentBuilder.opt(25, 20000).withStyle(ChatFormatting.GREEN), (byte) 28);//修缮外观
-            } else if(getShopLevel() == 1) {
-                root.addLeaf(dialogueComponentBuilder.opt(25, 100000).withStyle(ChatFormatting.GREEN), (byte) 28);//修缮外观
+            if (upgrade != null) {
+                root.addChild(upgrade);
             }
             root.addLeaf(dialogueComponentBuilder.opt(2), (byte) 3); //告辞
             builder.setAnswerRoot(root);
@@ -398,7 +418,7 @@ public class StartNPC extends SMCNpc {
             //初始态
             builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.ans(0))
                     .addLeaf(dialogueComponentBuilder.opt(0, 100), (byte) 1) //入职
-                    .addLeaf(dialogueComponentBuilder.opt(1, getUpgradeNeed()), (byte) 2) //雇佣
+                    .addLeaf(dialogueComponentBuilder.opt(1, getUpgradeNpcNeed()), (byte) 2) //雇佣
                     .addLeaf(dialogueComponentBuilder.opt(2), (byte) 3)); //告辞
         }
 
@@ -414,13 +434,14 @@ public class StartNPC extends SMCNpc {
     public void handleNpcInteraction(ServerPlayer player, byte interactionID) {
         DialogueComponentBuilder dialogueComponentBuilder = new DialogueComponentBuilder(this);
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
+        double moneyRate = smcPlayer.getLevelMoneyRate();
         //购买
         if (interactionID == 1) {
-            if (smcPlayer.getMoneyCount() < 100) {
+            if (smcPlayer.getMoneyCount() < 100 * moneyRate) {
                 this.playSound(SoundEvents.VILLAGER_NO);
                 player.displayClientMessage(SkilletManCoreMod.getInfo("no_enough_money"), true);
             } else {
-                SMCPlayer.consumeMoney(100, player);
+                SMCPlayer.consumeMoney(100 * moneyRate, player);
                 this.setState(GUIDER);
                 this.setOwnerUUID(player.getUUID());
                 SMCAdvancementData.finishAdvancement("start_work", player);
@@ -432,11 +453,11 @@ public class StartNPC extends SMCNpc {
 
         //雇佣
         if (interactionID == 2) {
-            if (smcPlayer.getMoneyCount() < getUpgradeNeed()) {
+            if (smcPlayer.getMoneyCount() < getUpgradeNpcNeed()) {
                 this.playSound(SoundEvents.VILLAGER_NO);
                 player.displayClientMessage(SkilletManCoreMod.getInfo("no_enough_money"), true);
             } else {
-                SMCPlayer.consumeMoney(getUpgradeNeed(), player);
+                SMCPlayer.consumeMoney(getUpgradeNpcNeed(), player);
                 this.setState(HIRED);
                 this.setOwnerUUID(player.getUUID());
                 this.setIncomeSpeed(1);
@@ -454,12 +475,12 @@ public class StartNPC extends SMCNpc {
 
         //升级
         if (interactionID == 5) {
-            if (smcPlayer.getMoneyCount() < getUpgradeNeed()) {
+            if (smcPlayer.getMoneyCount() < getUpgradeNpcNeed()) {
                 this.playSound(SoundEvents.VILLAGER_NO);
                 player.displayClientMessage(SkilletManCoreMod.getInfo("no_enough_money"), true);
             } else {
                 this.setIncomeSpeed(this.getIncomeSpeed() + 1);
-                SMCPlayer.consumeMoney(getUpgradeNeed(), player);
+                SMCPlayer.consumeMoney(getUpgradeNpcNeed(), player);
                 this.playSound(SoundEvents.VILLAGER_CELEBRATE);
                 player.displayClientMessage(SkilletManCoreMod.getInfo("shop_upgrade", this.getIncomeSpeed()), false);
             }
@@ -477,13 +498,12 @@ public class StartNPC extends SMCNpc {
             ItemUtil.addItem(player, Blocks.CRAFTING_TABLE.asItem(), 1);
             ItemUtil.addItem(player, Blocks.STONECUTTER.asItem(), 1);
             ItemUtil.addItem(player, Blocks.JUKEBOX.asItem(), 1);
-//            ItemUtil.addItem(player, Blocks.OAK_WOOD.asItem(), 64);
-//            ItemUtil.addItem(player, Blocks.STONE.asItem().asItem(), 64);
-//            ItemUtil.addItem(player, Blocks.COBBLESTONE.asItem().asItem(), 64);
-//            ItemUtil.addItem(player, Blocks.BRICKS.asItem().asItem(), 64);
             ItemUtil.addItem(player, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asStack(10), true);
             ItemUtil.addItem(player, SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asStack(10), true);
             ItemUtil.addItem(player, SMCRegistrateItems.REDSTONE_RAFFLE.asStack(2), true);
+            ItemUtil.addItem(player, Items.OAK_LOG, 10, true);
+            ItemUtil.addItem(player, Items.STONE, 10, true);
+            ItemUtil.addItem(player, Items.IRON_INGOT, 10, true);
 
             player.playSound(SoundEvents.PLAYER_LEVELUP);
         }
@@ -495,75 +515,75 @@ public class StartNPC extends SMCNpc {
 
         //主食大礼包
         if (interactionID == 12) {
-            addIngredient(smcPlayer, player, STAPLE_SET2, 100, 10);
+            addIngredient(smcPlayer, player, STAPLE_SET2, 100 * moneyRate, 10);
         }
         //果蔬大礼包
         if (interactionID == 13) {
-            addIngredient(smcPlayer, player, VEG_SET2, 100, 10);
+            addIngredient(smcPlayer, player, VEG_SET2, 100 * moneyRate, 10);
         }
         //肉类大礼包
         if (interactionID == 14) {
-            addIngredient(smcPlayer, player, MEAT_SET2, 2000, 20);
+            addIngredient(smcPlayer, player, MEAT_SET2, 2000 * moneyRate, 20);
         }
         //海鲜大礼包
         if (interactionID == 15) {
-            addIngredient(smcPlayer, player, SEAFOOD_SET2, 5000, 20);
+            addIngredient(smcPlayer, player, SEAFOOD_SET2, 5000 * moneyRate, 20);
         }
 
         //武器抽奖券 1
         if (interactionID == 16) {
-            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asStack()), 160, 1);
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asStack()), 160 * moneyRate, 1);
         }
         if (interactionID == 17) {
-            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asStack()), 1499, 10);
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asStack()), 1499 * moneyRate, 10);
         }
         //技能书抽奖券
         if (interactionID == 18) {
-            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asStack()), 1600, 1);
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asStack()), 1600 * moneyRate, 1);
         }
         if (interactionID == 19) {
-            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asStack()), 14999, 10);
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asStack()), 14999 * moneyRate, 10);
         }
         //宠物
         if (interactionID == 20) {
-            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.PET_RAFFLE_TICKET.asStack()), 1600, 1);
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.PET_RAFFLE_TICKET.asStack()), 16000 * moneyRate, 1);
         }
         if (interactionID == 21) {
-            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.PET_RAFFLE_TICKET.asStack()), 16000, 10);
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.PET_RAFFLE_TICKET.asStack()), 160000 * moneyRate, 10);
         }
         //碟
         if (interactionID == 22) {
-            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.DISC_RAFFLE_TICKET.asStack()), 1600, 1);
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.DISC_RAFFLE_TICKET.asStack()), 1600 * moneyRate, 1);
         }
         if (interactionID == 23) {
-            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.DISC_RAFFLE_TICKET.asStack()), 16000, 10);
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.DISC_RAFFLE_TICKET.asStack()), 16000 * moneyRate, 10);
         }
         //玩偶
         if (interactionID == 24) {
-            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.DOLL_RAFFLE_TICKET.asStack()), 1600, 1);
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.DOLL_RAFFLE_TICKET.asStack()), 1600 * moneyRate, 1);
         }
         if (interactionID == 25) {
-            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.DOLL_RAFFLE_TICKET.asStack()), 16000, 10);
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.DOLL_RAFFLE_TICKET.asStack()), 16000 * moneyRate, 10);
         }
         //盔甲
         if (interactionID == 26) {
-            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asStack()), 160, 1);
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asStack()), 160 * moneyRate, 1);
         }
         if (interactionID == 27) {
-            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asStack()), 1499, 10);
+            addIngredient(smcPlayer, player, Set.of(SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asStack()), 1499 * moneyRate, 10);
         }
 
         if(interactionID == 28){
-            if(this.getShopLevel() == 0){
-                if(SMCPlayer.hasMoney(player, 20000, true)) {
-                    if(tryPlaceShopPart(player, PLAIN_V2SHOP_LOCATION, -6, -1, -9)){
-                        this.setShopLevel(1);
+            if(this.getShopLevel() == 1){
+                if(SMCPlayer.hasMoney(player, getUpgradeShopNeed(), true)) {
+                    if(tryPlaceShopPart(player, getShopLocation(2), -6, -1, -9)){
+                        this.setShopLevel(2);
                     }
                 }
-            } else if(this.getShopLevel() == 1) {
-                if(SMCPlayer.hasMoney(player, 100000, true)) {
-                    if(tryPlaceShopPart(player, PLAIN_V3SHOP_LOCATION, -6, -1, 1)){
-                        this.setShopLevel(2);
+            } else if(this.getShopLevel() == 2) {
+                if(SMCPlayer.hasMoney(player, getUpgradeShopNeed(), true)) {
+                    if(tryPlaceShopPart(player, getShopLocation(3), -6, -1, 1)){
+                        this.setShopLevel(3);
                     }
                 }
             }
@@ -572,20 +592,30 @@ public class StartNPC extends SMCNpc {
         this.setConversingPlayer(null);
     }
 
-    public ResourceLocation getShopLocation(){
-        VillagerType villagerType = this.getVillagerData().getType();
-        return PLAIN_V2SHOP_LOCATION;
+    public ResourceLocation getShopLocation(int level) {
+        BlockState referenceBlock = level().getBlockState(this.getHomePos().east());
+        String type = "plains";
+        if(referenceBlock.is(Blocks.ACACIA_PLANKS)) {
+            type = "savanna";
+        } else if(referenceBlock.is(Blocks.DARK_OAK_PLANKS)) {
+            type = "snowy";
+        } else if(referenceBlock.is(Blocks.SPRUCE_PLANKS)) {
+            type = "taiga";
+        } else if(referenceBlock.is(Blocks.SMOOTH_STONE)) {
+            type = "desert";
+        }
+        return new ResourceLocation(SkilletManCoreMod.MOD_ID, "village/" + type + "/houses/" + type + "_butcher_shop_lv" + level);
     }
 
-    public boolean tryPlaceShopPart(ServerPlayer serverPlayer, ResourceLocation location, int offsetX, int offsetY, int offsetZ){
+    public boolean tryPlaceShopPart(ServerPlayer serverPlayer, ResourceLocation location, int offsetX, int offsetY, int offsetZ) {
         BlockPos mainCookBlockPos = this.getHomePos();
         BlockState stove = level().getBlockState(mainCookBlockPos.above());
-        if(!stove.is(ModBlocks.STOVE.get())){
+        if (!stove.is(ModBlocks.STOVE.get())) {
             serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("error_when_try_to_upgrade_shop"), false);
             return false;
         }
         Direction direction = stove.getValue(BlockStateProperties.HORIZONTAL_FACING);
-        Rotation rotation = switch (direction){
+        Rotation rotation = switch (direction) {
             case WEST -> Rotation.COUNTERCLOCKWISE_90;
             case SOUTH -> Rotation.CLOCKWISE_180;
             case EAST -> Rotation.CLOCKWISE_90;
@@ -616,10 +646,10 @@ public class StartNPC extends SMCNpc {
         }
 
         if (optional.isPresent()) {
-            StructureTemplate template = (StructureTemplate)optional.get();
+            StructureTemplate template = (StructureTemplate) optional.get();
             StructurePlaceSettings placeSettings = new StructurePlaceSettings().setRotation(rotation);
             boolean success = template.placeInWorld(serverLevel, placePos, placePos, placeSettings, this.random, 2);
-            if(success) {
+            if (success) {
                 serverLevel.playSound(null, getX(), getY(), getZ(), SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.BLOCKS, 2, 1);
                 return true;
             } else {
@@ -635,7 +665,7 @@ public class StartNPC extends SMCNpc {
         PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new AddWaypointPacket(SkilletManCoreMod.getInfoKey("my_new_shop"), this.getHomePos(), null), serverPlayer);
     }
 
-    public void addIngredient(SMCPlayer smcPlayer, ServerPlayer player, Set<ItemStack> itemStackSet, int moneyNeed, int foodCount) {
+    public void addIngredient(SMCPlayer smcPlayer, ServerPlayer player, Set<ItemStack> itemStackSet, double moneyNeed, int foodCount) {
         if (smcPlayer.getMoneyCount() < moneyNeed) {
             this.playSound(SoundEvents.VILLAGER_NO);
             player.displayClientMessage(SkilletManCoreMod.getInfo("no_enough_money"), true);

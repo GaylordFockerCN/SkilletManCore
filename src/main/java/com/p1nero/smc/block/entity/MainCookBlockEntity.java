@@ -339,7 +339,8 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
 
     public void onNPCFinishTrade(ServerPlayer serverPlayer, Customer customer, int result){
         this.customers.remove(customer);
-        summonCustomer(serverPlayer, 1);
+        int stage = SMCCapabilityProvider.getSMCPlayer(serverPlayer).getStage();
+        summonCustomer(serverPlayer, stage + 1);
     }
 
     public void onSkilletPlace(ServerPlayer serverPlayer) {

@@ -1,0 +1,19 @@
+{
+  "type": "lithostitched:add_template_pool_elements",
+  "template_pools": "minecraft:village/snowy/houses",
+  "elements": [
+    {
+      "weight": 5,
+      "element": {
+        "element_type": "lithostitched:delegating",
+        "delegate": {
+          "element_type": "minecraft:single_pool_element",
+          "projection": "rigid",
+          "location": "skillet_man_core:village/snowy/houses/snowy_butcher_shop_lv1",
+          "processors": "minecraft:empty"
+        },
+        "forced_count": 3
+      }
+    }
+  ]
+}

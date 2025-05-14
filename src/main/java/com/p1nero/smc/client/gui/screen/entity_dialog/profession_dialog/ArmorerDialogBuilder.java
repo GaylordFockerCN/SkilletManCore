@@ -36,11 +36,12 @@ public class ArmorerDialogBuilder extends VillagerDialogScreenHandler.VillagerDi
     public void handle(ServerPlayer serverPlayer, Villager villager, byte interactionID) {
         super.handle(serverPlayer, villager, interactionID);
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+        int moneyBase = (int) (160 * smcPlayer.getLevelMoneyRate());
         if (interactionID == 1) {
             int ticketCount = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asItem(), 1);
             if (ticketCount == 0) {
-                if (SMCPlayer.hasMoney(serverPlayer, 160, true)) {
-                    SMCPlayer.consumeMoney(160, serverPlayer);
+                if (SMCPlayer.hasMoney(serverPlayer, moneyBase, true)) {
+                    SMCPlayer.consumeMoney(moneyBase, serverPlayer);
                     smcPlayer.setArmorGachaingCount(1);
                 }
             } else {
@@ -52,8 +53,8 @@ public class ArmorerDialogBuilder extends VillagerDialogScreenHandler.VillagerDi
             int ticketCount = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asItem(), 10);
             if (ticketCount < 10) {
                 int need = 10 - ticketCount;
-                if (SMCPlayer.hasMoney(serverPlayer, 160 * need, true)) {
-                    SMCPlayer.consumeMoney(160 * need, serverPlayer);
+                if (SMCPlayer.hasMoney(serverPlayer, moneyBase * need, true)) {
+                    SMCPlayer.consumeMoney(moneyBase * need, serverPlayer);
                     smcPlayer.setArmorGachaingCount(10);
                 }
             } else {
@@ -252,17 +253,20 @@ public class ArmorerDialogBuilder extends VillagerDialogScreenHandler.VillagerDi
 
             TreeNode pull = new TreeNode(answer(1, FAItems.SPARK_OF_DAWN_HELMET.get().getDefaultInstance().getDisplayName().copy().withStyle(ChatFormatting.GOLD)), choice(0));
 
+            SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(localPlayer);
+            int moneyBase = (int) (160 * smcPlayer.getLevelMoneyRate());
+
             if (ticketCount < 1) {
-                pull.addChild(new TreeNode(answer(2, 160), choice(2))
+                pull.addChild(new TreeNode(answer(2, moneyBase), choice(2))
                                 .addLeaf(choice(4), (byte) 1)
                                 .addLeaf(choice(5)))
-                        .addChild(new TreeNode(answer(2, 1600), choice(3))
+                        .addChild(new TreeNode(answer(2, moneyBase * 10), choice(3))
                                 .addLeaf(choice(4), (byte) 2)
                                 .addLeaf(choice(5)));
             } else if (ticketCount < 10) {
                 int needTicket = 10 - ticketCount;
                 pull.addLeaf(choice(2), (byte) 1)
-                        .addChild(new TreeNode(answer(3, 160 * needTicket), choice(3))
+                        .addChild(new TreeNode(answer(3, moneyBase * needTicket), choice(3))
                                 .addLeaf(choice(4), (byte) 2)
                                 .addLeaf(choice(5)));
             } else {

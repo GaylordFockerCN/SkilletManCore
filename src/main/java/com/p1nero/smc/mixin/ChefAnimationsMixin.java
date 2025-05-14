@@ -18,7 +18,7 @@ public class ChefAnimationsMixin {
     @Inject(method = "groundSplit", at = @At("HEAD"))
     private static void smc$groundSlam(LivingEntityPatch<?> entityPatch, double viewOffset, double xOffset, double yOffset, double zOffset, float radius, CallbackInfo ci){
         if(!entityPatch.getOriginal().level().isClientSide){
-            entityPatch.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 100));
+            entityPatch.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 200));
         }
     }
 }

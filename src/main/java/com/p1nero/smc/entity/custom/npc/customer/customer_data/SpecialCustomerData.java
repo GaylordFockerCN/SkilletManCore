@@ -138,14 +138,14 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
         float mul = 1.0F + smcPlayer.getLevel();
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("level_mul", smcPlayer.getLevel() + 1), false);
         if (cookedFoodData != null) {
-            mul *= cookedFoodData.types.size();
+            mul += cookedFoodData.types.size();
             serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("type_mul", cookedFoodData.types.size()), false);
             if (cookedFoodData.types.contains(FoodType.MEAT)) {
-                mul *= 2.0F;
+                mul += 2.0F;
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("meat_mul", 2.0F), false);
             }
             if (cookedFoodData.types.contains(FoodType.SEAFOOD)) {
-                mul *= 5.0F;
+                mul += 5.0F;
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("seafood_mul", 5.0F), false);
             }
             if(cookedFoodData.size > 0){

@@ -4,6 +4,7 @@ import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.entity.SMCEntities;
+import com.p1nero.smc.entity.custom.npc.special.virgil.VirgilVillager;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
@@ -131,6 +132,9 @@ public class LivingEntityListeners {
         }
 
         if(event.getEntity() instanceof Monster monster) {
+            if(monster instanceof VirgilVillager){
+                return;
+            }
             if(monster.getMainHandItem().isEmpty()) {
                 monster.setItemInHand(InteractionHand.MAIN_HAND, weapons.get(monster.getRandom().nextInt(weapons.size())));
                 if(monster.getRandom().nextInt(5) == 0){

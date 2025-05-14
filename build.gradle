@@ -155,6 +155,8 @@ dependencies {
     //更好的村庄
     implementation fg.deobf("curse.maven:better-village-forge-615352:6306266")
     implementation fg.deobf("curse.maven:library-ferret-forge-532727:4601234")
+    //生成器
+    implementation fg.deobf("curse.maven:lithostitched-936015:6183392")
 
     //农夫乐事 生活调味料
     implementation fg.deobf("curse.maven:farmers-delight-398521:6154802")
@@ -188,7 +190,10 @@ dependencies {
     implementation fg.deobf("curse.maven:yungs-better-end-island-901344:5193815")
     implementation fg.deobf("curse.maven:yungs-api-421850:5769971")
 
+    //优化
     implementation fg.deobf("curse.maven:embeddium-908741:5681725")
+//    implementation fg.deobf("curse.maven:entityculling-448233:6355861")
+
     implementation fg.deobf("curse.maven:oculus-581495:6020952")
 //    implementation fg.deobf("curse.maven:distant-horizons-508933:6387680")
 

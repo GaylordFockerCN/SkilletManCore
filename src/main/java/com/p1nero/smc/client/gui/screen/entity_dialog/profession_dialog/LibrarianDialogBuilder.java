@@ -31,11 +31,12 @@ public class LibrarianDialogBuilder extends VillagerDialogScreenHandler.Villager
         super.handle(serverPlayer, villager, interactionID);
 
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+        int moneyBase = (int) (1600 * smcPlayer.getLevelMoneyRate());
         if (interactionID == 1) {
             int ticketCount = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asItem(), 1);
             if (ticketCount == 0) {
-                if(SMCPlayer.hasMoney(serverPlayer, 1600, true)) {
-                    SMCPlayer.consumeMoney(1600, serverPlayer);
+                if(SMCPlayer.hasMoney(serverPlayer, moneyBase, true)) {
+                    SMCPlayer.consumeMoney(moneyBase, serverPlayer);
                     smcPlayer.setSkillBookGachaingCount(1);
                 }
             } else {
@@ -47,8 +48,8 @@ public class LibrarianDialogBuilder extends VillagerDialogScreenHandler.Villager
             int ticketCount = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asItem(), 10);
             if(ticketCount < 10) {
                 int need = 10 - ticketCount;
-                if(SMCPlayer.hasMoney(serverPlayer, 1600 * need, true)) {
-                    SMCPlayer.consumeMoney(1600 * need, serverPlayer);
+                if(SMCPlayer.hasMoney(serverPlayer, moneyBase * need, true)) {
+                    SMCPlayer.consumeMoney(moneyBase * need, serverPlayer);
                     smcPlayer.setSkillBookGachaingCount(10);
                 }
             } else {
@@ -68,17 +69,20 @@ public class LibrarianDialogBuilder extends VillagerDialogScreenHandler.Villager
 
             TreeNode pull = new TreeNode(answer(2), choice(2));
 
+            SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(localPlayer);
+            int moneyBase = (int) (1600 * smcPlayer.getLevelMoneyRate());
+
             if (ticketCount < 1) {
-                pull.addChild(new TreeNode(answer(3, 1600), choice(3))
+                pull.addChild(new TreeNode(answer(3, moneyBase), choice(3))
                                 .addLeaf(choice(5), (byte) 1)
                                 .addLeaf(choice(6), (byte) -1))
-                        .addChild(new TreeNode(answer(3, 16000), choice(4))
+                        .addChild(new TreeNode(answer(3, moneyBase * 10), choice(4))
                                 .addLeaf(choice(5), (byte) 2)
                                 .addLeaf(choice(6), (byte) -1));
             } else if (ticketCount < 10) {
                 int needTicket = 10 - ticketCount;
                 pull.addLeaf(choice(3), (byte) 1)
-                        .addChild(new TreeNode(answer(4, 1600 * needTicket), choice(4))
+                        .addChild(new TreeNode(answer(4, moneyBase * needTicket), choice(4))
                                 .addLeaf(choice(5), (byte) 2)
                                 .addLeaf(choice(6), (byte) -1));
             } else {

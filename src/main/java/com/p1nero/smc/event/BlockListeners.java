@@ -22,10 +22,11 @@ public class BlockListeners {
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         if (event.getPlayer() instanceof ServerPlayer serverPlayer) {
             Block block = event.getState().getBlock();
+            BlockPos pos = event.getPos();
             //锅被拆的时候放下的时候通知炉灶核心
             if (block.asItem() instanceof CuisineSkilletItem) {
-                BlockPos mainBlockPos = event.getPos().below(2);
-                if (serverPlayer.serverLevel().getBlockState(event.getPos().below(2)).is(SMCBlocks.MAIN_COOK_BLOCK.get())) {
+                BlockPos mainBlockPos = pos.below(2);
+                if (serverPlayer.serverLevel().getBlockState(pos.below(2)).is(SMCBlocks.MAIN_COOK_BLOCK.get())) {
                     if (serverPlayer.serverLevel().getBlockEntity(mainBlockPos) instanceof MainCookBlockEntity mainCookBlockEntity) {
                         if (!mainCookBlockEntity.tryBreakSkillet(serverPlayer)) {
                             event.setCanceled(true);
@@ -35,9 +36,17 @@ public class BlockListeners {
             }
             //禁止破坏核心方块上的炉子
             if (block.equals(ModBlocks.STOVE.get())) {
-                if (serverPlayer.serverLevel().getBlockState(event.getPos().below()).is(SMCBlocks.MAIN_COOK_BLOCK.get()) && !serverPlayer.isCreative()) {
+                if (serverPlayer.serverLevel().getBlockState(pos.below()).is(SMCBlocks.MAIN_COOK_BLOCK.get()) && !serverPlayer.isCreative()) {
                     event.setCanceled(true);
                 }
+            }
+
+            //禁止破坏参考方块
+            if(event.getLevel().getBlockState(pos.east()).is(SMCBlocks.MAIN_COOK_BLOCK.get()) ||
+                    event.getLevel().getBlockState(pos.west()).is(SMCBlocks.MAIN_COOK_BLOCK.get()) ||
+                    event.getLevel().getBlockState(pos.north()).is(SMCBlocks.MAIN_COOK_BLOCK.get()) ||
+                    event.getLevel().getBlockState(pos.south()).is(SMCBlocks.MAIN_COOK_BLOCK.get())){
+                event.setCanceled(true);
             }
         }
     }

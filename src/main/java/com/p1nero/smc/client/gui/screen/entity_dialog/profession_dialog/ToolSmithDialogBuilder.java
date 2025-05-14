@@ -39,27 +39,29 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
     public void handle(ServerPlayer serverPlayer, Villager villager, byte interactionID) {
         super.handle(serverPlayer, villager, interactionID);
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+        double moneyRate = smcPlayer.getLevelMoneyRate();
+        int moneyBase = (int) (16000 * moneyRate);
         if (interactionID == 1) {
-            if (SMCPlayer.hasMoney(serverPlayer, 16000, true)) {
-                SMCPlayer.consumeMoney(16000, serverPlayer);
+            if (SMCPlayer.hasMoney(serverPlayer, moneyBase, true)) {
+                SMCPlayer.consumeMoney(moneyBase, serverPlayer);
                 ItemUtil.addItem(serverPlayer, SMCRegistrateItems.REDSTONE_RAFFLE.asStack(10), true);
             }
         }
         if (interactionID == 2) {
-            if (SMCPlayer.hasMoney(serverPlayer, 160000, true)) {
-                SMCPlayer.consumeMoney(160000, serverPlayer);
+            if (SMCPlayer.hasMoney(serverPlayer, moneyBase * 10, true)) {
+                SMCPlayer.consumeMoney(moneyBase * 10, serverPlayer);
                 ItemUtil.addItem(serverPlayer, SMCRegistrateItems.REDSTONE_RAFFLE.asStack(100), true);
             }
         }
         if (interactionID == 3) {
-            if (SMCPlayer.hasMoney(serverPlayer, 16000, true)) {
-                SMCPlayer.consumeMoney(16000, serverPlayer);
+            if (SMCPlayer.hasMoney(serverPlayer, moneyBase, true)) {
+                SMCPlayer.consumeMoney(moneyBase, serverPlayer);
                 ItemUtil.addItem(serverPlayer, SMCRegistrateItems.CREATE_RAFFLE.asStack(10), true);
             }
         }
         if (interactionID == 4) {
-            if (SMCPlayer.hasMoney(serverPlayer, 160000, true)) {
-                SMCPlayer.consumeMoney(160000, serverPlayer);
+            if (SMCPlayer.hasMoney(serverPlayer, moneyBase * 10, true)) {
+                SMCPlayer.consumeMoney(moneyBase * 10, serverPlayer);
                 ItemUtil.addItem(serverPlayer, SMCRegistrateItems.CREATE_RAFFLE.asStack(100), true);
             }
         }
@@ -76,24 +78,24 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
         MerchantOffers merchantOffers = new MerchantOffers();
 
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 4),
-                new ItemStack(Items.SAND, 64),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 1),
+                new ItemStack(Items.SAND, 16),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
                 new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 1),
                 new ItemStack(Items.OAK_LOG, 64),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 2),
-                new ItemStack(Items.STONE, 64),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 1),
+                new ItemStack(Items.STONE, 32),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
                 new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 1),
                 new ItemStack(Items.COBBLESTONE, 64),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 2),
-                new ItemStack(Items.WHITE_WOOL, 64),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 1),
+                new ItemStack(Items.WHITE_WOOL, 32),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
                 new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 4),
@@ -124,20 +126,20 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
                 new ItemStack(Items.SLIME_BLOCK, 64),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 16),
-                new ItemStack(Items.IRON_BLOCK, 64),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 4),
+                new ItemStack(Items.IRON_BLOCK, 16),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 4),
+                new ItemStack(Items.COPPER_BLOCK, 16),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
                 new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 16),
-                new ItemStack(Items.COPPER_BLOCK, 64),
+                new ItemStack(Items.GOLD_BLOCK, 32),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 32),
-                new ItemStack(Items.GOLD_BLOCK, 64),
-                142857, 0, 0));
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 32),
-                new ItemStack(Items.REDSTONE_BLOCK, 64),
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 16),
+                new ItemStack(Items.REDSTONE_BLOCK, 32),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
                 new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 16),
@@ -298,16 +300,17 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
         if (localPlayer != null) {
             SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(localPlayer);
             int playerLevel = smcPlayer.getLevel();
+            int moneyBase = (int) (16000 * smcPlayer.getLevelMoneyRate());
 
             TreeNode root = new TreeNode(answer(0))
                     .addChild(new TreeNode(answer(1), choice(0))
                             .addChild(new TreeNode(answer(2), choice(3))
-                                    .addLeaf(choice(5), (byte) 1)//兑换原版通票 x 10
-                                    .addLeaf(choice(6), (byte) 2)//兑换原版通票 x 100
+                                    .addLeaf(choice(5, moneyBase), (byte) 1)//兑换原版通票 x 10
+                                    .addLeaf(choice(6, moneyBase * 10), (byte) 2)//兑换原版通票 x 100
                             )
                             .addChild(new TreeNode(answer(2), choice(4))
-                                    .addLeaf(choice(5), (byte) 3)//兑换机械通票 x 10
-                                    .addLeaf(choice(6), (byte) 4)//兑换机械通票 x 100
+                                    .addLeaf(choice(5, moneyBase), (byte) 3)//兑换机械通票 x 10
+                                    .addLeaf(choice(6, moneyBase * 10), (byte) 4)//兑换机械通票 x 100
                             )
                     );
 
@@ -340,8 +343,8 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
         generator.addVillagerOpt(this.profession, 3, "兑换原版材料通票");
         generator.addVillagerOpt(this.profession, 4, "兑换机械动力材料通票");
         generator.addVillagerAns(this.profession, 2, "要兑换多少呢？");
-        generator.addVillagerOpt(this.profession, 5, "兑换 10 张 §a16000绿宝石");
-        generator.addVillagerOpt(this.profession, 6, "兑换 100 张 §a160000绿宝石");
+        generator.addVillagerOpt(this.profession, 5, "兑换 10 张 %d绿宝石");
+        generator.addVillagerOpt(this.profession, 6, "兑换 100 张 %d绿宝石");
         generator.addVillagerOpt(this.profession, 7, "离开");
         generator.addVillagerOpt(this.profession, 8, "§a声望等级达到6级解锁");
         generator.addVillagerOpt(this.profession, 9, "§c当前还有货物未解锁");

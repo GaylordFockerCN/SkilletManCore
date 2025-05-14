@@ -263,7 +263,6 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                 lastCategory.set(skill.getCategory());
             });
 
-
             Advancement levelRoot = Advancement.Builder.advancement()
                     .display(SMCRegistrateItems.TASK_TIP_ICON,
                             Component.translatable(PRE + SkilletManCoreMod.MOD_ID + "_level"),
@@ -286,6 +285,15 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement level25 = registerAdvancement(level20_2, "level25", FrameType.GOAL, SMCRegistrateItems.DIAMOND_SKILLET_V4, true, true, false);
             Advancement level30 = registerAdvancement(level25, "level30", FrameType.GOAL, SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get(), true, true, false);
 
+            //TODO 炒菜自动化进度教程
+            Advancement createRoot = Advancement.Builder.advancement()
+                    .display(AllItems.GOGGLES,
+                            Component.translatable(PRE + SkilletManCoreMod.MOD_ID + "_create"),
+                            Component.translatable(PRE + SkilletManCoreMod.MOD_ID + "_create" + ".desc"),
+                            new ResourceLocation("textures/block/bricks.png"),
+                            FrameType.GOAL, false, false, false)
+                    .addCriterion(SkilletManCoreMod.MOD_ID, new ImpossibleTrigger.TriggerInstance())
+                    .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID + "_create"), existingFileHelper);
 
         }
 

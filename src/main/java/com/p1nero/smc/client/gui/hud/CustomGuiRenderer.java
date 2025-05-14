@@ -78,11 +78,13 @@ public class CustomGuiRenderer {
             Component info = SkilletManCoreMod.getInfo("find_villager_first").withStyle(ChatFormatting.BOLD, ChatFormatting.GOLD);
             Component info2 = SkilletManCoreMod.getInfo("find_villager_first2").withStyle(ChatFormatting.GRAY);
             Component info3 = SkilletManCoreMod.getInfo("find_villager_first3").withStyle(ChatFormatting.GRAY);
+            Component info4 = SkilletManCoreMod.getInfo("find_villager_first4").withStyle(ChatFormatting.GRAY);
             int maxWidth = Math.max(Math.max(font.width(info), font.width(info2)), font.width(info3));
-            guiGraphics.fillGradient(8, y + lineHeight * 2 - 2, 8 + maxWidth + 2, y + lineHeight * 5, 0x66000000, 0x66000000);
+            guiGraphics.fillGradient(8, y + lineHeight * 2 - 2, 8 + maxWidth + 2, y + lineHeight * 6, 0x66000000, 0x66000000);
             guiGraphics.drawString(font, info, 10, y + lineHeight * 2, 0x00ff00, true);
             guiGraphics.drawString(font, info2, 10, y + lineHeight * 3, 0x00ff00, true);
             guiGraphics.drawString(font, info3, 10, y + lineHeight * 4, 0x00ff00, true);
+            guiGraphics.drawString(font, info4, 10, y + lineHeight * 5, 0x00ff00, true);
         } else if (!DataManager.firstGachaGot.get(localPlayer)) {
             Component info = SkilletManCoreMod.getInfo("find_villager_gacha").withStyle(ChatFormatting.BOLD, ChatFormatting.AQUA);
             Component info2 = SkilletManCoreMod.getInfo("find_villager_gacha2").withStyle(ChatFormatting.GRAY);
@@ -99,7 +101,7 @@ public class CustomGuiRenderer {
             guiGraphics.fillGradient(8, y + lineHeight * 2 - 2, 8 + maxWidth + 2, y + lineHeight * 4, 0x66000000, 0x66000000);
             guiGraphics.drawString(font, info, 10, y + lineHeight * 2, 0x00ff00, true);
             guiGraphics.drawString(font, info2, 10, y + lineHeight * 3, 0x00ff00, true);
-        } else if (smcPlayer.isTrialRequired()) {
+        } else if (smcPlayer.isTrialRequired() && !DataManager.inRaid.get(localPlayer)) {
             Component info = SkilletManCoreMod.getInfo("trial_required").withStyle(ChatFormatting.BOLD, ChatFormatting.GOLD);
             Component info2 = SkilletManCoreMod.getInfo("trial_required2").withStyle(ChatFormatting.GRAY);
             int maxWidth = Math.max(font.width(info), font.width(info2));

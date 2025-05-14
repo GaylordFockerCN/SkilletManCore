@@ -2,6 +2,8 @@ package com.p1nero.smc.client.gui.screen.entity_dialog.profession_dialog;
 
 import com.github.ysbbbbbb.kaleidoscopedoll.init.ModItems;
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.capability.SMCCapabilityProvider;
+import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
 import com.p1nero.smc.client.gui.screen.entity_dialog.VillagerDialogScreenHandler;
@@ -42,11 +44,12 @@ public class ShepherdDialogBuilder extends VillagerDialogScreenHandler.VillagerD
     @Override
     public void handle(ServerPlayer serverPlayer, Villager villager, byte interactionID) {
         super.handle(serverPlayer, villager, interactionID);
-
+        SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+        double moneyRate = smcPlayer.getLevelMoneyRate();
         if (interactionID == 1) {
             int petTicketCnt = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.PET_RAFFLE_TICKET.asItem(), 1);
             if (petTicketCnt == 0) {
-                if (ItemUtil.tryAddRandomItem(serverPlayer, List.of(Items.LEAD.getDefaultInstance()), 1600, 1)) {
+                if (ItemUtil.tryAddRandomItem(serverPlayer, List.of(Items.LEAD.getDefaultInstance()), (int)(16000 * moneyRate), 1)) {
                     getPet(serverPlayer, villager);
                 }
             } else {
@@ -57,7 +60,7 @@ public class ShepherdDialogBuilder extends VillagerDialogScreenHandler.VillagerD
         if (interactionID == 2) {
             int dollTicketCnt = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.DOLL_RAFFLE_TICKET.asItem(), 1);
             if (dollTicketCnt == 0) {
-                ItemUtil.tryAddRandomItem(serverPlayer, List.of(ModItems.PURPLE_DOLL_GIFT_BOX.get().getDefaultInstance()), 1600, 1);
+                ItemUtil.tryAddRandomItem(serverPlayer, List.of(ModItems.PURPLE_DOLL_GIFT_BOX.get().getDefaultInstance()), (int)(1600 * moneyRate), 1);
                 serverPlayer.serverLevel().sendParticles(ParticleTypes.TOTEM_OF_UNDYING, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), 50, 1.0, 1.0, 1.0, 0.2);
                 serverPlayer.serverLevel().playSound(null, serverPlayer.getOnPos(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 1.0F, 2.0F);
             } else {
@@ -105,13 +108,15 @@ public class ShepherdDialogBuilder extends VillagerDialogScreenHandler.VillagerD
     public void createDialog(LinkListStreamDialogueScreenBuilder builder, Villager self) {
         LocalPlayer localPlayer = Minecraft.getInstance().player;
         if (localPlayer != null) {
+            SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(localPlayer);
+            double moneyRate = smcPlayer.getLevelMoneyRate();
 
             TreeNode root = new TreeNode(answer(0));
 
             int petTicketCnt = localPlayer.getInventory().countItem(SMCRegistrateItems.DOLL_RAFFLE_TICKET.asItem());
             int dollTicketCnt = localPlayer.getInventory().countItem(SMCRegistrateItems.PET_RAFFLE_TICKET.asItem());
             if (petTicketCnt < 1) {
-                root.addChild(new TreeNode(answer(1), choice(0))
+                root.addChild(new TreeNode(answer(1, (int)(16000 * moneyRate)), choice(0))
                         .addLeaf(choice(2), (byte) 1)
                         .addLeaf(choice(3)));
             } else {
@@ -119,7 +124,7 @@ public class ShepherdDialogBuilder extends VillagerDialogScreenHandler.VillagerD
             }
 
             if (dollTicketCnt < 1) {
-                root.addChild(new TreeNode(answer(2), choice(1))
+                root.addChild(new TreeNode(answer(2, (int)(1600 * moneyRate)), choice(1))
                         .addLeaf(choice(2), (byte) 2)
                         .addLeaf(choice(3)));
             } else {
@@ -138,8 +143,8 @@ public class ShepherdDialogBuilder extends VillagerDialogScreenHandler.VillagerD
         generator.addVillagerOpt(this.profession, 0, "抽宠物 一次 ");
         generator.addVillagerOpt(this.profession, 1, "抽玩偶 一次");
         generator.addVillagerOpt(this.profession, 4, "为什么牧羊人会有Lupus Rex...");
-        generator.addVillagerAns(this.profession, 1, "宠物抽奖券不足，是否用 §a1600 绿宝石§r代替？");
-        generator.addVillagerAns(this.profession, 2, "玩偶抽奖券不足，是否用 §a1600 绿宝石§r代替？");
+        generator.addVillagerAns(this.profession, 1, "宠物抽奖券不足，是否用 %d 绿宝石代替？");
+        generator.addVillagerAns(this.profession, 2, "玩偶抽奖券不足，是否用 %d 绿宝石代替？");
         generator.addVillagerOpt(this.profession, 2, "确定");
         generator.addVillagerOpt(this.profession, 3, "取消");
     }

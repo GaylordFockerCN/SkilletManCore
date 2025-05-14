@@ -22,7 +22,9 @@ public abstract class AdvancementsScreenMixin extends Screen {
 
     @Inject(method = "onAddAdvancementRoot", at = @At("HEAD"), cancellable = true)
     private void smc$onAddAdvancementRoot(Advancement advancement, CallbackInfo ci){
-        if(!(advancement.getId().getNamespace().equals(SkilletManCoreMod.MOD_ID) || advancement.getId().getNamespace().equals(Create.ID))){
+        if(!(advancement.getId().getNamespace().equals(SkilletManCoreMod.MOD_ID)
+//                || advancement.getId().getNamespace().equals(Create.ID)
+        )){
             ci.cancel();
         }
     }

@@ -10,10 +10,8 @@ import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
-import net.kenddie.fantasyarmor.item.FAItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -32,14 +30,17 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
         super(VillagerProfession.WEAPONSMITH);
     }
 
+    private static final float upgradeRate = 1.245F;
+
     @Override
     public void handle(ServerPlayer serverPlayer, Villager villager, byte interactionID) {
         super.handle(serverPlayer, villager, interactionID);
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+        int moneyBase = (int) (160 * smcPlayer.getLevelMoneyRate());
         if (interactionID == 1) {
             int ticketCount = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asItem(), 1);
             if (ticketCount == 0) {
-                if (SMCPlayer.hasMoney(serverPlayer, 160, true)) {
+                if (SMCPlayer.hasMoney(serverPlayer, moneyBase, true)) {
                     SMCPlayer.consumeMoney(160, serverPlayer);
                     smcPlayer.setWeaponGachaingCount(1);
                 }
@@ -52,8 +53,8 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
             int ticketCount = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asItem(), 10);
             if (ticketCount < 10) {
                 int need = 10 - ticketCount;
-                if (SMCPlayer.hasMoney(serverPlayer, 160 * need, true)) {
-                    SMCPlayer.consumeMoney(160 * need, serverPlayer);
+                if (SMCPlayer.hasMoney(serverPlayer, moneyBase * need, true)) {
+                    SMCPlayer.consumeMoney(moneyBase * need, serverPlayer);
                     smcPlayer.setWeaponGachaingCount(10);
                 }
             } else {
@@ -68,7 +69,11 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
             if (itemStack.hasTag()) {
                 level = itemStack.getOrCreateTag().getInt(SkilletManCoreMod.WEAPON_LEVEL_KEY);
             }
-            int need = (int) (Math.pow(1.145, (level)) * 1600);
+            if(level >= 40) {
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("weapon_level_max"), true);
+                return;
+            }
+            int need = (int) (Math.pow(upgradeRate, (level)) * 1600);
             if (SMCPlayer.hasMoney(serverPlayer, need, true)) {
                 SMCPlayer.consumeMoney(need, serverPlayer);
                 itemStack.getOrCreateTag().putInt(SkilletManCoreMod.WEAPON_LEVEL_KEY, level + 1);
@@ -142,21 +147,23 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
     public void createDialog(LinkListStreamDialogueScreenBuilder builder, Villager self) {
         LocalPlayer localPlayer = Minecraft.getInstance().player;
         if (localPlayer != null) {
-            int ticketCount = localPlayer.getInventory().countItem(SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asItem());
+            int ticketCount = localPlayer.getInventory().countItem(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asItem());
 
             TreeNode pull = new TreeNode(answer(1), choice(0));
 
+            SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(localPlayer);
+            int moneyBase = (int) (160 * smcPlayer.getLevelMoneyRate());
             if (ticketCount < 1) {
-                pull.addChild(new TreeNode(answer(2, 160), choice(2))
+                pull.addChild(new TreeNode(answer(2, moneyBase), choice(2))
                                 .addLeaf(choice(4), (byte) 1)
                                 .addLeaf(choice(5)))
-                        .addChild(new TreeNode(answer(2, 1600), choice(3))
+                        .addChild(new TreeNode(answer(2, moneyBase * 10), choice(3))
                                 .addLeaf(choice(4), (byte) 2)
                                 .addLeaf(choice(5)));
             } else if (ticketCount < 10) {
                 int needTicket = 10 - ticketCount;
                 pull.addLeaf(choice(2), (byte) 1)
-                        .addChild(new TreeNode(answer(3, 160 * needTicket), choice(3))
+                        .addChild(new TreeNode(answer(3, moneyBase * needTicket), choice(3))
                                 .addLeaf(choice(4), (byte) 2)
                                 .addLeaf(choice(5)));
             } else {
@@ -169,7 +176,7 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
             if (itemStack.hasTag()) {
                 level = itemStack.getOrCreateTag().getInt(SkilletManCoreMod.WEAPON_LEVEL_KEY);
             }
-            TreeNode weaponUpdate = new TreeNode(answer(5, (int) (Math.pow(1.145, (level)) * 1600)), choice(6))
+            TreeNode weaponUpdate = new TreeNode(answer(5, (int) (Math.pow(upgradeRate, (level)) * 1600)), choice(6))
                     .addLeaf(choice(4), (byte) 3)
                     .addLeaf(choice(5));
 
