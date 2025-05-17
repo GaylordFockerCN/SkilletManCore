@@ -26,7 +26,7 @@ public class SMCBiomes {
 
     public static ResourceKey<Biome> createBiomeKey(String name){
         return ResourceKey.create(Registries.BIOME,
-                new ResourceLocation(SkilletManCoreMod.MOD_ID, name));
+                ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, name));
     }
 
     public static void boostrap(BootstapContext<Biome> context) {

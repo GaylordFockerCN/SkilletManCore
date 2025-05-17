@@ -89,7 +89,7 @@ public class SMCNoiseBuilders {
     private static final ResourceKey<DensityFunction> ENTRANCES = createKey("overworld/caves/entrances");
     private static final ResourceKey<DensityFunction> NOODLE = createKey("overworld/caves/noodle");
     private static ResourceKey<DensityFunction> createKey(String location) {
-        return ResourceKey.create(Registries.DENSITY_FUNCTION, new ResourceLocation(location));
+        return ResourceKey.create(Registries.DENSITY_FUNCTION, ResourceLocation.parse(location));
     }
 
     /**

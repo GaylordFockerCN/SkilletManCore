@@ -7,6 +7,7 @@ import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.customer.customer_data.SpecialCustomerData;
 import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
+import com.p1nero.smc.util.BookManager;
 import com.p1nero.smc.util.ItemUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
@@ -49,23 +50,16 @@ public class SpecialCustomerData12 extends SpecialCustomerData {
         super.onBest(serverPlayer, self);
         ItemUtil.addItem(serverPlayer, new ItemStack(SMCRegistrateItems.ARMOR_RAFFLE_TICKET.get(), 5), true);
 
-        ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-        ListTag bookPages = new ListTag();
 
-        bookPages.add(StringTag.valueOf("早上去找铁匠铺磨刀 ：上周砍树时刀卷了，铁匠铺在村子东边？还是西边来着......（此处有地图涂鸦，但画得像个烤肠）"));
-        bookPages.add(StringTag.valueOf("早上去还图书给村民 A ：从他那儿借了本《如何不迷路》"));
-        bookPages.add(StringTag.valueOf("中午去收集野花给村民 B ：她说想要红、黄、蓝三种颜色的花，我得去花丛那（花丛在村子北边？还是南边......），等等，我是不是已经采过了。"));
-        bookPages.add(StringTag.valueOf("中午去面包房买面包 需要 2 个"));
-        bookPages.add(StringTag.valueOf("傍晚去去农田帮村民 C 收麦子 收完麦子还要帮着堆草垛"));
-        bookPages.add(StringTag.valueOf("傍晚去村子中央广场集合 ：村长说有要事宣布。"));
-        bookPages.add(StringTag.valueOf("傍晚去河边钓鱼 ：带好鱼竿（鱼竿在床底下？还是院外......），顺便洗衣服。"));
-        bookPages.add(StringTag.valueOf("晚上回家做饭 ：看看菜园里有啥能吃的（菜园里长着草和几株野花，我摘了野花煮汤，拉肚子了）。"));
-
-        book.addTagElement("pages", bookPages);//页数
-        book.addTagElement("generation", IntTag.valueOf(1));//破损度
-        book.addTagElement("author", StringTag.valueOf("健忘的村民"));
-        book.addTagElement("title", StringTag.valueOf("记事本"));
-
+        ItemStack book = BookManager.getDefaultTextBook(1, "健忘的村民", "记事本"
+                , "早上去找铁匠铺磨刀 ：上周砍树时刀卷了，铁匠铺在村子东边？还是西边来着......（此处有地图涂鸦，但画得像个烤肠）"
+                , "早上去还图书给村民 A ：从他那儿借了本《如何不迷路》"
+                , "中午去收集野花给村民 B ：她说想要红、黄、蓝三种颜色的花，我得去花丛那（花丛在村子北边？还是南边......），等等，我是不是已经采过了。"
+                , "中午去面包房买面包 需要 2 个"
+                , "傍晚去去农田帮村民 C 收麦子 收完麦子还要帮着堆草垛"
+                , "傍晚去村子中央广场集合 ：村长说有要事宣布。"
+                , "傍晚去河边钓鱼 ：带好鱼竿（鱼竿在床底下？还是院外......），顺便洗衣服。"
+                , "晚上回家做饭 ：看看菜园里有啥能吃的（昨天菜园里长着草和几株野花，我摘了野花煮汤，拉肚子了）。");
         ItemUtil.addItem(serverPlayer, book);
 
     }

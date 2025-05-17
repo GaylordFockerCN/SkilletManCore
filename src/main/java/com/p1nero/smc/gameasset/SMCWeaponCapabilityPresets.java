@@ -321,26 +321,26 @@ public class SMCWeaponCapabilityPresets {
 
     @SubscribeEvent
     public static void register(WeaponCapabilityPresetRegistryEvent event) {
-        event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "iron_skillet_v1"), IRON_SKILLET_V1);
-        event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "iron_skillet_v3"), IRON_SKILLET_V3);
-        event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "iron_skillet_v5"), IRON_SKILLET_V5);
+        event.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "iron_skillet_v1"), IRON_SKILLET_V1);
+        event.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "iron_skillet_v3"), IRON_SKILLET_V3);
+        event.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "iron_skillet_v5"), IRON_SKILLET_V5);
 
-        event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "golden_skillet_v1"), GOLDEN_SKILLET_V1);
-        event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "golden_skillet_v3"), GOLDEN_SKILLET_V3);
-        event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "golden_skillet_v5"), GOLDEN_SKILLET_V5);
+        event.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "golden_skillet_v1"), GOLDEN_SKILLET_V1);
+        event.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "golden_skillet_v3"), GOLDEN_SKILLET_V3);
+        event.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "golden_skillet_v5"), GOLDEN_SKILLET_V5);
 
-        event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "diamond_skillet"), DIAMOND_SKILLET);
+        event.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "diamond_skillet"), DIAMOND_SKILLET);
 
-        event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "iron_spatula_v1"), IRON_SPATULA_V1);
-        event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "iron_spatula_v3"), IRON_SPATULA_V3);
-        event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "iron_spatula_v5"), IRON_SPATULA_V5);
+        event.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "iron_spatula_v1"), IRON_SPATULA_V1);
+        event.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "iron_spatula_v3"), IRON_SPATULA_V3);
+        event.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "iron_spatula_v5"), IRON_SPATULA_V5);
 
-        event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "golden_spatula_v1"), GOLDEN_SPATULA_V1);
-        event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "golden_spatula_v3"), GOLDEN_SPATULA_V3);
-        event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "golden_spatula_v5"), GOLDEN_SPATULA_V5);
+        event.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "golden_spatula_v1"), GOLDEN_SPATULA_V1);
+        event.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "golden_spatula_v3"), GOLDEN_SPATULA_V3);
+        event.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "golden_spatula_v5"), GOLDEN_SPATULA_V5);
 
-        event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "diamond_spatula"), DIAMOND_SPATULA);
-        event.getTypeEntry().put(new ResourceLocation(SkilletManCoreMod.MOD_ID, "potato_cannon"), POTATO_CANNON);
+        event.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "diamond_spatula"), DIAMOND_SPATULA);
+        event.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "potato_cannon"), POTATO_CANNON);
     }
 
 }

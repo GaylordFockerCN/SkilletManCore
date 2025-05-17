@@ -19,6 +19,6 @@ public class FlameCircleRenderer extends EntityRenderer<FlameCircleEntity> {
 
     @Override
     public @NotNull ResourceLocation getTextureLocation(@NotNull FlameCircleEntity blackHoleEntity) {
-        return new ResourceLocation("");
+        return ResourceLocation.parse("");
     }
 }

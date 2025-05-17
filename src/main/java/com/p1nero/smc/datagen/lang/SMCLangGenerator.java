@@ -34,6 +34,13 @@ public class SMCLangGenerator extends SMCLangProvider {
             this.add("screen_tips.smc.tip" + i, ClientForgeEvents.TIPS.get(i));
         }
 
+        this.addInfo("best_season_win", "季度奖杯：[%s] - 属于 %s");
+        this.addInfo("best_for_season", "恭喜 [%s] 获得 [%s] 季度销冠！");
+        this.addInfo("best_seller", "本季度当前销冠：%s");
+        this.addInfo("current_money_list_pre", "本季度玩家持有金币排行榜：");
+        this.addInfo("current_money_count", "%s 持有 %d 金币");
+        this.addInfo("current_money_list_end", "使用\"/smc rankingList\"可显示本表。每季度将结算一次，本季度的销冠将获得奖杯！");
+        this.addInfo("level_no_enough", "声望等级不足！需声望等级 %d 解锁！");
         this.addInfo("weapon_level_max", "武器已达最大等级！无法继续提升！");
         this.addInfo("no_owner_shop", "无主的店铺");
         this.addInfo("my_new_shop", "我的新店铺");
@@ -42,7 +49,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("need_shift_see_combo", "按下shift以查看武器连招");
 
         this.addInfo("wear_effect", "§e套装效果：§r");
-        this.addInfo("set_time_not_allowed", "§c \"/time set\"命令将影响游戏进度！请使用 \"/time add\"代替！");
+        this.addInfo("set_time_not_allowed", "§c \"/time set\"命令将影响游戏进度！请使用 \"/time add\"代替！注意！修改时间可能会导致某些异常，请慎重！");
 
         this.addInfo("start_work", "§a上班！");
         this.addInfo("end_work", "§c下班！");
@@ -71,7 +78,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("diamond_spatula_tip", "§b翻炒冷却降低至 10tick");
 
         this.addInfo("weapon_level", "武器等级：");
-        this.addInfo("raid_title", "袭击");
+        this.addInfo("raid_title", "袭击 ：第 %s 天");
         this.addInfo("raid_success_for_day", "成功抵御了第 %d 天的袭击！");
         this.addInfo("raid_victory", "成功抵御了袭击！");
         this.addInfo("raid_loss", "抵御失败！损失惨重！");
@@ -177,13 +184,23 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("level5_2", "突破奖励", "§6无脑村民刷怪蛋 × 5§a：在家里也能抽卡！");
         this.addAdvancement("level10", "声望等级10 奖励", "§e黄金锅铲 §6⭐⭐⭐⭐⭐");
         this.addAdvancement("level10_1", "突破奖励", "§6高级喂食升级：§a背包可自动喂食，更多配置项");
-        this.addAdvancement("level10_2", "突破奖励", "§6工程师护目镜：§a提醒你一下本包有机械动力。差不多该步入机械时代了，快去找机械师（工具匠）搞点材料吧~");
+        this.addAdvancement("level10_2", "突破奖励", "§6工程师护目镜：§a提醒你一下本包有机械动力。差不多该步入机械时代了，快升级一下店铺，有惊喜哦！");
         this.addAdvancement("level15", "声望等级15 奖励", "§e黄金平底锅 §6⭐⭐⭐⭐⭐");
         this.addAdvancement("level20", "声望等级20 奖励", "§6土豆加农炮：§a大人，时代变了");
         this.addAdvancement("level20_1", "突破奖励", "§d屠龙套装");
         this.addAdvancement("level20_2", "突破奖励", "§6大机械时代！\n§a机械师处解锁全部机械动力交易");
         this.addAdvancement("level25", "声望等级25 奖励", "§b钻石平底锅 §5⭐⭐⭐⭐");
         this.addAdvancement("level30", "声望等级30 奖励", "§6左锅右铲§r + §6英雄套装");
+
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "_create", "三只机械手", "声望等级达到十级，店铺升到四级后，开始享受本包自制的自动化炒菜吧！");
+        this.addAdvancement("add_power", "来些动力吧！", "使水车或风车动起来，然后将它接入地下室的三只机械手。本关考察玩家机械动力基础");
+        this.addAdvancement("arm1", "第一只手狠下料", "使用机械臂将食物丢入炒锅，可以看看炒锅思索。别忘了拆下来重新设好目标再装上去哦");
+        this.addAdvancement("arm2", "第二只手勤翻炒", "使机械臂拿锅铲与炒锅交互，可以看看炒锅思索。别忘了拆下来重新设好目标再装上去哦");
+        this.addAdvancement("arm3", "第三只手把菜盛", "使机械臂拿着盘子将炒好的料理端出，并放到合适的位置去。提示：机械臂输出端先设置炒锅，再设置储存容器。可以看看炒锅思索。别忘了拆下来重新设好目标再装上去哦");
+        this.addAdvancement("belt", "延时输送好帮手！", "使用传送带传送食物。提示：8RPM时刚好3秒输送一格，时间久的食材应该靠前哦。");
+        this.addAdvancement("stock_ticker", "下单！", "获得仓储链接站。提示：下单后的物品按顺序落在传送带上，传送带的末端则作为机械臂的输入，即可实现机械臂智能延时下锅！可参考蓝图。");
+        this.addAdvancement("pulse_repeater", "该出锅了！", "获得脉冲中继器。时间还没到，可别抢着端走呀！（提示：先用红石信号阻断，当下锅后一段时间再解除红石信号。可借助无线红石信号发射器。）");
+
 
         this.addAdvancement("dirt_plate", "节俭之星", "使用脏盘子盛菜，节俭是一种美德，但是你的顾客可能不会这么想。");
         this.addAdvancement("start_work", "新的开始", "接手一家店铺并开始经营");
@@ -221,8 +238,24 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("dodge_master2", "闪避大师2", "完美闪避100次");
         this.addAdvancement("dodge_master3", "闪避大师3", "完美闪避1000次");
         this.addAdvancement("parry_master", "招架大师", "完美招架10次");
+        this.addAdvancement("parry_master2", "招架大师2", "完美招架100次");
+        this.addAdvancement("parry_master3", "招架大师3", "完美招架1000次");
+
+        this.addAdvancement("hijack_customer", "拐走！", "抢走其他玩家的顾客");
+        this.addAdvancement("no_your_power", "忠于平底锅", "企图使用其他武器的力量");
+        this.addAdvancement("fake_sleep", "睡觉时间到！", "企图唤醒你的员工，但你永远无法唤醒一个正在装睡的人。");
+        this.addAdvancement("try_push", "碰碰车", "企图推开核心NPC，太可恶了！");
+        this.addAdvancement("no_money", "亿万负翁", "钱达到负数（到底是怎么做到的。。。）");
+        this.addAdvancement("self_eat", "自产自销", "吃下自己做的食物");
+        this.addAdvancement("too_many_mouth", "工伤请求", "接待话很多的村民");
+        this.addAdvancement("pre_cook", "预制菜", "在大晚上的做菜卖给谁呢？");
+        this.addAdvancement("dog_no_eat", "狗都不吃", "企图给狗吃做坏的食材。");
+
+        this.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get(), "烹饪宝典");
+        this.addItemUsageInfo(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get(), "右键以学习料理乐事的烹饪基础知识，建议熟悉后再开始上班哦~");
         CookGuideBookItem.addTranslation(this);
-        this.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get(), "论机械动力与料理乐事相结合（新手向）");
+        this.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get(), "论机械动力与料理乐事相结合");
+        this.addItemUsageInfo(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get(), "右键以学习料理乐事和机械动力结合所需的知识。本书应和 炒锅 的 [思索] 结合阅读。");
         CreateCookGuideBookItem.addTranslation(this);
 
         this.add(SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get(), "左锅右铲");

@@ -7,6 +7,7 @@ import com.p1nero.smc.client.sound.player.RaidMusicPlayer;
 import com.p1nero.smc.client.sound.player.WorkingMusicPlayer;
 import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.entity.custom.CustomColorItemEntity;
+import com.p1nero.smc.event.ServerEvents;
 import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
@@ -21,24 +22,23 @@ import com.p1nero.smc.worldgen.portal.SMCTeleporter;
 import com.simibubi.create.AllItems;
 import com.teamtea.eclipticseasons.api.constant.solar.SolarTerm;
 import com.teamtea.eclipticseasons.api.util.EclipticUtil;
-import com.yungnickyoung.minecraft.betterendisland.mixin.ServerLevelMixin;
+import de.keksuccino.konkrete.json.jsonpath.internal.function.numeric.Min;
+import dev.xkmc.cuisinedelight.content.item.SpatulaItem;
 import dev.xkmc.cuisinedelight.init.registrate.PlateFood;
 import hungteen.htlib.common.world.entity.DummyEntityManager;
 import net.kenddie.fantasyarmor.item.FAItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentUtils;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -52,9 +52,7 @@ import reascer.wom.main.WeaponsOfMinecraft;
 import xaero.common.XaeroMinimapSession;
 import xaero.common.core.IXaeroMinimapClientPlayNetHandler;
 import xaero.common.minimap.waypoints.Waypoint;
-import xaero.common.minimap.waypoints.WaypointVisibilityType;
 import xaero.common.minimap.waypoints.WaypointsManager;
-import xaero.common.settings.ModSettings;
 import xaero.minimap.XaeroMinimap;
 import yesman.epicfight.client.ClientEngine;
 import yesman.epicfight.skill.Skill;
@@ -72,6 +70,31 @@ import java.util.function.Consumer;
  */
 public class SMCPlayer {
 
+    //翻炒QTE计算，给1/3的时间可以翻
+    public static final float MAX_SPATULA_TIME = 20;
+    private int currentSpatulaIndex;
+    private int currentSpatulaIndex0;
+    private long lastSpatulaInteractTime;
+    private int lastClientCombo;
+    private boolean dir;//true 左 false 右
+
+    public float getCurrentSpatulaIndex(float partialTick) {
+        return Mth.lerp(partialTick, currentSpatulaIndex0,  currentSpatulaIndex);
+    }
+
+    public boolean inCorrectStirTime(){
+        return currentSpatulaIndex > MAX_SPATULA_TIME / 3 && currentSpatulaIndex < MAX_SPATULA_TIME * 2 / 3;
+    }
+
+    public long getLastSpatulaInteractTime() {
+        return lastSpatulaInteractTime;
+    }
+
+    public void setLastSpatulaInteractTime(long lastSpatulaInteractTime) {
+        this.lastSpatulaInteractTime = lastSpatulaInteractTime;
+    }
+
+    //=============================================================
     private int armorGachaingCount;
     private int armorPity4Star;
     private int armorPity5Star;
@@ -185,6 +208,7 @@ public class SMCPlayer {
     private int level;
     private int stage;
     private int moneyCount;
+    private int moneyInSeason;
     private boolean isWorking;
     private boolean isSpecialAlive;
     private int consumerLeft;
@@ -396,6 +420,7 @@ public class SMCPlayer {
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("raid_success_for_day", dayTime), false);
         addMoney(1600 * (1 + dayTime), serverPlayer);
         SMCPlayer.levelUPPlayer(serverPlayer);
+        tryBroadCastRank(serverPlayer);
     }
 
     public static void defendFailed(ServerPlayer serverPlayer) {
@@ -404,6 +429,16 @@ public class SMCPlayer {
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("raid_loss_tip"), false);
         int dayTime = (int) (serverPlayer.serverLevel().dayTime() / 24000);
         consumeMoney(800 * (1 + dayTime), serverPlayer);
+        tryBroadCastRank(serverPlayer);
+    }
+
+    /**
+     * 袭击完全结束后再播报
+     */
+    public static void tryBroadCastRank(ServerPlayer serverPlayer) {
+        if(DummyEntityManager.getDummyEntities(serverPlayer.serverLevel()).isEmpty()) {
+            ServerEvents.broadCastRankingList(serverPlayer);
+        }
     }
 
     public void unlockStage1(ServerPlayer serverPlayer) {
@@ -426,7 +461,7 @@ public class SMCPlayer {
         ItemUtil.addItem(serverPlayer, ModItems.ADVANCED_FEEDING_UPGRADE.get().getDefaultInstance(), true);
         ItemUtil.addItem(serverPlayer, AllItems.GOGGLES.asStack(), true);
         ItemUtil.addItem(serverPlayer, SMCRegistrateItems.CREATE_RAFFLE.asStack(5), true);
-        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.asStack(), true);
+        ItemUtil.addItem(serverPlayer, Items.SMITHING_TABLE.getDefaultInstance(), true);
         SMCAdvancementData.finishAdvancement("level10_1", serverPlayer);
         SMCAdvancementData.finishAdvancement("level10_2", serverPlayer);
     }
@@ -482,6 +517,10 @@ public class SMCPlayer {
         return moneyCount;
     }
 
+    public int getMoneyInSeason() {
+        return moneyInSeason;
+    }
+
     public static void consumeMoney(double moneyCount, ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         smcPlayer.moneyCount -= (int) moneyCount;
@@ -495,6 +534,7 @@ public class SMCPlayer {
     public static void addMoney(int count, ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         smcPlayer.moneyCount += count;
+        smcPlayer.moneyInSeason += count;
         serverPlayer.displayClientMessage(Component.literal("+" + count).withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN), false);
         smcPlayer.syncToClient(serverPlayer);
         if (smcPlayer.moneyCount > 1000) {
@@ -644,6 +684,7 @@ public class SMCPlayer {
         tag.putInt("levelUpLeft", levelUpLeft);
         tag.putInt("tradeLevel", level);
         tag.putInt("tradeStage", stage);
+        tag.putInt("moneyInSeason", moneyInSeason);
         tag.putInt("money_count", moneyCount);
         tag.putBoolean("working", isWorking);
         tag.putInt("consumerLeft", consumerLeft);
@@ -673,6 +714,7 @@ public class SMCPlayer {
         level = tag.getInt("tradeLevel");
         levelUpLeft = tag.getInt("levelUpLeft");
         stage = tag.getInt("tradeStage");
+        moneyInSeason = tag.getInt("moneyInSeason");
         moneyCount = tag.getInt("money_count");
         consumerLeft = tag.getInt("consumerLeft");
         isWorking = tag.getBoolean("working");
@@ -682,6 +724,7 @@ public class SMCPlayer {
     public void copyFrom(SMCPlayer old) {
         this.data = old.data;
 
+        this.moneyInSeason = old.moneyInSeason;
         this.tickAfterBossDieLeft = old.tickAfterBossDieLeft;
         this.specialCustomerMet = old.specialCustomerMet;
 
@@ -717,7 +760,41 @@ public class SMCPlayer {
 
     @SuppressWarnings("deprecation")
     public void tick(Player player) {
+
+        int dayTime = (int) (player.level().getDayTime() / 24000);
+        int dayTick = (int) (player.level().getDayTime() % 24000);
+
+
+        //控制铲子位置
+        if(player.getMainHandItem().getItem() instanceof SpatulaItem) {
+            currentSpatulaIndex0 = currentSpatulaIndex;
+            int time = dayTick % ((int) MAX_SPATULA_TIME + 1);
+            if(dir) {
+                currentSpatulaIndex = time;
+            } else {
+                currentSpatulaIndex = (int) (MAX_SPATULA_TIME - time);
+            }
+            if(currentSpatulaIndex == MAX_SPATULA_TIME) {
+                dir = false;
+            }
+            if(currentSpatulaIndex == 0) {
+                dir = true;
+            }
+        }
+
         if (player.level().isClientSide) {
+            int currentCombo = DataManager.spatulaCombo.get(player).intValue();
+            if(currentCombo != lastClientCombo) {
+                lastClientCombo = currentCombo;
+                if(currentCombo == 0) {
+                    player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), SoundEvents.VILLAGER_NO, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                } else {
+                    player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                    if(currentCombo % 10 == 0) {
+                        player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), SMCSounds.VILLAGER_YES.get(), SoundSource.BLOCKS, currentCombo / 20.0F + 0.5F, 1.0F, false);
+                    }
+                }
+            }
             if (isWorking) {
                 if (!WorkingMusicPlayer.isRecordPlaying()) {
                     WorkingMusicPlayer.playWorkingMusic();
@@ -760,12 +837,18 @@ public class SMCPlayer {
 
         } else {
             ServerPlayer serverPlayer = (ServerPlayer) player;
+            ServerLevel serverLevel = serverPlayer.serverLevel();
 
-            if(serverPlayer.serverLevel().getDayTime() % 24000 == 100) {
+            //显示当天节气
+            if(dayTick == 100) {
                 SolarTerm solarTerm = EclipticUtil.getNowSolarTerm(serverPlayer.serverLevel());
-                serverPlayer.connection.send(new ClientboundSetTitleTextPacket(solarTerm.getTranslation().withStyle(solarTerm.getSeason().getColor())));//显示当天节气
+                serverPlayer.connection.send(new ClientboundSetTitleTextPacket(solarTerm.getTranslation().withStyle(solarTerm.getSeason().getColor())));
+                if(dayTime % 7 == 0) {
+                    moneyInSeason = 0;
+                }
             }
 
+            //Boss战后的返回倒计时
             if (tickAfterBossDieLeft > 0) {
                 tickAfterBossDieLeft--;
                 if (tickAfterBossDieLeft % 40 == 0) {
@@ -787,10 +870,12 @@ public class SMCPlayer {
                 }
             }
 
+            //重置袭击状态
             if (DataManager.inRaid.get(player) && DummyEntityManager.getDummyEntities(((ServerLevel) player.level())).isEmpty()) {
                 DataManager.inRaid.put(player, false);
             }
 
+            //控制当前对话实体看自己
             if (this.currentTalkingEntity != null && this.currentTalkingEntity.isAlive()) {
                 this.currentTalkingEntity.getLookControl().setLookAt(player);
                 this.currentTalkingEntity.getNavigation().stop();
@@ -799,6 +884,7 @@ public class SMCPlayer {
                 }
             }
 
+            //抽卡系统
             if (player.tickCount % 20 == 0) {
                 //1s抽出一个
                 if (this.armorGachaingCount > 0) {

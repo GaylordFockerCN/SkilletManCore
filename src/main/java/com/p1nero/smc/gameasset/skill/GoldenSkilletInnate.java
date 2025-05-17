@@ -27,7 +27,7 @@ import java.util.Random;
  * 点燃周围敌人
  */
 public class GoldenSkilletInnate extends WeaponInnateSkill {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(WeaponsOfMinecraft.MODID, "textures/gui/skills/true_berserk.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(WeaponsOfMinecraft.MODID, "textures/gui/skills/true_berserk.png");
     public GoldenSkilletInnate(Builder<?> builder) {
         super(builder);
     }

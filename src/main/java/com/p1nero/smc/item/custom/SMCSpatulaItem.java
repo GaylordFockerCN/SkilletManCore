@@ -2,6 +2,11 @@ package com.p1nero.smc.item.custom;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import com.p1nero.smc.SMCConfig;
+import com.p1nero.smc.archive.DataManager;
+import com.p1nero.smc.capability.SMCCapabilityProvider;
+import com.p1nero.smc.capability.SMCPlayer;
+import com.p1nero.smc.client.sound.SMCSounds;
 import dev.xkmc.cuisinedelight.content.block.CuisineSkilletBlockEntity;
 import dev.xkmc.cuisinedelight.content.item.CuisineSkilletItem;
 import dev.xkmc.cuisinedelight.content.item.SpatulaItem;
@@ -22,6 +27,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.asm.mixin.Unique;
 import vectorwing.farmersdelight.common.registry.ModSounds;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
@@ -68,12 +74,12 @@ public class SMCSpatulaItem extends SpatulaItem {
         Player player = ctx.getPlayer();
         BlockEntity var5 = level.getBlockEntity(ctx.getClickedPos());
         if (var5 instanceof CuisineSkilletBlockEntity be) {
-            if (!be.cookingData.contents.isEmpty()) {
+            if (player != null && !level.isClientSide) {
+                player.getCooldowns().addCooldown(this, cooldown);
+            }
+            if (!be.cookingData.contents.isEmpty() && checkInCorrectTime(player)) {
                 if (!level.isClientSide()) {
                     be.stir(level.getGameTime(), getReduction(ctx.getItemInHand()));
-                    if (player != null) {
-                        player.getCooldowns().addCooldown(this, cooldown);
-                    }
                 } else if (player != null) {
                     CuisineSkilletItem.playSound(player, level, ModSounds.BLOCK_SKILLET_SIZZLE.get());
                 }
@@ -82,4 +88,30 @@ public class SMCSpatulaItem extends SpatulaItem {
 
         return InteractionResult.SUCCESS;
     }
+
+    public static boolean checkInCorrectTime(Player player) {
+        if(!SMCConfig.HARD_COOK_MODE.get()) {
+            return true;
+        }
+        SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
+        boolean toReturn = smcPlayer.inCorrectStirTime();
+        if(toReturn) {
+            if(!player.level().isClientSide) {
+                long lastInteractTime = smcPlayer.getLastSpatulaInteractTime();
+                if(player.level().getGameTime() - lastInteractTime > 100 && lastInteractTime != 0) {
+                    DataManager.spatulaCombo.put(player, 0.0);
+                } else {
+                    DataManager.spatulaCombo.put(player, DataManager.spatulaCombo.get(player) + 1);
+                }
+                smcPlayer.setLastSpatulaInteractTime(player.level().getGameTime());
+            }
+
+        } else {
+            if(!player.level().isClientSide) {
+                DataManager.spatulaCombo.put(player, 0.0);
+            }
+        }
+        return toReturn;
+    }
+
 }

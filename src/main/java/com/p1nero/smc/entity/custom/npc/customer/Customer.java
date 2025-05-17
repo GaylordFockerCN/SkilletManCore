@@ -38,6 +38,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.npc.Villager;
@@ -282,6 +283,16 @@ public class Customer extends SMCNpc {
             this.discard();
         }
 
+    }
+
+    @Override
+    public boolean hurt(@NotNull DamageSource source, float value) {
+        //可以攻击他人的顾客
+        if(source.getEntity() instanceof ServerPlayer serverPlayer && !serverPlayer.equals(this.getOwner())){
+            this.setTraded(true);
+            return super.hurt(source, 1145);
+        }
+        return super.hurt(source, value);
     }
 
     @Override

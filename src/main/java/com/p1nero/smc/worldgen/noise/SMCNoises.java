@@ -13,7 +13,7 @@ public class SMCNoises {
     public static final ResourceKey<NoiseParameters> VEGETATION = createKey("vegetation");
 
     private static ResourceKey<NoiseParameters> createKey(String name) {
-        return ResourceKey.create(Registries.NOISE, new ResourceLocation(SkilletManCoreMod.MOD_ID, name));
+        return ResourceKey.create(Registries.NOISE, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, name));
     }
 
     public static void bootstrap(BootstapContext<NoiseParameters> context) {

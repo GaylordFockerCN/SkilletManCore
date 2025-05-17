@@ -29,9 +29,9 @@ public class SMCRecipeProvider extends RecipeProvider {
                                                   RecipeCategory category1, ItemLike itemLike1, String p_250475_, @Nullable String p_248641_,
                                                   String p_252237_, @Nullable String p_250414_) {
         ShapelessRecipeBuilder.shapeless(category, itemLike, 9).requires(itemLike1).group(p_250414_).unlockedBy(getHasName(itemLike1), has(itemLike1))
-                .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, p_252237_+"shapeless"));//加后缀防止重名
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, p_252237_+"shapeless"));//加后缀防止重名
         ShapedRecipeBuilder.shaped(category1, itemLike1).define('#', itemLike).pattern("###").pattern("###").pattern("###").group(p_248641_)
-                .unlockedBy(getHasName(itemLike), has(itemLike)).save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, p_250475_+"shaped"));
+                .unlockedBy(getHasName(itemLike), has(itemLike)).save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, p_250475_+"shaped"));
     }
 
     protected static void woodBlockStorageRecipes(Consumer<FinishedRecipe> consumer, RecipeCategory category, ItemLike itemLike, ItemLike itemLike1) {
@@ -41,12 +41,12 @@ public class SMCRecipeProvider extends RecipeProvider {
     protected static void woodBlockStorageRecipes(Consumer<FinishedRecipe> consumer, RecipeCategory category, ItemLike itemLike,
                                                    ItemLike itemLike1,String p_252237_, @Nullable String p_250414_) {
         ShapelessRecipeBuilder.shapeless(category, itemLike, 4).requires(itemLike1).group(p_250414_).unlockedBy(getHasName(itemLike1), has(itemLike1))
-                .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, p_252237_));
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, p_252237_));
     }
 
     protected static void oreSmelting(ItemLike result, ItemLike ingredient, float experience, int cookingTime, Consumer<FinishedRecipe> consume) {
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(ingredient), RecipeCategory.MISC, result, experience, cookingTime).unlockedBy(getHasName(ingredient), has(ingredient))
-                .save(consume, new ResourceLocation(SkilletManCoreMod.MOD_ID, getItemName(result)) + "_from_smelting" + "_" + getItemName(ingredient));
+                .save(consume, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, getItemName(result)) + "_from_smelting" + "_" + getItemName(ingredient));
     }
 
     protected static void smithing(Consumer<FinishedRecipe> consumer, ItemLike ingredient1, ItemLike ingredient2, ItemLike ingredient3, RecipeCategory category, Item output) {

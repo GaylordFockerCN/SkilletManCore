@@ -23,11 +23,11 @@ public class SMCPlacedFeatures {
 
     }
     private static ResourceKey<PlacedFeature> registerKey(String name) {
-        return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(SkilletManCoreMod.MOD_ID, name));
+        return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, name));
     }
 
     private static ResourceKey<PlacedFeature> createKey(String name) {
-        return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(SkilletManCoreMod.MOD_ID, name));
+        return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, name));
     }
 
     private static void register(BootstapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> configuration,

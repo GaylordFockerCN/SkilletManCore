@@ -14,7 +14,7 @@ import java.util.function.Function;
 public class SMCPacketHandler {
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(SkilletManCoreMod.MOD_ID, "main"),
+            ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "main"),
             () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals
     );
 

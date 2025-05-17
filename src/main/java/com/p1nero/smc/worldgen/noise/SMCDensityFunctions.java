@@ -14,7 +14,7 @@ public class SMCDensityFunctions {
     public static final ResourceKey<DensityFunction> BASE_3D_NOISE_PLAIN = createKey("base_3d_noise_plain");
 
     private static ResourceKey<DensityFunction> createKey(String name) {
-        return ResourceKey.create(Registries.DENSITY_FUNCTION, new ResourceLocation(SkilletManCoreMod.MOD_ID, name));
+        return ResourceKey.create(Registries.DENSITY_FUNCTION, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, name));
     }
 
     public static void bootstrap(BootstapContext<DensityFunction> context) {

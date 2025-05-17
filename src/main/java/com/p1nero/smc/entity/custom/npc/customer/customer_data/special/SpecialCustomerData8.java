@@ -36,10 +36,10 @@ public class SpecialCustomerData8 extends SpecialCustomerData {
         generator.add(answerPre(-1), "（这位村民瑟瑟发抖，眼神惊恐四顾，似乎周围随时有僵尸出现）");
         generator.add(choicePre(-1), "小朋友别怕，想吃点什么？");
 
-        generator.add(answerPre(0), "能、能来点看着就、就安心的 %s 吗？（声音颤抖）");
+        generator.add(answerPre(0), "能、能来点 %s 吗？（声音颤抖）");
         generator.add(choicePre(0), "安心呈上");
 
-        generator.add(answerPre(1), "（放松下来）这、这个...真、真的不错！这、这技能书送你，谢、谢谢了！");
+        generator.add(answerPre(1), "（放松下来）这、这个...真、真的不错！这、这东西送你，谢、谢谢了！");
         generator.add(choicePre(1), "多谢，告辞");
 
         generator.add(answerPre(2), "不、不够好...我、我先走了...（转身欲逃）");

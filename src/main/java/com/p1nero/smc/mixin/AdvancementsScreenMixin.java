@@ -2,6 +2,7 @@ package com.p1nero.smc.mixin;
 
 import com.p1nero.smc.SkilletManCoreMod;
 import com.simibubi.create.Create;
+import com.teamtea.eclipticseasons.EclipticSeasons;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
@@ -23,7 +24,7 @@ public abstract class AdvancementsScreenMixin extends Screen {
     @Inject(method = "onAddAdvancementRoot", at = @At("HEAD"), cancellable = true)
     private void smc$onAddAdvancementRoot(Advancement advancement, CallbackInfo ci){
         if(!(advancement.getId().getNamespace().equals(SkilletManCoreMod.MOD_ID)
-//                || advancement.getId().getNamespace().equals(Create.ID)
+//                || advancement.getId().getNamespace().equals(EclipticSeasons.MODID)
         )){
             ci.cancel();
         }

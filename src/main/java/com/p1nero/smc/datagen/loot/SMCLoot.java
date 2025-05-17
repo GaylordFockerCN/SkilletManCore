@@ -14,7 +14,7 @@ public class SMCLoot {
     public static final Set<ResourceLocation> IMMUTABLE_LOOT_TABLES = Collections.unmodifiableSet(LOOT_TABLES);
 
     private static ResourceLocation register(String id) {
-        return register(new ResourceLocation(SkilletManCoreMod.MOD_ID, id));
+        return register(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, id));
     }
 
     private static ResourceLocation register(ResourceLocation id) {

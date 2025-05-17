@@ -32,7 +32,7 @@ public interface SMCRaidComponents {
         for (int i = 0; i <= 30; i++) {
             RAIDS.add(create("raid_" + i));
             context.register(RAIDS.get(i), new CommonRaid(HTRaidComponents.builder()
-                    .title(SkilletManCoreMod.getInfo("raid_title"))
+                    .title(SkilletManCoreMod.getInfo("raid_title", String.valueOf(i)))
                     .victoryTitle(SkilletManCoreMod.getInfo("raid_victory"))
                     .lossTitle(SkilletManCoreMod.getInfo("raid_loss"))
                     .range(72)

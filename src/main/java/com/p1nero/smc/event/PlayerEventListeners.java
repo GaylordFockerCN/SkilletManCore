@@ -85,7 +85,8 @@ public class PlayerEventListeners {
                     || path.contains(SkilletManCoreMod.MOD_ID + "_food")
                     || path.contains(SkilletManCoreMod.MOD_ID + "_armor")
                     || path.contains(SkilletManCoreMod.MOD_ID + "_skill")
-                    || path.contains(SkilletManCoreMod.MOD_ID + "_level")){
+                    || path.contains(SkilletManCoreMod.MOD_ID + "_level")
+                    || path.contains(SkilletManCoreMod.MOD_ID + "_create")){
                 return;
             }
             if(!path.contains("recipe")) {
@@ -119,6 +120,7 @@ public class PlayerEventListeners {
             SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID + "_armor", serverPlayer);
             SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID + "_skill", serverPlayer);
             SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID + "_level", serverPlayer);
+            SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID + "_create", serverPlayer);
 
             SMCPlayer.updateWorkingState(false, serverPlayer);//重置上班状态，防止假性上班（
 
@@ -152,6 +154,8 @@ public class PlayerEventListeners {
                 ItemUtil.addItem(serverPlayer, guard);
                 ItemUtil.addItem(serverPlayer, parrying);
             }
+
+            DataManager.spatulaCombo.put(serverPlayer, 0.0);
         }
 
     }

@@ -133,7 +133,7 @@ dependencies {
     }
 
     //TODO 临时导入！
-    implementation fg.deobf("curse.maven:panoramica-426082:4019292")
+//    implementation fg.deobf("curse.maven:panoramica-426082:4019292")
     implementation fg.deobf("curse.maven:copycats-968398:6462507")
 
 //    implementation fg.deobf("curse.maven:polymorph-388800:6450982")
@@ -170,8 +170,7 @@ dependencies {
     //机械动力
     implementation fg.deobf("curse.maven:create-328085:6323270")
     implementation fg.deobf("curse.maven:create-connected-947914:6401676")
-
-    implementation fg.deobf("curse.maven:kaleidoscope-doll-1233277:6373592")
+    implementation fg.deobf("libs:create_cuisine:1.0.0")
 
     implementation fg.deobf("curse.maven:hungteens-lib-794622:5782587")
 

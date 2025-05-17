@@ -16,8 +16,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class HealthBarRenderer {
 
-    private static final ResourceLocation HEALTH_BAR_TEXTURE = new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/hud/health_bar.png");
-    private static final ResourceLocation HEALTH_BAR_BG_TEXTURE = new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/hud/health_bar_bg.png");
+    private static final ResourceLocation HEALTH_BAR_TEXTURE = ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/hud/health_bar.png");
+    private static final ResourceLocation HEALTH_BAR_BG_TEXTURE = ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/hud/health_bar_bg.png");
     public static void renderHealthBar(GuiGraphics guiGraphics, Window window, float partialTick) {
         LocalPlayer localPlayer = Minecraft.getInstance().player;
         if(localPlayer != null && !localPlayer.isCreative() && !localPlayer.isSpectator()) {

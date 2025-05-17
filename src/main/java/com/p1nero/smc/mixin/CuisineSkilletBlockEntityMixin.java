@@ -3,6 +3,7 @@ package com.p1nero.smc.mixin;
 import dev.xkmc.cuisinedelight.content.block.CuisineSkilletBlockEntity;
 import dev.xkmc.cuisinedelight.content.logic.CookingData;
 import dev.xkmc.cuisinedelight.content.logic.IngredientConfig;
+import dev.xkmc.cuisinedelight.content.logic.transform.Stage;
 import dev.xkmc.cuisinedelight.init.data.CDConfig;
 import dev.xkmc.l2library.base.tile.BaseBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -10,11 +11,13 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -26,6 +29,7 @@ import vectorwing.farmersdelight.common.registry.ModSounds;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Mixin(value = CuisineSkilletBlockEntity.class)
@@ -83,6 +87,27 @@ public abstract class CuisineSkilletBlockEntityMixin extends BaseBlockEntity {
                 }
             }
         }
+
+        //碳化
+        if(level != null && !level.isClientSide && !this.cookingData.contents.isEmpty()) {
+            AtomicBoolean becomeCoal = new AtomicBoolean(true);
+            this.cookingData.contents.forEach(cookingEntry -> {
+                IngredientConfig.IngredientEntry config = IngredientConfig.get().getEntry(cookingEntry.getItem());
+                assert config != null;
+                if(level.getGameTime() - ((CookingEntryAccessor)cookingEntry).getStartTime() < 400) {
+                    becomeCoal.set(false);
+                }
+            });
+            if(becomeCoal.get()) {
+                int count = 1 + this.cookingData.contents.size() / 3;
+                this.cookingData = new CookingData();
+                this.sync();
+                Vec3 center = pPos.getCenter();
+                ItemEntity itemEntity = new ItemEntity(level, center.x, center.y, center.z, Items.COAL.getDefaultInstance().copyWithCount(count));
+                level.addFreshEntity(itemEntity);
+            }
+        }
+
     }
 
     @Unique

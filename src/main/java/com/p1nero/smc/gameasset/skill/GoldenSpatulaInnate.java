@@ -14,7 +14,7 @@ import yesman.epicfight.world.effect.EpicFightMobEffects;
  * 点燃周围敌人
  */
 public class GoldenSpatulaInnate extends WeaponInnateSkill {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(WeaponsOfMinecraft.MODID, "textures/gui/skills/demonic_ascension.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(WeaponsOfMinecraft.MODID, "textures/gui/skills/demonic_ascension.png");
     public GoldenSpatulaInnate(Builder<?> builder) {
         super(builder);
     }

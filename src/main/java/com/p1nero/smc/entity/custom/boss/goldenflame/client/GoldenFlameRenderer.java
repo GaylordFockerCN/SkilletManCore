@@ -27,6 +27,6 @@ public class GoldenFlameRenderer extends HumanoidMobRenderer<GoldenFlame, Humano
 
     @Override
     public @NotNull ResourceLocation getTextureLocation(@NotNull GoldenFlame entity) {
-        return new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/entity/golden_flame.png");
+        return ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/entity/golden_flame.png");
     }
 }

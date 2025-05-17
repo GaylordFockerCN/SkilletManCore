@@ -1,10 +1,10 @@
 package com.p1nero.smc.datagen;
 
-import com.github.ysbbbbbb.kaleidoscopedoll.init.ModItems;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.gacha.ArmorGachaSystem;
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import dev.xkmc.cuisinedelight.init.registrate.CDItems;
 import dev.xkmc.cuisinedelight.init.registrate.PlateFood;
@@ -29,6 +29,8 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeAdvancementProvider;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import reascer.wom.world.item.WOMItems;
+import vectorwing.farmersdelight.common.registry.ModItems;
 import yesman.epicfight.api.data.reloader.SkillManager;
 import yesman.epicfight.skill.SkillCategory;
 import yesman.epicfight.world.item.EpicFightItems;
@@ -62,10 +64,10 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                     .display(CDItems.SKILLET.asItem(),
                             Component.translatable(PRE + SkilletManCoreMod.MOD_ID),
                             Component.translatable(PRE + SkilletManCoreMod.MOD_ID + ".desc"),
-                            new ResourceLocation("textures/block/bricks.png"),
+                            ResourceLocation.parse("textures/block/bricks.png"),
                             FrameType.GOAL, false, false, false)
                     .addCriterion(SkilletManCoreMod.MOD_ID, new ImpossibleTrigger.TriggerInstance())
-                    .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID), existingFileHelper);
+                    .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID), existingFileHelper);
 
             Advancement startWork = registerAdvancement(root, "start_work", FrameType.TASK, SMCRegistrateItems.SPATULA_V5, true, true, false);
             Advancement money1000 = registerAdvancement(startWork, "money1000", FrameType.GOAL, Items.DIAMOND, true, true, false);
@@ -77,7 +79,7 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement special_customer_1 = registerAdvancement(startWork, "special_customer_1", FrameType.TASK, Items.PUFFERFISH, true, true, false);
             Advancement special_customer_2 = registerAdvancement(special_customer_1, "special_customer_2", FrameType.TASK, Items.PUFFERFISH, true, true, false);
             Advancement special_customer_3 = registerAdvancement(special_customer_2, "special_customer_3", FrameType.TASK, Items.PUFFERFISH, true, true, false);
-            Advancement hijackCustomer = registerAdvancement(startWork, "hijack_customer", FrameType.TASK, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_30"))));
+            Advancement hijackCustomer = registerAdvancement(startWork, "hijack_customer", FrameType.TASK, ModItems.IRON_KNIFE.get());
             Advancement dirtPlate = registerAdvancement(startWork, "dirt_plate", FrameType.TASK, SMCRegistrateItems.DIRT_PLATE);
             Advancement heShen = registerAdvancement(startWork, "he_shen", FrameType.TASK, SMCRegistrateItems.IRON_SKILLET_LEVEL5);
             Advancement twoKid = registerAdvancement(heShen, "two_kid", FrameType.TASK, SMCRegistrateItems.GOLDEN_SKILLET_V3);
@@ -96,13 +98,13 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement raid20d = registerAdvancement(raid10d, "raid20d", FrameType.GOAL, Items.DIAMOND_SWORD, true, true, false);//抵御袭击天数
             Advancement raid30d = registerAdvancement(raid20d, "raid30d", FrameType.GOAL, Items.NETHERITE_SWORD, true, true, false);//抵御袭击天数
 
-            Advancement startChangeVillager = registerAdvancement(root, "change_villager", FrameType.TASK, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_24"))), true, true, false);
+            Advancement startChangeVillager = registerAdvancement(root, "change_villager", FrameType.TASK, Items.WHEAT, true, true, false);
             Advancement talkToCleric = registerAdvancement(startChangeVillager, "talk_to_cleric", FrameType.TASK, Items.ENDER_EYE, true, true, false);
-            Advancement end = registerAdvancement(talkToCleric, "end", FrameType.CHALLENGE, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_3"))), true, true, false);
+            Advancement end = registerAdvancement(talkToCleric, "end", FrameType.CHALLENGE, WOMItems.SOLAR.get(), true, true, false);
             //TODO
             Advancement trueEnd = registerAdvancement(end, "true_end", FrameType.CHALLENGE, Items.NETHER_STAR, true, true, true);
 
-            Advancement firstGacha = registerAdvancement(root, "first_gacha", FrameType.TASK, ModItems.DOLL_MACHINE.get(), true, true, false);
+            Advancement firstGacha = registerAdvancement(root, "first_gacha", FrameType.TASK, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.get(), true, true, false);
             Advancement first5StarSkillet = registerAdvancement(firstGacha, "first_5star_skillet", FrameType.TASK, SMCRegistrateItems.IRON_SKILLET_LEVEL5, true, true, false);
             Advancement first5StarItem = registerAdvancement(firstGacha, "first_5star_item", FrameType.TASK, SMCRegistrateItems.DIAMOND_SPATULA_V5, true, true, false);
 
@@ -112,18 +114,17 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement tryPush = registerAdvancement(root, "try_push", FrameType.TASK, Blocks.PISTON);
             Advancement upgradeAir = registerAdvancement(root, "upgrade_air", FrameType.TASK, Items.GLASS_BOTTLE, true, true, true);
             Advancement selfEat = registerAdvancement(root, "self_eat", FrameType.TASK, Items.BREAD);
-            Advancement tooManyMouth = registerAdvancement(root, "too_many_mouth", FrameType.TASK, ModItems.DOLL_ICON.get());
-            Advancement makeCustomerCry = registerAdvancement(root, "got_fox", FrameType.TASK, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_45"))));
+            Advancement tooManyMouth = registerAdvancement(root, "too_many_mouth", FrameType.TASK, AllBlocks.CUCKOO_CLOCK);
             Advancement preCook = registerAdvancement(startWork, "pre_cook", FrameType.TASK, PlateFood.FRIED_RICE.item);
 
             Advancement foodsRoot = Advancement.Builder.advancement()
                     .display(CDItems.PLATE.asItem(),
                             Component.translatable(PRE + SkilletManCoreMod.MOD_ID + "_food"),
                             Component.translatable(PRE + SkilletManCoreMod.MOD_ID + "_food" + ".desc"),
-                            new ResourceLocation("textures/block/bricks.png"),
+                            ResourceLocation.parse("textures/block/bricks.png"),
                             FrameType.TASK, false, false, false)
                     .addCriterion(SkilletManCoreMod.MOD_ID, new ImpossibleTrigger.TriggerInstance())
-                    .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID + "_food"), existingFileHelper);
+                    .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID + "_food"), existingFileHelper);
 
             List<PlateFood> list = Arrays.stream(PlateFood.values()).toList();
             Advancement last = null;
@@ -138,7 +139,7 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                                 null,
                                 FrameType.GOAL, true, true, false)
                         .addCriterion(name, new ImpossibleTrigger.TriggerInstance())
-                        .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, name), existingFileHelper);
+                        .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, name), existingFileHelper);
 
                 if(i % 5 == 0) {
                     last = null;
@@ -149,10 +150,10 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                     .display(Items.IRON_SWORD,
                             Component.translatable(PRE + SkilletManCoreMod.MOD_ID + "_weapon"),
                             Component.translatable(PRE + SkilletManCoreMod.MOD_ID + "_weapon" + ".desc"),
-                            new ResourceLocation("textures/block/bricks.png"),
+                            ResourceLocation.parse("textures/block/bricks.png"),
                             FrameType.GOAL, false, false, false)
                     .addCriterion(SkilletManCoreMod.MOD_ID, new ImpossibleTrigger.TriggerInstance())
-                    .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID + "_weapon"), existingFileHelper);
+                    .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID + "_weapon"), existingFileHelper);
 
             Advancement spatula = registerItemAdvancement(weaponRoot, CDItems.SPATULA);
             Advancement spatula2 = registerItemAdvancement(spatula, SMCRegistrateItems.SPATULA_V2);
@@ -191,10 +192,10 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                     .display(FAItems.HERO_HELMET.get(),
                             Component.translatable(PRE + SkilletManCoreMod.MOD_ID + "_armor"),
                             Component.translatable(PRE + SkilletManCoreMod.MOD_ID + "_armor" + ".desc"),
-                            new ResourceLocation("textures/block/bricks.png"),
+                            ResourceLocation.parse("textures/block/bricks.png"),
                             FrameType.GOAL, false, false, false)
                     .addCriterion(SkilletManCoreMod.MOD_ID, new ImpossibleTrigger.TriggerInstance())
-                    .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID + "_armor"), existingFileHelper);
+                    .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID + "_armor"), existingFileHelper);
             FAConfig.showDescriptions = true;
             Advancement lastArmorAdv = null;
             List<ItemStack> allArmors = new ArrayList<>();
@@ -223,7 +224,7 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                                     null,
                                     FrameType.TASK, true, true, false)
                             .addCriterion(name, InventoryChangeTrigger.TriggerInstance.hasItems(itemStack.getItem()))
-                            .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, name), existingFileHelper);
+                            .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, name), existingFileHelper);
 
                     if((i + 1) % 4 == 0) {
                         lastArmorAdv = null;
@@ -235,10 +236,10 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                     .display(EpicFightItems.SKILLBOOK.get(),
                             Component.translatable(PRE + SkilletManCoreMod.MOD_ID + "_skill"),
                             Component.translatable(PRE + SkilletManCoreMod.MOD_ID + "_skill" + ".desc"),
-                            new ResourceLocation("textures/block/bricks.png"),
+                            ResourceLocation.parse("textures/block/bricks.png"),
                             FrameType.GOAL, false, false, false)
                     .addCriterion(SkilletManCoreMod.MOD_ID, new ImpossibleTrigger.TriggerInstance())
-                    .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID + "_skill"), existingFileHelper);
+                    .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID + "_skill"), existingFileHelper);
 
             AtomicReference<Advancement> lastSkillAdv = new AtomicReference<>(null);
             AtomicReference<SkillCategory> lastCategory = new AtomicReference<>(null);
@@ -260,7 +261,7 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                                 null,
                                 FrameType.TASK, true, true, false)
                         .addCriterion(name, new ImpossibleTrigger.TriggerInstance())
-                        .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, name), existingFileHelper));
+                        .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, name), existingFileHelper));
                 lastCategory.set(skill.getCategory());
             });
 
@@ -268,10 +269,10 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                     .display(SMCRegistrateItems.TASK_TIP_ICON,
                             Component.translatable(PRE + SkilletManCoreMod.MOD_ID + "_level"),
                             Component.translatable(PRE + SkilletManCoreMod.MOD_ID + "_level" + ".desc"),
-                            new ResourceLocation("textures/block/bricks.png"),
+                            ResourceLocation.parse("textures/block/bricks.png"),
                             FrameType.GOAL, false, false, false)
                     .addCriterion(SkilletManCoreMod.MOD_ID, new ImpossibleTrigger.TriggerInstance())
-                    .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID + "_level"), existingFileHelper);
+                    .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID + "_level"), existingFileHelper);
 
             Advancement level5 = registerAdvancement(levelRoot, "level5", FrameType.GOAL, SMCRegistrateItems.IRON_SKILLET_LEVEL5, true, true, false);
             Advancement level5_1 = registerAdvancement(level5, "level5_1", FrameType.GOAL, net.p3pp3rf1y.sophisticatedbackpacks.init.ModItems.FEEDING_UPGRADE.get(), true, true, false);//突破奖励
@@ -291,11 +292,19 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                     .display(AllItems.GOGGLES,
                             Component.translatable(PRE + SkilletManCoreMod.MOD_ID + "_create"),
                             Component.translatable(PRE + SkilletManCoreMod.MOD_ID + "_create" + ".desc"),
-                            new ResourceLocation("textures/block/bricks.png"),
+                            ResourceLocation.parse("textures/block/bricks.png"),
                             FrameType.GOAL, false, false, false)
                     .addCriterion(SkilletManCoreMod.MOD_ID, new ImpossibleTrigger.TriggerInstance())
-                    .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID + "_create"), existingFileHelper);
+                    .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID + "_create"), existingFileHelper);
+            Advancement add_power = registerAdvancement(createRoot, "add_power", FrameType.GOAL, AllBlocks.COGWHEEL, true, true, false);
+            Advancement arm1 = registerAdvancement(add_power, "arm1", FrameType.GOAL, AllBlocks.MECHANICAL_ARM, true, true, false);
+            Advancement arm2 = registerAdvancement(add_power, "arm2", FrameType.GOAL, AllBlocks.MECHANICAL_ARM, true, true, false);
+            Advancement arm3 = registerAdvancement(add_power, "arm3", FrameType.GOAL, AllBlocks.MECHANICAL_ARM, true, true, false);
+            Advancement belt = registerAdvancement(arm1, "belt", FrameType.GOAL, AllBlocks.BELT, true, true, false);
+            Advancement stock_ticker = registerAdvancement(arm1, "stock_ticker", FrameType.GOAL, AllBlocks.STOCK_TICKER, true, true, false);
+            Advancement pulse_repeater = registerAdvancement(arm3, "pulse_repeater", FrameType.GOAL, AllBlocks.PULSE_REPEATER, true, true, false);
 
+            
         }
 
         public Advancement registerItemAdvancement(Advancement parent, ItemLike display) {
@@ -315,7 +324,7 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                             null,
                             FrameType.GOAL, true, true, false)
                     .addCriterion(disc, InventoryChangeTrigger.TriggerInstance.hasItems(itemStack.getItem()))
-                    .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, disc), helper);
+                    .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, disc), helper);
         }
 
         public Advancement registerAdvancement(Advancement parent, String name, FrameType type, ItemLike display, boolean showToast, boolean announceToChat, boolean hidden) {
@@ -327,7 +336,7 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                             null,
                             type, showToast, announceToChat, hidden)
                     .addCriterion(name, new ImpossibleTrigger.TriggerInstance())
-                    .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, name), helper);
+                    .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, name), helper);
         }
 
         public Advancement registerAdvancement(Advancement parent, String name, FrameType type, ItemLike display, boolean showToast, boolean announceToChat, boolean hidden, CriterionTriggerInstance instance) {
@@ -339,7 +348,7 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                             null,
                             type, true, true, true)
                     .addCriterion(name, instance)
-                    .save(consumer, new ResourceLocation(SkilletManCoreMod.MOD_ID, name), helper);
+                    .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, name), helper);
         }
 
         public Advancement registerAdvancement(Advancement parent, String name, FrameType type, ItemLike display) {
@@ -358,7 +367,7 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
     }
 
     public static void finishAdvancement(String name, ServerPlayer serverPlayer) {
-        Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(new ResourceLocation(SkilletManCoreMod.MOD_ID, name));
+        Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, name));
         if (advancement == null) {
             SkilletManCoreMod.LOGGER.error("advancement:\"" + name + "\" is null!");
             return;
@@ -367,7 +376,7 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
     }
 
     public static boolean isDone(String name, ServerPlayer serverPlayer) {
-        Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(new ResourceLocation(SkilletManCoreMod.MOD_ID, name));
+        Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, name));
         if (advancement == null) {
             SkilletManCoreMod.LOGGER.info("advancement:\"" + name + "\" is null!");
             return false;

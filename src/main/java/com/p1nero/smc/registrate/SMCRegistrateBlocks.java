@@ -42,8 +42,8 @@ public class SMCRegistrateBlocks {
                 .blockstate((ctx, pvd) -> pvd.getVariantBuilder(ctx.getEntry()).forAllStates(e ->
                         ConfiguredModel.builder().modelFile(new ModelFile.UncheckedModelFile(
                                         e.getValue(SkilletBlock.SUPPORT) ?
-                                                new ResourceLocation(SkilletManCoreMod.MOD_ID, "block/golden_cuisine_skillet_tray") :
-                                                new ResourceLocation(SkilletManCoreMod.MOD_ID, "block/golden_cuisine_skillet"))
+                                                ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "block/golden_cuisine_skillet_tray") :
+                                                ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "block/golden_cuisine_skillet"))
                                 ).rotationY(((int) e.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot()) % 360)
                                 .build()))
                 .loot((loot, block) -> loot.add(block,
@@ -63,8 +63,8 @@ public class SMCRegistrateBlocks {
                 .blockstate((ctx, pvd) -> pvd.getVariantBuilder(ctx.getEntry()).forAllStates(e ->
                         ConfiguredModel.builder().modelFile(new ModelFile.UncheckedModelFile(
                                         e.getValue(SkilletBlock.SUPPORT) ?
-                                                new ResourceLocation(SkilletManCoreMod.MOD_ID, "block/diamond_cuisine_skillet_tray") :
-                                                new ResourceLocation(SkilletManCoreMod.MOD_ID, "block/diamond_cuisine_skillet"))
+                                                ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "block/diamond_cuisine_skillet_tray") :
+                                                ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "block/diamond_cuisine_skillet"))
                                 ).rotationY(((int) e.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180) % 360)
                                 .build()))
                 .loot((loot, block) -> loot.add(block,
@@ -83,7 +83,7 @@ public class SMCRegistrateBlocks {
                                 .noOcclusion()
                                 .strength(0.5F, 6.0F).sound(SoundType.WOOD)))
                 .blockstate((ctx, pvd) -> pvd.getVariantBuilder(ctx.getEntry()).forAllStates(e ->
-                        ConfiguredModel.builder().modelFile(new ModelFile.UncheckedModelFile(new ResourceLocation(SkilletManCoreMod.MOD_ID, "block/chair")))
+                        ConfiguredModel.builder().modelFile(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "block/chair")))
                                 .rotationY(((int) e.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180) % 360)
                                 .build()))
                 .defaultLoot()

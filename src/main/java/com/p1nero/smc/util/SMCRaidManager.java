@@ -25,7 +25,7 @@ import java.util.UUID;
 public class SMCRaidManager {
 
     private static final BiMap<Integer, UUID> RAID_MAP = HashBiMap.create();//TODO 持久化
-    private static final ResourceLocation DUMMY_TYPE = new ResourceLocation(HTLib.MOD_ID, "default_raid");
+    private static final ResourceLocation DUMMY_TYPE = ResourceLocation.fromNamespaceAndPath(HTLib.MOD_ID, "default_raid");
 
     public static Player getPlayer(ServerLevel serverLevel, int raidId) {
         return serverLevel.getPlayerByUUID(RAID_MAP.get(raidId));
@@ -37,7 +37,7 @@ public class SMCRaidManager {
     public static void startTrial(ServerPlayer serverPlayer, SMCPlayer smcPlayer) {
         if(Level.isInSpawnableBounds(serverPlayer.blockPosition())) {
             int stage = smcPlayer.getStage() + 1;
-            DummyEntity dummyEntity = createRaid(serverPlayer.serverLevel(), new ResourceLocation(SkilletManCoreMod.MOD_ID, "trial_" + stage), serverPlayer.position());
+            DummyEntity dummyEntity = createRaid(serverPlayer.serverLevel(), ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "trial_" + stage), serverPlayer.position());
             if(dummyEntity != null) {
                 smcPlayer.setTodayInRaid(true);
                 DataManager.inRaid.put(serverPlayer, true);
@@ -55,7 +55,7 @@ public class SMCRaidManager {
             if(day > 30) {
                 day = 30;
             }
-            DummyEntity dummyEntity = createRaid(serverPlayer.serverLevel(), new ResourceLocation(SkilletManCoreMod.MOD_ID, "raid_" + day), serverPlayer.position());
+            DummyEntity dummyEntity = createRaid(serverPlayer.serverLevel(), ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "raid_" + day), serverPlayer.position());
             if(dummyEntity != null) {
                 smcPlayer.setTodayInRaid(true);
                 DataManager.inRaid.put(serverPlayer, true);
@@ -75,7 +75,7 @@ public class SMCRaidManager {
                 day = 30;
             }
             day /= 2;
-            DummyEntity dummyEntity = createRaid(serverPlayer.serverLevel(), new ResourceLocation(SkilletManCoreMod.MOD_ID, "raid_" + day), serverPlayer.position());
+            DummyEntity dummyEntity = createRaid(serverPlayer.serverLevel(), ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "raid_" + day), serverPlayer.position());
             if(dummyEntity != null) {
                 smcPlayer.setTodayInRaid(true);
                 DataManager.inRaid.put(serverPlayer, true);

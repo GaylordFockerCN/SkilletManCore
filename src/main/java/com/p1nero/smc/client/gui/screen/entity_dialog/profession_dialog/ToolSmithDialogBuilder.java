@@ -1,6 +1,7 @@
 package com.p1nero.smc.client.gui.screen.entity_dialog.profession_dialog;
 
 import com.hlysine.create_connected.CCItems;
+import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.TreeNode;
@@ -57,12 +58,14 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
             if (SMCPlayer.hasMoney(serverPlayer, moneyBase, true)) {
                 SMCPlayer.consumeMoney(moneyBase, serverPlayer);
                 ItemUtil.addItem(serverPlayer, SMCRegistrateItems.CREATE_RAFFLE.asStack(10), true);
+                DataManager.shouldShowMachineTicketHint.put(serverPlayer, false);
             }
         }
         if (interactionID == 4) {
             if (SMCPlayer.hasMoney(serverPlayer, moneyBase * 10, true)) {
                 SMCPlayer.consumeMoney(moneyBase * 10, serverPlayer);
                 ItemUtil.addItem(serverPlayer, SMCRegistrateItems.CREATE_RAFFLE.asStack(100), true);
+                DataManager.shouldShowMachineTicketHint.put(serverPlayer, false);
             }
         }
         if (interactionID == 5) {

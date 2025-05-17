@@ -34,7 +34,7 @@ public class BossBarHandler {
             }
         }
         if(boss instanceof GoldenFlame){
-            barLocation = new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/bossbar/golden_flame.png");
+            barLocation = ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/bossbar/golden_flame.png");
         } else {
             return false;
         }

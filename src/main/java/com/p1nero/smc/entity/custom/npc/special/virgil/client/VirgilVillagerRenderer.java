@@ -22,7 +22,7 @@ import yesman.epicfight.api.utils.math.QuaternionUtils;
 
 public class VirgilVillagerRenderer extends IllagerRenderer<VirgilVillager> {
     public static ItemStack icon;
-    private static final ResourceLocation VINDICATOR = new ResourceLocation("textures/entity/illager/vindicator.png");
+    private static final ResourceLocation VINDICATOR = ResourceLocation.parse("textures/entity/illager/vindicator.png");
 
     public VirgilVillagerRenderer(EntityRendererProvider.Context context) {
         super(context, new IllagerModel<>(context.bakeLayer(ModelLayers.VINDICATOR)), 0.5F);

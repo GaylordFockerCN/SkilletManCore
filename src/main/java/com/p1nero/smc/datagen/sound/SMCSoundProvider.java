@@ -26,7 +26,7 @@ public abstract class SMCSoundProvider extends SoundDefinitionsProvider {
             definition.subtitle("subtitles." + SkilletManCoreMod.MOD_ID + "." + splitSoundName[0] + "." + splitSoundName[2]);
         }
         for (int i = 1; i <= numberOfSounds; i++) {
-            definition.with(SoundDefinition.Sound.sound(new ResourceLocation(SkilletManCoreMod.MOD_ID, baseSoundDirectory + (numberOfSounds > 1 ? "_" + i : "")), SoundDefinition.SoundType.SOUND));
+            definition.with(SoundDefinition.Sound.sound(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, baseSoundDirectory + (numberOfSounds > 1 ? "_" + i : "")), SoundDefinition.SoundType.SOUND));
         }
         this.add(event, definition);
     }
@@ -38,7 +38,7 @@ public abstract class SMCSoundProvider extends SoundDefinitionsProvider {
             definition.subtitle("subtitles." + SkilletManCoreMod.MOD_ID + "." + splitSoundName[0] + "." + splitSoundName[2]);
         }
         for (int i = 1; i <= numberOfSounds; i++) {
-            definition.with(SoundDefinition.Sound.sound(new ResourceLocation(baseSoundDirectory + (numberOfSounds > 1 ? i : "")), SoundDefinition.SoundType.SOUND));
+            definition.with(SoundDefinition.Sound.sound(ResourceLocation.parse(baseSoundDirectory + (numberOfSounds > 1 ? i : "")), SoundDefinition.SoundType.SOUND));
         }
         this.add(event, definition);
     }
@@ -71,7 +71,7 @@ public abstract class SMCSoundProvider extends SoundDefinitionsProvider {
 
     public void makeMusicDisc(RegistryObject<SoundEvent> event, String discName) {
         this.add(event, SoundDefinition.definition()
-                .with(SoundDefinition.Sound.sound(new ResourceLocation(SkilletManCoreMod.MOD_ID, "music/" + discName), SoundDefinition.SoundType.SOUND)
+                .with(SoundDefinition.Sound.sound(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "music/" + discName), SoundDefinition.SoundType.SOUND)
                         .stream()));
     }
 

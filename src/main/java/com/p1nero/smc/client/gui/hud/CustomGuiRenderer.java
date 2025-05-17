@@ -20,10 +20,10 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class CustomGuiRenderer {
-    public static final ResourceLocation SPATULA_TEXTURE = new ResourceLocation(CuisineDelight.MODID, "textures/item/spatula.png");
-    public static final ResourceLocation SPATULA_TEXTURE2 = new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/item/golden_spatula.png");
-    public static final ResourceLocation SPATULA_TEXTURE3 = new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/item/diamond_spatula.png");
-    public static final ResourceLocation MONEY_TEXTURE = new ResourceLocation("textures/item/emerald.png");
+    public static final ResourceLocation SPATULA_TEXTURE = ResourceLocation.fromNamespaceAndPath(CuisineDelight.MODID, "textures/item/spatula.png");
+    public static final ResourceLocation SPATULA_TEXTURE2 = ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/item/golden_spatula.png");
+    public static final ResourceLocation SPATULA_TEXTURE3 = ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/item/diamond_spatula.png");
+    public static final ResourceLocation MONEY_TEXTURE = ResourceLocation.parse("textures/item/emerald.png");
 
     public static boolean shouldRender() {
         if (Minecraft.getInstance().screen instanceof DialogueScreen) {

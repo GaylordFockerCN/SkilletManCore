@@ -60,7 +60,7 @@ public class SMCCapabilityProvider implements ICapabilityProvider, INBTSerializa
     public static void attachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player player) {
             if(!player.getCapability(SMCCapabilityProvider.SMC_PLAYER).isPresent()){
-                event.addCapability(new ResourceLocation(SkilletManCoreMod.MOD_ID, "smc_player"), new SMCCapabilityProvider());
+                event.addCapability(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "smc_player"), new SMCCapabilityProvider());
             }
         }
     }

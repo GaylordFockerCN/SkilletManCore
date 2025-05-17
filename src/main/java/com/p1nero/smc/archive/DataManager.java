@@ -25,12 +25,14 @@ import net.minecraft.world.entity.player.Player;
  * @author P1nero
  */
 public class DataManager {
+    public static DoubleData spatulaCombo = new DoubleData("first_joint", 0);
     public static BoolData firstJoint = new BoolData("first_joint", false);
     public static BoolData firstGiftGot = new BoolData("first_gift_got", false);
     public static BoolData firstGachaGot = new BoolData("first_gacha_got", false);
     public static BoolData firstWork = new BoolData("first_work", false);
     public static BoolData firstFoodBad = new BoolData("first_food_bad", false);
     public static BoolData firstChangeVillager = new BoolData("first_change_villager", false);
+    public static BoolData shouldShowMachineTicketHint = new BoolData("machine_ticket_traded", false);//是否显示“兑换过机械动力通票”提示，升到三级房屋后显示
     public static BoolData inRaid = new BoolData("in_raid", false);
     public static BoolData inSpecial = new BoolData("in_special", false);//特殊事件是否解决，将在解决后重置
     public static BoolData specialSolvedToday = new BoolData("special_solved_today", false);//今天是否处于Special事件，将在夜里重置

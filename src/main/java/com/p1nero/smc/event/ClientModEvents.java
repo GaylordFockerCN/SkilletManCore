@@ -38,8 +38,8 @@ import yesman.epicfight.client.renderer.patched.entity.PVindicatorRenderer;
 @SuppressWarnings("unchecked")
 @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientModEvents{
-    public static final ModelResourceLocation GOLDEN_SKILLET_MODEL = new ModelResourceLocation(new ResourceLocation(SkilletManCoreMod.MOD_ID, "golden_cuisine_skillet_base"), "inventory");
-    public static final ModelResourceLocation DIAMOND_SKILLET_MODEL = new ModelResourceLocation(new ResourceLocation(SkilletManCoreMod.MOD_ID, "diamond_cuisine_skillet_base"), "inventory");
+    public static final ModelResourceLocation GOLDEN_SKILLET_MODEL = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "golden_cuisine_skillet_base"), "inventory");
+    public static final ModelResourceLocation DIAMOND_SKILLET_MODEL = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "diamond_cuisine_skillet_base"), "inventory");
 
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event){

@@ -16,6 +16,6 @@ public class SMCBiomeModifiers {
     }
 
     private static ResourceKey<BiomeModifier> registerKey(String name) {
-        return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(SkilletManCoreMod.MOD_ID, name));
+        return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, name));
     }
 }

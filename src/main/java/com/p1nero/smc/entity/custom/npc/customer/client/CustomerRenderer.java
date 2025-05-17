@@ -17,8 +17,8 @@ import net.minecraft.world.item.ItemDisplayContext;
 import org.jetbrains.annotations.NotNull;
 
 public class CustomerRenderer extends VillagerRenderer {
-    private static final ResourceLocation VILLAGER_UNHAPPY_SKIN = new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/entity/villager/villager_unhappy.png");
-    private static final ResourceLocation VILLAGER_HAPPY_SKIN = new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/entity/villager/villager_happy.png");
+    private static final ResourceLocation VILLAGER_UNHAPPY_SKIN = ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/entity/villager/villager_unhappy.png");
+    private static final ResourceLocation VILLAGER_HAPPY_SKIN = ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/entity/villager/villager_happy.png");
     public CustomerRenderer(EntityRendererProvider.Context context) {
         super(context);
     }

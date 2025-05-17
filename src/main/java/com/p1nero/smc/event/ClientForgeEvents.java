@@ -4,8 +4,10 @@ import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.client.gui.BossBarHandler;
 import com.p1nero.smc.client.gui.hud.CustomGuiRenderer;
 import com.p1nero.smc.client.gui.hud.HealthBarRenderer;
+import com.p1nero.smc.client.gui.hud.RenderSpatulaBar;
 import com.p1nero.smc.client.gui.screen.DialogueScreen;
 import com.simibubi.create.AllItems;
+import dev.xkmc.cuisinedelight.content.client.CookingOverlay;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -58,6 +60,10 @@ public class ClientForgeEvents {
         }
         if (event.getOverlay() == VanillaGuiOverlay.ARMOR_LEVEL.type()) {
             event.setCanceled(true);
+        }
+
+        if(event.getOverlay().overlay() instanceof CookingOverlay) {
+            RenderSpatulaBar.render(event.getGuiGraphics(), event.getWindow(), event.getPartialTick());
         }
     }
 

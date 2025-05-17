@@ -22,11 +22,11 @@ import java.util.OptionalLong;
 
 public class SMCDimension {
     public static final ResourceKey<LevelStem> P_SKY_ISLAND_KEY = ResourceKey.create(Registries.LEVEL_STEM,
-            new ResourceLocation(SkilletManCoreMod.MOD_ID, "realm_of_the_dream"));
+            ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "realm_of_the_dream"));
     public static final ResourceKey<Level> P_SKY_ISLAND_LEVEL_KEY = ResourceKey.create(Registries.DIMENSION,
-            new ResourceLocation(SkilletManCoreMod.MOD_ID, "realm_of_the_dream"));
+            ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "realm_of_the_dream"));
     public static final ResourceKey<DimensionType> P_SKY_ISLAND_TYPE = ResourceKey.create(Registries.DIMENSION_TYPE,
-            new ResourceLocation(SkilletManCoreMod.MOD_ID, "realm_of_the_dream_type"));
+            ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "realm_of_the_dream_type"));
 
 
     public static void bootstrapType(ResourceKey<DimensionType> typeResourceKey, BootstapContext<DimensionType> context){

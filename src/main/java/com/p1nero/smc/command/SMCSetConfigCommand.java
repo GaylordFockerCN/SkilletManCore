@@ -14,7 +14,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 public class SMCSetConfigCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("smc")
-                .then(Commands.literal("set_config").requires((commandSourceStack) -> commandSourceStack.hasPermission(2))
+                .then(Commands.literal("setConfig").requires((commandSourceStack) -> commandSourceStack.hasPermission(2))
                         .then(Commands.literal("enable_better_structure_block_load")
                                 .then(Commands.argument("value", BoolArgumentType.bool())
                                         .executes((context) -> setData(SMCConfig.ENABLE_BETTER_STRUCTURE_BLOCK_LOAD, BoolArgumentType.getBool(context, "value"), context))
@@ -23,14 +23,7 @@ public class SMCSetConfigCommand {
                                         .executes((context) -> resetData(SMCConfig.ENABLE_BETTER_STRUCTURE_BLOCK_LOAD, context))
                                 )
                         )
-                        .then(Commands.literal("allow_bvb")
-                                .then(Commands.argument("value", BoolArgumentType.bool())
-                                        .executes((context) -> setData(SMCConfig.ALLOW_BVB, BoolArgumentType.getBool(context, "value"), context))
-                                )
-                                .then(Commands.literal("reset")
-                                        .executes((context) -> resetData(SMCConfig.ALLOW_BVB, context))
-                                )
-                        )
+
                         .then(Commands.literal("test_x")
                                 .then(Commands.argument("value", DoubleArgumentType.doubleArg())
                                         .executes((context) -> setData(SMCConfig.TEST_X, DoubleArgumentType.getDouble(context, "value"), context))
@@ -44,6 +37,11 @@ public class SMCSetConfigCommand {
                         .then(Commands.literal("test_z")
                                 .then(Commands.argument("value", DoubleArgumentType.doubleArg())
                                         .executes((context) -> setData(SMCConfig.TEST_Z, DoubleArgumentType.getDouble(context, "value"), context))
+                                )
+                        )
+                        .then(Commands.literal("fast_kill_boss")
+                                .then(Commands.argument("value", BoolArgumentType.bool())
+                                        .executes((context) -> setData(SMCConfig.FAST_BOSS_FIGHT, BoolArgumentType.getBool(context, "value"), context))
                                 )
                         )
                         .then(Commands.literal("fast_kill_boss")
@@ -81,14 +79,6 @@ public class SMCSetConfigCommand {
                                 )
                                 .then(Commands.literal("reset")
                                         .executes((context) -> resetData(SMCConfig.INTERVAL, context))
-                                )
-                        )
-                        .then(Commands.literal("worldLevel")
-                                .then(Commands.argument("value", DoubleArgumentType.doubleArg(0))
-                                        .executes((context) -> {
-                                            SMCArchiveManager.setWorldLevel(((int) DoubleArgumentType.getDouble(context, "value")));
-                                            return 0;
-                                        })
                                 )
                         )
                 )

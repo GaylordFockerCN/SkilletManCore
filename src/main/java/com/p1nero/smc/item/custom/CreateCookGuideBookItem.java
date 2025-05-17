@@ -9,6 +9,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -17,30 +19,34 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class CreateCookGuideBookItem extends Item {
+public class CreateCookGuideBookItem extends SimpleDescriptionFoilItem {
     public CreateCookGuideBookItem(Properties properties) {
         super(properties);
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player p_41433_, @NotNull InteractionHand p_41434_) {
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand p_41434_) {
         if(level.isClientSide){
             LinkListStreamDialogueScreenBuilder builder = new LinkListStreamDialogueScreenBuilder(null, this.getDescription().copy().withStyle(ChatFormatting.LIGHT_PURPLE));
             builder.start(ans(0))
                     .addChoice(opt(1), ans(2))
-                    .thenExecute((screen -> screen.setPicture(new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/2.png"))))
+                    .thenExecute((screen -> screen.setPicture(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/2.png"))))
                     .addChoice(opt(1), ans(3))
-                    .thenExecute((screen -> screen.setPicture(new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/3.png"))))
+                    .thenExecute((screen -> screen.setPicture(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/3.png"))))
                     .addChoice(opt(1), ans(4))
-                    .thenExecute((screen -> screen.setPicture(new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/4.png"))))
+                    .thenExecute((screen -> screen.setPicture(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/4.png"))))
                     .addChoice(opt(1), ans(5))
-                    .thenExecute((screen -> screen.setPicture(new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/5.png"))))
-                    .addFinalChoice(opt(6));
+                    .thenExecute((screen -> screen.setPicture(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/5.png"))))
+                    .addChoice(opt(1), ans(6))
+                    .thenExecute((screen -> screen.setPicture(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/6.png"))))
+                    .addFinalChoice(opt(7));
             DialogueScreen screen = builder.build();
-            screen.setPicture(new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/1.png"));
+            screen.setPicture(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/1.png"));
+            screen.setPicHeight(1440);
+            screen.setPicWidth(2560);
             Minecraft.getInstance().setScreen(builder.build());
         }
-        return super.use(level, p_41433_, p_41434_);
+        return super.use(level, player, p_41434_);
     }
 
     private Component ans(int i) {
@@ -56,13 +62,14 @@ public class CreateCookGuideBookItem extends Item {
     }
 
     public static void addTranslation(SMCLangGenerator generator){
-        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(0), "§6机械手§r是机械动力结合料理乐事不可或缺的一环，它将模拟玩家炒菜。将§a锅铲§r置于机械手上，并§c输入动力§r，它便可以模拟我们翻炒！");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(0), "§6机械手§r或§6动力臂§r是机械动力结合料理乐事不可或缺的一环，它们可以模拟玩家炒菜。机械手原生可以和炒锅交互，而本整合包自制了模组使得机械臂可以与炒锅交互，更加美观。§c如果你是机械动力新手，那么请多使用思索。");
         generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(1), "下一页");
-        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(2), "同理我们可以使用§6机械手§r模拟盘子取食物，上下行过滤器设置为盘子即可，如此一来只有盘子能输入机械手，只有非盘子（即烹饪好的料理）能输出机械手。");
-        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(3), "§6机械手§r遇到§c红石信号§r时会暂停工作。利用红石信号控制机械手，来计算最适合的取出时间吧！");
-        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(4), "本整合包使炒锅在工作且未满时可以像漏斗一样接收它上方的物品，使输入方式更加多样化！因此你可以使用传送带传送食物，当然，用机械手模拟玩家摆放食物也是可行的。");
-        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(5), "现在，该动用你的大脑制作一台自动炒菜机啦！ 本整合包自带了由§6JackNeksa§r大大所制作的炒菜机蓝图提供借鉴。");
-        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(6), "合上");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(2), "机械臂取得锅铲，并且输出端为炒锅时，若炒锅内有食物，则会进行翻炒。它很乖的，没炒到取餐不会停下来。");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(3), "如图摆放传送带，传送带转速为§68RPM§r时，刚好使得传送带上的物品一次前进一格。回想一下你做过的料理，是不是时间都是3的倍数？利用此特性，传送带末尾作为输入点，我们可以实现延时有序下锅。当然，你也可以尝试从多个不同的地方取食材， 但时间和顺序相当难控制。");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(4), "查看炒锅的[思索]，其中提到的取盘机制可以如图摆放，左侧黄铜漏斗上使用过滤器滤过空盘子即可。注意此处机械臂输出端为黄铜漏斗。");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(5), "利用高级物流管理系统可以实现远程下单，机械臂和炒锅交互时会自行处理包裹。智能侦测器在检测到包裹后，经中继器延时15秒后，用无线红石信号，解除对取盘机械臂的锁定。");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(6), "利用食物可以直接掉入炒锅的新特性，使用机械手来完成以上过程将更精简，但是机械手动起来哪有机械臂浪漫呢？§a本教程仅提供作者为观赏性自制的一种炒菜机，具体还得看各位大神发挥啦！");
+        generator.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get().key(7), "合上");
     }
 
 }

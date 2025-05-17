@@ -78,7 +78,7 @@ public class SMCEntities {
             EntityType.Builder.<CustomColorItemEntity>of(CustomColorItemEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(6).updateInterval(20));
 
     private static <T extends Entity> RegistryObject<EntityType<T>> register(String name, EntityType.Builder<T> entityTypeBuilder) {
-        return REGISTRY.register(name, () -> entityTypeBuilder.build(new ResourceLocation(SkilletManCoreMod.MOD_ID, name).toString()));
+        return REGISTRY.register(name, () -> entityTypeBuilder.build(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, name).toString()));
     }
 
     /**

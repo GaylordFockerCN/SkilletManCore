@@ -42,8 +42,8 @@ public class SkilletManCoreMod {
     public static final String REGISTRY_NAMESPACE = "smc";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public SkilletManCoreMod() {
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+    public SkilletManCoreMod(FMLJavaModLoadingContext context) {
+        IEventBus bus = context.getModEventBus();
 
         SMCSounds.REGISTRY.register(bus);
         SMCItems.REGISTRY.register(bus);
@@ -63,8 +63,8 @@ public class SkilletManCoreMod {
         SMCRegistrateItems.register();
         SMCRegistrateBlocks.register();
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SMCConfig.SPEC);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, SMCConfig.CLIENT_SPEC);
+        context.registerConfig(ModConfig.Type.COMMON, SMCConfig.SPEC);
+        context.registerConfig(ModConfig.Type.CLIENT, SMCConfig.CLIENT_SPEC);
     }
 
     public static MutableComponent getInfo(String key) {
@@ -97,11 +97,11 @@ public class SkilletManCoreMod {
 
 
     public static ResourceLocation prefix(String name) {
-        return new ResourceLocation(MOD_ID, name.toLowerCase(Locale.ROOT));
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, name.toLowerCase(Locale.ROOT));
     }
 
     public static ResourceLocation namedRegistry(String name) {
-        return new ResourceLocation(REGISTRY_NAMESPACE, name.toLowerCase(Locale.ROOT));
+        return ResourceLocation.fromNamespaceAndPath(REGISTRY_NAMESPACE, name.toLowerCase(Locale.ROOT));
     }
 
 }

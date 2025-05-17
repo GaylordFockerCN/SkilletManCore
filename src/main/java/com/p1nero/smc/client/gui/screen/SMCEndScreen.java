@@ -38,8 +38,8 @@ import java.util.List;
 @OnlyIn(Dist.CLIENT)
 public class SMCEndScreen extends Screen {
     private static final Logger LOGGER = LogUtils.getLogger();
-    private static final ResourceLocation VIGNETTE_LOCATION = new ResourceLocation("textures/misc/vignette.png");
-    public static final ResourceLocation BACKGROUND_LOCATION = new ResourceLocation("textures/block/bricks.png");
+    private static final ResourceLocation VIGNETTE_LOCATION = ResourceLocation.parse("textures/misc/vignette.png");
+    public static final ResourceLocation BACKGROUND_LOCATION = ResourceLocation.parse("textures/block/bricks.png");
     private static final Component SECTION_HEADING;
     private static final String OBFUSCATE_TOKEN;
     private final boolean poem;
@@ -157,7 +157,7 @@ public class SMCEndScreen extends Screen {
 
     private void wrapCreditsIO(String creditsLocation, CreditsReader p_reader) {
         try {
-            Reader reader = this.minecraft.getResourceManager().openAsReader(new ResourceLocation(creditsLocation));
+            Reader reader = this.minecraft.getResourceManager().openAsReader(ResourceLocation.parse(creditsLocation));
 
             try {
                 p_reader.read(reader);

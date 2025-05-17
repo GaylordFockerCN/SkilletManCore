@@ -8,6 +8,7 @@ import com.p1nero.smc.entity.custom.npc.customer.customer_data.SpecialCustomerDa
 import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
+import com.simibubi.create.AllItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -40,8 +41,8 @@ public class SpecialCustomerData2 extends SpecialCustomerData {
         generator.add(choicePre(-1), "小朋友要尝尝新点心吗？");
         generator.add(answerPre(0), "听说你们有甜滋滋的 %s ？");
         generator.add(choicePre(0), "端上");
-        generator.add(answerPre(1), "（眼睛弯成月牙）这个比娘亲做的蜜饯还香！这个小狐狸送你玩～");
-        generator.add(choicePre(1), "（非常开心的收下，谁能拒绝一只可爱的小狐狸呢）");
+        generator.add(answerPre(1), "（眼睛弯成月牙）这个比娘亲做的蜜饯还香！这个甜甜卷送你～");
+        generator.add(choicePre(1), "（非常开心的收下，谁能拒绝一块香香软软的小蛋糕呢）");
         generator.add(answerPre(2), "（嘟嘴）像是糖霜放少了三钱呢");
         generator.add(choicePre(2), "下次再来玩呀~");
         generator.add(answerPre(3), "（突然嚎啕大哭）苦苦的东西最讨厌了！");
@@ -51,7 +52,7 @@ public class SpecialCustomerData2 extends SpecialCustomerData {
     @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation("kaleidoscope_doll:doll_45"))).getDefaultInstance());
+        ItemUtil.addItem(serverPlayer, AllItems.SWEET_ROLL.asStack(), true);
         ItemUtil.addItem(serverPlayer, SMCRegistrateItems.DOLL_RAFFLE_TICKET.get(), 3, true);
     }
 

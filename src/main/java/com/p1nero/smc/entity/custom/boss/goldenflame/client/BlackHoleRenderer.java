@@ -19,6 +19,6 @@ public class BlackHoleRenderer extends EntityRenderer<BlackHoleEntity> {
 
     @Override
     public @NotNull ResourceLocation getTextureLocation(@NotNull BlackHoleEntity blackHoleEntity) {
-        return new ResourceLocation("");
+        return ResourceLocation.parse("");
     }
 }

@@ -38,11 +38,11 @@
 
 [Temperature]
 	#Ice or snow layer will melt in warm time.
-	IceAndSnowMelt = false
+	IceAndSnowMelt = true
 	#It will snow in cold time.
-	IceAndSnow = false
+	IceAndSnow = true
 	#Add heat stroke effect in summer noon while in hot biome.
-	HeatStroke = true
+	HeatStroke = false
 
 [Crop]
 	#Enable crop season control.

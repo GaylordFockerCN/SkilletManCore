@@ -2,9 +2,23 @@ package com.p1nero.smc.event;
 
 import com.mojang.datafixers.util.Pair;
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.archive.SMCArchiveManager;
+import com.p1nero.smc.capability.SMCCapabilityProvider;
+import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.entity.custom.npc.start_npc.StartNPC;
+import com.p1nero.smc.mixin.CreateWorldScreenMixin;
+import com.p1nero.smc.mixin.WorldListEntryMixin;
+import com.p1nero.smc.util.ItemUtil;
+import com.p1nero.smc.util.SMCRaidManager;
 import com.p1nero.smc.worldgen.biome.SMCBiomeProvider;
+import com.teamtea.eclipticseasons.api.constant.solar.Season;
+import com.teamtea.eclipticseasons.api.constant.solar.SolarTerm;
+import com.teamtea.eclipticseasons.api.util.EclipticUtil;
+import com.teamtea.eclipticseasons.common.registry.BlockRegistry;
+import com.teamtea.eclipticseasons.common.registry.ItemRegistry;
+import hungteen.htlib.common.world.entity.DummyEntityManager;
+import net.minecraft.ChatFormatting;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
@@ -18,7 +32,11 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringUtil;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BaseCommandBlock;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -32,6 +50,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
@@ -47,10 +66,7 @@ import vectorwing.farmersdelight.common.Configuration;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
 import vectorwing.farmersdelight.common.world.VillageStructures;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 控制服务端SaveUtil的读写
@@ -60,19 +76,112 @@ public class ServerEvents {
 
     public static List<MapColor> surfacematerials = Arrays.asList(MapColor.WATER, MapColor.ICE);
 
+    @SubscribeEvent
+    public static void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase.equals(TickEvent.Phase.START)) {
+            ServerLevel overworld = event.getServer().getLevel(Level.OVERWORLD);
+            if (overworld != null) {
+
+                int dayTime = (int) (overworld.getDayTime() / 24000);
+                int dayTick = (int) (overworld.getDayTime() % 24000);
+
+                //生成袭击
+                if (overworld.isNight()) {
+                    //2天后每两天来一次袭击，10天后每天都将生成袭击
+                    if (dayTime > 2 && (dayTime % 2 == 1 || dayTime > 10)) {
+                        for (ServerPlayer serverPlayer : event.getServer().getPlayerList().getPlayers()) {
+                            SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+                            if (!smcPlayer.isTodayInRaid()) {
+                                SMCRaidManager.startNightRaid(serverPlayer, smcPlayer);
+                                DataManager.specialSolvedToday.put(serverPlayer, false);
+                            }
+                        }
+                    }
+                }
+
+                //播报
+                if (!event.getServer().isSingleplayer() && dayTick == 13000 && DummyEntityManager.getDummyEntities(overworld).isEmpty()) {
+                    broadCastRankingList(event.getServer());
+                }
+
+                if (dayTime % 7 == 0 && dayTick == 100) {
+                    SolarTerm solarTerm = EclipticUtil.getNowSolarTerm(overworld);
+                    ArrayList<ServerPlayer> players = getRankedList(event.getServer());
+                    ServerPlayer bestPlayer = players.get(0);
+                    Season season = solarTerm.getSeason();
+                    players.forEach(serverPlayer -> serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("best_for_season", bestPlayer.getDisplayName(), season.getTranslation()).withStyle(season.getColor()), false));
+                    ItemStack itemStack = switch (season) {
+                        case SPRING -> BlockRegistry.spring_greenhouse_core.get().asItem().getDefaultInstance();
+                        case SUMMER -> BlockRegistry.summer_greenhouse_core.get().asItem().getDefaultInstance();
+                        case AUTUMN -> BlockRegistry.autumn_greenhouse_core.get().asItem().getDefaultInstance();
+                        case WINTER -> BlockRegistry.winter_greenhouse_core.get().asItem().getDefaultInstance();
+                        case NONE -> ItemStack.EMPTY;
+                    };
+                    itemStack.setHoverName(SkilletManCoreMod.getInfo("best_season_win", season.getTranslation(), bestPlayer.getDisplayName()).withStyle(season.getColor()));
+                    ItemUtil.addItem(bestPlayer, itemStack, true);
+                }
+
+            }
+        }
+    }
+
+    public static ArrayList<ServerPlayer> getRankedList(MinecraftServer server) {
+        ArrayList<ServerPlayer> players = new ArrayList<>(server.getPlayerList().getPlayers());
+        players.sort(Comparator.comparingInt((player) -> {
+            SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer((Player) player);
+            return smcPlayer.getMoneyInSeason();
+        }).reversed());
+        return players;
+    }
+
+    public static void broadCastRankingList(MinecraftServer server) {
+        List<ServerPlayer> serverPlayers = getRankedList(server);
+        serverPlayers.forEach(serverPlayer -> broadCastRankingList(serverPlayer, serverPlayers));
+    }
+
+    public static void broadCastRankingList(ServerPlayer serverPlayer, List<ServerPlayer> sortedPlayers) {
+        Player first = sortedPlayers.get(0);
+        if (DataManager.inRaid.get(serverPlayer)) {
+            return;
+        }
+        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("best_seller", first.getName()), false);
+        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("current_money_list_pre"), false);
+        sortedPlayers.forEach((player1 -> serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("current_money_count", player1.getDisplayName(), SMCCapabilityProvider.getSMCPlayer(player1).getMoneyInSeason()), false)));
+        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("current_money_list_end"), false);
+    }
+
+    public static void broadCastRankingList(ServerPlayer serverPlayer) {
+        MinecraftServer server = serverPlayer.server;
+        ArrayList<Player> players = new ArrayList<>(server.getPlayerList().getPlayers());
+        players.sort(Comparator.comparingInt((player) -> {
+            SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
+            return smcPlayer.getMoneyInSeason();
+        }));
+        Player first = players.get(0);
+        if (DataManager.inRaid.get(serverPlayer)) {
+            return;
+        }
+        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("best_seller", first.getName()), false);
+        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("current_money_list_pre"), false);
+        players.forEach((player1 -> serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("current_money_count", player1.getName(), SMCCapabilityProvider.getSMCPlayer(player1).getMoneyInSeason()), false)));
+        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("current_money_list_end"), false);
+    }
+
+
     /**
      * 获取存档名字，用于二次读取地图时用。
      * 仅限服务器用，如果是单人玩则需要在选择窗口或者创建游戏窗口获取。因为LevelName是可重复的，LevelID才是唯一的...
-     * @see com.p1nero.smc.mixin.WorldListEntryMixin#injectedLoadWorld(CallbackInfo ci)
-     * @see com.p1nero.smc.mixin.CreateWorldScreenMixin#injected(CallbackInfoReturnable)
+     *
+     * @see WorldListEntryMixin#injectedLoadWorld(CallbackInfo ci)
+     * @see CreateWorldScreenMixin#injected(CallbackInfoReturnable)
      */
     @SubscribeEvent
-    public static void onServerAboutToStart(ServerAboutToStartEvent event){
+    public static void onServerAboutToStart(ServerAboutToStartEvent event) {
         StartNPC.initIngredients();
 //        addNewVillageBuilding(event);
         //服务端读取，客户端从Mixin读
-        if(event.getServer().isDedicatedServer()){
-            if(SMCBiomeProvider.worldName.isEmpty()){
+        if (event.getServer().isDedicatedServer()) {
+            if (SMCBiomeProvider.worldName.isEmpty()) {
                 String levelName = event.getServer().getWorldData().getLevelName();
                 SMCBiomeProvider.worldName = levelName;
 //                DOTEBiomeProvider.updateBiomeMap(levelName);
@@ -89,11 +198,11 @@ public class ServerEvents {
         Registry<StructureTemplatePool> templatePools = event.getServer().registryAccess().registry(Registries.TEMPLATE_POOL).get();
         Registry<StructureProcessorList> processorLists = event.getServer().registryAccess().registry(Registries.PROCESSOR_LIST).get();
 
-        VillageStructures.addBuildingToPool(templatePools, processorLists, new ResourceLocation("minecraft:village/plains/houses"), SkilletManCoreMod.MOD_ID + ":village/plains/houses/plains_butcher_shop_lv1", 30);
-        VillageStructures.addBuildingToPool(templatePools, processorLists, new ResourceLocation("minecraft:village/snowy/houses"), SkilletManCoreMod.MOD_ID + ":village/snowy/houses/snowy_butcher_shop_lv1", 20);
-        VillageStructures.addBuildingToPool(templatePools, processorLists, new ResourceLocation("minecraft:village/savanna/houses"), SkilletManCoreMod.MOD_ID + ":village/savanna/houses/savanna_butcher_shop_lv1", 30);
-        VillageStructures.addBuildingToPool(templatePools, processorLists, new ResourceLocation("minecraft:village/desert/houses"), SkilletManCoreMod.MOD_ID + ":village/desert/houses/desert_butcher_shop_lv1", 40);
-        VillageStructures.addBuildingToPool(templatePools, processorLists, new ResourceLocation("minecraft:village/taiga/houses"), SkilletManCoreMod.MOD_ID + ":village/taiga/houses/taiga_butcher_shop_lv1", 20);
+        VillageStructures.addBuildingToPool(templatePools, processorLists, ResourceLocation.parse("minecraft:village/plains/houses"), SkilletManCoreMod.MOD_ID + ":village/plains/houses/plains_butcher_shop_lv1", 30);
+        VillageStructures.addBuildingToPool(templatePools, processorLists, ResourceLocation.parse("minecraft:village/snowy/houses"), SkilletManCoreMod.MOD_ID + ":village/snowy/houses/snowy_butcher_shop_lv1", 20);
+        VillageStructures.addBuildingToPool(templatePools, processorLists, ResourceLocation.parse("minecraft:village/savanna/houses"), SkilletManCoreMod.MOD_ID + ":village/savanna/houses/savanna_butcher_shop_lv1", 30);
+        VillageStructures.addBuildingToPool(templatePools, processorLists, ResourceLocation.parse("minecraft:village/desert/houses"), SkilletManCoreMod.MOD_ID + ":village/desert/houses/desert_butcher_shop_lv1", 40);
+        VillageStructures.addBuildingToPool(templatePools, processorLists, ResourceLocation.parse("minecraft:village/taiga/houses"), SkilletManCoreMod.MOD_ID + ":village/taiga/houses/taiga_butcher_shop_lv1", 20);
 
     }
 
@@ -101,7 +210,7 @@ public class ServerEvents {
      * stop的时候TCRBiomeProvider.worldName已经初始化了，无需处理
      */
     @SubscribeEvent
-    public static void onServerStop(ServerStoppedEvent event){
+    public static void onServerStop(ServerStoppedEvent event) {
         SMCArchiveManager.save(SMCBiomeProvider.worldName);
         SMCArchiveManager.clear();
     }
@@ -113,7 +222,7 @@ public class ServerEvents {
             return;
         }
 
-        ServerLevel serverLevel = (ServerLevel)level;
+        ServerLevel serverLevel = (ServerLevel) level;
         if (onWorldLoad(serverLevel)) {
             e.setCanceled(true);
         }
@@ -145,7 +254,7 @@ public class ServerEvents {
             return null;
         }
         if (levelAccessor instanceof Level) {
-            return ((Level)levelAccessor);
+            return ((Level) levelAccessor);
         }
         return null;
     }
@@ -153,6 +262,7 @@ public class ServerEvents {
     public static BlockPos getCenterNearbyVillage(ServerLevel serverLevel) {
         return getNearbyVillage(serverLevel, new BlockPos(0, 0, 0));
     }
+
     public static BlockPos getNearbyVillage(ServerLevel serverLevel, BlockPos nearPos) {
         BlockPos closestvillage = null;
         if (!serverLevel.getServer().getWorldData().worldGenOptions().generateStructures()) {
@@ -170,8 +280,7 @@ public class ServerEvents {
 
                 String rawcoords = rawOutput.split("\\[")[1].split("]")[0];
                 coords = rawcoords.split(", ");
-            }
-            catch (IndexOutOfBoundsException ex) {
+            } catch (IndexOutOfBoundsException ex) {
                 return null;
             }
 
@@ -194,11 +303,12 @@ public class ServerEvents {
 
         return string.matches("-?\\d+(\\.\\d+)?");
     }
+
     public static BlockPos getSurfaceBlockPos(ServerLevel serverLevel, int x, int z) {
         int height = serverLevel.getHeight();
         int lowestY = serverLevel.getMinBuildHeight();
 
-        BlockPos returnPos = new BlockPos(x, height-1, z);
+        BlockPos returnPos = new BlockPos(x, height - 1, z);
         if (!isNether(serverLevel)) {
             BlockPos pos = new BlockPos(x, height, z);
             for (int y = height; y > lowestY; y--) {
@@ -216,8 +326,7 @@ public class ServerEvents {
 
                 pos = pos.below();
             }
-        }
-        else {
+        } else {
             int maxHeight = 128;
             BlockPos pos = new BlockPos(x, lowestY, z);
             for (int y = lowestY; y < maxHeight; y++) {
@@ -253,7 +362,8 @@ public class ServerEvents {
             }
 
             @Override
-            public void onUpdated() { }
+            public void onUpdated() {
+            }
 
             @Override
             public @NotNull Vec3 getPosition() {
@@ -276,8 +386,7 @@ public class ServerEvents {
                     if ("Searge".equalsIgnoreCase(this.getCommand())) {
                         this.setLastOutput(Component.literal("#itzlipofutzli"));
                         this.setSuccessCount(1);
-                    }
-                    else {
+                    } else {
                         this.setSuccessCount(0);
                         MinecraftServer minecraftserver = this.getLevel().getServer();
                         if (!StringUtil.isNullOrEmpty(this.getCommand())) {
@@ -285,13 +394,12 @@ public class ServerEvents {
                                 this.setLastOutput(null);
                                 CommandSourceStack commandsourcestack = this.createCommandSourceStack().withCallback((p_45417_, p_45418_, p_45419_) -> {
                                     if (p_45418_) {
-                                        this.setSuccessCount(this.getSuccessCount()+1);
+                                        this.setSuccessCount(this.getSuccessCount() + 1);
                                     }
 
                                 });
                                 minecraftserver.getCommands().performPrefixedCommand(commandsourcestack, this.getCommand());
-                            }
-                            catch (Throwable throwable) {
+                            } catch (Throwable throwable) {
                                 CrashReport crashreport = CrashReport.forThrowable(throwable, "Executing command block");
                                 CrashReportCategory crashreportcategory = crashreport.addCategory("Command to be executed");
                                 crashreportcategory.setDetail("Command", this::getCommand);
@@ -301,8 +409,7 @@ public class ServerEvents {
                         }
                     }
                     return true;
-                }
-                else {
+                } else {
                     return false;
                 }
             }

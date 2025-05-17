@@ -1,15 +1,11 @@
 package com.p1nero.smc.entity.custom.npc.customer.customer_data.special;
 
-import com.github.ysbbbbbb.kaleidoscopedoll.init.ModItems;
-import com.p1nero.smc.client.gui.DialogueComponentBuilder;
-import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.customer.customer_data.SpecialCustomerData;
-import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
-import net.minecraft.nbt.CompoundTag;
+import com.simibubi.create.AllBlocks;
 import net.minecraft.server.level.ServerPlayer;
 
 public class SpecialCustomerData11 extends SpecialCustomerData {
@@ -43,7 +39,7 @@ public class SpecialCustomerData11 extends SpecialCustomerData {
     @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.DOLL_RAFFLE_TICKET.asItem(), 4, true);
+        ItemUtil.addItem(serverPlayer, AllBlocks.CUCKOO_CLOCK.asStack(), true);
     }
 
 }

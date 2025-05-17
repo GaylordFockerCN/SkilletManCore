@@ -9,16 +9,20 @@ import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.packet.serverbound.AddDialogPacket;
 import com.p1nero.smc.network.packet.serverbound.NpcBlockPlayerInteractPacket;
 import com.p1nero.smc.network.packet.serverbound.NpcPlayerInteractPacket;
+import de.keksuccino.konkrete.json.jsonpath.internal.function.numeric.Min;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -36,6 +40,8 @@ import java.util.Set;
  */
 public class DialogueScreen extends Screen {
     protected ResourceLocation PICTURE_LOCATION = null;
+    private int picHeight = 144, picWidth = 256;
+    private int picShowHeight = 144, picShowWidth = 256;
     protected final DialogueAnswerComponent dialogueAnswer;
     @Nullable
     protected Entity entity;
@@ -82,6 +88,26 @@ public class DialogueScreen extends Screen {
 
     public void setPicture(ResourceLocation resourceLocation) {
         this.PICTURE_LOCATION = resourceLocation;
+        if(Minecraft.getInstance().level != null && Minecraft.getInstance().player != null) {
+            LocalPlayer player = Minecraft.getInstance().player;
+            Minecraft.getInstance().level.playLocalSound(player.getX(), player.getY(), player.getZ(), SoundEvents.BOOK_PAGE_TURN, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+        }
+    }
+
+    public void setPicHeight(int picHeight) {
+        this.picHeight = picHeight;
+    }
+
+    public void setPicWidth(int picWidth) {
+        this.picWidth = picWidth;
+    }
+
+    public void setPicShowHeight(int picShowHeight) {
+        this.picShowHeight = picShowHeight;
+    }
+
+    public void setPicShowWidth(int picShowWidth) {
+        this.picShowWidth = picShowWidth;
     }
 
     public void setupDialogueChoices(List<DialogueChoiceComponent> options) {
@@ -148,6 +174,10 @@ public class DialogueScreen extends Screen {
         }
         PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new NpcPlayerInteractPacket(this.entity == null ? NpcPlayerInteractPacket.NO_ENTITY :this.entity.getId(), interactionID));
         PICTURE_LOCATION = null;
+        picHeight = 144;
+        picWidth = 256;
+        picShowHeight = 256;
+        picShowWidth = 144;
         super.onClose();
     }
 
@@ -183,7 +213,7 @@ public class DialogueScreen extends Screen {
 
     private void renderPicture(GuiGraphics guiGraphics) {
         if(PICTURE_LOCATION != null){
-            guiGraphics.blit(PICTURE_LOCATION, this.width/2 - 256/2, (int) (this.height/2 - 144 / 1.4F), 256, 144, 0, 0, 256, 144, 256, 144);
+            guiGraphics.blit(PICTURE_LOCATION, this.width/2 - picShowWidth/2, (int) (this.height/2 - picShowHeight / 1.4F), picShowWidth, picShowHeight, 0, 0, picWidth, picHeight, picWidth, picHeight);
         }
     }
 

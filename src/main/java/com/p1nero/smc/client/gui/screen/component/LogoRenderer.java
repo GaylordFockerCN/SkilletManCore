@@ -8,8 +8,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class LogoRenderer {
-    public static final ResourceLocation MINECRAFT_LOGO = new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/title/main.png");
-    public static final ResourceLocation MINECRAFT_EDITION = new ResourceLocation(SkilletManCoreMod.MOD_ID, "textures/gui/title/sub.png");
+    public static final ResourceLocation MINECRAFT_LOGO = ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/title/main.png");
+    public static final ResourceLocation MINECRAFT_EDITION = ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/title/sub.png");
     private final boolean keepLogoThroughFade;
 
     public LogoRenderer(boolean p_265300_) {

@@ -136,6 +136,19 @@ public class LinkListStreamDialogueScreenBuilder {
     }
 
     /**
+     * 添加选项进树并返回当前节点
+     *
+     * @param option 该选项的内容
+     * @param answer 选择该选项后的回答内容
+     */
+    public LinkListStreamDialogueScreenBuilder addChoiceAndStayCurrent(Component option, Component answer) {
+        if (answerNode == null)
+            return null;
+        answerNode.addChild(answer, option);
+        return this;
+    }
+
+    /**
      * 使用BUILDER构建
      * 添加选项进树并返回下一个节点
      *

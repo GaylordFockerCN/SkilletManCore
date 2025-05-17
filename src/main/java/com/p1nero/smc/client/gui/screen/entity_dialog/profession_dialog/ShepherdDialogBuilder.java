@@ -1,6 +1,5 @@
 package com.p1nero.smc.client.gui.screen.entity_dialog.profession_dialog;
 
-import com.github.ysbbbbbb.kaleidoscopedoll.init.ModItems;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
@@ -57,20 +56,6 @@ public class ShepherdDialogBuilder extends VillagerDialogScreenHandler.VillagerD
             }
         }
 
-        if (interactionID == 2) {
-            int dollTicketCnt = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.DOLL_RAFFLE_TICKET.asItem(), 1);
-            if (dollTicketCnt == 0) {
-                ItemUtil.tryAddRandomItem(serverPlayer, List.of(ModItems.PURPLE_DOLL_GIFT_BOX.get().getDefaultInstance()), (int)(1600 * moneyRate), 1);
-                serverPlayer.serverLevel().sendParticles(ParticleTypes.TOTEM_OF_UNDYING, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), 50, 1.0, 1.0, 1.0, 0.2);
-                serverPlayer.serverLevel().playSound(null, serverPlayer.getOnPos(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 1.0F, 2.0F);
-            } else {
-                BlockPos spawnPos = serverPlayer.getOnPos().above(4);
-                ItemUtil.addItemEntity(serverPlayer.serverLevel(), spawnPos, ModItems.PURPLE_DOLL_GIFT_BOX.get().getDefaultInstance());
-                serverPlayer.serverLevel().sendParticles(ParticleTypes.TOTEM_OF_UNDYING, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 50, 1.0, 1.0, 1.0, 0.2);
-                serverPlayer.serverLevel().playSound(null, serverPlayer.getOnPos(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 1.0F, 2.0F);
-            }
-        }
-
     }
 
     public void getPet(ServerPlayer serverPlayer, Villager villager) {
@@ -113,8 +98,7 @@ public class ShepherdDialogBuilder extends VillagerDialogScreenHandler.VillagerD
 
             TreeNode root = new TreeNode(answer(0));
 
-            int petTicketCnt = localPlayer.getInventory().countItem(SMCRegistrateItems.DOLL_RAFFLE_TICKET.asItem());
-            int dollTicketCnt = localPlayer.getInventory().countItem(SMCRegistrateItems.PET_RAFFLE_TICKET.asItem());
+            int petTicketCnt = localPlayer.getInventory().countItem(SMCRegistrateItems.PET_RAFFLE_TICKET.asItem());
             if (petTicketCnt < 1) {
                 root.addChild(new TreeNode(answer(1, (int)(5000 * moneyRate)), choice(0))
                         .addLeaf(choice(2), (byte) 1)
@@ -123,13 +107,6 @@ public class ShepherdDialogBuilder extends VillagerDialogScreenHandler.VillagerD
                 root.addLeaf(choice(0), (byte) 1);
             }
 
-            if (dollTicketCnt < 1) {
-                root.addChild(new TreeNode(answer(2, (int)(1600 * moneyRate)), choice(1))
-                        .addLeaf(choice(2), (byte) 2)
-                        .addLeaf(choice(3)));
-            } else {
-                root.addLeaf(choice(1), (byte) 2);
-            }
             root.addLeaf(choice(4));
 
             builder.setAnswerRoot(root);

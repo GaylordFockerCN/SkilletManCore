@@ -1,5 +1,6 @@
 package com.p1nero.smc.client.sound.player;
 
+import com.p1nero.smc.SMCConfig;
 import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.client.sound.SMCSounds;
 import net.minecraft.client.Minecraft;
@@ -34,7 +35,9 @@ public class RaidMusicPlayer {
                     music = null;
                 }
             }
-
+            if(!SMCConfig.ENABLE_RAID_BGM.get()) {
+                music = null;
+            }
             if (music != null && !Minecraft.getInstance().getSoundManager().isActive(music)) {
                 Minecraft.getInstance().getSoundManager().play(music);
             }

@@ -13,7 +13,7 @@ public class SMCNoiseSettings {
     public static final ResourceKey<NoiseGeneratorSettings> PLAIN = createKey("plain_noise_gen");
 
     private static ResourceKey<NoiseGeneratorSettings> createKey(String name) {
-        return ResourceKey.create(Registries.NOISE_SETTINGS, new ResourceLocation(SkilletManCoreMod.MOD_ID, name));
+        return ResourceKey.create(Registries.NOISE_SETTINGS, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, name));
     }
 
     public static void bootstrap(BootstapContext<NoiseGeneratorSettings> context) {
