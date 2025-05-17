@@ -201,6 +201,23 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("stock_ticker", "下单！", "获得仓储链接站。提示：下单后的物品按顺序落在传送带上，传送带的末端则作为机械臂的输入，即可实现机械臂智能延时下锅！可参考蓝图。");
         this.addAdvancement("pulse_repeater", "该出锅了！", "获得脉冲中继器。时间还没到，可别抢着端走呀！（提示：先用红石信号阻断，当下锅后一段时间再解除红石信号。可借助无线红石信号发射器。）");
 
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "_shop", "店铺图鉴", "各个群系以及各等级的店铺种类将在这里显示。");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "plain_2", "平原2级", "将平原店铺升至2级");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "plain_3", "平原3级", "将平原店铺升至3级");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "plain_4", "平原4级", "将平原店铺升至4级");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "savanna_2", "热带草原2级", "将热带草原店铺升至2级");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "savanna_3", "热带草原3级", "将热带草原店铺升至3级");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "savanna_4", "热带草原4级", "将热带草原店铺升至4级");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "taiga_2", "林地2级", "将林地店铺升至2级");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "taiga_3", "林地3级", "将林地店铺升至3级");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "taiga_4", "林地4级", "将林地店铺升至4级");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "snowy_2", "雪原2级", "将雪原店铺升至2级");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "snowy_3", "雪原3级", "将雪原店铺升至3级");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "snowy_4", "雪原4级", "将雪原店铺升至4级");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "desert_2", "沙漠2级", "将沙漠店铺升至2级");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "desert_3", "沙漠3级", "将沙漠店铺升至3级");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "desert_4", "沙漠4级", "将沙漠店铺升至4级");
+
 
         this.addAdvancement("dirt_plate", "节俭之星", "使用脏盘子盛菜，节俭是一种美德，但是你的顾客可能不会这么想。");
         this.addAdvancement("start_work", "新的开始", "接手一家店铺并开始经营");

@@ -13,6 +13,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * 用于单一玩家数据，而不是全体数据，SaveUtil用于全体数据{@link SMCArchiveManager}
  * <p>
@@ -25,7 +28,8 @@ import net.minecraft.world.entity.player.Player;
  * @author P1nero
  */
 public class DataManager {
-    public static DoubleData spatulaCombo = new DoubleData("first_joint", 0);
+    private final static Set<String> EXISTING_ID = new HashSet<>();
+    public static DoubleData spatulaCombo = new DoubleData("spatula_combo", 0);
     public static BoolData firstJoint = new BoolData("first_joint", false);
     public static BoolData firstGiftGot = new BoolData("first_gift_got", false);
     public static BoolData firstGachaGot = new BoolData("first_gacha_got", false);
@@ -84,7 +88,11 @@ public class DataManager {
         protected int id;
 
         public Data(String key) {
+            if(EXISTING_ID.contains(key)) {
+                throw new IllegalArgumentException(key + " is already exist!");
+            }
             this.key = key;
+            EXISTING_ID.add(key);
         }
 
         public String getKey() {

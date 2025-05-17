@@ -28,19 +28,19 @@ public class SpecialCustomerData9 extends SpecialCustomerData {
         generator.add(choicePre(-2), "重新准备");
 
         generator.add(answerPre(-1), "（这位村民眼神空洞，仿佛对周围一切毫无兴趣）");
-        generator.add(choicePre(-1), "需要我为您准备什么吗？");
+        generator.add(choicePre(-1), "需要来点什么吗？");
 
         generator.add(answerPre(0), "要吃就来点能一眼看出价值的 %s 。");
-        generator.add(choicePre(0), "即刻奉上");
+        generator.add(choicePre(0), "奉上");
 
         generator.add(answerPre(1), "（微微点头）还算合格。此武器送你罢");
-        generator.add(choicePre(1), "收下，多谢");
+        generator.add(choicePre(1), "收下");
 
         generator.add(answerPre(2), "（不屑一顾）勉勉强强。");
         generator.add(choicePre(2), "告退");
 
         generator.add(answerPre(3), "（冷哼一声）废物。别让我再看见这种东西。");
-        generator.add(choicePre(3), "不敢不敢！就此别过。");
+        generator.add(choicePre(3), "不敢不敢！");
     }
 
     @Override

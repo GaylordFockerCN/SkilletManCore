@@ -72,13 +72,13 @@ public class CookGuideBookItem extends SimpleDescriptionFoilItem {
         //TODO 烧焦
         generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(4), "对于§6混合菜品§r（由两种以上食材烹饪而成），下锅时应§6先下§r[最短烹饪时间]较长的物品，其次再下[最短烹饪时间]较短的物品，以免烧焦");
         generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(5), "使用锅铲对着炒锅右键以翻炒食材，只有在锅铲指向绿色条的时候才能翻炒。翻炒将重置右边的刻度。 ");
-        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(5), "使用食材对着炒锅右键或将食材丢入炒锅上方以添加食材。交易结算时的§6份量加成§r不容忽视。 ");
-        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(6), "使用盘子对着炒锅右键以盛出");
-        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(7), "当没有食材时，可直接向§b小助手§r快速订购食材，不过小助手提供的食材有限");
-        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(8), "将出锅的食物置于主手，对着客户村民右键对话以完成交易。菜品份量，所用的食材丰富度以及品质等级都可以提升报酬！");
-        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(9), "合上");
-        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(10), "§c切换为困难模式");
-        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(11), "§a切换为休闲模式");
+        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(6), "使用食材对着炒锅右键或将食材丢入炒锅上方以添加食材。交易结算时的§6份量加成§r不容忽视。 ");
+        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(7), "使用盘子对着炒锅右键以盛出");
+        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(8), "当没有食材时，可直接向§b小助手§r快速订购食材，不过小助手提供的食材有限");
+        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(9), "将出锅的食物置于主手，对着客户村民右键对话以完成交易。菜品份量，所用的食材丰富度以及品质等级都可以提升报酬！");
+        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(10), "合上");
+        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(11), "§c切换为困难模式");
+        generator.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get().key(12), "§a切换为休闲模式");
     }
 
 }

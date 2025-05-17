@@ -33,7 +33,9 @@ public abstract class PlayerAdvancementsMixin {
     @Inject(method = "updateTreeVisibility", at = @At("HEAD"))
     private void smc$updateTreeVisibility(Advancement advancement, Set<Advancement> advancements, Set<ResourceLocation> resourceLocations, CallbackInfo ci){
         String path = advancement.getId().getPath();
-        if(advancement.getId().getNamespace().equals(SkilletManCoreMod.MOD_ID) && (path.contains("_level") || path.contains("_skill") || path.contains("_armor") || path.contains("_weapon") || path.contains("_food"))){
+        if(advancement.getId().getNamespace().equals(SkilletManCoreMod.MOD_ID)
+                && (path.contains("_shop") || path.contains("_level") || path.contains("_skill")
+                || path.contains("_armor") || path.contains("_weapon") || path.contains("_food"))){
             smc$setVisible(advancement, advancements);
         }
     }

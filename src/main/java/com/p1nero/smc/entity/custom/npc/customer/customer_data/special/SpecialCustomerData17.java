@@ -32,13 +32,13 @@ public class SpecialCustomerData17 extends SpecialCustomerData {
         generator.add(choicePre(0), "呈上！");
 
         generator.add(answerPre(1), "（突然热泪盈眶）我找到了灵感！纯美女神眷顾于你！（掏出一本诗集）这本《食物之歌》送你，谢你的杰作。");
-        generator.add(choicePre(1), "（尴尬笑着收下）多谢，告辞。");
+        generator.add(choicePre(1), "（尴尬收下）");
 
         generator.add(answerPre(2), "（皱眉）少了灵魂...像被霜打的诗篇，失去了温度...");
-        generator.add(choicePre(2), "下次一定改进");
+        generator.add(choicePre(2), "下次一定");
 
         generator.add(answerPre(3), "（惊恐）这是...黑暗料理之诗！（突然开始朗诵）哦！灾难的味蕾在舌尖绽放！（夺门而出）");
-        generator.add(choicePre(3), "送客，下次一定！");
+        generator.add(choicePre(3), "下次一定！");
     }
 
     @Override

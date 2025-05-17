@@ -115,11 +115,12 @@ public class PlayerEventListeners {
             //防止重进后boss的uuid不同
             SMCBoss.SERVER_BOSSES.forEach(((uuid, integer) -> PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new SyncUuidPacket(uuid, integer), serverPlayer)));
             SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID, serverPlayer);
+            SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID + "_level", serverPlayer);
             SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID + "_food", serverPlayer);
             SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID + "_weapon", serverPlayer);
             SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID + "_armor", serverPlayer);
             SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID + "_skill", serverPlayer);
-            SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID + "_level", serverPlayer);
+            SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID + "_shop", serverPlayer);
             SMCAdvancementData.finishAdvancement(SkilletManCoreMod.MOD_ID + "_create", serverPlayer);
 
             SMCPlayer.updateWorkingState(false, serverPlayer);//重置上班状态，防止假性上班（

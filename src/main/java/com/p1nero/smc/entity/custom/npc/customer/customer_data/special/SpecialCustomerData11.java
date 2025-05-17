@@ -27,13 +27,13 @@ public class SpecialCustomerData11 extends SpecialCustomerData {
         generator.add(choicePre(0), "恭敬呈上");
 
         generator.add(answerPre(1), "（脸红）还、还算可以吧...这玩意儿送你，别让它沾上俗气。");
-        generator.add(choicePre(1), "（笑着收下）多谢，告辞。");
+        generator.add(choicePre(1), "（笑着收下）");
 
         generator.add(answerPre(2), "（撇嘴）勉勉强强...再努力点吧你。");
-        generator.add(choicePre(2), "下次一定更好！");
+        generator.add(choicePre(2), "下次一定！");
 
         generator.add(answerPre(3), "（假装生气）这种质量也敢拿出来？！（其实真的很失望）");
-        generator.add(choicePre(3), "（无奈）下次一定改进！");
+        generator.add(choicePre(3), "（无奈）下次一定！");
     }
 
     @Override

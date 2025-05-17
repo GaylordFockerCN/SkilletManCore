@@ -27,7 +27,7 @@ public class SpecialCustomerData14 extends SpecialCustomerData {
         generator.add(choicePre(0), "提交");
 
         generator.add(answerPre(1), "（破涕为笑）真的吗？！好开心！送你这个，谢谢！（不是爱哭的村民吗，怎么马上就笑起来了...）");
-        generator.add(choicePre(1), "（笑着收下）多谢，告辞！");
+        generator.add(choicePre(1), "（笑着收下）多谢！");
 
         generator.add(answerPre(2), "（眼泪汪汪）不够好...我好难过...（抽泣）");
         generator.add(choicePre(2), "下次一定！");

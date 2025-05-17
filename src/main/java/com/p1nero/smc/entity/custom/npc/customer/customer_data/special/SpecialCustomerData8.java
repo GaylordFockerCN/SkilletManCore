@@ -30,23 +30,23 @@ public class SpecialCustomerData8 extends SpecialCustomerData {
     public void generateTranslation(SMCLangGenerator generator) {
         generator.add(nameTranslationKey, "社交恐惧的村民");
         generator.add(choicePre(-3), "马上做！");
-        generator.add(answerPre(-2), "（结结巴巴）这、这个...不、不是我要的...（后退两步）");
-        generator.add(choicePre(-2), "那我重新准备。");
+        generator.add(answerPre(-2), "（结结巴巴）这、这个...不、不是我要的...");
+        generator.add(choicePre(-2), "那我重新准备");
 
         generator.add(answerPre(-1), "（这位村民瑟瑟发抖，眼神惊恐四顾，似乎周围随时有僵尸出现）");
-        generator.add(choicePre(-1), "小朋友别怕，想吃点什么？");
+        generator.add(choicePre(-1), "想吃点什么？");
 
         generator.add(answerPre(0), "能、能来点 %s 吗？（声音颤抖）");
-        generator.add(choicePre(0), "安心呈上");
+        generator.add(choicePre(0), "呈上");
 
         generator.add(answerPre(1), "（放松下来）这、这个...真、真的不错！这、这东西送你，谢、谢谢了！");
         generator.add(choicePre(1), "多谢，告辞");
 
         generator.add(answerPre(2), "不、不够好...我、我先走了...（转身欲逃）");
-        generator.add(choicePre(2), "告辞，下次再见。");
+        generator.add(choicePre(2), "告辞");
 
-        generator.add(answerPre(3), "（惊恐大叫）啊！怪物！（转身就跑）（你无奈摇头）");
-        generator.add(choicePre(3), "罢了，送客。");
+        generator.add(answerPre(3), "（惊恐大叫）啊！煤炭怪物！（转身就跑）（你无奈摇头）");
+        generator.add(choicePre(3), "送客");
     }
 
     @Override

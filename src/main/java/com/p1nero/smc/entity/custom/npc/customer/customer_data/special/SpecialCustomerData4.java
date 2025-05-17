@@ -30,18 +30,18 @@ public class SpecialCustomerData4 extends SpecialCustomerData {
         super.generateTranslation(generator);
         generator.add(nameTranslationKey, "充满智慧的村民");
         generator.add(answerPre(-2), "未完成的答案如同半部残卷。（智慧的村民一下子就识破了你的诡计，看来得认真对待）");
-        generator.add(choicePre(-2), "抱歉，抱歉！");
+        generator.add(choicePre(-2), "抱歉");
         generator.add(choicePre(-3), "这就去！");
         generator.add(answerPre(-1), "（眼前这位村民眼神深邃，充满了智慧，你感受到对方没有那么好忽悠）");
         generator.add(choicePre(-1), "客官想品尝何物？");
         generator.add(answerPre(0), "老夫苦思冥想多日，可有启迪心智的 %s ？");
-        generator.add(choicePre(0), "恭敬献上");
+        generator.add(choicePre(0), "献上");
         generator.add(answerPre(1), "妙哉！此食如智慧之光！知识，与你分享！");
-        generator.add(choicePre(1), "收下秘籍");
+        generator.add(choicePre(1), "收下");
         generator.add(answerPre(2), "（轻叹）似懂非懂，还需细细琢磨。");
         generator.add(choicePre(2), "告退");
         generator.add(answerPre(3), "此等粗鄙之物，怎入得了智者之口？");
-        generator.add(choicePre(3), "在下无知，请恕罪！");
+        generator.add(choicePre(3), "恕罪！");
     }
 
     @Override

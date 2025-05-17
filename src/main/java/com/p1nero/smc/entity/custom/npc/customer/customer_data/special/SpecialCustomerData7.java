@@ -34,12 +34,12 @@ public class SpecialCustomerData7 extends SpecialCustomerData {
         generator.add(nameTranslationKey, "愚蠢的村民");
         generator.add(choicePre(-3), "马上做！");
         generator.add(answerPre(-2), "（挠头困惑）这个...这个不是我要的...我要的是...");
-        generator.add(choicePre(-2), "好的，我再去弄。");
+        generator.add(choicePre(-2), "好的，忽悠失败");
 
         generator.add(answerPre(-1), "（这位村民眼神迷离，仿佛在注视着遥远的神秘事物）");
         generator.add(choicePre(-1), "这位客官想要啥呢？");
 
-        generator.add(answerPre(0), "我听说有一种超级大大的 %s ？");
+        generator.add(answerPre(0), "我听说有一种传说中的 %s ？");
         generator.add(choicePre(0), "递上食物");
 
 

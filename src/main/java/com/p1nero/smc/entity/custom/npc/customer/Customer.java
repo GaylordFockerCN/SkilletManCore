@@ -338,7 +338,7 @@ public class Customer extends SMCNpc {
         if(customerData == null && !level().isClientSide) {
             //每级1/5概率刷新神人
             SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
-            if(smcPlayer.getLevel() > 0 && !smcPlayer.isSpecialAlive() && this.getRandom().nextInt(5) == 1) {
+            if(smcPlayer.getLevel() > 0 && !smcPlayer.isSpecialAlive() && this.getRandom().nextInt(3) == 1) {
                 customerData = SPECIAL_CUSTOMERS.get(this.getSMCId() % SPECIAL_CUSTOMERS.size());
                 this.setSpecial(true);
                 smcPlayer.setSpecialAlive(true);

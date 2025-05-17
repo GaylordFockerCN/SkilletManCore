@@ -24,7 +24,7 @@ public class SpecialCustomerData10 extends SpecialCustomerData {
         generator.add(choicePre(-3), "马上做！");
 
         generator.add(answerPre(-2), "（推推眼镜，精打细算地）这个？不不不，这个太浪费了！要节约，节约...");
-        generator.add(choicePre(-2), "（这老头比我还抠）");
+        generator.add(choicePre(-2), "（这村民比我还抠）");
 
         generator.add(answerPre(-1), "（眼前这位村民紧紧抱着钱袋，眼神警惕，看起来很怕你的食物夺走了他的财产。）");
         generator.add(choicePre(-1), "客官要看菜单吗？");
@@ -33,13 +33,13 @@ public class SpecialCustomerData10 extends SpecialCustomerData {
         generator.add(choicePre(0), "提交");
 
         generator.add(answerPre(1), "（眼镜闪过精光）嗯，还算可以接受...（从怀里掏出一本破旧的省钱秘籍）送你这个，《节俭之道》，好好学学。");
-        generator.add(choicePre(1), "（表面道谢，内心吐槽）多谢，告辞。");
+        generator.add(choicePre(1), "告辞");
 
         generator.add(answerPre(2), "（皱眉）浪费，太浪费了...食材没利用好...");
-        generator.add(choicePre(2), "下次一定改进！");
+        generator.add(choicePre(2), "下次一定！");
 
         generator.add(answerPre(3), "（暴跳如雷）你这是在浪费粮食！你知道这能做多少便宜料理吗？！（你慌忙道歉）");
-        generator.add(choicePre(3), "（心虚）下次一定注意！");
+        generator.add(choicePre(3), "下次一定！");
     }
 
     @Override

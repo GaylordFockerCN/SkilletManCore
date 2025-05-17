@@ -104,7 +104,8 @@ public class ServerEvents {
                     broadCastRankingList(event.getServer());
                 }
 
-                if (dayTime % 7 == 0 && dayTick == 100) {
+                //颁奖
+                if (dayTime > 0 && dayTime % 7 == 0 && dayTick == 100) {
                     SolarTerm solarTerm = EclipticUtil.getNowSolarTerm(overworld);
                     ArrayList<ServerPlayer> players = getRankedList(event.getServer());
                     ServerPlayer bestPlayer = players.get(0);

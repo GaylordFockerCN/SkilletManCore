@@ -30,10 +30,10 @@ public class SpecialCustomerData16 extends SpecialCustomerData {
         generator.add(choicePre(0), "呈上");
 
         generator.add(answerPre(1), "（突然警惕地观察四周）嗯...还行吧...送你这个，保个平安。");
-        generator.add(choicePre(1), "（无语）多谢，告辞。");
+        generator.add(choicePre(1), "（无语）告辞");
 
         generator.add(answerPre(2), "（皱眉）这东西...（又凑近闻了闻）感觉不太对劲...你确定没放奇怪的东西？（突然警觉地环顾四周）");
-        generator.add(choicePre(2), "下次一定改进");
+        generator.add(choicePre(2), "下次一定！");
 
         generator.add(answerPre(3), "（突然暴跳如雷）你这厨子是不是有病？！（突然又警惕地环顾四周）你不会联合对门那位村民来陷害我吧？！走也走也！（夺门而出）");
         generator.add(choicePre(3), "慢走慢走！我不是故意做那么难吃的！");

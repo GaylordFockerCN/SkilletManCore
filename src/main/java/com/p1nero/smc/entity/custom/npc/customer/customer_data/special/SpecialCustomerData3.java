@@ -34,7 +34,7 @@ public class SpecialCustomerData3 extends SpecialCustomerData {
         super.generateTranslation(generator);
         generator.add(nameTranslationKey, "看起来很豪爽的村民");
         generator.add(answerPre(-2), "（铜铃眼瞪着你）洒家要的是下酒菜，这劳什子能就酒？");
-        generator.add(choicePre(-2), "缩脖子退下");
+        generator.add(choicePre(-2), "重选");
         generator.add(choicePre(-3), "这就去！");
         generator.add(answerPre(-1), "（这位村民看起来凶神恶煞）");
         generator.add(choicePre(-1), "好汉要什么硬菜？");
@@ -51,7 +51,7 @@ public class SpecialCustomerData3 extends SpecialCustomerData {
     @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, Items.DIAMOND, 1);
+        ItemUtil.addItem(serverPlayer, Items.DIAMOND, 3);
         ItemUtil.addItem(serverPlayer, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.get(), 3, true);
         ItemUtil.addItem(serverPlayer, SMCRegistrateItems.ARMOR_RAFFLE_TICKET.get(), 3, true);
     }

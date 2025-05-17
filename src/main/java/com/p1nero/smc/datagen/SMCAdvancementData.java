@@ -141,7 +141,7 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                         .addCriterion(name, new ImpossibleTrigger.TriggerInstance())
                         .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, name), existingFileHelper);
 
-                if(i % 5 == 0) {
+                if((i + 1) % 7 == 0) {
                     last = null;
                 }
             }
@@ -304,7 +304,31 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement stock_ticker = registerAdvancement(arm1, "stock_ticker", FrameType.GOAL, AllBlocks.STOCK_TICKER, true, true, false);
             Advancement pulse_repeater = registerAdvancement(arm3, "pulse_repeater", FrameType.GOAL, AllBlocks.PULSE_REPEATER, true, true, false);
 
-            
+            //店铺图鉴
+            Advancement shopsRoot = Advancement.Builder.advancement()
+                    .display(AllItems.GOGGLES,
+                            Component.translatable(PRE + SkilletManCoreMod.MOD_ID + "_shop"),
+                            Component.translatable(PRE + SkilletManCoreMod.MOD_ID + "_shop" + ".desc"),
+                            ResourceLocation.parse("textures/block/bricks.png"),
+                            FrameType.GOAL, false, false, false)
+                    .addCriterion(SkilletManCoreMod.MOD_ID, new ImpossibleTrigger.TriggerInstance())
+                    .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID + "_shop"), existingFileHelper);
+            //将一家平原店铺升到2级
+            Advancement plain_2 = registerAdvancement(shopsRoot, "plain_2", FrameType.GOAL, Items.DIRT, true, true, false);
+            Advancement plain_3 = registerAdvancement(plain_2, "plain_3", FrameType.GOAL, Items.DIRT_PATH, true, true, false);
+            Advancement plain_4 = registerAdvancement(plain_3, "plain_4", FrameType.GOAL, Items.GRASS, true, true, false);
+            Advancement savanna_2 = registerAdvancement(shopsRoot, "savanna_2", FrameType.GOAL, Items.ACACIA_WOOD, true, true, false);
+            Advancement savanna_3 = registerAdvancement(savanna_2, "savanna_3", FrameType.GOAL, Items.ACACIA_PLANKS, true, true, false);
+            Advancement savanna_4 = registerAdvancement(savanna_3, "savanna_4", FrameType.GOAL, ItemStack.EMPTY.getItem(), true, true, false);
+            Advancement taiga_2 = registerAdvancement(shopsRoot, "taiga_2", FrameType.GOAL, ItemStack.EMPTY.getItem(), true, true, false);
+            Advancement taiga_3 = registerAdvancement(taiga_2, "taiga_3", FrameType.GOAL, ItemStack.EMPTY.getItem(), true, true, false);
+            Advancement taiga_4 = registerAdvancement(taiga_3, "taiga_4", FrameType.GOAL, ItemStack.EMPTY.getItem(), true, true, false);
+            Advancement snowy_2 = registerAdvancement(shopsRoot, "snowy_2", FrameType.GOAL, ItemStack.EMPTY.getItem(), true, true, false);
+            Advancement snowy_3 = registerAdvancement(snowy_2, "snowy_3", FrameType.GOAL, ItemStack.EMPTY.getItem(), true, true, false);
+            Advancement snowy_4 = registerAdvancement(snowy_3, "snowy_4", FrameType.GOAL, ItemStack.EMPTY.getItem(), true, true, false);
+            Advancement desert_2 = registerAdvancement(shopsRoot, "desert_2", FrameType.GOAL, ItemStack.EMPTY.getItem(), true, true, false);
+            Advancement desert_3 = registerAdvancement(desert_2, "desert_3", FrameType.GOAL, ItemStack.EMPTY.getItem(), true, true, false);
+            Advancement desert_4 = registerAdvancement(desert_3, "desert_4", FrameType.GOAL, ItemStack.EMPTY.getItem(), true, true, false);
         }
 
         public Advancement registerItemAdvancement(Advancement parent, ItemLike display) {

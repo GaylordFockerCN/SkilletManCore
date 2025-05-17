@@ -574,11 +574,13 @@ public class StartNPC extends SMCNpc {
 
         if(interactionID == 28){
             int need = getUpgradeShopNeed();
+            String type = getBiomeTypeNameByBlock();
             if(this.getShopLevel() == 1){
                 if(SMCPlayer.hasMoney(player, need, true)) {
                     if(tryPlaceShopPart(player, getShopLocation(2), -6, -1, -9)){
                         SMCPlayer.consumeMoney(need, player);
                         this.setShopLevel(2);
+                        SMCAdvancementData.finishAdvancement(type + "_" + this.getShopLevel(), player);
                     }
                 }
             } else if(this.getShopLevel() == 2) {
@@ -586,6 +588,7 @@ public class StartNPC extends SMCNpc {
                     if(tryPlaceShopPart(player, getShopLocation(3), -6, -1, 1)){
                         SMCPlayer.consumeMoney(need, player);
                         this.setShopLevel(3);
+                        SMCAdvancementData.finishAdvancement(type + "_" + this.getShopLevel(), player);
                     }
                 }
             } else if(this.getShopLevel() == 3) {
@@ -600,6 +603,7 @@ public class StartNPC extends SMCNpc {
                         DataManager.shouldShowMachineTicketHint.put(player, true);
                         //TODO 弹对话引导
                         this.setShopLevel(4);
+                        SMCAdvancementData.finishAdvancement(type + "_" + this.getShopLevel(), player);
                     }
                 }
             }
@@ -608,7 +612,7 @@ public class StartNPC extends SMCNpc {
         this.setConversingPlayer(null);
     }
 
-    public ResourceLocation getShopLocation(int level) {
+    public String getBiomeTypeNameByBlock() {
         BlockState referenceBlock = level().getBlockState(this.getHomePos().east());
         String type = "plains";
         if(referenceBlock.is(Blocks.ACACIA_PLANKS)) {
@@ -620,6 +624,11 @@ public class StartNPC extends SMCNpc {
         } else if(referenceBlock.is(Blocks.SMOOTH_STONE)) {
             type = "desert";
         }
+        return type;
+    }
+
+    public ResourceLocation getShopLocation(int level) {
+        String type = getBiomeTypeNameByBlock();
         return ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "village/" + type + "/houses/" + type + "_butcher_shop_lv" + level);
     }
 
