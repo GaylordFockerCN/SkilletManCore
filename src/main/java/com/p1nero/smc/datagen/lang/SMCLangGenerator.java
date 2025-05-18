@@ -202,11 +202,11 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("level25", "声望等级25 奖励", "§b钻石平底锅 §5⭐⭐⭐⭐");
         this.addAdvancement("level30", "声望等级30 奖励", "§6左锅右铲§r + §6英雄套装");
 
-        this.addAdvancement(SkilletManCoreMod.MOD_ID + "_create", "三只机械臂", "声望等级达到十级，店铺升到四级后，开始享受本包自制的自动化炒菜吧！");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "_create", "三只机械臂", "声望等级达到12级，店铺升到四级后，开始享受本包自制的自动化炒菜吧！");
         this.addAdvancement("add_power", "来些动力吧！", "使水车或风车动起来，然后将它接入地下室的三只机械臂。本关考察玩家机械动力基础");
-        this.addAdvancement("arm1", "第一只臂狠下料", "使用机械臂将食物丢入炒锅，可以看看炒锅思索。别忘了拆下来重新设好目标再装上去哦");
+        this.addAdvancement("arm1", "第一只臂狠下料", "使用机械臂将食物放入炒锅，可以看看炒锅思索。别忘了拆下来重新设好目标再装上去哦");
         this.addAdvancement("arm2", "第二只臂勤翻炒", "使机械臂拿锅铲与炒锅交互，可以看看炒锅思索。别忘了拆下来重新设好目标再装上去哦");
-        this.addAdvancement("arm3", "第三只臂把菜盛", "使机械臂拿着盘子将炒好的料理端出，并放到合适的位置去。提示：机械臂输出端先设置炒锅，再设置储存容器。可以看看炒锅思索。别忘了拆下来重新设好目标再装上去哦");
+        this.addAdvancement("arm3", "第三只臂把菜盛", "使机械臂拿着盘子将炒好的料理端出，并放到合适的位置去。可以看看炒锅思索，留意它下面的红石火把哦~");
         this.addAdvancement("belt", "延时输送好帮手！", "使用传送带传送食物。提示：8RPM时刚好3秒输送一格，时间久的食材应该靠前哦。");
         this.addAdvancement("stock_ticker", "下单！", "获得仓储链接站。提示：下单后的物品按顺序落在传送带上，传送带的末端则作为机械臂的输入，即可实现机械臂智能延时下锅！可参考蓝图。");
         this.addAdvancement("pulse_repeater", "该出锅了！", "获得脉冲中继器。时间还没到，可别抢着端走呀！（提示：先用红石信号阻断，当下锅后一段时间再解除红石信号。可借助无线红石信号发射器。）");
