@@ -14,6 +14,8 @@ import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ public class NoneDialogBuilder extends VillagerDialogScreenHandler.VillagerDialo
      * 概率太高了，于是多点随机性
      */
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void createDialog(LinkListStreamDialogueScreenBuilder builder, Villager self) {
         int id = self.getRandom().nextInt(3);
         Player player = Minecraft.getInstance().player;

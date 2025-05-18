@@ -10,8 +10,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import yesman.epicfight.client.world.capabilites.entitypatch.player.AbstractClientPlayerPatch;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 
 @Mixin(value = PotatoCannonItem.class)
 public class PotatoCannonItemMixin {
@@ -19,7 +19,7 @@ public class PotatoCannonItemMixin {
     @Inject(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/InteractionResultHolder;success(Ljava/lang/Object;)Lnet/minecraft/world/InteractionResultHolder;"))
     private void smc$use(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir){
         if(level.isClientSide){
-            AbstractClientPlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, AbstractClientPlayerPatch.class);
+            PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
             if(playerPatch != null) {
                 playerPatch.getClientAnimator().playReboundAnimation();
             }

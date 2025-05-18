@@ -375,6 +375,7 @@ public class Customer extends SMCNpc {
      * 如果是特殊村民则弹出 气场不凡 的提示
      */
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void openDialogueScreen(CompoundTag senderData) {
         LinkListStreamDialogueScreenBuilder builder = new LinkListStreamDialogueScreenBuilder(this);
         DialogueComponentBuilder dialogueComponentBuilder = new DialogueComponentBuilder(this);

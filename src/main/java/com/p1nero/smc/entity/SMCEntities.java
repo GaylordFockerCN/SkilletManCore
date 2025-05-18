@@ -11,6 +11,7 @@ import com.p1nero.smc.entity.custom.npc.special.Thief2;
 import com.p1nero.smc.entity.custom.npc.special.TwoKid;
 import com.p1nero.smc.entity.custom.npc.special.virgil.VirgilVillager;
 import com.p1nero.smc.entity.custom.npc.special.virgil.VirgilVillagerPatch;
+import com.p1nero.smc.entity.custom.npc.start_npc.StartNPCPlus;
 import com.p1nero.smc.entity.custom.super_golem.SuperBadIronGolem;
 import com.p1nero.smc.entity.custom.boss.goldenflame.GoldenFlamePatch;
 import com.p1nero.smc.entity.custom.boss.goldenflame.BlackHoleEntity;
@@ -47,7 +48,9 @@ public class SMCEntities {
     public static final RegistryObject<EntityType<VillagerWithoutBrain>> VILLAGER_NO_BRAIN = register("villager_no_brain",
             EntityType.Builder.of(VillagerWithoutBrain::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
     public static final RegistryObject<EntityType<StartNPC>> START_NPC = register("start_npc",
-            EntityType.Builder.<StartNPC>of(StartNPC::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
+            EntityType.Builder.<StartNPC>of(StartNPC::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());;
+    public static final RegistryObject<EntityType<StartNPCPlus>> START_NPC_PLUS = register("start_npc_plus",
+            EntityType.Builder.<StartNPCPlus>of(StartNPCPlus::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
 
     public static final RegistryObject<EntityType<Customer>> CUSTOMER = register("customer",
             EntityType.Builder.<Customer>of(Customer::new, MobCategory.CREATURE).sized(0.6f, 1.9f).noSave().fireImmune());
@@ -116,6 +119,7 @@ public class SMCEntities {
         //NPC
         event.put(VILLAGER_NO_BRAIN.get(), StartNPC.setAttributes());
         event.put(START_NPC.get(), StartNPC.setAttributes());
+        event.put(START_NPC_PLUS.get(), StartNPC.setAttributes());
         event.put(CUSTOMER.get(), StartNPC.setAttributes());
         event.put(FAKE_CUSTOMER.get(), StartNPC.setAttributes());
         event.put(HE_SHEN.get(), StartNPC.setAttributes());
@@ -130,6 +134,8 @@ public class SMCEntities {
         event.register(VILLAGER_NO_BRAIN.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
         event.register(START_NPC.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(START_NPC_PLUS.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
         event.register(CUSTOMER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);

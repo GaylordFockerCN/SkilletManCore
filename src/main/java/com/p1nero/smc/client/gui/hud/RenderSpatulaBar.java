@@ -30,7 +30,7 @@ public class RenderSpatulaBar {
 
     public static void render(GuiGraphics guiGraphics, Window window, float partialTick) {
         LocalPlayer localPlayer = Minecraft.getInstance().player;
-        if (localPlayer == null || Minecraft.getInstance().isPaused() || !SMCConfig.HARD_COOK_MODE.get()) {
+        if (localPlayer == null || Minecraft.getInstance().isPaused() || !DataManager.hardSpatulaMode.get(localPlayer)) {
             return;
         }
         CookingData data = CookingOverlay.getData();

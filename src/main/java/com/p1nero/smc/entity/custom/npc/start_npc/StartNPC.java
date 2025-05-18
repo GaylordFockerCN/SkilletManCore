@@ -19,6 +19,7 @@ import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.AddWaypointPacket;
+import com.p1nero.smc.network.packet.clientbound.OpenCreateGuideScreenPacket;
 import com.p1nero.smc.network.packet.clientbound.RemoveWaypointPacket;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
@@ -122,11 +123,11 @@ public class StartNPC extends SMCNpc {
     public static final int EMPTY = 0;
     public static final int HIRED = 1;
     public static final int GUIDER = 2;
-    private final Component name;
+    protected final Component name;
     public final String totalSleepingString = "Zzz.......";
-    private String currentSleepingString = "";
+    protected String currentSleepingString = "";
     @Nullable
-    private ServerPlayer lastPushPlayer;
+    protected ServerPlayer lastPushPlayer;
 
     public StartNPC(EntityType<? extends StartNPC> entityType, Level level) {
         super(entityType, level);
@@ -187,6 +188,10 @@ public class StartNPC extends SMCNpc {
         this.getEntityData().set(STATE, state);
     }
 
+    public int getState() {
+        return this.getEntityData().get(STATE);
+    }
+
     public int getIncome() {
         return this.getEntityData().get(INCOME);
     }
@@ -220,12 +225,14 @@ public class StartNPC extends SMCNpc {
     public void onSecond() {
 
         if (!level().isClientSide) {
-            if (level().getBlockEntity(this.getHomePos()) instanceof MainCookBlockEntity mainCookBlockEntity) {
-                if (mainCookBlockEntity.getStartNPC() != null && !mainCookBlockEntity.getStartNPC().is(this)) {
+            if(shouldRemoveWithoutMainBlock()){
+                if (level().getBlockEntity(this.getHomePos()) instanceof MainCookBlockEntity mainCookBlockEntity) {
+                    if (mainCookBlockEntity.getStartNPC() != null && !mainCookBlockEntity.getStartNPC().is(this)) {
+                        this.discard();
+                    }
+                } else {
                     this.discard();
                 }
-            } else {
-                this.discard();
             }
 
             if (this.position().distanceTo(this.getHomePos().getCenter()) > 2.9) {
@@ -261,7 +268,13 @@ public class StartNPC extends SMCNpc {
             }
         }
 
-        currentSleepingString = totalSleepingString.substring(0, (this.tickCount / 20) % totalSleepingString.length());
+        if(this.isHired() && !this.isWorkingTime()) {
+            currentSleepingString = totalSleepingString.substring(0, (this.tickCount / 20) % totalSleepingString.length());
+        }
+    }
+
+    protected boolean shouldRemoveWithoutMainBlock() {
+        return true;
     }
 
     /**
@@ -292,7 +305,7 @@ public class StartNPC extends SMCNpc {
     }
 
     public int getUpgradeShopNeed(){
-        return (int) (500 * Math.pow(10, this.getShopLevel()));
+        return (int) (200 * Math.pow(10, this.getShopLevel()));
     }
 
     @Override
@@ -444,6 +457,7 @@ public class StartNPC extends SMCNpc {
                 this.setState(GUIDER);
                 this.setOwnerUUID(player.getUUID());
                 SMCAdvancementData.finishAdvancement("start_work", player);
+                SMCAdvancementData.finishAdvancement(getBiomeTypeNameByBlock() + "_1", player);
                 this.playSound(SoundEvents.VILLAGER_CELEBRATE);
                 addShopToMap(player);
                 player.displayClientMessage(dialogueComponentBuilder.buildEntityAnswer(2), false);
@@ -463,6 +477,7 @@ public class StartNPC extends SMCNpc {
                 this.playSound(SoundEvents.VILLAGER_CELEBRATE);
                 addShopToMap(player);
                 player.displayClientMessage(dialogueComponentBuilder.buildEntityAnswer(2), false);
+                SMCAdvancementData.finishAdvancement(getBiomeTypeNameByBlock() + "_1", player);
             }
         }
 
@@ -594,14 +609,22 @@ public class StartNPC extends SMCNpc {
             } else if(this.getShopLevel() == 3) {
                 if(smcPlayer.getStage() < 2){
                     player.displayClientMessage(SkilletManCoreMod.getInfo("level_no_enough", SMCPlayer.STAGE2_REQUIRE + 1), true);
+                    player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.VILLAGER_NO, player.getSoundSource(), 1.0F, 1.0F);
+                    this.setConversingPlayer(null);
                     return;
                 }
                 if(SMCPlayer.hasMoney(player, need, true)) {
                     if(tryPlaceShopPart(player, getShopLocation(4), -6, -12, -9)){
                         SMCPlayer.consumeMoney(need, player);
-                        //TODO 在Home的地方生成NPCPlus
+                        StartNPCPlus startNPCPlus = new StartNPCPlus(player.serverLevel(), this.getSpawnPos());
+                        startNPCPlus.setOwner(Objects.requireNonNull(this.getOwner()));
+                        startNPCPlus.setState(this.getState());
+                        startNPCPlus.setIncomeSpeed(this.getIncomeSpeed());
+                        startNPCPlus.setShopLevel(this.getShopLevel());
+                        startNPCPlus.setHomePos(this.getHomePos());
+                        level().addFreshEntity(startNPCPlus);
                         DataManager.shouldShowMachineTicketHint.put(player, true);
-                        //TODO 弹对话引导
+                        PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new OpenCreateGuideScreenPacket(), player);
                         this.setShopLevel(4);
                         SMCAdvancementData.finishAdvancement(type + "_" + this.getShopLevel(), player);
                     }

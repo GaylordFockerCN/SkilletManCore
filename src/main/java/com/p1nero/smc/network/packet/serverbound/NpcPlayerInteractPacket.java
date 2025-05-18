@@ -1,13 +1,18 @@
 package com.p1nero.smc.network.packet.serverbound;
 
+import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.client.gui.screen.entity_dialog.VillagerDialogScreenHandler;
 import com.p1nero.smc.client.gui.screen.entity_dialog.animal.CatDialogScreenHandler;
 import com.p1nero.smc.client.gui.screen.entity_dialog.golem.IronGolemDialogScreenHandler;
 import com.p1nero.smc.client.gui.screen.entity_dialog.profession_dialog.WanderingTraderDialogBuilder;
+import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.entity.api.NpcDialogue;
 import com.p1nero.smc.network.packet.BasePacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.IronGolem;
@@ -24,6 +29,8 @@ import javax.annotation.Nullable;
 public record NpcPlayerInteractPacket(int entityID, byte interactionID) implements BasePacket {
     public static final int DO_NOTHING = -1;
     public static final int NO_ENTITY = -1;
+    public static final byte SET_HARD_SPATULA = 1;
+    public static final byte SET_EAZY_SPATULA= 2;
     @Override
     public void encode(FriendlyByteBuf buf) {
         buf.writeInt(this.entityID());
@@ -35,9 +42,9 @@ public record NpcPlayerInteractPacket(int entityID, byte interactionID) implemen
     }
 
     @Override
-    public void execute(@Nullable Player playerEntity) {
-        if (playerEntity instanceof ServerPlayer serverPlayer) {
-            Entity entity = playerEntity.level().getEntity(this.entityID());
+    public void execute(@Nullable Player player) {
+        if (player instanceof ServerPlayer serverPlayer) {
+            Entity entity = player.level().getEntity(this.entityID());
             if (entity instanceof NpcDialogue npc){
                 npc.handleNpcInteraction(serverPlayer, this.interactionID());
             } else {
@@ -61,7 +68,16 @@ public record NpcPlayerInteractPacket(int entityID, byte interactionID) implemen
             }
         }
         if(this.entityID == NO_ENTITY) {
-
+            if(interactionID == SET_HARD_SPATULA) {
+                DataManager.hardSpatulaMode.put(player, true);
+                player.displayClientMessage(SkilletManCoreMod.getInfo("set_to_hard_spatula"), true);
+                player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SMCSounds.VILLAGER_YES.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+            }
+            if(interactionID == SET_EAZY_SPATULA) {
+                DataManager.hardSpatulaMode.put(player, false);
+                player.displayClientMessage(SkilletManCoreMod.getInfo("set_to_easy_spatula"), true);
+                player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SMCSounds.VILLAGER_YES.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+            }
         }
     }
 }

@@ -8,13 +8,13 @@
     "AnimationsMixin",
     "AntitheusDarknessMixin",
     "AttackAnimationMixin",
-    "AttributesMixin",
     "BasicMultipleAttackAnimationMixin",
     "CatMixin",
     "CDEventListenersMixin",
     "ChefAnimationsMixin",
     "CookingEntryAccessor",
     "CowMixin",
+    "CuisineSkilletArmInteractionPointMixin",
     "CuisineSkilletBlockEntityMixin",
     "CuisineSkilletBlockMixin",
     "CuisineSkilletItemMixin",
@@ -28,11 +28,10 @@
     "PigMixin",
     "PlateItemMixin",
     "PlayerAdvancementsMixin",
-    "PotatoCannonItemMixin",
     "ServerGamePacketListenerImplMixin",
     "ServerPlayerPatchMixin",
     "SheepMixin",
-    "SkillMixin",
+    "SkillContainerMixin",
     "SnowGolemMixin",
     "SpatulaItemMixin",
     "TimeCommandMixin",
@@ -49,7 +48,8 @@
     "DodgeSkillMixin",
     "HealthBarIndicatorMixin",
     "LevelRendererMixin",
-    "WorldListEntryMixin"
+    "WorldListEntryMixin",
+    "PotatoCannonItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1

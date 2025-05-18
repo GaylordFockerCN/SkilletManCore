@@ -174,6 +174,49 @@ public class SMCRegistrateItems {
             .defaultModel()
             .defaultLang().register();
 
+    //房子图标
+    public static final ItemEntry<Item> PLAIN_1 = SkilletManCoreMod.REGISTRATE.item("plain1", Item::new)
+            .defaultModel().register();
+    public static final ItemEntry<Item> PLAIN_2 = SkilletManCoreMod.REGISTRATE.item("plain2", Item::new)
+            .defaultModel().register();
+    public static final ItemEntry<Item> PLAIN_3 = SkilletManCoreMod.REGISTRATE.item("plain3", Item::new)
+            .defaultModel().register();
+    public static final ItemEntry<Item> PLAIN_4 = SkilletManCoreMod.REGISTRATE.item("plain4", Item::new)
+            .defaultModel().register();
+    public static final ItemEntry<Item> SAVANNA_1 = SkilletManCoreMod.REGISTRATE.item("savanna1", Item::new)
+            .defaultModel().register();
+    public static final ItemEntry<Item> SAVANNA_2 = SkilletManCoreMod.REGISTRATE.item("savanna2", Item::new)
+            .defaultModel().register();
+    public static final ItemEntry<Item> SAVANNA_3 = SkilletManCoreMod.REGISTRATE.item("savanna3", Item::new)
+            .defaultModel().register();
+    public static final ItemEntry<Item> SAVANNA_4 = SkilletManCoreMod.REGISTRATE.item("savanna4", Item::new)
+            .defaultModel().register();
+
+    public static final ItemEntry<Item> TAIGA_1 = SkilletManCoreMod.REGISTRATE.item("taiga1", Item::new)
+            .defaultModel().register();
+    public static final ItemEntry<Item> TAIGA_2 = SkilletManCoreMod.REGISTRATE.item("taiga2", Item::new)
+            .defaultModel().register();
+    public static final ItemEntry<Item> TAIGA_3 = SkilletManCoreMod.REGISTRATE.item("taiga3", Item::new)
+            .defaultModel().register();
+    public static final ItemEntry<Item> TAIGA_4 = SkilletManCoreMod.REGISTRATE.item("taiga4", Item::new)
+            .defaultModel().register();
+
+    public static final ItemEntry<Item> SNOWY_1 = SkilletManCoreMod.REGISTRATE.item("snowy1", Item::new)
+            .defaultModel().register();
+    public static final ItemEntry<Item> SNOWY_2 = SkilletManCoreMod.REGISTRATE.item("snowy2", Item::new)
+            .defaultModel().register();
+    public static final ItemEntry<Item> SNOWY_3 = SkilletManCoreMod.REGISTRATE.item("snowy3", Item::new)
+            .defaultModel().register();
+    public static final ItemEntry<Item> SNOWY_4 = SkilletManCoreMod.REGISTRATE.item("snowy4", Item::new)
+            .defaultModel().register();
+    public static final ItemEntry<Item> DESERT_1 = SkilletManCoreMod.REGISTRATE.item("desert1", Item::new)
+            .defaultModel().register();
+    public static final ItemEntry<Item> DESERT_2 = SkilletManCoreMod.REGISTRATE.item("desert2", Item::new)
+            .defaultModel().register();
+    public static final ItemEntry<Item> DESERT_3 = SkilletManCoreMod.REGISTRATE.item("desert3", Item::new)
+            .defaultModel().register();
+    public static final ItemEntry<Item> DESERT_4 = SkilletManCoreMod.REGISTRATE.item("desert4", Item::new)
+            .defaultModel().register();
     public static void register() {
     }
 

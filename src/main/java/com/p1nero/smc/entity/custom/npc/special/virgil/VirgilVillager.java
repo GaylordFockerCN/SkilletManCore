@@ -39,6 +39,8 @@ import net.minecraft.world.entity.monster.Vindicator;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -226,6 +228,7 @@ public class VirgilVillager extends Vindicator implements NpcDialogue {
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void openDialogueScreen(CompoundTag senderData) {
         LinkListStreamDialogueScreenBuilder builder = new LinkListStreamDialogueScreenBuilder(this);
         builder.start(0)

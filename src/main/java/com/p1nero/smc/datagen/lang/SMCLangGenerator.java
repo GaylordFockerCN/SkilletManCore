@@ -7,6 +7,7 @@ import com.p1nero.smc.client.gui.screen.entity_dialog.animal.*;
 import com.p1nero.smc.client.gui.screen.entity_dialog.golem.IronGolemDialogScreenHandler;
 import com.p1nero.smc.client.gui.screen.entity_dialog.golem.SnowGolemDialogScreenHandler;
 import com.p1nero.smc.client.gui.screen.info_screen.BanPortalScreenHandler;
+import com.p1nero.smc.client.gui.screen.info_screen.StartCreateScreenHandler;
 import com.p1nero.smc.client.gui.screen.info_screen.StartGuideScreenHandler;
 import com.p1nero.smc.effect.SMCEffects;
 import com.p1nero.smc.entity.SMCEntities;
@@ -34,12 +35,14 @@ public class SMCLangGenerator extends SMCLangProvider {
             this.add("screen_tips.smc.tip" + i, ClientForgeEvents.TIPS.get(i));
         }
 
+        this.addInfo("set_to_hard_spatula", "§c成功设置为困难翻炒模式！翻炒需在绿色区间内完成！");
+        this.addInfo("set_to_easy_spatula", "§a成功设置为休闲翻炒模式！翻炒随时可以进行！");
         this.addInfo("best_season_win", "季度奖杯：[%s] - 属于 %s");
         this.addInfo("best_for_season", "恭喜 [%s] 获得 [%s] 季度销冠！");
-        this.addInfo("best_seller", "本季度当前销冠：%s");
-        this.addInfo("current_money_list_pre", "本季度玩家持有金币排行榜：");
-        this.addInfo("current_money_count", "%s 持有 %d 金币");
-        this.addInfo("current_money_list_end", "使用\"/smc rankingList\"可显示本表。每季度将结算一次，本季度的销冠将获得奖杯！");
+        this.addInfo("best_seller", "§e本季度当前累积资产最多的玩家：[%s]§e！");
+        this.addInfo("current_money_list_pre", "§6本季度玩家累积获得的金币排行榜：");
+        this.addInfo("current_money_count", "%s §6持有 %d §6金币");
+        this.addInfo("current_money_list_end", "§6使用§a\"/smc listCurrentRank\"§6可显示本表。  本表每季度（7天）将结算一次，本季度的销冠将获得奖杯！");
         this.addInfo("level_no_enough", "声望等级不足！需声望等级 %d 解锁！");
         this.addInfo("weapon_level_max", "武器已达最大等级！无法继续提升！");
         this.addInfo("no_owner_shop", "无主的店铺");
@@ -68,8 +71,12 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("alr", "好好好");
         this.addInfo("god_stove_talk", "我去！灶王公说话了！");
         this.addInfo("special_event_ans", "\n §e嘿小子！大事不妙！店里失窃了！快去看看怎么回事再回来继续营业吧！");
+        this.addInfo("special_event_ans2", "\n §e老大！大事不妙！店里失窃了！快去看看怎么回事再回来继续营业吧！");
         this.addInfo("special_event_opt1", "大胆！何方小贼！");
         this.addInfo("special_event_opt2", "灶爷，我去去就回！");
+        this.addInfo("special_event_opt3", "莫慌，我去去就回！");
+        this.addInfo("move_too_far_from_npc_plus", "老大，还没下班呢，你要抛弃我吗");
+        this.addInfo("npc_plus_need_rest", "老大，现在不是上班时间哦");
 
         this.addInfo("golden_skillet_tip", "§e烹饪速度降低至0.66");
         this.addInfo("diamond_skillet_tip", "§e烹饪速度降低至0.33");
@@ -94,6 +101,8 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("someone_s_pet", " 的 ");
         this.addInfo("trial_required", "寻找牧师通过试炼以突破声望等级限制！");
         this.addInfo("trial_required2", "提示：可通过§a[酿造台]§r或对话转化无业村民");
+        this.addInfo("should_trade_machine_ticket", "寻找机械师兑换机械动力材料");
+        this.addInfo("should_trade_machine_ticket2", "提示：可通过§a[锻造台]§r或对话转化无业村民");
         this.addInfo("game_time_no_enough", "§4游戏时长不足！禁止挑战最终boss！");
         this.addInfo("add_item_tip", "§a获得新物品：%s × %d");
         this.addInfo("advancement_look_tip", "不知道做什么时，可以按§a[L]§r查看进度");
@@ -121,7 +130,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("find_villager_gacha3", "建议使用§a[不会乱动的村民刷怪蛋]§r哦");
         this.addInfo("first_work", "往炉灶上摆上炒锅开始工作！");
         this.addInfo("first_work2", "记得趁白天哦~");
-        this.addInfo("special_customer", "§6特殊顾客！");
+        this.addInfo("special_customer", "§6特殊顾客！经营奖励系数将采用累乘！");
         this.addInfo("level_mul", "声望等级加成！× %.1f");
         this.addInfo("seafood_mul", "海鲜加成！× %.1f");
         this.addInfo("meat_mul", "肉类加成！× %.1f");
@@ -134,6 +143,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("two_craft_tip", "每两把同星级物品可以合成更高星级的物品，五星级除外。");
 
         StartGuideScreenHandler.onGenerate(this);
+        StartCreateScreenHandler.onGenerate(this);
         BanPortalScreenHandler.onGenerate(this);
 
         this.addEffect(SMCEffects.BURNT, "灼伤");
@@ -192,31 +202,36 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("level25", "声望等级25 奖励", "§b钻石平底锅 §5⭐⭐⭐⭐");
         this.addAdvancement("level30", "声望等级30 奖励", "§6左锅右铲§r + §6英雄套装");
 
-        this.addAdvancement(SkilletManCoreMod.MOD_ID + "_create", "三只机械手", "声望等级达到十级，店铺升到四级后，开始享受本包自制的自动化炒菜吧！");
-        this.addAdvancement("add_power", "来些动力吧！", "使水车或风车动起来，然后将它接入地下室的三只机械手。本关考察玩家机械动力基础");
-        this.addAdvancement("arm1", "第一只手狠下料", "使用机械臂将食物丢入炒锅，可以看看炒锅思索。别忘了拆下来重新设好目标再装上去哦");
-        this.addAdvancement("arm2", "第二只手勤翻炒", "使机械臂拿锅铲与炒锅交互，可以看看炒锅思索。别忘了拆下来重新设好目标再装上去哦");
-        this.addAdvancement("arm3", "第三只手把菜盛", "使机械臂拿着盘子将炒好的料理端出，并放到合适的位置去。提示：机械臂输出端先设置炒锅，再设置储存容器。可以看看炒锅思索。别忘了拆下来重新设好目标再装上去哦");
+        this.addAdvancement(SkilletManCoreMod.MOD_ID + "_create", "三只机械臂", "声望等级达到十级，店铺升到四级后，开始享受本包自制的自动化炒菜吧！");
+        this.addAdvancement("add_power", "来些动力吧！", "使水车或风车动起来，然后将它接入地下室的三只机械臂。本关考察玩家机械动力基础");
+        this.addAdvancement("arm1", "第一只臂狠下料", "使用机械臂将食物丢入炒锅，可以看看炒锅思索。别忘了拆下来重新设好目标再装上去哦");
+        this.addAdvancement("arm2", "第二只臂勤翻炒", "使机械臂拿锅铲与炒锅交互，可以看看炒锅思索。别忘了拆下来重新设好目标再装上去哦");
+        this.addAdvancement("arm3", "第三只臂把菜盛", "使机械臂拿着盘子将炒好的料理端出，并放到合适的位置去。提示：机械臂输出端先设置炒锅，再设置储存容器。可以看看炒锅思索。别忘了拆下来重新设好目标再装上去哦");
         this.addAdvancement("belt", "延时输送好帮手！", "使用传送带传送食物。提示：8RPM时刚好3秒输送一格，时间久的食材应该靠前哦。");
         this.addAdvancement("stock_ticker", "下单！", "获得仓储链接站。提示：下单后的物品按顺序落在传送带上，传送带的末端则作为机械臂的输入，即可实现机械臂智能延时下锅！可参考蓝图。");
         this.addAdvancement("pulse_repeater", "该出锅了！", "获得脉冲中继器。时间还没到，可别抢着端走呀！（提示：先用红石信号阻断，当下锅后一段时间再解除红石信号。可借助无线红石信号发射器。）");
 
         this.addAdvancement(SkilletManCoreMod.MOD_ID + "_shop", "店铺图鉴", "各个群系以及各等级的店铺种类将在这里显示。");
-        this.addAdvancement(SkilletManCoreMod.MOD_ID + "plain_2", "平原2级", "将平原店铺升至2级");
-        this.addAdvancement(SkilletManCoreMod.MOD_ID + "plain_3", "平原3级", "将平原店铺升至3级");
-        this.addAdvancement(SkilletManCoreMod.MOD_ID + "plain_4", "平原4级", "将平原店铺升至4级");
-        this.addAdvancement(SkilletManCoreMod.MOD_ID + "savanna_2", "热带草原2级", "将热带草原店铺升至2级");
-        this.addAdvancement(SkilletManCoreMod.MOD_ID + "savanna_3", "热带草原3级", "将热带草原店铺升至3级");
-        this.addAdvancement(SkilletManCoreMod.MOD_ID + "savanna_4", "热带草原4级", "将热带草原店铺升至4级");
-        this.addAdvancement(SkilletManCoreMod.MOD_ID + "taiga_2", "林地2级", "将林地店铺升至2级");
-        this.addAdvancement(SkilletManCoreMod.MOD_ID + "taiga_3", "林地3级", "将林地店铺升至3级");
-        this.addAdvancement(SkilletManCoreMod.MOD_ID + "taiga_4", "林地4级", "将林地店铺升至4级");
-        this.addAdvancement(SkilletManCoreMod.MOD_ID + "snowy_2", "雪原2级", "将雪原店铺升至2级");
-        this.addAdvancement(SkilletManCoreMod.MOD_ID + "snowy_3", "雪原3级", "将雪原店铺升至3级");
-        this.addAdvancement(SkilletManCoreMod.MOD_ID + "snowy_4", "雪原4级", "将雪原店铺升至4级");
-        this.addAdvancement(SkilletManCoreMod.MOD_ID + "desert_2", "沙漠2级", "将沙漠店铺升至2级");
-        this.addAdvancement(SkilletManCoreMod.MOD_ID + "desert_3", "沙漠3级", "将沙漠店铺升至3级");
-        this.addAdvancement(SkilletManCoreMod.MOD_ID + "desert_4", "沙漠4级", "将沙漠店铺升至4级");
+        this.addAdvancement("plains_1", "平原1级", "拥有一家平原店铺");
+        this.addAdvancement("plains_2", "平原2级", "将平原店铺升至2级，扩展了新的区域！");
+        this.addAdvancement("plains_3", "平原3级", "将平原店铺升至3级，扩展了新的区域！");
+        this.addAdvancement("plains_4", "平原4级", "将平原店铺升至4级，大翻新！");
+        this.addAdvancement("savanna_1", "热带草原1级", "拥有一家热带草原店铺");
+        this.addAdvancement("savanna_2", "热带草原2级", "将热带草原店铺升至2级，扩展了新的区域！");
+        this.addAdvancement("savanna_3", "热带草原3级", "将热带草原店铺升至3级，扩展了新的区域！");
+        this.addAdvancement("savanna_4", "热带草原4级", "将热带草原店铺升至4级，大翻新！");
+        this.addAdvancement("taiga_1", "林地1级", "拥有一家林地店铺");
+        this.addAdvancement("taiga_2", "林地2级", "将林地店铺升至2级，扩展了新的区域！");
+        this.addAdvancement("taiga_3", "林地3级", "将林地店铺升至3级，扩展了新的区域！");
+        this.addAdvancement("taiga_4", "林地4级", "将林地店铺升至4级，大翻新！");
+        this.addAdvancement("snowy_1", "雪原1级", "拥有一家雪原店铺");
+        this.addAdvancement("snowy_2", "雪原2级", "将雪原店铺升至2级，扩展了新的区域！");
+        this.addAdvancement("snowy_3", "雪原3级", "将雪原店铺升至3级，扩展了新的区域！");
+        this.addAdvancement("snowy_4", "雪原4级", "将雪原店铺升至4级，大翻新！");
+        this.addAdvancement("desert_1", "沙漠1级", "拥有一家沙漠店铺");
+        this.addAdvancement("desert_2", "沙漠2级", "将沙漠店铺升至2级，扩展了新的区域！");
+        this.addAdvancement("desert_3", "沙漠3级", "将沙漠店铺升至3级，扩展了新的区域！");
+        this.addAdvancement("desert_4", "沙漠4级", "将沙漠店铺升至4级，大翻新！");
 
 
         this.addAdvancement("dirt_plate", "节俭之星", "使用脏盘子盛菜，节俭是一种美德，但是你的顾客可能不会这么想。");
@@ -384,6 +399,54 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialog(SMCEntities.START_NPC, 11, "要兑换哪种抽奖券呢？");
         this.addDialog(SMCEntities.START_NPC, 12, "兑换几张呢？");
         this.addDialog(SMCEntities.START_NPC, 13, "注意，升级会强行覆盖周边建筑，更高的升级可能重置整个建筑，升级前请先确定建筑内或周边无贵重物品！本次修缮花费 %d ，确定升级吗？");
+
+        this.add(SMCEntities.START_NPC_PLUS.get(), "§e人畜无害的村民§r");
+        this.add(SMCEntities.START_NPC_PLUS.get() + "_empty", "§e⬇对话以开始经营⬇");
+        this.add(SMCEntities.START_NPC_PLUS.get().getDescriptionId() + "_hired", "§a收入：%d §e| §a速度 %s");
+        this.add(SMCEntities.START_NPC_PLUS.get().getDescriptionId() + "_guider", "§b美好生活小助手 §6PLUS");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 2, "告辞");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 5, "领取全部收入");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 6, "升级店铺 §a花费 %d 绿宝石");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 7, "返回");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 8, "继续");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 9, "还是不要打扰它比较好...");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 10, "醒醒！Go work！");
+
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 11, "订购食材");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 12, "订购 主食大礼包 §a花费 %d §a绿宝石");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 13, "订购 果蔬大礼包 §a花费 %d §a绿宝石");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 14, "订购 肉类大礼包 §a花费 %d §a绿宝石");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 15, "订购 海鲜大礼包 §a花费 %d §a绿宝石");
+
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 16, "兑换抽奖券");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 17, "武器抽奖券");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 18, "一张 需 %d 绿宝石");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 19, "十张 需 %d 绿宝石");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 20, "技能书抽奖券");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 21, "宠物抽奖券");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 22, "碟片抽奖券");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 23, "玩偶抽奖券");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 24, "盔甲抽奖券");
+
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 25, "§a上班§r/§c下班");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 26, "§e闲聊");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 27, "我去！你怎么升级了！");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 28, "太好了，可以手动上下班了！");
+        this.addDialogChoice(SMCEntities.START_NPC_PLUS, 29, "我店铺怎么变那么丑");
+
+        this.addDialog(SMCEntities.START_NPC_PLUS, 1, "哦~我的朋友，今天要做些什么呢？");
+        this.addDialog(SMCEntities.START_NPC_PLUS, 3, "§a已全部取出！");
+        this.addDialog(SMCEntities.START_NPC_PLUS, 4, "§a已升级！");
+
+        this.addDialog(SMCEntities.START_NPC_PLUS, 9, "Zzz...Zzz...Zzz...(忙碌了一天的员工睡得正香，  此刻也许你会好奇它为什么能够站着睡着。平底锅侠的世界就是如此奇妙，无需那么多为什么。)");
+
+        this.addDialog(SMCEntities.START_NPC_PLUS, 10, "这是目前可以订购的食材大礼包的列表，本列表将随着游戏阶段的提升而增加。");
+        this.addDialog(SMCEntities.START_NPC_PLUS, 11, "要兑换哪种抽奖券呢？");
+        this.addDialog(SMCEntities.START_NPC_PLUS, 12, "兑换几张呢？");
+        this.addDialog(SMCEntities.START_NPC_PLUS, 13, "要聊些什么呢");
+        this.addDialog(SMCEntities.START_NPC_PLUS, 14, "嚯嚯嚯，店铺都升级，老夫当然也不能落下！这墨镜帅不，作者花了五分钟画的！");
+        this.addDialog(SMCEntities.START_NPC_PLUS, 15, "其实...之前依赖炒锅上下班是作者前期设计失误，现在已经懒得改了，将就一下吧！被炒锅抓回去上班不是很有趣吗~");
+        this.addDialog(SMCEntities.START_NPC_PLUS, 16, "大胆！你在质疑作者的建筑水平！");
 
         this.add(SMCEntities.HE_SHEN.get(), "一位路过的神明");
         this.addDialog(SMCEntities.HE_SHEN, 0, "年轻人，你丢的，是这把金平底锅呢？还是这把钻石平底锅呢？还是这把普通的平底锅呢？");

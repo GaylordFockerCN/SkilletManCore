@@ -14,7 +14,6 @@ public class SMCConfig {
     public static final ForgeConfigSpec.IntValue SPAWNER_BLOCK_PROTECT_RADIUS;
     public static final ForgeConfigSpec.DoubleValue TEST_X, TEST_Y, TEST_Z;
     public static final ForgeConfigSpec.BooleanValue FAST_BOSS_FIGHT;
-    public static final ForgeConfigSpec.BooleanValue HARD_COOK_MODE;
     public static final ForgeConfigSpec SPEC;
 
     public static final ForgeConfigSpec.BooleanValue ENABLE_WORKING_BGM;
@@ -36,7 +35,6 @@ public class SMCConfig {
 //        NO_PLOT_MODE = createBool(builder, "no_plot_mode", false, "！！在此config下启动的存档将无法重新开启主线剧情！！", "无剧情模式：设为true后将简化流程，没有剧情及任务。但仍可获得任务奖励。");
         BROADCAST_DIALOG = createBool(builder, "broadcast_dialog", true, "是否全局广播剧情对话（过时）");
         BROADCAST_DISTANCE = createDouble(builder, "broadcast_distance", 50, 1, "广播范围（过时）");
-        HARD_COOK_MODE = createBool(builder, "hard_cook_mode", true, "困难翻炒模式，需在限定时间内才可翻炒。");
         builder.pop();
 
         builder.push("Attribute Value");

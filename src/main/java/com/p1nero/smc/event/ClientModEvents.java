@@ -12,6 +12,7 @@ import com.p1nero.smc.entity.custom.boss.goldenflame.client.GoldenFlameRenderer;
 import com.p1nero.smc.entity.custom.npc.customer.client.CustomerRenderer;
 import com.p1nero.smc.entity.custom.npc.special.client.SpecialNpcRenderer;
 import com.p1nero.smc.entity.custom.npc.special.virgil.client.VirgilVillagerRenderer;
+import com.p1nero.smc.entity.custom.npc.start_npc.client.StartNpcPlusRenderer;
 import com.p1nero.smc.entity.custom.super_golem.client.SuperGolemRenderer;
 import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.item.custom.client.LeftSkilletRightSpatulaRenderer;
@@ -55,6 +56,7 @@ public class ClientModEvents{
         //NPC
         EntityRenderers.register(SMCEntities.VILLAGER_NO_BRAIN.get(), VillagerRenderer::new);
         EntityRenderers.register(SMCEntities.START_NPC.get(), VillagerRenderer::new);
+        EntityRenderers.register(SMCEntities.START_NPC_PLUS.get(), StartNpcPlusRenderer::new);
         EntityRenderers.register(SMCEntities.CUSTOMER.get(), CustomerRenderer::new);
         EntityRenderers.register(SMCEntities.FAKE_CUSTOMER.get(), CustomerRenderer::new);
         EntityRenderers.register(SMCEntities.HE_SHEN.get(), SpecialNpcRenderer::new);

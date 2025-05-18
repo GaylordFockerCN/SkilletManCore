@@ -159,6 +159,7 @@ dependencies {
     //更好的村庄
     implementation fg.deobf("curse.maven:better-village-forge-615352:6306266")
     implementation fg.deobf("curse.maven:library-ferret-forge-532727:4601234")
+
     //生成器
     implementation fg.deobf("curse.maven:lithostitched-936015:6183392")
 
@@ -178,6 +179,7 @@ dependencies {
     implementation fg.deobf("curse.maven:biomes-o-plenty-220318:6364065")
     implementation fg.deobf("curse.maven:terrablender-563928:6290448")
     implementation fg.deobf("curse.maven:glitchcore-955399:5787839")
+
     implementation fg.deobf("curse.maven:ecliptic-seasons-1118306:6522681")
 
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.20.1:4.4.7")
@@ -186,12 +188,24 @@ dependencies {
     //背包
     implementation fg.deobf("curse.maven:sophisticated-core-618298:6266807")
     implementation fg.deobf("curse.maven:sophisticated-backpacks-422301:6246607")
-    implementation fg.deobf("curse.maven:inventory-profiles-next-495267:6095062")
-    implementation fg.deobf("curse.maven:libipn-679177:5208511")
-    implementation fg.deobf("curse.maven:kotlin-for-forge-351264:5402061")
 
     implementation fg.deobf("curse.maven:yungs-better-end-island-901344:5193815")
     implementation fg.deobf("curse.maven:yungs-api-421850:5769971")
+
+
+
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
+    runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+//============================================================客户端============================================================
+    //菜单
+    implementation fg.deobf("curse.maven:fancymenu-367706:6408859")
+    implementation fg.deobf("curse.maven:konkrete-410295:5028413")
+    implementation fg.deobf("curse.maven:melody-938643:5109692")
+
+    //相机
+    implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
+//    implementation fg.deobf("curse.maven:leawind-third-person-930880:5961735")
+//    implementation fg.deobf("libs:eflw:20.9.0")
 
     //优化
     implementation fg.deobf("curse.maven:embeddium-908741:5681725")
@@ -200,19 +214,11 @@ dependencies {
     implementation fg.deobf("curse.maven:oculus-581495:6020952")
 //    implementation fg.deobf("curse.maven:distant-horizons-508933:6387680")
 
-    //相机
-    implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
-//    implementation fg.deobf("curse.maven:leawind-third-person-930880:5961735")
-//    implementation fg.deobf("libs:eflw:20.9.0")
+    implementation fg.deobf("curse.maven:inventory-profiles-next-495267:6095062")
+    implementation fg.deobf("curse.maven:libipn-679177:5208511")
+    implementation fg.deobf("curse.maven:kotlin-for-forge-351264:5402061")
 
-    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
-    runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
-
-    //菜单
-    implementation fg.deobf("curse.maven:fancymenu-367706:6408859")
-    implementation fg.deobf("curse.maven:konkrete-410295:5028413")
-    implementation fg.deobf("curse.maven:melody-938643:5109692")
-
+//========================================================================================================================
 
     compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
     jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: "[MC1.20,MC1.21)")

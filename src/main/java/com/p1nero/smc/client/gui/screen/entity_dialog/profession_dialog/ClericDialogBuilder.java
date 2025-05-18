@@ -16,6 +16,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Objects;
 
@@ -49,6 +51,7 @@ public class ClericDialogBuilder extends VillagerDialogScreenHandler.VillagerDia
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void createDialog(LinkListStreamDialogueScreenBuilder builder, Villager self) {
         LocalPlayer localPlayer = Minecraft.getInstance().player;
         if(localPlayer == null) {

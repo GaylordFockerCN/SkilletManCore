@@ -43,6 +43,7 @@ public class WanderingTraderDialogBuilder extends VillagerDialogScreenHandler.Vi
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void createDialog(LinkListStreamDialogueScreenBuilder builder, Villager self) {
     }
 

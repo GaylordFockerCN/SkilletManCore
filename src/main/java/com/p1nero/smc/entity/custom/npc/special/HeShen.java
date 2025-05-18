@@ -35,6 +35,8 @@ import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -190,6 +192,7 @@ public class HeShen extends SMCNpc implements SpecialNpc {
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void openDialogueScreen(CompoundTag senderData) {
 
         LinkListStreamDialogueScreenBuilder builder = new LinkListStreamDialogueScreenBuilder(this);

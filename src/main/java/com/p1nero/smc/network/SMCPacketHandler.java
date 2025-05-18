@@ -36,6 +36,7 @@ public class SMCPacketHandler {
         register(OpenEndScreenPacket.class, OpenEndScreenPacket::decode);
         register(AddEntityAfterImageParticle.class, AddEntityAfterImageParticle::decode);
 
+        register(OpenCreateGuideScreenPacket.class, OpenCreateGuideScreenPacket::decode);
         register(OpenStartGuideScreenPacket.class, OpenStartGuideScreenPacket::decode);
         register(OpenVillagerDialogPacket.class, OpenVillagerDialogPacket::decode);
         register(OpenBanPortalScreenPacket.class, OpenBanPortalScreenPacket::decode);

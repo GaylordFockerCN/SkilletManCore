@@ -198,7 +198,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCBlockDialoguePacket(this.getBlockPos(), tag), owner);
             owner.serverLevel().playSound(null, owner.getX(), owner.getY(), owner.getZ(), SoundEvents.FIRE_EXTINGUISH, owner.getSoundSource(), 1.0F, 1.0F);
             if (!DataManager.inSpecial.get(owner)) {
-                summonSpecial(owner);
+                summonSpecial(owner, this.getBlockPos(), 10, 12);
                 DataManager.inSpecial.put(owner, true);
             }
             return;
@@ -226,7 +226,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         //生成顾客，30s一只，最多6只
         if(this.customers.size() < sizeLimit) {
             firstCustomerSummoned = true;
-            BlockPos spawnPos = getRandomPos(owner, 15, 20);
+            BlockPos spawnPos = getRandomPos(owner, 15, 20, this.getBlockPos());
             Customer customer = new Customer(owner, spawnPos.getCenter());
             customer.setHomePos(this.getBlockPos());
             customer.setSpawnPos(spawnPos);
@@ -238,8 +238,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         }
     }
 
-    public BlockPos getRandomPos(ServerPlayer owner, int min, int max){
-        BlockPos centerPos = this.getBlockPos();
+    public static BlockPos getRandomPos(ServerPlayer owner, int min, int max, BlockPos centerPos){
         double centerX = centerPos.getX() + 0.5;
         double centerZ = centerPos.getZ() + 0.5;
 
@@ -255,9 +254,9 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
     /**
      * 生成特殊事件npc
      */
-    public void summonSpecial(ServerPlayer owner){
-        BlockPos randomSpawnPos = getRandomPos(owner, 10, 12).above(2);
-        BlockPos randomHomePos = getRandomPos(owner, 10, 12).above(2);
+    public static void summonSpecial(ServerPlayer owner, BlockPos center, int minDis, int maxDis){
+        BlockPos randomSpawnPos = getRandomPos(owner, minDis, maxDis, center).above(2);
+        BlockPos randomHomePos = getRandomPos(owner, minDis, maxDis, center).above(2);
         if(!DataManager.specialEvent1Solved.get(owner)) {
             HeShen heShen = new HeShen(owner, randomHomePos.getCenter());
             heShen.setSpawnPos(randomSpawnPos);
@@ -397,30 +396,6 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
     public boolean canPlayerLeave(ServerPlayer serverPlayer) {
         //TODO 在试炼则可以离开？
         return false;
-    }
-
-    /**
-     * TODO 和炉子对话以升级店铺
-     */
-    public boolean loadStructure(ServerLevel serverLevel, ResourceLocation structure) {
-        StructureTemplateManager structuretemplatemanager = serverLevel.getStructureManager();
-        Optional<StructureTemplate> optional;
-        try {
-            optional = structuretemplatemanager.get(structure);
-        } catch (ResourceLocationException resourcelocationexception) {
-            return false;
-        }
-        if(optional.isEmpty()){
-            return false;
-        }
-        BlockPos blockpos = this.getBlockPos();
-        StructurePlaceSettings structureplacesettings = (new StructurePlaceSettings()).setMirror(Mirror.NONE).setRotation(Rotation.NONE).setIgnoreEntities(false);
-
-        BlockPos blockPos = blockpos.offset(this.getBlockPos());
-        if(this.startNPC != null){
-            optional.get().placeInWorld(serverLevel, blockPos, blockPos, structureplacesettings, this.startNPC.getRandom(), 2);
-        }
-        return true;
     }
 
     @Override

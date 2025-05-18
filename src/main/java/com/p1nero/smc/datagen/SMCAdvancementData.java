@@ -287,7 +287,6 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement level25 = registerAdvancement(level20_2, "level25", FrameType.GOAL, SMCRegistrateItems.DIAMOND_SKILLET_V4, true, true, false);
             Advancement level30 = registerAdvancement(level25, "level30", FrameType.GOAL, SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get(), true, true, false);
 
-            //TODO 炒菜自动化进度教程
             Advancement createRoot = Advancement.Builder.advancement()
                     .display(AllItems.GOGGLES,
                             Component.translatable(PRE + SkilletManCoreMod.MOD_ID + "_create"),
@@ -301,12 +300,12 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement arm2 = registerAdvancement(add_power, "arm2", FrameType.GOAL, AllBlocks.MECHANICAL_ARM, true, true, false);
             Advancement arm3 = registerAdvancement(add_power, "arm3", FrameType.GOAL, AllBlocks.MECHANICAL_ARM, true, true, false);
             Advancement belt = registerAdvancement(arm1, "belt", FrameType.GOAL, AllBlocks.BELT, true, true, false);
-            Advancement stock_ticker = registerAdvancement(arm1, "stock_ticker", FrameType.GOAL, AllBlocks.STOCK_TICKER, true, true, false);
-            Advancement pulse_repeater = registerAdvancement(arm3, "pulse_repeater", FrameType.GOAL, AllBlocks.PULSE_REPEATER, true, true, false);
+            Advancement stock_ticker = registerAdvancement(arm1, "stock_ticker", FrameType.GOAL, AllBlocks.STOCK_TICKER, true, true,  false, InventoryChangeTrigger.TriggerInstance.hasItems(AllBlocks.STOCK_TICKER));
+            Advancement pulse_repeater = registerAdvancement(arm3, "pulse_repeater", FrameType.GOAL, AllBlocks.PULSE_REPEATER, true, true, false, InventoryChangeTrigger.TriggerInstance.hasItems(AllBlocks.PULSE_REPEATER));
 
             //店铺图鉴
             Advancement shopsRoot = Advancement.Builder.advancement()
-                    .display(AllItems.GOGGLES,
+                    .display(SMCRegistrateItems.PLAIN_1,
                             Component.translatable(PRE + SkilletManCoreMod.MOD_ID + "_shop"),
                             Component.translatable(PRE + SkilletManCoreMod.MOD_ID + "_shop" + ".desc"),
                             ResourceLocation.parse("textures/block/bricks.png"),
@@ -314,21 +313,30 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                     .addCriterion(SkilletManCoreMod.MOD_ID, new ImpossibleTrigger.TriggerInstance())
                     .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID + "_shop"), existingFileHelper);
             //将一家平原店铺升到2级
-            Advancement plain_2 = registerAdvancement(shopsRoot, "plain_2", FrameType.GOAL, Items.DIRT, true, true, false);
-            Advancement plain_3 = registerAdvancement(plain_2, "plain_3", FrameType.GOAL, Items.DIRT_PATH, true, true, false);
-            Advancement plain_4 = registerAdvancement(plain_3, "plain_4", FrameType.GOAL, Items.GRASS, true, true, false);
-            Advancement savanna_2 = registerAdvancement(shopsRoot, "savanna_2", FrameType.GOAL, Items.ACACIA_WOOD, true, true, false);
-            Advancement savanna_3 = registerAdvancement(savanna_2, "savanna_3", FrameType.GOAL, Items.ACACIA_PLANKS, true, true, false);
-            Advancement savanna_4 = registerAdvancement(savanna_3, "savanna_4", FrameType.GOAL, ItemStack.EMPTY.getItem(), true, true, false);
-            Advancement taiga_2 = registerAdvancement(shopsRoot, "taiga_2", FrameType.GOAL, ItemStack.EMPTY.getItem(), true, true, false);
-            Advancement taiga_3 = registerAdvancement(taiga_2, "taiga_3", FrameType.GOAL, ItemStack.EMPTY.getItem(), true, true, false);
-            Advancement taiga_4 = registerAdvancement(taiga_3, "taiga_4", FrameType.GOAL, ItemStack.EMPTY.getItem(), true, true, false);
-            Advancement snowy_2 = registerAdvancement(shopsRoot, "snowy_2", FrameType.GOAL, ItemStack.EMPTY.getItem(), true, true, false);
-            Advancement snowy_3 = registerAdvancement(snowy_2, "snowy_3", FrameType.GOAL, ItemStack.EMPTY.getItem(), true, true, false);
-            Advancement snowy_4 = registerAdvancement(snowy_3, "snowy_4", FrameType.GOAL, ItemStack.EMPTY.getItem(), true, true, false);
-            Advancement desert_2 = registerAdvancement(shopsRoot, "desert_2", FrameType.GOAL, ItemStack.EMPTY.getItem(), true, true, false);
-            Advancement desert_3 = registerAdvancement(desert_2, "desert_3", FrameType.GOAL, ItemStack.EMPTY.getItem(), true, true, false);
-            Advancement desert_4 = registerAdvancement(desert_3, "desert_4", FrameType.GOAL, ItemStack.EMPTY.getItem(), true, true, false);
+            Advancement plain_1 = registerAdvancement(shopsRoot, "plains_1", FrameType.GOAL, SMCRegistrateItems.PLAIN_1, true, true, false);
+            Advancement plain_2 = registerAdvancement(plain_1, "plains_2", FrameType.GOAL, SMCRegistrateItems.PLAIN_2, true, true, false);
+            Advancement plain_3 = registerAdvancement(plain_2, "plains_3", FrameType.GOAL, SMCRegistrateItems.PLAIN_3, true, true, false);
+            Advancement plain_4 = registerAdvancement(plain_3, "plains_4", FrameType.GOAL, SMCRegistrateItems.PLAIN_4, true, true, false);
+
+            Advancement savanna_1 = registerAdvancement(shopsRoot, "savanna_1", FrameType.GOAL, SMCRegistrateItems.SAVANNA_1, true, true, false);
+            Advancement savanna_2 = registerAdvancement(savanna_1, "savanna_2", FrameType.GOAL, SMCRegistrateItems.SAVANNA_2, true, true, false);
+            Advancement savanna_3 = registerAdvancement(savanna_2, "savanna_3", FrameType.GOAL, SMCRegistrateItems.SAVANNA_3, true, true, false);
+            Advancement savanna_4 = registerAdvancement(savanna_3, "savanna_4", FrameType.GOAL, SMCRegistrateItems.SAVANNA_4, true, true, false);
+
+            Advancement taiga_1 = registerAdvancement(shopsRoot, "taiga_1", FrameType.GOAL, SMCRegistrateItems.TAIGA_1, true, true, false);
+            Advancement taiga_2 = registerAdvancement(taiga_1, "taiga_2", FrameType.GOAL, SMCRegistrateItems.TAIGA_2, true, true, false);
+            Advancement taiga_3 = registerAdvancement(taiga_2, "taiga_3", FrameType.GOAL, SMCRegistrateItems.TAIGA_3, true, true, false);
+            Advancement taiga_4 = registerAdvancement(taiga_3, "taiga_4", FrameType.GOAL, SMCRegistrateItems.TAIGA_4, true, true, false);
+
+            Advancement snowy_1 = registerAdvancement(shopsRoot, "snowy_1", FrameType.GOAL, SMCRegistrateItems.SNOWY_1, true, true, false);
+            Advancement snowy_2 = registerAdvancement(snowy_1, "snowy_2", FrameType.GOAL, SMCRegistrateItems.SNOWY_2, true, true, false);
+            Advancement snowy_3 = registerAdvancement(snowy_2, "snowy_3", FrameType.GOAL, SMCRegistrateItems.SNOWY_3, true, true, false);
+            Advancement snowy_4 = registerAdvancement(snowy_3, "snowy_4", FrameType.GOAL, SMCRegistrateItems.SNOWY_4, true, true, false);
+
+            Advancement desert_1 = registerAdvancement(shopsRoot, "desert_1", FrameType.GOAL, SMCRegistrateItems.DESERT_1, true, true, false);
+            Advancement desert_2 = registerAdvancement(desert_1, "desert_2", FrameType.GOAL, SMCRegistrateItems.DESERT_2, true, true, false);
+            Advancement desert_3 = registerAdvancement(desert_2, "desert_3", FrameType.GOAL, SMCRegistrateItems.DESERT_3, true, true, false);
+            Advancement desert_4 = registerAdvancement(desert_3, "desert_4", FrameType.GOAL, SMCRegistrateItems.DESERT_4, true, true, false); // 注意此处保持D大写
         }
 
         public Advancement registerItemAdvancement(Advancement parent, ItemLike display) {
@@ -363,7 +371,19 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                     .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, name), helper);
         }
 
-        public Advancement registerAdvancement(Advancement parent, String name, FrameType type, ItemLike display, boolean showToast, boolean announceToChat, boolean hidden, CriterionTriggerInstance instance) {
+        public Advancement registerAdvancement(Advancement parent, String name, FrameType type, ItemLike display, boolean showToast, boolean announceToChat, boolean hidden, CriterionTriggerInstance triggerInstance) {
+            return Advancement.Builder.advancement()
+                    .parent(parent)
+                    .display(display,
+                            Component.translatable(PRE + name),
+                            Component.translatable(PRE + name + ".desc"),
+                            null,
+                            type, showToast, announceToChat, hidden)
+                    .addCriterion(name, triggerInstance)
+                    .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, name), helper);
+        }
+
+        public Advancement registerAdvancement(Advancement parent, String name, FrameType type, ItemLike display, CriterionTriggerInstance instance) {
             return Advancement.Builder.advancement()
                     .parent(parent)
                     .display(display,

@@ -17,6 +17,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class NormalCustomerData extends Customer.CustomerData {
     protected int smcId;
@@ -62,6 +64,7 @@ public abstract class NormalCustomerData extends Customer.CustomerData {
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void getDialogScreen(CompoundTag serverData, LinkListStreamDialogueScreenBuilder screenBuilder, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodLevel) {
         TreeNode root;
 
@@ -117,11 +120,11 @@ public abstract class NormalCustomerData extends Customer.CustomerData {
             mul *= cookedFoodData.types.size();
             serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("type_mul", cookedFoodData.types.size()), false);
             if(cookedFoodData.types.contains(FoodType.MEAT)) {
-                mul *= 2.0F;
+                mul += 2.0F;
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("meat_mul", 2.0F), false);
             }
             if(cookedFoodData.types.contains(FoodType.SEAFOOD)) {
-                mul *= 5.0F;
+                mul += 5.0F;
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("seafood_mul", 5.0F), false);
             }
             if(cookedFoodData.size > 0){
@@ -144,12 +147,12 @@ public abstract class NormalCustomerData extends Customer.CustomerData {
             mul += cookedFoodData.types.size();
             serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("type_mul", cookedFoodData.types.size()), false);
             if (cookedFoodData.types.contains(FoodType.MEAT)) {
-                mul += 0.2F;
-                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("meat_mul", 0.2F), false);
+                mul += 0.4F;
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("meat_mul", 0.4F), false);
             }
             if (cookedFoodData.types.contains(FoodType.SEAFOOD)) {
-                mul += 0.4F;
-                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("seafood_mul", 0.4F), false);
+                mul += 0.8F;
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("seafood_mul", 0.8F), false);
             }
             if(cookedFoodData.size > 0){
                 mul *= (cookedFoodData.size / 2.0F);

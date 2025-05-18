@@ -90,7 +90,7 @@ public class SMCSpatulaItem extends SpatulaItem {
     }
 
     public static boolean checkInCorrectTime(Player player) {
-        if(!SMCConfig.HARD_COOK_MODE.get()) {
+        if(!DataManager.hardSpatulaMode.get(player)) {
             return true;
         }
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);

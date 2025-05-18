@@ -29,6 +29,7 @@ import java.util.Set;
  */
 public class DataManager {
     private final static Set<String> EXISTING_ID = new HashSet<>();
+    public static BoolData hardSpatulaMode = new BoolData("hard_spatula_mode", true);
     public static DoubleData spatulaCombo = new DoubleData("spatula_combo", 0);
     public static BoolData firstJoint = new BoolData("first_joint", false);
     public static BoolData firstGiftGot = new BoolData("first_gift_got", false);

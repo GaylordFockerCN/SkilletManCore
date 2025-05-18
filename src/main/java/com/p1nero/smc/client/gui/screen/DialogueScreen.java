@@ -9,7 +9,6 @@ import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.packet.serverbound.AddDialogPacket;
 import com.p1nero.smc.network.packet.serverbound.NpcBlockPlayerInteractPacket;
 import com.p1nero.smc.network.packet.serverbound.NpcPlayerInteractPacket;
-import de.keksuccino.konkrete.json.jsonpath.internal.function.numeric.Min;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -25,7 +24,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -213,7 +211,7 @@ public class DialogueScreen extends Screen {
 
     private void renderPicture(GuiGraphics guiGraphics) {
         if(PICTURE_LOCATION != null){
-            guiGraphics.blit(PICTURE_LOCATION, this.width/2 - picShowWidth/2, (int) (this.height/2 - picShowHeight / 1.4F), picShowWidth, picShowHeight, 0, 0, picWidth, picHeight, picWidth, picHeight);
+            guiGraphics.blit(PICTURE_LOCATION, this.width/2 - picShowWidth/2, (int) (this.height/2 - picShowHeight / 1.3F), picShowWidth, picShowHeight, 0, 0, picWidth, picHeight, picWidth, picHeight);
         }
     }
 

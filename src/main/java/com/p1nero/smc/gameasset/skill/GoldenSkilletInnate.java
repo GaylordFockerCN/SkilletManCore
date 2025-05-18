@@ -10,6 +10,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.main.WeaponsOfMinecraft;
 import yesman.epicfight.api.utils.LevelUtil;
@@ -47,6 +49,7 @@ public class GoldenSkilletInnate extends WeaponInnateSkill {
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void executeOnClient(LocalPlayerPatch executor, FriendlyByteBuf args) {
         super.executeOnClient(executor, args);
         if(!(executor.getOriginal().getMainHandItem().getItem() instanceof GoldenSkilletItem)) {

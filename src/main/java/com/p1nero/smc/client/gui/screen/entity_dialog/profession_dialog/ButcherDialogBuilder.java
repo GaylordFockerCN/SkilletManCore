@@ -13,6 +13,8 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ButcherDialogBuilder extends VillagerDialogScreenHandler.VillagerDialogBuilder {
     public ButcherDialogBuilder() {
@@ -29,6 +31,7 @@ public class ButcherDialogBuilder extends VillagerDialogScreenHandler.VillagerDi
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void createDialog(LinkListStreamDialogueScreenBuilder builder, Villager self) {
         LocalPlayer localPlayer = Minecraft.getInstance().player;
         if(localPlayer == null) {

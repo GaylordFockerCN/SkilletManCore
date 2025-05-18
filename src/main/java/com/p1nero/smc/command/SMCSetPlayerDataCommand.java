@@ -2,19 +2,25 @@ package com.p1nero.smc.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.p1nero.smc.archive.SMCArchiveManager;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
+import com.p1nero.smc.event.ServerEvents;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
 public class SMCSetPlayerDataCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("smc")
-
+                .then(Commands.literal("listCurrentRank")
+                        .executes((context) -> {
+                            if(context.getSource().getPlayer() != null){
+                                ServerEvents.displayRankingListFor(context.getSource().getPlayer());
+                            }
+                            return 0;
+                        })
+                )
                 .then(Commands.literal("addMoney").requires((commandSourceStack) -> commandSourceStack.hasPermission(2))
                         .then(Commands.argument("value", IntegerArgumentType.integer())
                                 .executes((context) -> {

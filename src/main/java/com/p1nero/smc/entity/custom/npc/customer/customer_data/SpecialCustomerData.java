@@ -71,6 +71,7 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
         return Component.translatable(choicePre(id), objects);
     }
 
+    @OnlyIn(Dist.CLIENT)
     protected void append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodScore) {
         String foodName = "§6" + I18n.get(serverData.getString("food_name")) + "§r";
         if (!canSubmit) {
@@ -141,11 +142,11 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
             mul += cookedFoodData.types.size();
             serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("type_mul", cookedFoodData.types.size()), false);
             if (cookedFoodData.types.contains(FoodType.MEAT)) {
-                mul += 2.0F;
+                mul *= 2.0F;
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("meat_mul", 2.0F), false);
             }
             if (cookedFoodData.types.contains(FoodType.SEAFOOD)) {
-                mul += 5.0F;
+                mul *= 5.0F;
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("seafood_mul", 5.0F), false);
             }
             if(cookedFoodData.size > 0){
@@ -168,11 +169,11 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
             mul += cookedFoodData.types.size();
             serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("type_mul", cookedFoodData.types.size()), false);
             if (cookedFoodData.types.contains(FoodType.MEAT)) {
-                mul += 1.2F;
+                mul *= 1.2F;
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("meat_mul", 1.2F), false);
             }
             if (cookedFoodData.types.contains(FoodType.SEAFOOD)) {
-                mul += 1.4F;
+                mul *= 1.4F;
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("seafood_mul", 1.4F), false);
             }
             if(cookedFoodData.size > 0){

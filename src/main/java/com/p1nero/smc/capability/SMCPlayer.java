@@ -22,13 +22,11 @@ import com.p1nero.smc.worldgen.portal.SMCTeleporter;
 import com.simibubi.create.AllItems;
 import com.teamtea.eclipticseasons.api.constant.solar.SolarTerm;
 import com.teamtea.eclipticseasons.api.util.EclipticUtil;
-import de.keksuccino.konkrete.json.jsonpath.internal.function.numeric.Min;
 import dev.xkmc.cuisinedelight.content.item.SpatulaItem;
 import dev.xkmc.cuisinedelight.init.registrate.PlateFood;
 import hungteen.htlib.common.world.entity.DummyEntityManager;
 import net.kenddie.fantasyarmor.item.FAItems;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -216,7 +214,7 @@ public class SMCPlayer {
     private int dodgeCounter = 0;
     private int parryCounter = 0;
     public static final int STAGE1_REQUIRE = 5;
-    public static final int STAGE2_REQUIRE = 10;
+    public static final int STAGE2_REQUIRE = 12;
     public static final int STAGE3_REQUIRE = 20;
     public static final List<PlateFood> STAGE0_FOOD_LIST = List.of(PlateFood.VEGETABLE_FRIED_RICE, PlateFood.FRIED_RICE, PlateFood.FRIED_PASTA, PlateFood.FRIED_MUSHROOM, PlateFood.VEGETABLE_PLATTER);
     public static final List<PlateFood> MEAT_AND_MIX = List.of(PlateFood.VEGETABLE_FRIED_RICE, PlateFood.VEGETABLE_PASTA, PlateFood.SCRAMBLED_EGG_AND_TOMATO,
@@ -437,7 +435,7 @@ public class SMCPlayer {
      */
     public static void tryBroadCastRank(ServerPlayer serverPlayer) {
         if(DummyEntityManager.getDummyEntities(serverPlayer.serverLevel()).isEmpty()) {
-            ServerEvents.broadCastRankingList(serverPlayer);
+            ServerEvents.displayRankingListFor(serverPlayer);
         }
     }
 
@@ -610,7 +608,7 @@ public class SMCPlayer {
     }
 
     public double getLevelMoneyRate() {
-        return 1 + 0.5 * level;
+        return 1 + 0.3 * level;
     }
 
     public boolean isTrialRequired() {
@@ -822,16 +820,18 @@ public class SMCPlayer {
             XaeroMinimapSession session = clientLevel.getXaero_minimapSession();
             WaypointsManager waypointsManager = session.getWaypointsManager();
             String name = SkilletManCoreMod.getInfoKey("no_owner_shop");
-            List<Waypoint> list = waypointsManager.getWaypoints().getList();
-            int beforeSize = list.size();
-            list.removeIf((waypoint -> {
-                Vec3 waypointPos = new Vec3(waypoint.getX(), waypoint.getY(), waypoint.getZ());
-                return  waypoint.getName().equals(name) && player.position().distanceTo(waypointPos) > 200;
-            }));
-            if (list.size() != beforeSize) {
-                try {
-                    XaeroMinimap.instance.getSettings().saveWaypoints(waypointsManager.getCurrentWorld());
-                } catch (IOException ignored) {
+            if(waypointsManager.getWaypoints() != null) {
+                List<Waypoint> list = waypointsManager.getWaypoints().getList();
+                int beforeSize = list.size();
+                list.removeIf((waypoint -> {
+                    Vec3 waypointPos = new Vec3(waypoint.getX(), waypoint.getY(), waypoint.getZ());
+                    return  waypoint.getName().equals(name) && player.position().distanceTo(waypointPos) > 200;
+                }));
+                if (list.size() != beforeSize) {
+                    try {
+                        XaeroMinimap.instance.getSettings().saveWaypoints(waypointsManager.getCurrentWorld());
+                    } catch (IOException ignored) {
+                    }
                 }
             }
 

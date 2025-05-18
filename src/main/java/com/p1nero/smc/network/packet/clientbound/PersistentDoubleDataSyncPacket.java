@@ -2,6 +2,8 @@ package com.p1nero.smc.network.packet.clientbound;
 
 import com.p1nero.smc.network.packet.BasePacket;
 import com.p1nero.smc.archive.DataManager;
+import com.p1nero.smc.network.packet.clientbound.helper.SMCClientHandler;
+import hungteen.htlib.util.helper.DistHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.FriendlyByteBuf;
@@ -25,14 +27,8 @@ public record PersistentDoubleDataSyncPacket(String key, boolean isLocked, doubl
 
     @Override
     public void execute(Player playerEntity) {
-        if (Minecraft.getInstance().player != null) {
-            LocalPlayer player = Minecraft.getInstance().player;
-            if (isLocked) {
-                DataManager.putData(player, key + "isLocked", true);
-                return;
-            }
-            DataManager.putData(player, key, value);
-            DataManager.putData(player, key + "isLocked", false);
-        }
+        DistHelper.runClient(() -> () -> {
+            SMCClientHandler.syncDoubleData(key, isLocked, value);
+        });
     }
 }

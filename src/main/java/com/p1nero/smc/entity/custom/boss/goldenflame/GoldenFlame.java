@@ -297,7 +297,7 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity {
 
     public static AttributeSupplier setAttributes() {
         return Animal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 1151.27)
+                .add(Attributes.MAX_HEALTH, 773.27)
                 .add(Attributes.ATTACK_DAMAGE, 2.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
                 .add(Attributes.MOVEMENT_SPEED, 0.3f)

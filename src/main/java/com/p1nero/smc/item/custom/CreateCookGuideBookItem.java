@@ -17,6 +17,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 public class CreateCookGuideBookItem extends SimpleDescriptionFoilItem {
@@ -27,26 +29,31 @@ public class CreateCookGuideBookItem extends SimpleDescriptionFoilItem {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand p_41434_) {
         if(level.isClientSide){
-            LinkListStreamDialogueScreenBuilder builder = new LinkListStreamDialogueScreenBuilder(null, this.getDescription().copy().withStyle(ChatFormatting.LIGHT_PURPLE));
-            builder.start(ans(0))
-                    .addChoice(opt(1), ans(2))
-                    .thenExecute((screen -> screen.setPicture(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/2.png"))))
-                    .addChoice(opt(1), ans(3))
-                    .thenExecute((screen -> screen.setPicture(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/3.png"))))
-                    .addChoice(opt(1), ans(4))
-                    .thenExecute((screen -> screen.setPicture(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/4.png"))))
-                    .addChoice(opt(1), ans(5))
-                    .thenExecute((screen -> screen.setPicture(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/5.png"))))
-                    .addChoice(opt(1), ans(6))
-                    .thenExecute((screen -> screen.setPicture(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/6.png"))))
-                    .addFinalChoice(opt(7));
-            DialogueScreen screen = builder.build();
-            screen.setPicture(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/1.png"));
-            screen.setPicHeight(1440);
-            screen.setPicWidth(2560);
-            Minecraft.getInstance().setScreen(builder.build());
+            this.showScreen();
         }
         return super.use(level, player, p_41434_);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private void showScreen(){
+        LinkListStreamDialogueScreenBuilder builder = new LinkListStreamDialogueScreenBuilder(null, this.getDescription().copy().withStyle(ChatFormatting.LIGHT_PURPLE));
+        builder.start(ans(0))
+                .addChoice(opt(1), ans(2))
+                .thenExecute((screen -> screen.setPicture(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/2.png"))))
+                .addChoice(opt(1), ans(3))
+                .thenExecute((screen -> screen.setPicture(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/3.png"))))
+                .addChoice(opt(1), ans(4))
+                .thenExecute((screen -> screen.setPicture(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/4.png"))))
+                .addChoice(opt(1), ans(5))
+                .thenExecute((screen -> screen.setPicture(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/5.png"))))
+                .addChoice(opt(1), ans(6))
+                .thenExecute((screen -> screen.setPicture(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/6.png"))))
+                .addFinalChoice(opt(7));
+        DialogueScreen screen = builder.build();
+        screen.setPicture(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/gui/create_cook_guide_book/1.png"));
+        screen.setPicHeight(1440);
+        screen.setPicWidth(2560);
+        Minecraft.getInstance().setScreen(builder.build());
     }
 
     private Component ans(int i) {

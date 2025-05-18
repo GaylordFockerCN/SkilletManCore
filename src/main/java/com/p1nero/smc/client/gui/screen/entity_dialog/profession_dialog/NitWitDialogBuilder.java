@@ -6,6 +6,8 @@ import com.p1nero.smc.client.gui.screen.entity_dialog.VillagerDialogScreenHandle
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class NitWitDialogBuilder extends VillagerDialogScreenHandler.VillagerDialogBuilder {
     public NitWitDialogBuilder() {
@@ -13,6 +15,7 @@ public class NitWitDialogBuilder extends VillagerDialogScreenHandler.VillagerDia
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void createDialog(LinkListStreamDialogueScreenBuilder builder, Villager self) {
         builder.setAnswerRoot(new TreeNode(answer(0))
                 .addChild(new TreeNode(answer(1), choice(0))

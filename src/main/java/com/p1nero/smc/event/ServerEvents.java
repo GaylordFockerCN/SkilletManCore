@@ -1,6 +1,5 @@
 package com.p1nero.smc.event;
 
-import com.mojang.datafixers.util.Pair;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.archive.SMCArchiveManager;
@@ -16,26 +15,21 @@ import com.teamtea.eclipticseasons.api.constant.solar.Season;
 import com.teamtea.eclipticseasons.api.constant.solar.SolarTerm;
 import com.teamtea.eclipticseasons.api.util.EclipticUtil;
 import com.teamtea.eclipticseasons.common.registry.BlockRegistry;
-import com.teamtea.eclipticseasons.common.registry.ItemRegistry;
 import hungteen.htlib.common.world.entity.DummyEntityManager;
-import net.minecraft.ChatFormatting;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BaseCommandBlock;
 import net.minecraft.world.level.Level;
@@ -43,8 +37,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.WorldOptions;
-import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
-import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import net.minecraft.world.level.material.MapColor;
@@ -61,9 +53,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import vectorwing.farmersdelight.FarmersDelight;
-import vectorwing.farmersdelight.common.Configuration;
-import vectorwing.farmersdelight.common.registry.ModBlocks;
 import vectorwing.farmersdelight.common.world.VillageStructures;
 
 import java.util.*;
@@ -85,8 +74,8 @@ public class ServerEvents {
                 int dayTime = (int) (overworld.getDayTime() / 24000);
                 int dayTick = (int) (overworld.getDayTime() % 24000);
 
-                //生成袭击
-                if (overworld.isNight()) {
+                //夜晚生成袭击
+                if (overworld.isNight() && dayTick > 10000) {
                     //2天后每两天来一次袭击，10天后每天都将生成袭击
                     if (dayTime > 2 && (dayTime % 2 == 1 || dayTime > 10)) {
                         for (ServerPlayer serverPlayer : event.getServer().getPlayerList().getPlayers()) {
@@ -101,7 +90,7 @@ public class ServerEvents {
 
                 //播报
                 if (!event.getServer().isSingleplayer() && dayTick == 13000 && DummyEntityManager.getDummyEntities(overworld).isEmpty()) {
-                    broadCastRankingList(event.getServer());
+                    broadcastRankingList(event.getServer());
                 }
 
                 //颁奖
@@ -135,12 +124,12 @@ public class ServerEvents {
         return players;
     }
 
-    public static void broadCastRankingList(MinecraftServer server) {
+    public static void broadcastRankingList(MinecraftServer server) {
         List<ServerPlayer> serverPlayers = getRankedList(server);
-        serverPlayers.forEach(serverPlayer -> broadCastRankingList(serverPlayer, serverPlayers));
+        serverPlayers.forEach(serverPlayer -> displayRankingListFor(serverPlayer, serverPlayers));
     }
 
-    public static void broadCastRankingList(ServerPlayer serverPlayer, List<ServerPlayer> sortedPlayers) {
+    public static void displayRankingListFor(ServerPlayer serverPlayer, List<ServerPlayer> sortedPlayers) {
         Player first = sortedPlayers.get(0);
         if (DataManager.inRaid.get(serverPlayer)) {
             return;
@@ -151,7 +140,7 @@ public class ServerEvents {
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("current_money_list_end"), false);
     }
 
-    public static void broadCastRankingList(ServerPlayer serverPlayer) {
+    public static void displayRankingListFor(ServerPlayer serverPlayer) {
         MinecraftServer server = serverPlayer.server;
         ArrayList<Player> players = new ArrayList<>(server.getPlayerList().getPlayers());
         players.sort(Comparator.comparingInt((player) -> {

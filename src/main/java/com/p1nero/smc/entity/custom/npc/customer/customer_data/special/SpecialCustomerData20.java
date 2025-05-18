@@ -9,6 +9,8 @@ import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.customer.customer_data.SpecialCustomerData;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class SpecialCustomerData20 extends SpecialCustomerData {
 
@@ -28,6 +30,7 @@ public class SpecialCustomerData20 extends SpecialCustomerData {
 
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void getDialogScreen(CompoundTag serverData, LinkListStreamDialogueScreenBuilder screenBuilder, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodScore) {
         screenBuilder.start(answer(0))
                 .addChoice(choice(0), answer(1))
@@ -36,6 +39,7 @@ public class SpecialCustomerData20 extends SpecialCustomerData {
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     protected void append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodLevel) {
 
     }

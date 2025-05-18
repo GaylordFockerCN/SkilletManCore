@@ -20,6 +20,7 @@ import com.p1nero.smc.network.packet.clientbound.SyncUuidPacket;
 import com.p1nero.smc.util.BookManager;
 import com.p1nero.smc.util.ItemUtil;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
+import com.simibubi.create.Create;
 import com.teamtea.eclipticseasons.api.constant.solar.SolarTerm;
 import com.teamtea.eclipticseasons.api.util.EclipticUtil;
 import com.teamtea.eclipticseasons.common.registry.ItemRegistry;
@@ -60,6 +61,10 @@ import yesman.epicfight.gameasset.EpicFightSkills;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.world.capabilities.item.ArmorCapability;
+import yesman.epicfight.world.capabilities.item.CapabilityItem;
+import yesman.epicfight.world.capabilities.item.ShieldCapability;
+import yesman.epicfight.world.capabilities.item.WeaponCapability;
 import yesman.epicfight.world.item.EpicFightItems;
 
 import java.util.List;
@@ -79,27 +84,39 @@ public class PlayerEventListeners {
 
     @SubscribeEvent
     public static void onPlayerAdvancementEarn(AdvancementEvent.AdvancementEarnEvent event) {
-        if(event.getEntity() instanceof ServerPlayer serverPlayer && event.getAdvancement().getId().getNamespace().equals(SkilletManCoreMod.MOD_ID)) {
+        if(event.getEntity() instanceof ServerPlayer serverPlayer) {
+
             String path = event.getAdvancement().getId().getPath();
-            if(path.contains(SkilletManCoreMod.MOD_ID + "_weapon")
-                    || path.contains(SkilletManCoreMod.MOD_ID + "_food")
-                    || path.contains(SkilletManCoreMod.MOD_ID + "_armor")
-                    || path.contains(SkilletManCoreMod.MOD_ID + "_skill")
-                    || path.contains(SkilletManCoreMod.MOD_ID + "_level")
-                    || path.contains(SkilletManCoreMod.MOD_ID + "_create")){
-                return;
-            }
-            if(!path.contains("recipe")) {
-                if(path.contains(FOOD_ADV_PRE)){
-                    serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("advancement_food_unlock_tip"), false);
-                    SMCPlayer.addMoney(300, serverPlayer);
-                } else {
-                    if(!path.contains("skill_adv_")){
-                        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("advancement_look_tip"), false);
-                        SMCPlayer.addMoney(200, serverPlayer);
-                    }
+            String namespace = event.getAdvancement().getId().getNamespace();
+            if(namespace.equals(SkilletManCoreMod.MOD_ID)) {
+                if(path.contains(SkilletManCoreMod.MOD_ID + "_weapon")
+                        || path.contains(SkilletManCoreMod.MOD_ID + "_food")
+                        || path.contains(SkilletManCoreMod.MOD_ID + "_armor")
+                        || path.contains(SkilletManCoreMod.MOD_ID + "_skill")
+                        || path.contains(SkilletManCoreMod.MOD_ID + "_level")
+                        || path.contains(SkilletManCoreMod.MOD_ID + "_create")){
+                    return;
                 }
-                serverPlayer.level().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SoundEvents.VILLAGER_CELEBRATE, serverPlayer.getSoundSource(), 1.0F, 1.0F);
+                if(!path.contains("recipe")) {
+                    if(path.contains(FOOD_ADV_PRE)){
+                        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("advancement_food_unlock_tip"), false);
+                        SMCPlayer.addMoney(300, serverPlayer);
+                    } else {
+                        if(!path.contains("skill_adv_")){
+                            serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("advancement_look_tip"), false);
+                            SMCPlayer.addMoney(200, serverPlayer);
+                        }
+                    }
+                    serverPlayer.level().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SoundEvents.VILLAGER_CELEBRATE, serverPlayer.getSoundSource(), 1.0F, 1.0F);
+                }
+            }
+            if(namespace.equals(Create.ID)) {
+                if(path.contains("water_wheel") || path.contains("windmill")) {
+                    SMCAdvancementData.finishAdvancement("add_power", serverPlayer);
+                }
+                if(path.contains("belt")) {
+                    SMCAdvancementData.finishAdvancement("belt", serverPlayer);
+                }
             }
         }
     }
@@ -169,7 +186,9 @@ public class PlayerEventListeners {
         if (!event.player.level().isClientSide) {
             ItemStack mainHandItem = event.player.getMainHandItem();
             ServerPlayerPatch serverPlayerPatch = EpicFightCapabilities.getEntityPatch(event.player, ServerPlayerPatch.class);
-            if (!EpicFightCapabilities.getItemStackCapability(mainHandItem).isEmpty() && !event.player.isCreative() && serverPlayerPatch != null && serverPlayerPatch.isBattleMode()) {
+            CapabilityItem capabilityItem = EpicFightCapabilities.getItemStackCapability(mainHandItem);
+            if (!capabilityItem.isEmpty() && capabilityItem instanceof WeaponCapability
+                    && !event.player.isCreative() && serverPlayerPatch != null && serverPlayerPatch.isBattleMode()) {
                 Item item = mainHandItem.getItem();
                 if (!(item instanceof CuisineSkilletItem ||item instanceof SpatulaItem || item instanceof BowItem || item instanceof LeftSkilletRightSpatula)) {
                     SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(event.player);

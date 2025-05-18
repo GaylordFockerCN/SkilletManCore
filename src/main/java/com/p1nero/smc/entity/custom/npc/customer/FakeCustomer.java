@@ -197,6 +197,7 @@ public class FakeCustomer extends SMCNpc {
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void openDialogueScreen(CompoundTag senderData) {
 
     }

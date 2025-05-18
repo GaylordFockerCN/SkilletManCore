@@ -19,6 +19,8 @@ import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
 
@@ -57,6 +59,7 @@ public class CartographerDialogBuilder extends VillagerDialogScreenHandler.Villa
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void createDialog(LinkListStreamDialogueScreenBuilder builder, Villager self) {
         LocalPlayer localPlayer = Minecraft.getInstance().player;
         if (localPlayer != null) {
