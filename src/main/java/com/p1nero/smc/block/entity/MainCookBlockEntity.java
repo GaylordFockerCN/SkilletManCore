@@ -76,6 +76,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
     private final List<Customer> customers = new ArrayList<>();
     public static final List<VillagerProfession> PROFESSION_LIST = ForgeRegistries.VILLAGER_PROFESSIONS.getValues().stream().toList();
     public boolean firstCustomerSummoned = false;//摆锅马上就有客户
+    public static final int SEARCH_DIS = 4;
 
     public MainCookBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(SMCBlockEntities.MAIN_COOK_BLOCK_ENTITY.get(), blockPos, blockState);
@@ -97,7 +98,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         if (t instanceof MainCookBlockEntity mainCookBlockEntity) {
             if (mainCookBlockEntity.startNPC == null) {
                 //优先附近找，找不到再生一只。
-                int offset = 3;
+                int offset = SEARCH_DIS;
                 StartNPC startNPC = level.getNearestEntity(StartNPC.class, TargetingConditions.DEFAULT, null, pos.getX(), pos.getY(), pos.getZ(), new AABB(pos.offset(offset, offset, offset), pos.offset(-offset, -offset, -offset)));
                 if (startNPC != null) {
                     //互相通知

@@ -94,7 +94,7 @@ public class ServerEvents {
                 }
 
                 //颁奖
-                if (dayTime > 0 && dayTime % 7 == 0 && dayTick == 100) {
+                if (dayTime > 0 && dayTime % 6 == 0 && dayTick == 100) {
                     SolarTerm solarTerm = EclipticUtil.getNowSolarTerm(overworld);
                     ArrayList<ServerPlayer> players = getRankedList(event.getServer());
                     ServerPlayer bestPlayer = players.get(0);
@@ -136,25 +136,17 @@ public class ServerEvents {
         }
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("best_seller", first.getName()), false);
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("current_money_list_pre"), false);
-        sortedPlayers.forEach((player1 -> serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("current_money_count", player1.getDisplayName(), SMCCapabilityProvider.getSMCPlayer(player1).getMoneyInSeason()), false)));
+        sortedPlayers.forEach((player1 -> {
+            SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player1);
+            serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("current_money_count", player1.getName().copy().append("§a[" + smcPlayer.getLevel() + "]§r"), smcPlayer.getMoneyInSeason()), false);
+        }));
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("current_money_list_end"), false);
     }
 
     public static void displayRankingListFor(ServerPlayer serverPlayer) {
         MinecraftServer server = serverPlayer.server;
-        ArrayList<Player> players = new ArrayList<>(server.getPlayerList().getPlayers());
-        players.sort(Comparator.comparingInt((player) -> {
-            SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
-            return smcPlayer.getMoneyInSeason();
-        }));
-        Player first = players.get(0);
-        if (DataManager.inRaid.get(serverPlayer)) {
-            return;
-        }
-        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("best_seller", first.getName()), false);
-        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("current_money_list_pre"), false);
-        players.forEach((player1 -> serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("current_money_count", player1.getName(), SMCCapabilityProvider.getSMCPlayer(player1).getMoneyInSeason()), false)));
-        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("current_money_list_end"), false);
+        ArrayList<ServerPlayer> players = getRankedList(server);
+        displayRankingListFor(serverPlayer, players);
     }
 
 

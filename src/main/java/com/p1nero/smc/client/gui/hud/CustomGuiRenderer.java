@@ -15,6 +15,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -75,7 +76,10 @@ public class CustomGuiRenderer {
     }
 
     public static void renderTutorial(GuiGraphics guiGraphics, LocalPlayer localPlayer, SMCPlayer smcPlayer, Font font, int lineHeight, int x, int y) {
-        Component show = SkilletManCoreMod.getInfo("press_x_to_show_hint", KeyMappings.SHOW_HINT.getTranslatedKeyMessage().copy().withStyle(ChatFormatting.DARK_GREEN)).withStyle(ChatFormatting.BOLD, ChatFormatting.GRAY);
+        MutableComponent show = SkilletManCoreMod.getInfo("press_x_to_show_hint", KeyMappings.SHOW_HINT.getTranslatedKeyMessage().copy().withStyle(ChatFormatting.DARK_GREEN)).withStyle(ChatFormatting.BOLD, ChatFormatting.GRAY);
+        if(DataManager.hintUpdated.get(localPlayer)) {
+            show.append(SkilletManCoreMod.getInfo("hint_update_tip"));
+        }
         guiGraphics.fillGradient(8, y + lineHeight - 2, 8 + font.width(show) + 2, y + lineHeight, 0x66000000, 0x66000000);
         guiGraphics.drawString(font, show, 10, y + lineHeight, 0x00ff00, true);
         if (!SMCConfig.SHOW_HINT.get()) {
@@ -115,7 +119,7 @@ public class CustomGuiRenderer {
             guiGraphics.drawString(font, info, 10, y + lineHeight * 2, 0x00ff00, true);
             guiGraphics.drawString(font, info2, 10, y + lineHeight * 3, 0x00ff00, true);
             guiGraphics.drawString(font, info3, 10, y + lineHeight * 4, 0x00ff00, true);
-        } else if (smcPlayer.isTrialRequired() && !DataManager.inRaid.get(localPlayer)) {
+        } else if (DataManager.trailRequired.get(localPlayer)) {
             Component info = SkilletManCoreMod.getInfo("trial_required").withStyle(ChatFormatting.BOLD, ChatFormatting.GOLD);
             Component info2 = SkilletManCoreMod.getInfo("trial_required2").withStyle(ChatFormatting.GRAY);
             int maxWidth = Math.max(font.width(info), font.width(info2));

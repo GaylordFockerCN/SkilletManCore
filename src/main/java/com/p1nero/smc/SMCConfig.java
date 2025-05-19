@@ -4,7 +4,6 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 public class SMCConfig {
     public static final ForgeConfigSpec.IntValue MIN_CHUNK_BETWEEN_STRUCTURE;
-//    public static final ForgeConfigSpec.BooleanValue NO_PLOT_MODE;
     public static final ForgeConfigSpec.BooleanValue BROADCAST_DIALOG;
     public static final ForgeConfigSpec.DoubleValue BROADCAST_DISTANCE;
     public static final ForgeConfigSpec.BooleanValue ENABLE_BETTER_STRUCTURE_BLOCK_LOAD;
@@ -31,8 +30,8 @@ public class SMCConfig {
         builder.push("Game Setting");
         MIN_CHUNK_BETWEEN_STRUCTURE = createInt(builder, "min_chunk_between_structure", 3, 0, "小建筑和主建筑的最小区块间距（过时）");
 //        NO_PLOT_MODE = createBool(builder, "no_plot_mode", false, "！！在此config下启动的存档将无法重新开启主线剧情！！", "无剧情模式：设为true后将简化流程，没有剧情及任务。但仍可获得任务奖励。");
-        BROADCAST_DIALOG = createBool(builder, "broadcast_dialog", false, "是否全局广播剧情对话（弃用）");
-        BROADCAST_DISTANCE = createDouble(builder, "broadcast_distance", 5, 1, "广播范围（弃用）");
+        BROADCAST_DIALOG = createBool(builder, "broadcast_dialog", false, "是否全局广播剧情对话（慎用，可能很烦）");
+        BROADCAST_DISTANCE = createDouble(builder, "broadcast_distance", 5, 1, "广播范围");
         builder.pop();
 
         builder.push("Attribute Value");

@@ -26,7 +26,15 @@ public record PersistentStringDataSyncPacket(String key, boolean isLocked, Strin
     }
 
     @Override
-    public void execute(Player playerEntity) {
+    public void execute(Player player) {
+        if(player != null) {
+            if (isLocked) {
+                DataManager.putData(player, key + "isLocked", true);
+                return;
+            }
+            DataManager.putData(player, key, value);
+            DataManager.putData(player, key + "isLocked", false);
+        }
         DistHelper.runClient(() -> () -> {
             SMCClientHandler.syncStringData(key, isLocked, value);
         });

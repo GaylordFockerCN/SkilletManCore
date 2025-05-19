@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 /**
  * 做引导
  */
-@Mixin(value = AdvWirelessTerminalItem.class, remap = false)
+@Mixin(value = AdvWirelessTerminalItem.class)
 public class AdvWirelessTerminalItemMixin {
     @Inject(method = "useOn", at = @At("RETURN"))
     private void smc$useOn(UseOnContext c, CallbackInfoReturnable<InteractionResult> cir){

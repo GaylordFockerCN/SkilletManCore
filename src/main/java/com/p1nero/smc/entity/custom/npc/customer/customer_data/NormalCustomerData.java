@@ -108,6 +108,7 @@ public abstract class NormalCustomerData extends Customer.CustomerData {
                 break;
             case BAD:
                 onBad(serverPlayer, self);
+            default: self.displayRecipeInfo(serverPlayer);
         }
     }
 

@@ -35,7 +35,7 @@ public class WeaponGachaSystem {
         STAR4_LIST.addAll(List.of(SMCRegistrateItems.GOLDEN_SPATULA.asStack(), SMCRegistrateItems.GOLDEN_SPATULA_V2.asStack(), SMCRegistrateItems.GOLDEN_SPATULA_V3.asStack()));
         STAR5_LIST.addAll(List.of(SMCRegistrateItems.DIAMOND_SKILLET.asStack(), SMCRegistrateItems.DIAMOND_SKILLET_V2.asStack(), SMCRegistrateItems.DIAMOND_SKILLET_V3.asStack()));
         STAR5_LIST.addAll(List.of(SMCRegistrateItems.DIAMOND_SPATULA.asStack(), SMCRegistrateItems.DIAMOND_SPATULA_V2.asStack(), SMCRegistrateItems.DIAMOND_SPATULA_V3.asStack()));
-        STAR5_LIST.addAll(List.of(SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get().getDefaultInstance(), SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get().getDefaultInstance(), SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get().getDefaultInstance(), SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get().getDefaultInstance(), SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get().getDefaultInstance()));
+        STAR5_LIST.add(SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get().getDefaultInstance());
     }
 
     public static ItemStack pull(ServerPlayer serverPlayer) {

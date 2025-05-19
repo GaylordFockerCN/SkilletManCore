@@ -120,15 +120,7 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
             case BAD:
                 onBad(serverPlayer, self);
                 break;
-            case 0 :
-                break;
-            default:
-            {
-                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("special_customer"), false);
-                ItemStack order = self.getOrder();
-                CookedFoodData foodData = BaseFoodItem.getData(order);
-
-            }
+            default: self.displayRecipeInfo(serverPlayer);
         }
     }
 

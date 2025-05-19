@@ -366,6 +366,11 @@ public class SMCPlayer {
             }
         }
 
+        if(smcPlayer.isTrialRequired()){
+            DataManager.trailRequired.put(serverPlayer, true);
+            DataManager.hintUpdated.put(serverPlayer, true);
+        }
+
         ItemUtil.addItem(serverPlayer, Items.ENCHANTED_GOLDEN_APPLE.getDefaultInstance(), true);
         SMCPlayer.addMoney(200, serverPlayer);
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("shop_upgrade", smcPlayer.level), false);
@@ -388,6 +393,7 @@ public class SMCPlayer {
 
     public static void stageUp(ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+        DataManager.trailRequired.put(serverPlayer, false);
         int currentLevel = smcPlayer.level;
         if (currentLevel == STAGE1_REQUIRE || currentLevel == STAGE2_REQUIRE || currentLevel == STAGE3_REQUIRE) {
             smcPlayer.setLevel(currentLevel + 1);
@@ -419,7 +425,7 @@ public class SMCPlayer {
         }
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("raid_success_for_day", dayTime), false);
         addMoney(1600 * (1 + dayTime), serverPlayer);
-        SMCPlayer.levelUPPlayer(serverPlayer);
+        SMCPlayer.addExperience(serverPlayer);
         tryBroadCastRank(serverPlayer);
     }
 
@@ -451,6 +457,7 @@ public class SMCPlayer {
         ItemUtil.addItem(serverPlayer, Content.terminal.get().asItem().getDefaultInstance(), true);
         ItemUtil.addItem(serverPlayer, Content.advWirelessTerminal.get().asItem().getDefaultInstance(), true);
         DataManager.showFirstPlaceWirelessTerminal.put(serverPlayer, true);
+        DataManager.hintUpdated.put(serverPlayer, true);
         SMCAdvancementData.finishAdvancement("level5_1", serverPlayer);
         SMCAdvancementData.finishAdvancement("level5_2", serverPlayer);
         SMCAdvancementData.finishAdvancement("level5_3", serverPlayer);
@@ -503,12 +510,14 @@ public class SMCPlayer {
                 DataManager.inRaid.put(serverPlayer, false);
                 if (!DataManager.firstWork.get(serverPlayer)) {
                     DataManager.firstWork.put(serverPlayer, true);
+                    DataManager.hintUpdated.put(serverPlayer, true);
                 }
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("start_work").withStyle(ChatFormatting.BOLD), true);
                 serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
             } else {
                 if (!DataManager.firstStopWork.get(serverPlayer)) {
                     DataManager.firstStopWork.put(serverPlayer, true);
+                    DataManager.hintUpdated.put(serverPlayer, true);
                 }
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("end_work").withStyle(ChatFormatting.BOLD), true);
                 serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
@@ -868,15 +877,6 @@ public class SMCPlayer {
                 }
                 player.displayClientMessage(SkilletManCoreMod.getInfo("second_after_boss_die_left", tickAfterBossDieLeft / 20).withStyle(ChatFormatting.BOLD, ChatFormatting.RED), true);
                 if (tickAfterBossDieLeft == 0) {
-                    if (player.getServer() != null && player.level().dimension() != Level.OVERWORLD) {
-                        ServerLevel overworld = player.getServer().getLevel(Level.OVERWORLD);
-                        if (overworld != null) {
-                            serverPlayer.changeDimension(overworld, new SMCTeleporter(overworld.getSharedSpawnPos()));
-                            serverPlayer.setRespawnPosition(Level.OVERWORLD, overworld.getSharedSpawnPos(), 0.0F, false, true);
-                            SMCPlayer.addMoney(2000000, serverPlayer);
-                            SMCAdvancementData.finishAdvancement("end", serverPlayer);
-                        }
-                    }
                     PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new OpenEndScreenPacket(), serverPlayer);//终末之诗
                 }
             }
@@ -952,6 +952,7 @@ public class SMCPlayer {
         SMCAdvancementData.finishAdvancement("first_gacha", player);
         if (!DataManager.firstGachaGot.get(player)) {
             DataManager.firstGachaGot.put(player, true);
+            DataManager.hintUpdated.put(player, true);
         }
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 0.5F, 2.0F);
         player.serverLevel().sendParticles(ParticleTypes.TOTEM_OF_UNDYING, player.getX(), player.getY(), player.getZ(), 10, 1.0, 1.0, 1.0, 0.2);

@@ -2,10 +2,12 @@ package com.p1nero.smc.client.keymapping;
 
 import com.p1nero.smc.SMCConfig;
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.packet.serverbound.RequestExitSpectatorPacket;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
+import de.keksuccino.konkrete.json.jsonpath.internal.function.numeric.Min;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -37,6 +39,9 @@ public class KeyMappings {
 				while (SHOW_HINT.consumeClick()){
 					if (Minecraft.getInstance().player != null && Minecraft.getInstance().screen == null && !Minecraft.getInstance().isPaused()) {
 						SMCConfig.SHOW_HINT.set(!SMCConfig.SHOW_HINT.get());
+						if(!SMCConfig.SHOW_HINT.get() && DataManager.hintUpdated.get(Minecraft.getInstance().player)) {
+							DataManager.hintUpdated.put(Minecraft.getInstance().player, false);
+						}
 					}
 				}
 			}

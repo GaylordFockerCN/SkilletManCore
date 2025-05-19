@@ -235,7 +235,7 @@ public class StartNPC extends SMCNpc {
                 }
             }
 
-            if (this.position().distanceTo(this.getHomePos().getCenter()) > 2.9) {
+            if (this.position().distanceTo(this.getHomePos().getCenter()) > MainCookBlockEntity.SEARCH_DIS - 0.1) {
                 this.setPos(this.getSpawnPos().getCenter());
                 if (lastPushPlayer != null) {
                     SMCAdvancementData.finishAdvancement("try_push", lastPushPlayer);
@@ -502,6 +502,7 @@ public class StartNPC extends SMCNpc {
 
         if (interactionID == 6) {
             DataManager.firstGiftGot.put(player, true);
+            DataManager.hintUpdated.put(player, true);
             player.displayClientMessage(dialogueComponentBuilder.buildEntityAnswer(5), false);
             ItemUtil.addItem(player, SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.asStack(), true);
             ItemUtil.addItem(player, SMCItems.NO_BRAIN_VILLAGER_SPAWN_EGG.get().getDefaultInstance(), true);
@@ -624,6 +625,7 @@ public class StartNPC extends SMCNpc {
                         startNPCPlus.setHomePos(this.getHomePos());
                         level().addFreshEntity(startNPCPlus);
                         DataManager.shouldShowMachineTicketHint.put(player, true);
+                        DataManager.hintUpdated.put(player, true);
                         PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new OpenCreateGuideScreenPacket(), player);
                         this.setShopLevel(4);
                         SMCAdvancementData.finishAdvancement(type + "_" + this.getShopLevel(), player);

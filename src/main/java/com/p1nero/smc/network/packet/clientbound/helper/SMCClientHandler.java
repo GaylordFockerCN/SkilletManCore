@@ -3,6 +3,9 @@ package com.p1nero.smc.network.packet.clientbound.helper;
 import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.client.gui.screen.SMCEndScreen;
+import com.p1nero.smc.network.PacketRelay;
+import com.p1nero.smc.network.SMCPacketHandler;
+import com.p1nero.smc.network.packet.serverbound.EndScreenCallbackPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
@@ -58,6 +61,7 @@ public class SMCClientHandler {
     public static void openEndScreen() {
         if (Minecraft.getInstance().player != null && Minecraft.getInstance().level != null) {
             Minecraft.getInstance().setScreen(new SMCEndScreen(true, () -> {
+                PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new EndScreenCallbackPacket());
                 Minecraft.getInstance().player.connection.send(new ServerboundClientCommandPacket(ServerboundClientCommandPacket.Action.PERFORM_RESPAWN));
                 Minecraft.getInstance().setScreen(null);
             }));

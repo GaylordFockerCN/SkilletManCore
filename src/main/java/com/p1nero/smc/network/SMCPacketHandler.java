@@ -21,15 +21,17 @@ public class SMCPacketHandler {
     private static int index;
 
     public static synchronized void register() {
+        //双端
+        register(PersistentBoolDataSyncPacket.class, PersistentBoolDataSyncPacket::decode);
+        register(PersistentDoubleDataSyncPacket.class, PersistentDoubleDataSyncPacket::decode);
+        register(PersistentStringDataSyncPacket.class, PersistentStringDataSyncPacket::decode);
+
         // 发给客户端
         register(AddWaypointPacket.class, AddWaypointPacket::decode);
         register(RemoveWaypointPacket.class, RemoveWaypointPacket::decode);
         register(NPCDialoguePacket.class, NPCDialoguePacket::decode);
         register(NPCBlockDialoguePacket.class, NPCBlockDialoguePacket::decode);
         register(SyncSMCPlayerPacket.class, SyncSMCPlayerPacket::decode);
-        register(PersistentBoolDataSyncPacket.class, PersistentBoolDataSyncPacket::decode);
-        register(PersistentDoubleDataSyncPacket.class, PersistentDoubleDataSyncPacket::decode);
-        register(PersistentStringDataSyncPacket.class, PersistentStringDataSyncPacket::decode);
         register(SyncUuidPacket.class, SyncUuidPacket::decode);
         register(SyncPos0Packet.class, SyncPos0Packet::decode);
         register(BroadcastMessagePacket.class, BroadcastMessagePacket::decode);
@@ -47,6 +49,7 @@ public class SMCPacketHandler {
         register(AddDialogPacket.class, AddDialogPacket::decode);
         register(NpcPlayerInteractPacket.class, NpcPlayerInteractPacket::decode);
         register(NpcBlockPlayerInteractPacket.class, NpcBlockPlayerInteractPacket::decode);
+        register(EndScreenCallbackPacket.class, EndScreenCallbackPacket::decode);
 
         //双端
         register(SyncArchivePacket.class, SyncArchivePacket::decode);

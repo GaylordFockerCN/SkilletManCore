@@ -22,7 +22,11 @@ import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
 import dev.xkmc.cuisinedelight.content.item.BaseFoodItem;
 import dev.xkmc.cuisinedelight.content.logic.CookedFoodData;
+import dev.xkmc.cuisinedelight.content.logic.IngredientConfig;
+import dev.xkmc.cuisinedelight.content.recipe.BaseCuisineRecipe;
+import dev.xkmc.cuisinedelight.init.registrate.CDMisc;
 import dev.xkmc.cuisinedelight.init.registrate.PlateFood;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -45,6 +49,7 @@ import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -416,6 +421,32 @@ public class Customer extends SMCNpc {
         }
 
         this.setConversingPlayer(null);
+    }
+
+    public void displayRecipeInfo(Player player){
+        if(this.isTraded()){
+            return;
+        }
+        player.displayClientMessage(SkilletManCoreMod.getInfo("ingredient_info"), false);
+        RecipeManager recipeManager = level().getRecipeManager();
+        for(BaseCuisineRecipe<?> baseCuisineRecipe : recipeManager.getAllRecipesFor(CDMisc.RT_CUISINE.get())){
+            if(this.getOrder().is(baseCuisineRecipe.holderItem)) {
+                baseCuisineRecipe.list.forEach(cuisineRecipeMatch -> {
+                    ItemStack[] itemStacks = cuisineRecipeMatch.ingredient().getItems();
+                    Component info = Component.empty();
+                    if(itemStacks.length > 1) {
+                        ItemStack refer = itemStacks[0];
+                        IngredientConfig.IngredientEntry entry = IngredientConfig.get().getEntry(refer);
+                        if(entry != null) {
+                            info = Component.literal("[").append(entry.type.get()).append("]").withStyle(entry.type.format);
+                        }
+                    } else {
+                        info = itemStacks[0].getDisplayName();
+                    }
+                    player.displayClientMessage(info.copy().append(SkilletManCoreMod.getInfo("ingredient_rate")).append("§a [" + cuisineRecipeMatch.min() + " ~ " + cuisineRecipeMatch.max() + "]"), false);
+                });
+            }
+        }
     }
 
     @Override

@@ -39,6 +39,9 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add("key.categories.smc", "平底锅侠 - 核心");
         this.addKeyMapping(KeyMappings.SHOW_HINT, "隐藏/显示当前引导");
 
+        this.addInfo("hint_update_tip", "§l§c[新]");
+        this.addInfo("ingredient_info", "§6配方信息提示： ");
+        this.addInfo("ingredient_rate", " §6占比：");
         this.addInfo("set_to_hard_spatula", "§c成功设置为困难翻炒模式！翻炒需在绿色区间内完成！");
         this.addInfo("set_to_easy_spatula", "§a成功设置为休闲翻炒模式！翻炒随时可以进行！");
         this.addInfo("best_season_win", "季度奖杯：[%s] - 属于 %s");
@@ -46,7 +49,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("best_seller", "§e本季度当前累积资产最多的玩家：[%s]§e！");
         this.addInfo("current_money_list_pre", "§6本季度玩家累积获得的金币排行榜：");
         this.addInfo("current_money_count", "%s §6持有 %d §6金币");
-        this.addInfo("current_money_list_end", "§6使用§a\"/smc listCurrentRank\"§6可显示本表。  本表每季度（7天）将结算一次，本季度的销冠将获得奖杯！");
+        this.addInfo("current_money_list_end", "§6使用§a\"/smc listCurrentRank\"§6可显示本表。  本表每季度（6天）将结算一次，本季度的销冠将获得奖杯！");
         this.addInfo("level_no_enough", "声望等级不足！需声望等级 %d 解锁！");
         this.addInfo("weapon_level_max", "武器已达最大等级！无法继续提升！");
         this.addInfo("no_owner_shop", "无主的店铺");
@@ -397,7 +400,7 @@ public class SMCLangGenerator extends SMCLangProvider {
 
         this.addDialogChoice(SMCEntities.START_NPC, 25, "§a修缮外观");
 
-        this.addDialog(SMCEntities.START_NPC, 1, "今天要做些什么呢？（觉得我占位置可以把我推开点哦）");
+        this.addDialog(SMCEntities.START_NPC, 1, "今天要做些什么呢？§6（觉得我占位置可以把我推开点哦）");
         this.addDialog(SMCEntities.START_NPC, 2, "本店亏损已久，承蒙大侠相助！");
         this.addDialog(SMCEntities.START_NPC, 3, "§a已全部取出！");
         this.addDialog(SMCEntities.START_NPC, 4, "§a已升级！");

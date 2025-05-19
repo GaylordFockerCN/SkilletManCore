@@ -8,6 +8,7 @@ import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
 import com.p1nero.smc.client.gui.screen.entity_dialog.VillagerDialogScreenHandler;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
+import com.p1nero.smc.util.ItemUtil;
 import com.p1nero.smc.util.SMCRaidManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -15,6 +16,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -44,6 +46,7 @@ public class ClericDialogBuilder extends VillagerDialogScreenHandler.VillagerDia
                 ServerLevel end = serverPlayer.serverLevel().getServer().getLevel(Level.END);
                 if(end != null){
                     serverPlayer.changeDimension(end);
+                    ItemUtil.addItem(serverPlayer, Items.NETHERITE_PICKAXE.getDefaultInstance(), true);
                 }
             }
         }
