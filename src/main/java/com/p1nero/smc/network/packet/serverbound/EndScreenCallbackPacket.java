@@ -20,10 +20,12 @@ public record EndScreenCallbackPacket() implements BasePacket {
 
     @Override
     public void execute(Player player) {
-        if (player instanceof ServerPlayer serverPlayer && player.getServer() != null && player.level().dimension() != Level.OVERWORLD) {
+        if (player instanceof ServerPlayer serverPlayer && player.getServer() != null) {
             ServerLevel overworld = player.getServer().getLevel(Level.OVERWORLD);
             if (overworld != null) {
-                serverPlayer.changeDimension(overworld, new SMCTeleporter(overworld.getSharedSpawnPos()));
+                if(player.level().dimension() != Level.OVERWORLD) {
+                    serverPlayer.changeDimension(overworld, new SMCTeleporter(overworld.getSharedSpawnPos()));
+                }
                 serverPlayer.setRespawnPosition(Level.OVERWORLD, overworld.getSharedSpawnPos(), 0.0F, false, true);
                 SMCPlayer.addMoney(200000, serverPlayer);
                 SMCAdvancementData.finishAdvancement("end", serverPlayer);

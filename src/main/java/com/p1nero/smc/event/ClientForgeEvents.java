@@ -86,6 +86,8 @@ public class ClientForgeEvents {
         TIPS.add("顾客村民初始一分钟生成一次，随店铺等级升高，客流量会增加");
         TIPS.add("默认 Z + 鼠标和滚轮可调节视角 —— Leawind Third Person");
         TIPS.add("任何时候开始学机械动力都不晚！");
+        TIPS.add("我知道你根本就不会看作者在左上角给的提示，对吧~");
+        TIPS.add("[提示框广告招租，五元一条不限时！]");
     }
     /**
      * 画提示
