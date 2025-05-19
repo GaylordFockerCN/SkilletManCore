@@ -33,9 +33,11 @@ public class DataManager {
     public static DoubleData spatulaCombo = new DoubleData("spatula_combo", 0);
     public static BoolData firstJoint = new BoolData("first_joint", false);
     public static BoolData firstGiftGot = new BoolData("first_gift_got", false);
+    public static BoolData firstFoodBad = new BoolData("first_food_bad", false);
     public static BoolData firstGachaGot = new BoolData("first_gacha_got", false);
     public static BoolData firstWork = new BoolData("first_work", false);
-    public static BoolData firstFoodBad = new BoolData("first_food_bad", false);
+    public static BoolData firstStopWork = new BoolData("first_stop_work", false);
+    public static BoolData showFirstPlaceWirelessTerminal = new BoolData("first_place_wireless_terminal", false);
     public static BoolData firstChangeVillager = new BoolData("first_change_villager", false);
     public static BoolData shouldShowMachineTicketHint = new BoolData("machine_ticket_traded", false);//是否显示“兑换过机械动力通票”提示，升到三级房屋后显示
     public static BoolData inRaid = new BoolData("in_raid", false);

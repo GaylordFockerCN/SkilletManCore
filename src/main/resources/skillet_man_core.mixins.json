@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AbstractRaidMixin",
+    "AdvWirelessTerminalItemMixin",
     "AnimalMixin",
     "AnimationsMixin",
     "AntitheusDarknessMixin",
@@ -48,8 +49,8 @@
     "DodgeSkillMixin",
     "HealthBarIndicatorMixin",
     "LevelRendererMixin",
-    "WorldListEntryMixin",
-    "PotatoCannonItemMixin"
+    "PotatoCannonItemMixin",
+    "WorldListEntryMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -22,6 +22,7 @@ import com.p1nero.smc.worldgen.portal.SMCTeleporter;
 import com.simibubi.create.AllItems;
 import com.teamtea.eclipticseasons.api.constant.solar.SolarTerm;
 import com.teamtea.eclipticseasons.api.util.EclipticUtil;
+import com.tom.storagemod.Content;
 import dev.xkmc.cuisinedelight.content.item.SpatulaItem;
 import dev.xkmc.cuisinedelight.init.registrate.PlateFood;
 import hungteen.htlib.common.world.entity.DummyEntityManager;
@@ -447,8 +448,12 @@ public class SMCPlayer {
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("meat_available"), false);
         ItemUtil.addItem(serverPlayer, SMCItems.NO_BRAIN_VILLAGER_SPAWN_EGG.get(), 5, true);
         ItemUtil.addItem(serverPlayer, ModItems.FEEDING_UPGRADE.get().getDefaultInstance(), true);
+        ItemUtil.addItem(serverPlayer, Content.terminal.get().asItem().getDefaultInstance(), true);
+        ItemUtil.addItem(serverPlayer, Content.advWirelessTerminal.get().asItem().getDefaultInstance(), true);
+        DataManager.showFirstPlaceWirelessTerminal.put(serverPlayer, true);
         SMCAdvancementData.finishAdvancement("level5_1", serverPlayer);
         SMCAdvancementData.finishAdvancement("level5_2", serverPlayer);
+        SMCAdvancementData.finishAdvancement("level5_3", serverPlayer);
     }
 
     public void unlockStage2(ServerPlayer serverPlayer) {
@@ -502,6 +507,9 @@ public class SMCPlayer {
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("start_work").withStyle(ChatFormatting.BOLD), true);
                 serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
             } else {
+                if (!DataManager.firstStopWork.get(serverPlayer)) {
+                    DataManager.firstStopWork.put(serverPlayer, true);
+                }
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("end_work").withStyle(ChatFormatting.BOLD), true);
                 serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
                 if (serverPlayer.serverLevel().isNight()) {
