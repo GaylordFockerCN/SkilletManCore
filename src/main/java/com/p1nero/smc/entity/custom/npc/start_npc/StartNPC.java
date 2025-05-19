@@ -1,12 +1,12 @@
 package com.p1nero.smc.entity.custom.npc.start_npc;
 
 import com.cazsius.solcarrot.item.SOLCarrotItems;
+import com.p1nero.api.component.DialogueComponentBuilder;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.block.entity.MainCookBlockEntity;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
-import com.p1nero.smc.client.gui.DialogueComponentBuilder;
 import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
 import com.p1nero.smc.client.sound.SMCSounds;

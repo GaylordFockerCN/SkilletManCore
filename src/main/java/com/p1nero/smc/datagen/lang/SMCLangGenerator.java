@@ -40,7 +40,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addKeyMapping(KeyMappings.SHOW_HINT, "隐藏/显示当前引导");
 
         this.addInfo("hint_update_tip", "§l§c[§l§6新§l§c]");
-        this.addInfo("task_todo_tip", "§l§c[§l§e待做§l§c]");
+        this.addInfo("task_todo_tip", "§l§c[§l§e待办§l§c]");
         this.addInfo("ingredient_info", "§6配方信息提示： ");
         this.addInfo("ingredient_rate", " §6占比：");
         this.addInfo("set_to_hard_spatula", "§c成功设置为困难翻炒模式！翻炒需在绿色区间内完成！");
