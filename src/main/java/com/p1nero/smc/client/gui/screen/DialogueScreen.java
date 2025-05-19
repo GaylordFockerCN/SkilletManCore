@@ -139,7 +139,7 @@ public class DialogueScreen extends Screen {
      * @param component The message {@link Component}.
      */
     protected void setDialogueAnswer(Component component) {
-        PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new AddDialogPacket(entity == null ? title : entity.getDisplayName(), component, true));
+        PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new AddDialogPacket(entity == null ? title : entity.getDisplayName(), component, SMCConfig.BROADCAST_DIALOG.get()));
         if(SMCConfig.ENABLE_TYPEWRITER_EFFECT.get()){
             this.dialogueAnswer.updateTypewriterDialogue(component);
         }else {

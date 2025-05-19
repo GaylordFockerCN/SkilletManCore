@@ -28,6 +28,7 @@ import hungteen.htlib.common.world.entity.DummyEntityManager;
 import net.kenddie.fantasyarmor.item.FAItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.player.RemotePlayer;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -525,7 +526,7 @@ public class SMCPlayer {
         if (smcPlayer.moneyCount < 0) {
             SMCAdvancementData.finishAdvancement("no_money", serverPlayer);
         }
-        serverPlayer.displayClientMessage(Component.literal("-" + moneyCount).withStyle(ChatFormatting.BOLD, ChatFormatting.RED), false);
+        serverPlayer.displayClientMessage(Component.literal("-" + (int)moneyCount).withStyle(ChatFormatting.BOLD, ChatFormatting.RED), false);
         smcPlayer.syncToClient(serverPlayer);
     }
 
@@ -781,56 +782,58 @@ public class SMCPlayer {
         }
 
         if (player.level().isClientSide) {
-            int currentCombo = DataManager.spatulaCombo.get(player).intValue();
-            if(currentCombo != lastClientCombo) {
-                lastClientCombo = currentCombo;
-                if(currentCombo == 0) {
-                    player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), SoundEvents.VILLAGER_NO, SoundSource.BLOCKS, 1.0F, 1.0F, false);
-                } else {
-                    player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 1.0F, 1.0F, false);
-                    if(currentCombo % 10 == 0) {
-                        player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), SMCSounds.VILLAGER_YES.get(), SoundSource.BLOCKS, currentCombo / 20.0F + 0.5F, 1.0F, false);
+            if(player.isLocalPlayer()) {
+                int currentCombo = DataManager.spatulaCombo.get(player).intValue();
+                if(currentCombo != lastClientCombo) {
+                    lastClientCombo = currentCombo;
+                    if(currentCombo == 0) {
+                        player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), SoundEvents.VILLAGER_NO, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                    } else {
+                        player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                        if(currentCombo % 10 == 0) {
+                            player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), SMCSounds.VILLAGER_YES.get(), SoundSource.BLOCKS, currentCombo / 20.0F + 0.5F, 1.0F, false);
+                        }
                     }
                 }
-            }
-            if (isWorking) {
-                if (!WorkingMusicPlayer.isRecordPlaying()) {
-                    WorkingMusicPlayer.playWorkingMusic();
-                }
-            } else {
-                WorkingMusicPlayer.stopMusic();
-            }
-            if (DataManager.inRaid.get(player)) {
-                RaidMusicPlayer.playRaidMusic();
-            } else {
-                RaidMusicPlayer.stopMusic();
-            }
-
-            //土豆加农炮逻辑
-            if (player.getMainHandItem().is(AllItems.POTATO_CANNON.get())) {
-                if (!player.getCooldowns().isOnCooldown(AllItems.POTATO_CANNON.get())) {
-                    ClientEngine.getInstance().renderEngine.zoomIn();
+                if (isWorking) {
+                    if (!WorkingMusicPlayer.isRecordPlaying()) {
+                        WorkingMusicPlayer.playWorkingMusic();
+                    }
                 } else {
-                    ClientEngine.getInstance().renderEngine.zoomOut(40);
+                    WorkingMusicPlayer.stopMusic();
                 }
-            }
+                if (DataManager.inRaid.get(player)) {
+                    RaidMusicPlayer.playRaidMusic();
+                } else {
+                    RaidMusicPlayer.stopMusic();
+                }
 
-            //移除过远的无效路标点
-            IXaeroMinimapClientPlayNetHandler clientLevel = (IXaeroMinimapClientPlayNetHandler) ((LocalPlayer) player).connection;
-            XaeroMinimapSession session = clientLevel.getXaero_minimapSession();
-            WaypointsManager waypointsManager = session.getWaypointsManager();
-            String name = SkilletManCoreMod.getInfoKey("no_owner_shop");
-            if(waypointsManager.getWaypoints() != null) {
-                List<Waypoint> list = waypointsManager.getWaypoints().getList();
-                int beforeSize = list.size();
-                list.removeIf((waypoint -> {
-                    Vec3 waypointPos = new Vec3(waypoint.getX(), waypoint.getY(), waypoint.getZ());
-                    return  waypoint.getName().equals(name) && player.position().distanceTo(waypointPos) > 200;
-                }));
-                if (list.size() != beforeSize) {
-                    try {
-                        XaeroMinimap.instance.getSettings().saveWaypoints(waypointsManager.getCurrentWorld());
-                    } catch (IOException ignored) {
+                //土豆加农炮逻辑
+                if (player.getMainHandItem().is(AllItems.POTATO_CANNON.get())) {
+                    if (!player.getCooldowns().isOnCooldown(AllItems.POTATO_CANNON.get())) {
+                        ClientEngine.getInstance().renderEngine.zoomIn();
+                    } else {
+                        ClientEngine.getInstance().renderEngine.zoomOut(40);
+                    }
+                }
+
+                //移除过远的无效路标点
+                IXaeroMinimapClientPlayNetHandler clientLevel = (IXaeroMinimapClientPlayNetHandler) ((LocalPlayer) player).connection;
+                XaeroMinimapSession session = clientLevel.getXaero_minimapSession();
+                WaypointsManager waypointsManager = session.getWaypointsManager();
+                String name = SkilletManCoreMod.getInfoKey("no_owner_shop");
+                if(waypointsManager.getWaypoints() != null) {
+                    List<Waypoint> list = waypointsManager.getWaypoints().getList();
+                    int beforeSize = list.size();
+                    list.removeIf((waypoint -> {
+                        Vec3 waypointPos = new Vec3(waypoint.getX(), waypoint.getY(), waypoint.getZ());
+                        return  waypoint.getName().equals(name) && player.position().distanceTo(waypointPos) > 200;
+                    }));
+                    if (list.size() != beforeSize) {
+                        try {
+                            XaeroMinimap.instance.getSettings().saveWaypoints(waypointsManager.getCurrentWorld());
+                        } catch (IOException ignored) {
+                        }
                     }
                 }
             }

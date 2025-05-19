@@ -9,6 +9,7 @@ import com.p1nero.smc.client.gui.screen.entity_dialog.golem.SnowGolemDialogScree
 import com.p1nero.smc.client.gui.screen.info_screen.BanPortalScreenHandler;
 import com.p1nero.smc.client.gui.screen.info_screen.StartCreateScreenHandler;
 import com.p1nero.smc.client.gui.screen.info_screen.StartGuideScreenHandler;
+import com.p1nero.smc.client.keymapping.KeyMappings;
 import com.p1nero.smc.effect.SMCEffects;
 import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
@@ -34,6 +35,9 @@ public class SMCLangGenerator extends SMCLangProvider {
         for(int i = 0; i < ClientForgeEvents.TIPS.size(); i++){
             this.add("screen_tips.smc.tip" + i, ClientForgeEvents.TIPS.get(i));
         }
+
+        this.add("key.categories.smc", "平底锅侠 - 核心");
+        this.addKeyMapping(KeyMappings.SHOW_HINT, "是否显示任务提示");
 
         this.addInfo("set_to_hard_spatula", "§c成功设置为困难翻炒模式！翻炒需在绿色区间内完成！");
         this.addInfo("set_to_easy_spatula", "§a成功设置为休闲翻炒模式！翻炒随时可以进行！");
@@ -103,6 +107,9 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("trial_required2", "提示：可通过§a[酿造台]§r或对话转化无业村民");
         this.addInfo("should_trade_machine_ticket", "寻找机械师兑换机械动力材料");
         this.addInfo("should_trade_machine_ticket2", "提示：可通过§a[锻造台]§r或对话转化无业村民");
+        this.addInfo("press_x_to_show_hint", "按[%s]隐藏/显示当前任务");
+        this.addInfo("no_task", "当前无任务");
+        this.addInfo("no_task2", "先去提升等级吧~");
         this.addInfo("game_time_no_enough", "§4游戏时长不足！禁止挑战最终boss！");
         this.addInfo("add_item_tip", "§a获得新物品：%s × %d");
         this.addInfo("advancement_look_tip", "不知道做什么时，可以按§a[L]§r查看进度");
@@ -398,7 +405,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialog(SMCEntities.START_NPC, 10, "这是目前可以订购的食材大礼包的列表，本列表将随着游戏阶段的提升而增加。");
         this.addDialog(SMCEntities.START_NPC, 11, "要兑换哪种抽奖券呢？");
         this.addDialog(SMCEntities.START_NPC, 12, "兑换几张呢？");
-        this.addDialog(SMCEntities.START_NPC, 13, "注意，升级会强行覆盖周边建筑，更高的升级可能重置整个建筑，升级前请先确定建筑内或周边无贵重物品！本次修缮花费 %d ，确定升级吗？");
+        this.addDialog(SMCEntities.START_NPC, 13, "注意，升级会§c强行覆盖§r周边建筑，更高的升级可能§c重置§r整个建筑，升级前请先确定建筑内或周边无贵重物品！本次修缮花费 %d ，确定升级吗？");
 
         this.add(SMCEntities.START_NPC_PLUS.get(), "§e人畜无害的村民§r");
         this.add(SMCEntities.START_NPC_PLUS.get() + "_empty", "§e⬇对话以开始经营⬇");

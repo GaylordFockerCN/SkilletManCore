@@ -7,6 +7,7 @@ import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.screen.DialogueScreen;
+import com.p1nero.smc.client.keymapping.KeyMappings;
 import dev.xkmc.cuisinedelight.init.CuisineDelight;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -74,6 +75,12 @@ public class CustomGuiRenderer {
     }
 
     public static void renderTutorial(GuiGraphics guiGraphics, LocalPlayer localPlayer, SMCPlayer smcPlayer, Font font, int lineHeight, int x, int y) {
+        Component show = SkilletManCoreMod.getInfo("press_x_to_show_hint", KeyMappings.SHOW_HINT.getTranslatedKeyMessage().copy().withStyle(ChatFormatting.DARK_GREEN)).withStyle(ChatFormatting.BOLD, ChatFormatting.GRAY);
+        guiGraphics.fillGradient(8, y + lineHeight - 2, 8 + font.width(show) + 2, y + lineHeight, 0x66000000, 0x66000000);
+        guiGraphics.drawString(font, show, 10, y + lineHeight, 0x00ff00, true);
+        if(!SMCConfig.SHOW_HINT.get()) {
+            return;
+        }
         if (!DataManager.firstGiftGot.get(localPlayer)) {
             Component info = SkilletManCoreMod.getInfo("find_villager_first").withStyle(ChatFormatting.BOLD, ChatFormatting.GOLD);
             Component info2 = SkilletManCoreMod.getInfo("find_villager_first2").withStyle(ChatFormatting.GRAY);
@@ -111,6 +118,13 @@ public class CustomGuiRenderer {
         } else if(DataManager.shouldShowMachineTicketHint.get(localPlayer)) {
             Component info = SkilletManCoreMod.getInfo("should_trade_machine_ticket").withStyle(ChatFormatting.BOLD, ChatFormatting.YELLOW);
             Component info2 = SkilletManCoreMod.getInfo("should_trade_machine_ticket2").withStyle(ChatFormatting.GRAY);
+            int maxWidth = Math.max(font.width(info), font.width(info2));
+            guiGraphics.fillGradient(8, y + lineHeight * 2 - 2, 8 + maxWidth + 2, y + lineHeight * 4, 0x66000000, 0x66000000);
+            guiGraphics.drawString(font, info, 10, y + lineHeight * 2, 0x00ff00, true);
+            guiGraphics.drawString(font, info2, 10, y + lineHeight * 3, 0x00ff00, true);
+        } else {
+            Component info = SkilletManCoreMod.getInfo("no_task").withStyle(ChatFormatting.BOLD, ChatFormatting.LIGHT_PURPLE);
+            Component info2 = SkilletManCoreMod.getInfo("no_task2").withStyle(ChatFormatting.GRAY);
             int maxWidth = Math.max(font.width(info), font.width(info2));
             guiGraphics.fillGradient(8, y + lineHeight * 2 - 2, 8 + maxWidth + 2, y + lineHeight * 4, 0x66000000, 0x66000000);
             guiGraphics.drawString(font, info, 10, y + lineHeight * 2, 0x00ff00, true);

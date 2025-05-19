@@ -32,7 +32,7 @@ public class SpecialCustomerData15 extends SpecialCustomerData {
         generator.add(choicePre(-3), "！去就这");
         generator.add(answerPre(-1), "（眼前这位村民不知为何上下翻转，连同文案也不知为何，反过来了。 §6（或许它对食材的评价也会反过来？））");
         generator.add(choicePre(-1), "？么点什吃想官客");
-        generator.add(answerPre(0), "？s% 点来");
+        generator.add(answerPre(0), "？%s 点来");
         generator.add(choicePre(0), "交提");
         generator.add(answerPre(1), "！赏重有重，错不味道这");
         generator.add(choicePre(1), "下收");

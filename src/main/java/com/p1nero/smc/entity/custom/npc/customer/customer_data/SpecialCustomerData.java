@@ -13,11 +13,13 @@ import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import dev.xkmc.cuisinedelight.content.item.BaseFoodItem;
 import dev.xkmc.cuisinedelight.content.logic.CookedFoodData;
 import dev.xkmc.cuisinedelight.content.logic.FoodType;
+import dev.xkmc.cuisinedelight.content.logic.IngredientConfig;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -108,9 +110,6 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
 
     @Override
     public void handle(ServerPlayer serverPlayer, Customer self, byte interactId) {
-        if(interactId != 0){
-            serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("special_customer"), false);
-        }
         switch (interactId) {
             case BEST:
                 onBest(serverPlayer, self);
@@ -120,6 +119,16 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
                 break;
             case BAD:
                 onBad(serverPlayer, self);
+                break;
+            case 0 :
+                break;
+            default:
+            {
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("special_customer"), false);
+                ItemStack order = self.getOrder();
+                CookedFoodData foodData = BaseFoodItem.getData(order);
+
+            }
         }
     }
 
@@ -177,8 +186,8 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("seafood_mul", 1.4F), false);
             }
             if(cookedFoodData.size > 0){
-                mul *= cookedFoodData.size;
-                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("size_mul", cookedFoodData.size), false);
+                mul *= cookedFoodData.size / 2.0F;
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("size_mul", cookedFoodData.size / 2.0F), false);
             }
         }
         SMCPlayer.addMoney((int) (50 * mul), serverPlayer);

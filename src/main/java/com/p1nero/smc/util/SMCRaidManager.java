@@ -51,6 +51,11 @@ public class SMCRaidManager {
      */
     public static void startNightRaid(ServerPlayer serverPlayer, SMCPlayer smcPlayer) {
         if(Level.isInSpawnableBounds(serverPlayer.blockPosition())) {
+            //保险
+            if(DummyEntityManager.getDummyEntities(serverPlayer.serverLevel()).size() > serverPlayer.serverLevel().players().size()){
+                return;
+            }
+
             int day = (int) (serverPlayer.serverLevel().getDayTime() / 24000);
             if(day > 30) {
                 day = 30;
@@ -65,7 +70,7 @@ public class SMCRaidManager {
     }
 
     /**
-     * 白天的随机袭击，为夜间的一半难度
+     * 白天的随机袭击
      */
     public static void startRandomRaid(ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
@@ -74,7 +79,6 @@ public class SMCRaidManager {
             if(day > 30) {
                 day = 30;
             }
-            day /= 2;
             DummyEntity dummyEntity = createRaid(serverPlayer.serverLevel(), ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "raid_" + day), serverPlayer.position());
             if(dummyEntity != null) {
                 smcPlayer.setTodayInRaid(true);

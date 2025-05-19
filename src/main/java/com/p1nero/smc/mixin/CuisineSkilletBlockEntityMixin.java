@@ -1,5 +1,7 @@
 package com.p1nero.smc.mixin;
 
+import com.p1nero.smc.block.custom.DiamondCuisineSkilletBlock;
+import com.p1nero.smc.block.custom.GoldenCuisineSkilletBlock;
 import dev.xkmc.cuisinedelight.content.block.CuisineSkilletBlockEntity;
 import dev.xkmc.cuisinedelight.content.logic.CookingData;
 import dev.xkmc.cuisinedelight.content.logic.IngredientConfig;
@@ -90,11 +92,19 @@ public abstract class CuisineSkilletBlockEntityMixin extends BaseBlockEntity {
 
         //碳化
         if(level != null && !level.isClientSide && !this.cookingData.contents.isEmpty()) {
+            float becomeTimer = 400;
+            if(pState.getBlock() instanceof GoldenCuisineSkilletBlock){
+                becomeTimer = becomeTimer * 3 / 2;
+            }
+            if(pState.getBlock() instanceof DiamondCuisineSkilletBlock) {
+                becomeTimer *= 3;
+            }
             AtomicBoolean becomeCoal = new AtomicBoolean(true);
+            float finalBecomeTimer = becomeTimer;
             this.cookingData.contents.forEach(cookingEntry -> {
                 IngredientConfig.IngredientEntry config = IngredientConfig.get().getEntry(cookingEntry.getItem());
                 assert config != null;
-                if(level.getGameTime() - ((CookingEntryAccessor)cookingEntry).getStartTime() < 400) {
+                if(level.getGameTime() - ((CookingEntryAccessor)cookingEntry).getStartTime() < finalBecomeTimer) {
                     becomeCoal.set(false);
                 }
             });

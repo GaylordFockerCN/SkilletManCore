@@ -180,7 +180,7 @@ dependencies {
     implementation fg.deobf("curse.maven:terrablender-563928:6290448")
     implementation fg.deobf("curse.maven:glitchcore-955399:5787839")
 
-    implementation fg.deobf("curse.maven:ecliptic-seasons-1118306:6522681")
+    implementation fg.deobf("curse.maven:ecliptic-seasons-1118306:6544587")
 
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.20.1:4.4.7")
     implementation fg.deobf("curse.maven:fantasy-armor-1083998:6385161")
@@ -188,6 +188,8 @@ dependencies {
     //背包
     implementation fg.deobf("curse.maven:sophisticated-core-618298:6266807")
     implementation fg.deobf("curse.maven:sophisticated-backpacks-422301:6246607")
+
+    implementation fg.deobf("curse.maven:toms-storage-378609:6418133")
 
     implementation fg.deobf("curse.maven:yungs-better-end-island-901344:5193815")
     implementation fg.deobf("curse.maven:yungs-api-421850:5769971")

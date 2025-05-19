@@ -95,9 +95,10 @@ public abstract class SMCBoss extends SMCMonster implements HomePointEntity, IWa
         return getEntityData().get(HOME_POS);
     }
 
+    @Deprecated
     @Override
     public float getHomeRadius() {
-        return SMCConfig.SPAWNER_BLOCK_PROTECT_RADIUS.get();
+        return 20;
     }
 
     public void setPhase(int phase){

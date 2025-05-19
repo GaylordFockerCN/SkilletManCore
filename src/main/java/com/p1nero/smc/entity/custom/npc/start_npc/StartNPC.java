@@ -446,7 +446,7 @@ public class StartNPC extends SMCNpc {
     public void handleNpcInteraction(ServerPlayer player, byte interactionID) {
         DialogueComponentBuilder dialogueComponentBuilder = new DialogueComponentBuilder(this);
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
-        double moneyRate = smcPlayer.getLevelMoneyRate();
+        int moneyRate = (int) smcPlayer.getLevelMoneyRate();
         //购买
         if (interactionID == 1) {
             if (smcPlayer.getMoneyCount() < 100 * moneyRate) {
