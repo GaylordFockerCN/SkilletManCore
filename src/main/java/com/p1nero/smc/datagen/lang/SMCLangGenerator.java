@@ -37,7 +37,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         }
 
         this.add("key.categories.smc", "平底锅侠 - 核心");
-        this.addKeyMapping(KeyMappings.SHOW_HINT, "是否显示任务提示");
+        this.addKeyMapping(KeyMappings.SHOW_HINT, "隐藏/显示当前引导");
 
         this.addInfo("set_to_hard_spatula", "§c成功设置为困难翻炒模式！翻炒需在绿色区间内完成！");
         this.addInfo("set_to_easy_spatula", "§a成功设置为休闲翻炒模式！翻炒随时可以进行！");
@@ -107,8 +107,8 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("trial_required2", "提示：可通过§a[酿造台]§r或对话转化无业村民");
         this.addInfo("should_trade_machine_ticket", "寻找机械师兑换机械动力材料");
         this.addInfo("should_trade_machine_ticket2", "提示：可通过§a[锻造台]§r或对话转化无业村民");
-        this.addInfo("press_x_to_show_hint", "按[%s]隐藏/显示当前任务");
-        this.addInfo("no_task", "当前无任务");
+        this.addInfo("press_x_to_show_hint", "按[%s]隐藏/显示当前引导");
+        this.addInfo("no_task", "当前无引导");
         this.addInfo("no_task2", "先去提升等级吧~");
         this.addInfo("game_time_no_enough", "§4游戏时长不足！禁止挑战最终boss！");
         this.addInfo("add_item_tip", "§a获得新物品：%s × %d");
@@ -137,6 +137,10 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("find_villager_gacha3", "建议使用§a[不会乱动的村民刷怪蛋]§r哦");
         this.addInfo("first_work", "往炉灶上摆上炒锅开始工作！");
         this.addInfo("first_work2", "记得趁白天哦~");
+        this.addInfo("first_stop_work", "将炒锅拆下以下班！");
+        this.addInfo("first_stop_work2", "夜里会自动下班哦~");
+        this.addInfo("first_place_wireless_terminal", "将高级无限终端连接到存储终端上");
+        this.addInfo("first_place_wireless_terminal2", "仓库记得建远一些防止§c升级时覆盖§r哦~");
         this.addInfo("special_customer", "§6特殊顾客！经营奖励系数将采用累乘！");
         this.addInfo("level_mul", "声望等级加成！× %.1f");
         this.addInfo("seafood_mul", "海鲜加成！× %.1f");
@@ -197,15 +201,16 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement(SkilletManCoreMod.MOD_ID + "_skill", "技能书图鉴", "在图书管理员处可能抽取到的技能书，学过的技能将被点亮");
         this.addAdvancement(SkilletManCoreMod.MOD_ID + "_level", "声望等级奖励", "随着声望等级提升，将获得不同的奖励");
         this.addAdvancement("level5", "声望等级5 奖励", "炒锅 §6⭐⭐⭐⭐⭐： §a其实五星的普通炒锅可能比一星的黄金武器还好用...");
-        this.addAdvancement("level5_1", "突破奖励", "§6喂食升级：§a解放双手，专注于工作和战斗！");
-        this.addAdvancement("level5_2", "突破奖励", "§6无脑村民刷怪蛋 × 5§a：在家里也能抽卡！");
+        this.addAdvancement("level5_1", "    突破奖励    ", "§6喂食升级：§a解放双手，专注于工作和战斗！");
+        this.addAdvancement("level5_2", "    突破奖励    ", "§6无脑村民刷怪蛋 × 5§a： 在家里也能抽卡！");
+        this.addAdvancement("level5_3", "    突破奖励    ", "§6存储终端§r + §6高级无线终端： §a管理物品更加方便！只需将它放在木桶、箱子等容器上即可使用！相邻的容器会被视为一个整体。而高级无线终端在下蹲时和存储终端绑定即可远程使用！");
         this.addAdvancement("level10", "声望等级10 奖励", "§e黄金锅铲 §6⭐⭐⭐⭐⭐");
-        this.addAdvancement("level10_1", "突破奖励", "§6高级喂食升级：§a背包可自动喂食，更多配置项");
-        this.addAdvancement("level10_2", "突破奖励", "§6工程师护目镜：§a提醒你一下本包有机械动力。差不多该步入机械时代了，快升级一下店铺，有惊喜哦！");
+        this.addAdvancement("level10_1", "    突破奖励    ", "§6高级喂食升级：§a背包可自动喂食，更多配置项");
+        this.addAdvancement("level10_2", "    突破奖励    ", "§6工程师护目镜：§a提醒你一下本包有机械动力。差不多该步入机械时代了，快升级一下店铺，有惊喜哦！");
         this.addAdvancement("level15", "声望等级15 奖励", "§e黄金平底锅 §6⭐⭐⭐⭐⭐");
         this.addAdvancement("level20", "声望等级20 奖励", "§6土豆加农炮：§a大人，时代变了");
-        this.addAdvancement("level20_1", "突破奖励", "§d屠龙套装");
-        this.addAdvancement("level20_2", "突破奖励", "§6大机械时代！\n§a机械师处解锁全部机械动力交易");
+        this.addAdvancement("level20_1", "    突破奖励    ", "§d屠龙套装");
+        this.addAdvancement("level20_2", "    突破奖励    ", "§6大机械时代！\n§a机械师处解锁全部机械动力交易");
         this.addAdvancement("level25", "声望等级25 奖励", "§b钻石平底锅 §5⭐⭐⭐⭐");
         this.addAdvancement("level30", "声望等级30 奖励", "§6左锅右铲§r + §6英雄套装");
 
@@ -405,7 +410,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialog(SMCEntities.START_NPC, 10, "这是目前可以订购的食材大礼包的列表，本列表将随着游戏阶段的提升而增加。");
         this.addDialog(SMCEntities.START_NPC, 11, "要兑换哪种抽奖券呢？");
         this.addDialog(SMCEntities.START_NPC, 12, "兑换几张呢？");
-        this.addDialog(SMCEntities.START_NPC, 13, "注意，升级会§c强行覆盖§r周边建筑，更高的升级可能§c重置§r整个建筑，升级前请先确定建筑内或周边无贵重物品！本次修缮花费 %d ，确定升级吗？");
+        this.addDialog(SMCEntities.START_NPC, 13, "注意，升级会§c强行覆盖§r周边建筑，更高的升级可能§c重置§r整个建筑，升级前请先确定建筑内或周边无贵重物品！特别是你的§6存储仓库§r！ 本次修缮花费 %d ，确定升级吗？");
 
         this.add(SMCEntities.START_NPC_PLUS.get(), "§e人畜无害的村民§r");
         this.add(SMCEntities.START_NPC_PLUS.get() + "_empty", "§e⬇对话以开始经营⬇");

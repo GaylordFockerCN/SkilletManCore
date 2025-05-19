@@ -6,6 +6,7 @@ import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.gacha.ArmorGachaSystem;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
+import com.tom.storagemod.Content;
 import dev.xkmc.cuisinedelight.init.registrate.CDItems;
 import dev.xkmc.cuisinedelight.init.registrate.PlateFood;
 import net.kenddie.fantasyarmor.config.FAConfig;
@@ -277,6 +278,7 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement level5 = registerAdvancement(levelRoot, "level5", FrameType.GOAL, SMCRegistrateItems.IRON_SKILLET_LEVEL5, true, true, false);
             Advancement level5_1 = registerAdvancement(level5, "level5_1", FrameType.GOAL, net.p3pp3rf1y.sophisticatedbackpacks.init.ModItems.FEEDING_UPGRADE.get(), true, true, false);//突破奖励
             Advancement level5_2 = registerAdvancement(level5, "level5_2", FrameType.GOAL, SMCItems.NO_BRAIN_VILLAGER_SPAWN_EGG.get(), true, true, false);//突破奖励
+            Advancement level10_3 = registerAdvancement(level5, "level5_3", FrameType.GOAL, Content.terminal.get(), true, true, false);
             Advancement level10 = registerAdvancement(level5_2, "level10", FrameType.GOAL, SMCRegistrateItems.GOLDEN_SPATULA_V5, true, true, false);
             Advancement level10_1 = registerAdvancement(level10, "level10_1", FrameType.GOAL, net.p3pp3rf1y.sophisticatedbackpacks.init.ModItems.ADVANCED_FEEDING_UPGRADE.get(), true, true, false);
             Advancement level10_2 = registerAdvancement(level10, "level10_2", FrameType.GOAL, AllItems.GOGGLES, true, true, false);
