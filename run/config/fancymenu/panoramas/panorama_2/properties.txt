@@ -5,5 +5,5 @@ panorama-meta {
   speed = 1.0
   fov = 85.0
   angle = 25.0
-  start_rotation = 180
+  start_rotation = 170
 }

@@ -167,6 +167,7 @@ dependencies {
     //农夫乐事 生活调味料
     implementation fg.deobf("curse.maven:farmers-delight-398521:6154802")
     implementation fg.deobf("curse.maven:cuisine-delight-893541:5814261")
+    implementation fg.deobf("curse.maven:barbeques-delight-1007788:5848042")
     implementation fg.deobf("curse.maven:spice-of-life-carrot-edition-277616:4888575")
 
     //机械动力
@@ -213,6 +214,7 @@ dependencies {
     //优化
     implementation fg.deobf("curse.maven:embeddium-908741:5681725")
 //    implementation fg.deobf("curse.maven:entityculling-448233:6355861")
+    implementation fg.deobf("curse.maven:immediatelyfast-686911:6312293")
 
     implementation fg.deobf("curse.maven:oculus-581495:6020952")
 //    implementation fg.deobf("curse.maven:distant-horizons-508933:6387680")

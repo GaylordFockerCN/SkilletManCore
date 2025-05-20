@@ -252,8 +252,9 @@ public class SMCLangGenerator extends SMCLangProvider {
 
         this.addAdvancement("dirt_plate", "节俭之星", "使用脏盘子盛菜，节俭是一种美德，但是你的顾客可能不会这么想。");
         this.addAdvancement("start_work", "新的开始", "接手一家店铺并开始经营");
-        this.addAdvancement("money1000", "一千富翁", "持有 1,000 绿宝石");
-        this.addAdvancement("money1000000", "百万富翁", "持有 1,000,000 绿宝石");
+        this.addAdvancement("money10000", "一万富翁", "持有 10, 000 绿宝石");
+        this.addAdvancement("money100000", "十万富翁", "持有 100,000 绿宝石");
+        this.addAdvancement("money1000000", "百万富翁", "持有 1,000,000 绿宝石（你真的没有开挂吗）");
         this.addAdvancement("money1000000000", "一个小目标", "持有 1,000,000,000 绿宝石（你真的没有开挂吗）");
         this.addAdvancement("special_customer_1", "大亨", "接待10位特殊客户");
         this.addAdvancement("special_customer_2", "超级大亨", "接待20位特殊客户");

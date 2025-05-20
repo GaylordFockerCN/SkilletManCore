@@ -553,8 +553,11 @@ public class SMCPlayer {
         smcPlayer.moneyInSeason += count;
         serverPlayer.displayClientMessage(Component.literal("+" + count).withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN), false);
         smcPlayer.syncToClient(serverPlayer);
-        if (smcPlayer.moneyCount > 1000) {
-            SMCAdvancementData.finishAdvancement("money1000", serverPlayer);
+        if (smcPlayer.moneyCount > 10000) {
+            SMCAdvancementData.finishAdvancement("money10000", serverPlayer);
+        }
+        if (smcPlayer.moneyCount > 100000) {
+            SMCAdvancementData.finishAdvancement("money100000", serverPlayer);
         }
         if (smcPlayer.moneyCount > 1000000) {
             SMCAdvancementData.finishAdvancement("money1000000", serverPlayer);

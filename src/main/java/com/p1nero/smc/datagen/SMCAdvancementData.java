@@ -71,9 +71,10 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                     .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID), existingFileHelper);
 
             Advancement startWork = registerAdvancement(root, "start_work", FrameType.TASK, SMCRegistrateItems.SPATULA_V5, true, true, false);
-            Advancement money1000 = registerAdvancement(startWork, "money1000", FrameType.GOAL, Items.DIAMOND, true, true, false);
-            Advancement money1000000 = registerAdvancement(money1000, "money1000000", FrameType.GOAL, Items.EMERALD, true, true, false);
-            Advancement money1000000000 = registerAdvancement(money1000000, "money1000000000", FrameType.GOAL, Items.EMERALD_BLOCK, true, true, false);
+            Advancement money10000 = registerAdvancement(startWork, "money10000", FrameType.GOAL, Items.DIAMOND, true, true, false);
+            Advancement money100000 = registerAdvancement(money10000, "money100000", FrameType.GOAL, Items.EMERALD, true, true, false);
+            Advancement money1000000 = registerAdvancement(money100000, "money1000000", FrameType.GOAL, Items.EMERALD_BLOCK, true, true, false);
+            Advancement money1000000000 = registerAdvancement(money1000000, "money1000000000", FrameType.GOAL, Items.NETHERITE_BLOCK, true, true, false);
             Advancement stage1 = registerAdvancement(startWork, "stage1", FrameType.GOAL, CDItems.SPATULA, true, true, false);
             Advancement stage2 = registerAdvancement(stage1, "stage2", FrameType.GOAL, SMCRegistrateItems.GOLDEN_SPATULA, true, true, false);
             Advancement stage3 = registerAdvancement(stage2, "stage3", FrameType.GOAL, SMCRegistrateItems.DIAMOND_SPATULA, true, true, false);

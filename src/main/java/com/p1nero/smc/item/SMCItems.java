@@ -23,5 +23,4 @@ public class SMCItems {
 			() -> new ForgeSpawnEggItem(SMCEntities.VILLAGER_NO_BRAIN, 5651507, 12422002,
 					new Item.Properties()));
 
-
 }

@@ -15,6 +15,7 @@ import com.simibubi.create.AllItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -317,8 +318,8 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
                             )
                     );
 
-            MutableComponent opt5 = choice(1).copy();
-            MutableComponent opt6 = choice(2).copy();
+            MutableComponent opt5 = choice(1).append(playerLevel > 5 ? Component.empty() : answer(3));
+            MutableComponent opt6 = choice(2).append(playerLevel > 5 ? Component.empty() : answer(3));
             if(playerLevel < 6) {
                 Style style = opt5.getStyle();
                 opt5.setStyle(style.applyFormat(ChatFormatting.RED).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, choice(8))));
@@ -349,7 +350,7 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
         generator.addVillagerOpt(this.profession, 5, "兑换 10 张 %d绿宝石");
         generator.addVillagerOpt(this.profession, 6, "兑换 100 张 %d绿宝石");
         generator.addVillagerOpt(this.profession, 7, "离开");
-        generator.addVillagerOpt(this.profession, 8, "§a声望等级达到6级解锁");
+        generator.addVillagerOpt(this.profession, 8, "§c[声望等级达到§l6级§r§c解锁]");
         generator.addVillagerOpt(this.profession, 9, "§c当前还有货物未解锁");
         generator.addVillagerOpt(this.profession, 10, "§6已全部解锁！");
     }
