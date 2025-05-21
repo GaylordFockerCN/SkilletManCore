@@ -6,6 +6,7 @@ import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.api.NpcDialogue;
+import com.p1nero.smc.entity.custom.npc.SMCNpc;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.NPCDialoguePacket;
@@ -17,6 +18,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -29,6 +31,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -44,12 +47,16 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+import java.util.UUID;
+
 public class VirgilVillager extends Vindicator implements NpcDialogue {
 
     protected ServerBossEvent bossInfo;
     protected static final EntityDataAccessor<Boolean> TALKED = SynchedEntityData.defineId(VirgilVillager.class, EntityDataSerializers.BOOLEAN);//是否对话过，用来渲染黄色感叹号
     protected static final EntityDataAccessor<Boolean> FIGHTING = SynchedEntityData.defineId(VirgilVillager.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(VirgilVillager.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(VirgilVillager.class, EntityDataSerializers.OPTIONAL_UUID);//服务的玩家
 
     @Nullable
     private Player conversingPlayer;
@@ -62,6 +69,7 @@ public class VirgilVillager extends Vindicator implements NpcDialogue {
     public VirgilVillager(Player owner, Vec3 pos) {
         this(SMCEntities.VIRGIL_VILLAGER.get(), owner.level());
         this.setPos(pos);
+        this.setOwner(owner);
     }
 
     @Override
@@ -108,22 +116,61 @@ public class VirgilVillager extends Vindicator implements NpcDialogue {
         getEntityData().define(TALKED, false);
         getEntityData().define(FIGHTING, false);
         getEntityData().define(SITTING, true);
+        this.getEntityData().define(OWNER_UUID, Optional.empty());
+    }
+    @Nullable
+    public UUID getOwnerUUID() {
+        return this.entityData.get(OWNER_UUID).orElse(null);
+    }
+
+    @Nullable
+    public LivingEntity getOwner() {
+        try {
+            UUID uuid = this.getOwnerUUID();
+            if(uuid != null){
+                Player player = this.level().getPlayerByUUID(uuid);
+                if(player == null){
+                    if(this.level() instanceof ServerLevel serverLevel){
+                        return serverLevel.getEntity(uuid) instanceof LivingEntity livingEntity ? livingEntity : null;
+                    }
+                } else {
+                    return player;
+                }
+            }
+            return null;
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    public void setOwner(LivingEntity livingEntity) {
+        this.setOwnerUUID(livingEntity.getUUID());
+    }
+
+    public void setOwnerUUID(@Nullable UUID pUuid) {
+        this.entityData.set(OWNER_UUID, Optional.ofNullable(pUuid));
     }
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
-        super.readAdditionalSaveData(compoundTag);
-        this.getEntityData().set(FIGHTING, compoundTag.getBoolean("fighting"));
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.getEntityData().set(FIGHTING, tag.getBoolean("fighting"));
         if(isFighting()){
             setSitting(false);
             setTalked(true);
         }
+        if (tag.hasUUID("owner_uuid")) {
+            this.setOwnerUUID(tag.getUUID("owner_uuid"));
+        }
     }
 
     @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
-        super.addAdditionalSaveData(compoundTag);
-        compoundTag.putBoolean("fighting", this.getEntityData().get(FIGHTING));
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putBoolean("fighting", this.getEntityData().get(FIGHTING));
+        if (this.getOwnerUUID() != null) {
+            tag.putUUID("owner_uuid", this.getOwnerUUID());
+        }
     }
 
     public static AttributeSupplier.@NotNull Builder createAttributes() {
@@ -166,12 +213,19 @@ public class VirgilVillager extends Vindicator implements NpcDialogue {
     public void die(@NotNull DamageSource damageSource) {
         super.die(damageSource);
         if (damageSource.getEntity() instanceof ServerPlayer player) {
-            player.removeEffect(MobEffects.BAD_OMEN);
-            SMCAdvancementData.finishAdvancement("virgil", player);
-            DataManager.inSpecial.put(player, false);
-            DataManager.specialEvent4Solved.put(player, true);
-            DataManager.specialSolvedToday.put(player, true);
+            setFinished(player);
+            if(this.getOwner() instanceof ServerPlayer player1) {
+                setFinished(player1);
+            }
         }
+    }
+
+    public void setFinished(ServerPlayer player) {
+        player.removeEffect(MobEffects.BAD_OMEN);
+        SMCAdvancementData.finishAdvancement("virgil", player);
+        DataManager.inSpecial.put(player, false);
+        DataManager.specialEvent4Solved.put(player, true);
+        DataManager.specialSolvedToday.put(player, true);
     }
 
     @Override

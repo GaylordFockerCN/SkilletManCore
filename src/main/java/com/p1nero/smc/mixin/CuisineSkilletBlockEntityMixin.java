@@ -1,5 +1,6 @@
 package com.p1nero.smc.mixin;
 
+import com.mao.barbequesdelight.init.registrate.BBQDItems;
 import com.p1nero.smc.block.custom.DiamondCuisineSkilletBlock;
 import com.p1nero.smc.block.custom.GoldenCuisineSkilletBlock;
 import dev.xkmc.cuisinedelight.content.block.CuisineSkilletBlockEntity;
@@ -113,7 +114,7 @@ public abstract class CuisineSkilletBlockEntityMixin extends BaseBlockEntity {
                 this.cookingData = new CookingData();
                 this.sync();
                 Vec3 center = pPos.getCenter();
-                ItemEntity itemEntity = new ItemEntity(level, center.x, center.y, center.z, Items.COAL.getDefaultInstance().copyWithCount(count));
+                ItemEntity itemEntity = new ItemEntity(level, center.x, center.y, center.z, BBQDItems.BURNT_FOOD.asStack(count));
                 level.addFreshEntity(itemEntity);
             }
         }

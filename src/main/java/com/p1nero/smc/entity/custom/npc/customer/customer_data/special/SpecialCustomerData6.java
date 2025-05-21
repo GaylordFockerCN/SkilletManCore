@@ -78,39 +78,24 @@ public class SpecialCustomerData6 extends SpecialCustomerData {
                                                     .addLeaf(choice(-3), (byte) -3)))));
         } else {
             root = switch (foodScore) {
-                case BEST -> new TreeNode(answer(-1))
-                        .addChild(new TreeNode(answer(0), choice(-1))
-                                .addChild(new TreeNode(answer(1), choice(0))
-                                        .addChild(new TreeNode(answer(2), choice(1))
-                                                .addChild(new TreeNode(answer(3, foodName), choice(2))
-                                                        .addChild(new TreeNode(answer(4), choice(3))
-                                                                .addExecutable(SUBMIT_FOOD)
+                case BEST -> new TreeNode(answer(4), choice(3))
+                                                                .addExecutable(BEST)
                                                                 .addChild(new TreeNode(answer(5), choice(4))
                                                                         .addChild(new TreeNode(answer(6), choice(5))
-                                                                                .addLeaf(choice(6), BEST))))
-                                                        .addLeaf(choice(-3), (byte) -3)))));
-                case MIDDLE -> new TreeNode(answer(-1))
-                        .addChild(new TreeNode(answer(0), choice(-1))
-                                .addChild(new TreeNode(answer(1), choice(0))
-                                        .addChild(new TreeNode(answer(2), choice(1))
-                                                .addChild(new TreeNode(answer(3, foodName), choice(2))
-                                                        .addChild(new TreeNode(answer(7), choice(3))
-                                                                .addExecutable(SUBMIT_FOOD)
+                                                                                .addLeaf(choice(6))))
+                                                        .addLeaf(choice(-3), (byte) -3);
+                case MIDDLE -> new TreeNode(answer(7), choice(3))
+                                                                .addExecutable(MIDDLE)
                                                                 .addChild(new TreeNode(answer(8), choice(7))
                                                                         .addChild(new TreeNode(answer(9), choice(8))
-                                                                                .addLeaf(choice(9), MIDDLE))))
-                                                        .addLeaf(choice(-3), (byte) -3)))));
-                default -> new TreeNode(answer(-1))
-                        .addChild(new TreeNode(answer(0), choice(-1))
-                                .addChild(new TreeNode(answer(1), choice(0))
-                                        .addChild(new TreeNode(answer(2), choice(1))
-                                                .addChild(new TreeNode(answer(3, foodName), choice(2))
-                                                        .addChild(new TreeNode(answer(10), choice(3))
-                                                                .addExecutable(SUBMIT_FOOD)
+                                                                                .addLeaf(choice(9))))
+                                                        .addLeaf(choice(-3), (byte) -3);
+                default -> new TreeNode(answer(10), choice(3))
+                                                                .addExecutable(BAD)
                                                                 .addChild(new TreeNode(answer(11), choice(10))
                                                                         .addChild(new TreeNode(answer(12), choice(11))
-                                                                                .addLeaf(choice(12), BAD))))
-                                                        .addLeaf(choice(-3), (byte) -3)))));
+                                                                                .addLeaf(choice(12))))
+                                                        .addLeaf(choice(-3), (byte) -3);
             };
 
         }

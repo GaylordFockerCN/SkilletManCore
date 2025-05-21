@@ -184,6 +184,15 @@ public class LinkListStreamDialogueScreenBuilder {
         if (answerRoot == null)
             return screen;
         screen.setDialogueAnswer(answerRoot.getAnswer());
+        if (answerRoot.canExecute()) {
+            answerRoot.execute(screen);
+        }
+        if (answerRoot.canExecuteCode()) {
+            if (answerRoot.getExecuteValue() == 0) {
+                throw new IllegalArgumentException("The return value '0' is for ESC");
+            }
+            screen.execute(answerRoot.getExecuteValue());
+        }
         List<DialogueChoiceComponent> choiceList = new ArrayList<>();
         for (TreeNode child : answerRoot.getChildren()) {
             choiceList.add(new DialogueChoiceComponent(child.getOption().copy(), createChoiceButton(child)));

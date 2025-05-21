@@ -38,19 +38,19 @@ public class SpecialCustomerData18 extends SpecialCustomerData {
     }
 
     @Override
-    protected void append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodScore) {
+    protected TreeNode append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodScore) {
         String foodName = "§6" + I18n.get(serverData.getString("food_name")) + "§r";
         if (!canSubmit) {
-            root.addChild(new TreeNode(answer(0), choice(-1))
-                    .addChild(new TreeNode(answer(-2, foodName), choice(0))
+            root.addChild(new TreeNode(answer(0, foodName), choice(-1))
+                    .addChild(new TreeNode(answer(-2), choice(0))
                             .addLeaf(choice(-2), (byte) -3)));
         } else {
-            root.addChild(new TreeNode(answer(0), choice(-1))
-                    .addExecutable(SUBMIT_FOOD)
+            root = new TreeNode(answer(0))
                     .addChild(new TreeNode(answer(1), choice(0))
                             .addLeaf(choice(1), BAD)
-                            .addLeaf(choice(2), BEST)));
+                            .addLeaf(choice(2), BEST));
         }
+        return root;
     }
 
     @Override

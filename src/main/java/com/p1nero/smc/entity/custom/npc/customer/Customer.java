@@ -398,29 +398,36 @@ public class Customer extends SMCNpc {
     @Override
     public void handleNpcInteraction(ServerPlayer player, byte interactionID) {
         if(interactionID == CustomerData.BAD) {
+            submitFood(player);
             this.setMoodAfterTrade(UN_HAPPY);
             this.setTraded(true);//离去
             onFinishTrade(player, CustomerData.BAD);
         }
 
         if(interactionID == CustomerData.BEST || interactionID == CustomerData.MIDDLE) {
+            submitFood(player);
             SMCPlayer.addExperience(player);//能吃就能升级
             this.setMoodAfterTrade(interactionID == CustomerData.BEST ? HAPPY : UN_HAPPY);
             this.setTraded(true);//离去
             onFinishTrade(player, interactionID);
         }
 
-        if(interactionID == CustomerData.SUBMIT_FOOD) {
-            //提交食物专用的代码
-            this.setOrder(player.getMainHandItem());
-            player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
-            ItemUtil.addItem(player, SMCRegistrateItems.DIRT_PLATE.asItem(), 1);
-            return;
-        } else if(this.customerData != null){
+        if(this.customerData != null){
             this.customerData.handle(player, this, interactionID);
         }
 
+        if(interactionID == CustomerData.BEST || interactionID == CustomerData.MIDDLE || interactionID == CustomerData.BAD) {
+            return;
+        }
+
         this.setConversingPlayer(null);
+    }
+
+    public void submitFood(ServerPlayer player) {
+        //提交食物专用的代码
+        this.setOrder(player.getMainHandItem());
+        player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+        ItemUtil.addItem(player, SMCRegistrateItems.DIRT_PLATE.asItem(), 1);
     }
 
     public void displayRecipeInfo(Player player){
@@ -459,7 +466,6 @@ public class Customer extends SMCNpc {
         protected static final byte MIDDLE = 2;
         protected static final byte BAD = 1;
         protected static final byte NO_FOOD = -1;
-        protected static final byte SUBMIT_FOOD = 114;
 
         public abstract void generateTranslation(SMCLangGenerator generator);
         public abstract void onInteract(ServerPlayer player, Customer self);

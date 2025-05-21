@@ -318,8 +318,8 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
                             )
                     );
 
-            MutableComponent opt5 = choice(1).append(playerLevel > 5 ? Component.empty() : answer(3));
-            MutableComponent opt6 = choice(2).append(playerLevel > 5 ? Component.empty() : answer(3));
+            MutableComponent opt5 = choice(1).append(playerLevel > 5 ? Component.empty() : choice(8));
+            MutableComponent opt6 = choice(2).append(playerLevel > 5 ? Component.empty() : choice(8));
             if(playerLevel < 6) {
                 Style style = opt5.getStyle();
                 opt5.setStyle(style.applyFormat(ChatFormatting.RED).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, choice(8))));

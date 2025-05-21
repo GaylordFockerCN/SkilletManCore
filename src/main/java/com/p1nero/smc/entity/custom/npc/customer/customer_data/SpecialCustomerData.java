@@ -52,7 +52,7 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
     @OnlyIn(Dist.CLIENT)
     public void getDialogScreen(CompoundTag serverData, LinkListStreamDialogueScreenBuilder screenBuilder, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodScore) {
         TreeNode root = new TreeNode(answer(-1));
-        this.append(root, serverData, dialogueComponentBuilder, canSubmit, foodScore);
+        root = this.append(root, serverData, dialogueComponentBuilder, canSubmit, foodScore);
         screenBuilder.setAnswerRoot(root);
     }
 
@@ -74,7 +74,7 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
     }
 
     @OnlyIn(Dist.CLIENT)
-    protected void append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodScore) {
+    protected TreeNode append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodScore) {
         String foodName = "§6" + I18n.get(serverData.getString("food_name")) + "§r";
         if (!canSubmit) {
             root.addChild(new TreeNode(answer(0, foodName), choice(-1))
@@ -85,27 +85,22 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
         } else {
             switch (foodScore) {
                 case BEST:
-                    root.addChild(new TreeNode(answer(0, foodName), choice(-1))
-                            .addChild(new TreeNode(answer(1), choice(0))
-                                    .addExecutable(SUBMIT_FOOD)
-                                    .addLeaf(choice(1), BEST))
-                            .addLeaf(choice(-3), (byte) -3));
+                    root = new TreeNode(answer(1))
+                                    .addExecutable(BEST)
+                                    .addLeaf(choice(1));
                     break;
                 case MIDDLE:
-                    root.addChild(new TreeNode(answer(0, foodName), choice(-1))
-                            .addChild(new TreeNode(answer(2), choice(0))
-                                    .addExecutable(SUBMIT_FOOD)
-                                    .addLeaf(choice(2), MIDDLE))
-                            .addLeaf(choice(-3), (byte) -3));
+                    root = new TreeNode(answer(2))
+                                    .addExecutable(MIDDLE)
+                                    .addLeaf(choice(2));
                     break;
                 default:
-                    root.addChild(new TreeNode(answer(0, foodName), choice(-1))
-                            .addChild(new TreeNode(answer(3), choice(0))
-                                    .addExecutable(SUBMIT_FOOD)
-                                    .addLeaf(choice(3), BAD))
-                            .addLeaf(choice(-3), (byte) -3));
+                    root = new TreeNode(answer(3))
+                                    .addExecutable(BAD)
+                                    .addLeaf(choice(3));
             }
         }
+        return root;
     }
 
     @Override

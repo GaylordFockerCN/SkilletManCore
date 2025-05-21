@@ -20,7 +20,7 @@ public class SMCConfig {
     public static final ForgeConfigSpec.IntValue TYPEWRITER_EFFECT_INTERVAL;
     public static final ForgeConfigSpec.BooleanValue SHOW_BOSS_HEALTH;
     public static final ForgeConfigSpec.BooleanValue SHOW_HINT;
-    public static final ForgeConfigSpec.DoubleValue INFO_X, INFO_Y, TASK_SIZE;
+    public static final ForgeConfigSpec.DoubleValue INFO_X, INFO_Y, TASK_SIZE, CUISINE_UI_X;
     public static final ForgeConfigSpec.IntValue INTERVAL;
     public static final ForgeConfigSpec CLIENT_SPEC;
 
@@ -60,6 +60,7 @@ public class SMCConfig {
         SHOW_BOSS_HEALTH = createBool(clientBuilder, "show_boss_health", true, "是否显示Boss血量");
         SHOW_HINT = createBool(clientBuilder, "show_hint", true, "是否显示主线提示");
         INFO_X = createDouble(clientBuilder, "info_x", 0.95, 0, "任务提示框的x屏幕位置占比");
+        CUISINE_UI_X = createDouble(clientBuilder, "cuisine_ui_x", 20, 0, "料理乐事UI的X位置偏移");
         INFO_Y = createDouble(clientBuilder, "info_y", 0.1, 0, "任务提示框的y屏幕位置占比");
         INTERVAL = createInt(clientBuilder, "task_interval", 12, 1, "任务提示框的各任务间隔");
         TASK_SIZE = createDouble(clientBuilder, "task_size", 100, 0, "占据宽度");

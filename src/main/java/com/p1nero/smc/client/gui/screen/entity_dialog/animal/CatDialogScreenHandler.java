@@ -66,7 +66,7 @@ public class CatDialogScreenHandler {
             root.addChild(new TreeNode(builder.ans(7), builder.opt(8))
                     .addExecutable(PET)
                     .addChild(root));
-        } else {
+        } else if(cat.getOwner() == null){
             root = new TreeNode(builder.ans(0), builder.opt(3))
                     .addChild(new TreeNode(builder.ans(1), builder.opt(0))
                             .addExecutable(TAME)
@@ -74,6 +74,10 @@ public class CatDialogScreenHandler {
             root.addChild(new TreeNode(builder.ans(2), builder.opt(1))
                             .addExecutable(KILL)
                             .addChild(root));
+        } else {
+            root = new TreeNode(builder.ans(8, cat.getOwner().getDisplayName()))
+                    .addChild(new TreeNode(builder.ans(2), builder.opt(9))
+                            .addLeaf(builder.opt(2)));
         }
         screenBuilder.setAnswerRoot(root);
         Minecraft.getInstance().setScreen(screenBuilder.build());
@@ -98,5 +102,7 @@ public class CatDialogScreenHandler {
         generator.addDialogChoice(EntityType.CAT, 6, "起立");
         generator.addDialogChoice(EntityType.CAT, 7, "躺下");
         generator.addDialogChoice(EntityType.CAT, 8, "抚摸之");
+        generator.addDialogChoice(EntityType.CAT, 9, "§6牛之");
+        generator.addDialog(EntityType.CAT, 8, "我已经有老大 [%s] 了喵");
     }
 }

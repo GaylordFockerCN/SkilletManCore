@@ -77,21 +77,17 @@ public abstract class NormalCustomerData extends Customer.CustomerData {
                     .addLeaf(choice(-2), (byte) -3);
         } else {
             root = switch (foodLevel) {
-                case BEST -> new TreeNode(answer(0, foodName))
-                        .addChild(new TreeNode(answer(1), choice(0))
-                                .addExecutable(SUBMIT_FOOD)
-                                .addLeaf(choice(1), BEST))
-                        .addLeaf(choice(-2), (byte) -3);
+                case BEST -> new TreeNode(answer(1), choice(0))
+                                .addExecutable(BEST)
+                                .addLeaf(choice(1));
                 case MIDDLE -> new TreeNode(answer(0, foodName))
                         .addChild(new TreeNode(answer(2), choice(0))
-                                .addExecutable(SUBMIT_FOOD)
-                                .addLeaf(choice(2), MIDDLE))
-                        .addLeaf(choice(-2), (byte) -3);
+                                .addExecutable(MIDDLE)
+                                .addLeaf(choice(2)));
                 default -> new TreeNode(answer(0, foodName))
                         .addChild(new TreeNode(answer(3), choice(0))
-                                .addExecutable(SUBMIT_FOOD)
-                                .addLeaf(choice(3), BAD))
-                        .addLeaf(choice(-2), (byte) -3);
+                                .addExecutable(BAD)
+                                .addLeaf(choice(3)));
             };
         }
         screenBuilder.setAnswerRoot(root);

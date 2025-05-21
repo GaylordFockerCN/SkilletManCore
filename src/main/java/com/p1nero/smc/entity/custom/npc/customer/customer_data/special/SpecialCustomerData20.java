@@ -40,8 +40,8 @@ public class SpecialCustomerData20 extends SpecialCustomerData {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    protected void append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodLevel) {
-
+    protected TreeNode append(TreeNode root, CompoundTag serverData, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodLevel) {
+        return root;
     }
 
     @Override

@@ -14,6 +14,7 @@
     "CDEventListenersMixin",
     "ChefAnimationsMixin",
     "CookingEntryAccessor",
+    "CookingOverlayMixin",
     "CowMixin",
     "CuisineSkilletArmInteractionPointMixin",
     "CuisineSkilletBlockEntityMixin",
