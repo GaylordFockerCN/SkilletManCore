@@ -35,7 +35,6 @@ public class SpecialCustomerData21 extends SpecialCustomerData {
     @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.DOLL_RAFFLE_TICKET.asItem(), 5, true);
         ItemUtil.addItem(serverPlayer, SMCRegistrateItems.PET_RAFFLE_TICKET.asItem(), 3, true);
         ItemUtil.addItem(serverPlayer, SMCRegistrateItems.DISC_RAFFLE_TICKET.asItem(), 1, true);
     }

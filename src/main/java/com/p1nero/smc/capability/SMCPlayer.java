@@ -442,7 +442,7 @@ public class SMCPlayer {
      * 袭击完全结束后再播报
      */
     public static void tryBroadCastRank(ServerPlayer serverPlayer) {
-        if(DummyEntityManager.getDummyEntities(serverPlayer.serverLevel()).isEmpty()) {
+        if(DummyEntityManager.getDummyEntities(serverPlayer.serverLevel()).size() <= 1) {
             ServerEvents.displayRankingListFor(serverPlayer);
         }
     }
@@ -469,6 +469,7 @@ public class SMCPlayer {
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("unlock_game_stage", STAGE3_REQUIRE), false);
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("unlock_stage2_info"), false);
 
+        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.asStack(1), true);
         ItemUtil.addItem(serverPlayer, ModItems.ADVANCED_FEEDING_UPGRADE.get().getDefaultInstance(), true);
         ItemUtil.addItem(serverPlayer, AllItems.GOGGLES.asStack(), true);
         ItemUtil.addItem(serverPlayer, SMCRegistrateItems.CREATE_RAFFLE.asStack(5), true);

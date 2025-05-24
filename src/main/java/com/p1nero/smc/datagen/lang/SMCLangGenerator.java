@@ -343,8 +343,6 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addItemUsageInfo(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asItem(), "可以在§6武器匠§r处抽取武器。找不到武器匠时可以尝试 在无业村民附近摆放§a[砂轮]§r 或 通过对话 转化普通村民");
         this.add(SMCRegistrateItems.ARMOR_RAFFLE_TICKET.get(), "盔甲抽奖券");
         this.addItemUsageInfo(SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asItem(), "可以在§6盔甲匠§r处抽取盔甲。找不到盔甲匠时可以尝试 在无业村民附近摆放§a[高炉]§r 或 通过对话 转化普通村民");
-        this.add(SMCRegistrateItems.DOLL_RAFFLE_TICKET.get(), "玩偶抽奖券");
-        this.addItemUsageInfo(SMCRegistrateItems.DOLL_RAFFLE_TICKET.asItem(), "可以在§6牧羊人§r处兑换玩偶盲盒。找不到牧羊人时可以尝试 在无业村民附近摆放§a[织布机]§r 或 通过对话 转化普通村民");
         this.add(SMCRegistrateItems.PET_RAFFLE_TICKET.get(), "宠物抽奖券");
         this.addItemUsageInfo(SMCRegistrateItems.PET_RAFFLE_TICKET.asItem(), "可以在§6牧羊人§r处抽取宠物。找不到牧羊人时可以尝试 在无业村民附近摆放§a[织布机]§r 或 通过对话 转化普通村民。 §b图标很可爱对吧(〃'▽'〃)");
         this.add(SMCRegistrateItems.DISC_RAFFLE_TICKET.get(), "唱片抽奖券");

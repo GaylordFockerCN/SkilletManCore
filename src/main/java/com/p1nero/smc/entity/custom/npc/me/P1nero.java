@@ -85,6 +85,9 @@ public class P1nero extends SMCNpc {
         return super.hurt(source, 0);
     }
 
+    /**
+     * 防止变身
+     */
     @Override
     public void thunderHit(@NotNull ServerLevel serverLevel, @NotNull LightningBolt lightningBolt) {
     }

@@ -45,7 +45,7 @@ public class SpecialCustomerData10 extends SpecialCustomerData {
     @Override
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
-        ItemUtil.addItem(serverPlayer, new ItemStack(SMCRegistrateItems.DOLL_RAFFLE_TICKET.get(), 3), true);
+        ItemUtil.addItem(serverPlayer, new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET.get(), 1), true);
 
         ItemStack book = BookManager.getDefaultTextBook(3, "节俭的村民", "节俭之道"
                 , "节俭的首要在于节约墨水，");

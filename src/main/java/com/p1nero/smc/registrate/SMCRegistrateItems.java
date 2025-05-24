@@ -153,9 +153,6 @@ public class SMCRegistrateItems {
             .defaultModel()
             .defaultLang().register();
 
-    public static final ItemEntry<SimpleDescriptionFoilItem> DOLL_RAFFLE_TICKET = SkilletManCoreMod.REGISTRATE.item("doll_raffle_ticket", properties -> new SimpleDescriptionFoilItem(properties.fireResistant().rarity(Rarity.EPIC)))
-            .defaultModel()
-            .defaultLang().register();
     public static final ItemEntry<SimpleDescriptionFoilItem> CREATE_RAFFLE = SkilletManCoreMod.REGISTRATE.item("create_raffle", properties -> new SimpleDescriptionFoilItem(properties.fireResistant().rarity(Rarity.EPIC)))
             .defaultModel()
             .defaultLang().register();

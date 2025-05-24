@@ -53,7 +53,6 @@ public class SpecialCustomerData2 extends SpecialCustomerData {
     protected void onBest(ServerPlayer serverPlayer, Customer self) {
         super.onBest(serverPlayer, self);
         ItemUtil.addItem(serverPlayer, AllItems.SWEET_ROLL.asStack(), true);
-        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.DOLL_RAFFLE_TICKET.get(), 3, true);
     }
 
     @Override

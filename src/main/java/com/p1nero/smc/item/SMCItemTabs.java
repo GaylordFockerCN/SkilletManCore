@@ -66,7 +66,6 @@ public class SMCItemTabs {
                 output.accept(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET);
                 output.accept(SMCRegistrateItems.DISC_RAFFLE_TICKET);
                 output.accept(SMCRegistrateItems.PET_RAFFLE_TICKET);
-                output.accept(SMCRegistrateItems.DOLL_RAFFLE_TICKET);
                 output.accept(SMCItems.NO_BRAIN_VILLAGER_SPAWN_EGG.get());
                 output.accept(SMCItems.GOOD_SUPER_GOLEM_SPAWN_EGG.get());
             }).build());

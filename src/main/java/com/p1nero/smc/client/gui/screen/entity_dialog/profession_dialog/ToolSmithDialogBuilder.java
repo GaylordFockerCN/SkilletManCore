@@ -229,10 +229,6 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
                 new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 10),
-                new ItemStack(AllItems.ZINC_INGOT, 10),
-                142857, 0, 0));
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 10),
                 new ItemStack(AllItems.ANDESITE_ALLOY, 10),
                 142857, 0, 0));
 
@@ -266,10 +262,6 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
                     new ItemStack(Items.BLAZE_ROD, 2),
                     new ItemStack(AllBlocks.BLAZE_BURNER, 1),
-                    142857, 0, 0));
-            merchantOffers.add(new MerchantOffer(
-                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 10),
-                    new ItemStack(AllItems.ELECTRON_TUBE, 1),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 10),

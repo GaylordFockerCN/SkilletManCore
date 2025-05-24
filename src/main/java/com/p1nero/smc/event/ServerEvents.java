@@ -162,9 +162,6 @@ public class ServerEvents {
     /**
      * 获取存档名字，用于二次读取地图时用。
      * 仅限服务器用，如果是单人玩则需要在选择窗口或者创建游戏窗口获取。因为LevelName是可重复的，LevelID才是唯一的...
-     *
-     * @see WorldListEntryMixin#injectedLoadWorld(CallbackInfo ci)
-     * @see CreateWorldScreenMixin#injected(CallbackInfoReturnable)
      */
     @SubscribeEvent
     public static void onServerAboutToStart(ServerAboutToStartEvent event) {
