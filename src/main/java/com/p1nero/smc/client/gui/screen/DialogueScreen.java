@@ -4,6 +4,7 @@ import com.p1nero.smc.SMCConfig;
 import com.p1nero.smc.client.gui.screen.component.DialogueAnswerComponent;
 import com.p1nero.smc.client.gui.screen.component.DialogueChoiceComponent;
 import com.p1nero.smc.entity.api.NpcDialogue;
+import com.p1nero.smc.entity.custom.npc.SMCNpc;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.packet.serverbound.AddDialogPacket;
@@ -24,6 +25,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,6 +43,8 @@ public class DialogueScreen extends Screen {
     protected ResourceLocation PICTURE_LOCATION = null;
     private int picHeight = 144, picWidth = 256;
     private int picShowHeight = 144, picShowWidth = 256;
+    private int yOffset = 0;
+    private boolean isSilent;
     protected final DialogueAnswerComponent dialogueAnswer;
     @Nullable
     protected Entity entity;
@@ -92,6 +97,14 @@ public class DialogueScreen extends Screen {
         }
     }
 
+    public void setSilent(boolean silent) {
+        isSilent = silent;
+    }
+
+    public void setYOffset(int yOffset) {
+        this.yOffset = yOffset;
+    }
+
     public void setPicHeight(int picHeight) {
         this.picHeight = picHeight;
     }
@@ -121,13 +134,13 @@ public class DialogueScreen extends Screen {
      */
     protected void positionDialogue() {
         // Dialogue answer.
-        this.dialogueAnswer.reposition(this.width, this.height * 5 / 4);//相较于天堂的下移了一点
+        this.dialogueAnswer.reposition(this.width, this.height * 5 / 4, yOffset);//相较于天堂的下移了一点
         // Dialogue choices.
         int lineNumber = this.dialogueAnswer.height / 12 + 1;
         for (Renderable renderable : this.renderables) {
             if (renderable instanceof DialogueChoiceComponent option) {
                 option.setX(this.width / 2 - option.getWidth() / 2);
-                option.setY(this.height / 2 * 5 / 4 + 12 * lineNumber);//调低一点
+                option.setY(this.height / 2 * 5 / 4 + 12 * lineNumber + yOffset);//调低一点
                 lineNumber++;
             }
         }
@@ -172,11 +185,27 @@ public class DialogueScreen extends Screen {
         }
         PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new NpcPlayerInteractPacket(this.entity == null ? NpcPlayerInteractPacket.NO_ENTITY :this.entity.getId(), interactionID));
         PICTURE_LOCATION = null;
+        yOffset = 0;
         picHeight = 144;
         picWidth = 256;
         picShowHeight = 256;
         picShowWidth = 144;
         super.onClose();
+    }
+
+    /**
+     * 默认对话翻页的时候播放声音
+     */
+    public void playSound() {
+        if(this.isSilent || this.entity == null) {
+            return;
+        }
+        if(this.entity instanceof Mob mob && mob.getAmbientSound() != null) {
+            if(this.entity instanceof SMCNpc smcNpc) {
+                smcNpc.setTalkingAnimTimer(30);
+            }
+            mob.level().playLocalSound(mob.getX(), mob.getY(), mob.getZ(), mob.getAmbientSound(), mob.getSoundSource(), 1.0F, 1.0F, false);
+        }
     }
 
     /**

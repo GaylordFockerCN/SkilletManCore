@@ -10,8 +10,10 @@ import com.p1nero.smc.entity.custom.boss.goldenflame.client.FlameCircleRenderer;
 import com.p1nero.smc.entity.custom.boss.goldenflame.client.GoldenFlamePatchedRenderer;
 import com.p1nero.smc.entity.custom.boss.goldenflame.client.GoldenFlameRenderer;
 import com.p1nero.smc.entity.custom.npc.customer.client.CustomerRenderer;
+import com.p1nero.smc.entity.custom.npc.me.P1neroRenderer;
 import com.p1nero.smc.entity.custom.npc.special.client.SpecialNpcRenderer;
 import com.p1nero.smc.entity.custom.npc.special.virgil.client.VirgilVillagerRenderer;
+import com.p1nero.smc.entity.custom.npc.special.zombie_man.client.ZombieManRenderer;
 import com.p1nero.smc.entity.custom.npc.start_npc.client.StartNpcPlusRenderer;
 import com.p1nero.smc.entity.custom.super_golem.client.SuperGolemRenderer;
 import com.p1nero.smc.item.SMCItems;
@@ -34,16 +36,17 @@ import yesman.epicfight.api.client.forgeevent.PatchedRenderersEvent;
 import yesman.epicfight.api.client.model.Meshes;
 import yesman.epicfight.api.forgeevent.EntityPatchRegistryEvent;
 import yesman.epicfight.api.forgeevent.ModelBuildEvent;
+import yesman.epicfight.client.renderer.patched.entity.PHumanoidRenderer;
 import yesman.epicfight.client.renderer.patched.entity.PVindicatorRenderer;
 
 @SuppressWarnings("unchecked")
 @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-public class ClientModEvents{
+public class ClientModEvents {
     public static final ModelResourceLocation GOLDEN_SKILLET_MODEL = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "golden_cuisine_skillet_base"), "inventory");
     public static final ModelResourceLocation DIAMOND_SKILLET_MODEL = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "diamond_cuisine_skillet_base"), "inventory");
 
     @SubscribeEvent
-    public static void onClientSetup(FMLClientSetupEvent event){
+    public static void onClientSetup(FMLClientSetupEvent event) {
         //BOSS
 
         EntityRenderers.register(SMCEntities.GOLDEN_FLAME.get(), GoldenFlameRenderer::new);
@@ -57,6 +60,8 @@ public class ClientModEvents{
         EntityRenderers.register(SMCEntities.VILLAGER_NO_BRAIN.get(), VillagerRenderer::new);
         EntityRenderers.register(SMCEntities.START_NPC.get(), VillagerRenderer::new);
         EntityRenderers.register(SMCEntities.START_NPC_PLUS.get(), StartNpcPlusRenderer::new);
+        EntityRenderers.register(SMCEntities.START_NPC_BBQ.get(), StartNpcPlusRenderer::new);
+        EntityRenderers.register(SMCEntities.ZOMBIE_MAN.get(), ZombieManRenderer::new);
         EntityRenderers.register(SMCEntities.CUSTOMER.get(), CustomerRenderer::new);
         EntityRenderers.register(SMCEntities.FAKE_CUSTOMER.get(), CustomerRenderer::new);
         EntityRenderers.register(SMCEntities.HE_SHEN.get(), SpecialNpcRenderer::new);
@@ -65,13 +70,15 @@ public class ClientModEvents{
         EntityRenderers.register(SMCEntities.THIEF2.get(), SpecialNpcRenderer::new);
         EntityRenderers.register(SMCEntities.VIRGIL_VILLAGER.get(), VirgilVillagerRenderer::new);
 
+        EntityRenderers.register(SMCEntities.P1NERO.get(), P1neroRenderer::new);
+
         //MISC
         EntityRenderers.register(SMCEntities.CUSTOM_COLOR_ITEM.get(), ItemEntityRenderer::new);
 
     }
 
     @SubscribeEvent
-    public static void onRendererSetup(EntityRenderersEvent.RegisterRenderers event){
+    public static void onRendererSetup(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(SMCBlockEntities.BETTER_STRUCTURE_BLOCK_ENTITY.get(), BetterStructureBlockRenderer::new);
     }
 
@@ -99,11 +106,12 @@ public class ClientModEvents{
     @OnlyIn(Dist.CLIENT)
     public static void onRenderPatched(PatchedRenderersEvent.Add event) {
         EntityRendererProvider.Context context = event.getContext();
-        //BOSS
         event.addPatchedEntityRenderer(SMCEntities.GOLDEN_FLAME.get(), (entityType) -> new GoldenFlamePatchedRenderer(() -> Meshes.SKELETON, context, entityType).initLayerLast(context, entityType));
         event.addPatchedEntityRenderer(SMCEntities.SUPER_GOLEM.get(), (entityType) -> new SGPatchedRenderer(context, entityType).initLayerLast(context, entityType));
         event.addPatchedEntityRenderer(SMCEntities.SUPER_GOOD_GOLEM.get(), (entityType) -> new SGPatchedRenderer(context, entityType).initLayerLast(context, entityType));
         event.addPatchedEntityRenderer(SMCEntities.VIRGIL_VILLAGER.get(), (entityType) -> new PVindicatorRenderer(context, entityType).initLayerLast(context, entityType));
+        event.addPatchedEntityRenderer(SMCEntities.P1NERO.get(), (entityType) -> new PHumanoidRenderer<>(() -> Meshes.ALEX, context, entityType).initLayerLast(context, entityType));
+        event.addPatchedEntityRenderer(SMCEntities.ZOMBIE_MAN.get(), (entityType) -> new PHumanoidRenderer<>(() -> Meshes.BIPED_OLD_TEX, context, entityType).initLayerLast(context, entityType));
 
         //Item
         event.addItemRenderer(SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get(), new LeftSkilletRightSpatulaRenderer());

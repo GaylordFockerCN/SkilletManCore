@@ -9,6 +9,9 @@ import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.datagen.lang.SMCLangGenerator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.entity.npc.Villager;
@@ -55,10 +58,14 @@ public class NoneDialogBuilder extends VillagerDialogScreenHandler.VillagerDialo
                             .addChild(new TreeNode(answer(2), choice(3))
                                     .addChild(new TreeNode(answer(3), choice(3))
                                             .addChild(new TreeNode(answer(4), choice(3))
+                                                    .addExecutable((screen -> {
+                                                        screen.setYOffset(-30);
+                                                    }))
                                                     .addLeaf(choice(4), (byte) 4)
                                                     .addLeaf(choice(5), (byte) 5)
                                                     .addLeaf(choice(6), (byte) 6)
                                                     .addLeaf(choice(7), (byte) 7)
+                                                    .addLeaf(choice(11), (byte) 10)
                                                     .addLeaf(choice(8), (byte) 8)
                                                     .addLeaf(choice(9), (byte) 9))
                                             .addLeaf(choice(2)))
@@ -69,27 +76,21 @@ public class NoneDialogBuilder extends VillagerDialogScreenHandler.VillagerDialo
     }
 
     @Override
-    public void handle(ServerPlayer serverPlayer, Villager villager, byte interactionID) {
-        super.handle(serverPlayer, villager, interactionID);
-        if(interactionID >= 4 && interactionID <= 9) {
-            if(!DataManager.firstChangeVillager.get(serverPlayer)){
-                DataManager.firstChangeVillager.put(serverPlayer, true);
-            }
-            SMCAdvancementData.finishAdvancement("change_villager", serverPlayer);
-            villager.playSound(SMCSounds.VILLAGER_YES.get(), 1.0F, 1.0F);
-        }
+    public void handle(ServerPlayer player, Villager villager, byte interactionID) {
+        super.handle(player, villager, interactionID);
         switch (interactionID) {
             case 4 -> villager.setVillagerData(villager.getVillagerData().setProfession(VillagerProfession.NITWIT));
             case 5 -> villager.setVillagerData(villager.getVillagerData().setProfession(VillagerProfession.WEAPONSMITH).setLevel(2));//setLevel锁职业
             case 6 -> villager.setVillagerData(villager.getVillagerData().setProfession(VillagerProfession.ARMORER).setLevel(2));
             case 7 -> villager.setVillagerData(villager.getVillagerData().setProfession(VillagerProfession.CLERIC).setLevel(2));
+            case 10 -> villager.setVillagerData(villager.getVillagerData().setProfession(VillagerProfession.TOOLSMITH).setLevel(2));
             case 8 -> {
-                Pig pig = new Pig(EntityType.PIG, serverPlayer.level());
+                Pig pig = new Pig(EntityType.PIG, player.level());
                 pig.setPos(villager.position());
                 pig.setCustomName(villager.getCustomName());
                 pig.setCustomNameVisible(true);
                 villager.discard();
-                serverPlayer.level().addFreshEntity(pig);
+                player.level().addFreshEntity(pig);
             }
             case 9 -> {
                 List<VillagerProfession> villagerProfessions = ForgeRegistries.VILLAGER_PROFESSIONS.getValues().stream().filter(villagerProfession -> villagerProfession.workSound() != null).toList();
@@ -99,9 +100,21 @@ public class NoneDialogBuilder extends VillagerDialogScreenHandler.VillagerDialo
 //                        VillagerProfession.LEATHERWORKER, VillagerProfession.NITWIT, VillagerProfession.ARMORER,
 //                        VillagerProfession.MASON, VillagerProfession.SHEPHERD, VillagerProfession.CARTOGRAPHER,
 //                        VillagerProfession.TOOLSMITH, VillagerProfession.WEAPONSMITH);
-                VillagerProfession profession1 = villagerProfessions.get(serverPlayer.getRandom().nextInt(villagerProfessions.size()));
+                VillagerProfession profession1 = villagerProfessions.get(player.getRandom().nextInt(villagerProfessions.size()));
                 villager.setVillagerData(villager.getVillagerData().setProfession(profession1).setLevel(2));
                 villager.setVillagerXp(1);
+            }
+        }
+        if(interactionID >= 4 && interactionID <= 9 || interactionID == 10) {
+            if(!DataManager.firstChangeVillager.get(player)){
+                DataManager.firstChangeVillager.put(player, true);
+            }
+            SMCAdvancementData.finishAdvancement("change_villager", player);
+            villager.playSound(SMCSounds.VILLAGER_YES.get(), 1.0F, 1.0F);
+            player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SMCSounds.VILLAGER_YES.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+            SoundEvent workSound =  villager.getVillagerData().getProfession().workSound();
+            if(workSound != null){
+                player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), workSound, SoundSource.BLOCKS, 1.0F, 1.0F);
             }
         }
     }
@@ -121,6 +134,7 @@ public class NoneDialogBuilder extends VillagerDialogScreenHandler.VillagerDialo
         generator.addVillagerOpt(this.profession, 5, "武器匠§a（武器祈愿）");
         generator.addVillagerOpt(this.profession, 6, "盔甲匠§a（盔甲祈愿）");
         generator.addVillagerOpt(this.profession, 7, "牧师§a（主线）");
+        generator.addVillagerOpt(this.profession, 11, "机械师§a（自动化）");
         generator.addVillagerOpt(this.profession, 8, "猪");
         generator.addVillagerOpt(this.profession, 9, "随机职业");
 

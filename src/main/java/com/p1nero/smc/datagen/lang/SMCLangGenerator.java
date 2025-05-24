@@ -93,6 +93,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("diamond_spatula_tip", "§b翻炒冷却降低至 10tick");
 
         this.addInfo("weapon_level", "武器等级：");
+        this.addInfo("nether_raid_title", "下界入侵！ 第 %s 天 ！");
         this.addInfo("raid_title", "袭击 ：第 %s 天");
         this.addInfo("raid_success_for_day", "成功抵御了第 %d 天的袭击！");
         this.addInfo("raid_victory", "成功抵御了袭击！");
@@ -114,7 +115,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("press_x_to_show_hint", "按[%s]隐藏/显示当前引导");
         this.addInfo("no_task", "当前无引导");
         this.addInfo("no_task2", "先去提升等级吧~");
-        this.addInfo("game_time_no_enough", "§4游戏时长不足！禁止挑战最终boss！");
+        this.addInfo("game_time_no_enough", "§4等级不足 %d 级！禁止挑战最终boss！");
         this.addInfo("add_item_tip", "§a获得新物品：%s × %d");
         this.addInfo("advancement_look_tip", "不知道做什么时，可以按§a[L]§r查看进度");
         this.addInfo("unlock_new_order", "§a客户解锁了新的需求！ 当前可能的请求");
@@ -132,6 +133,8 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("resting", "休息中");
         this.addInfo("foods_need_cut", "§6该食材需砧板加工处理！");
         this.addInfo("raid_no_work", "§c§l世界某处正在遭遇袭击！紧急下班！");
+        this.addInfo("find_bbq", "前往新的村庄与初始店铺NPC对话");
+        this.addInfo("find_bbq1", "快去看看有什么附加内容吧！");
         this.addInfo("find_villager_first", "在村庄找到店铺并领取新手福利");
         this.addInfo("find_villager_first2", "可在小地图查看附近的无主的店铺");
         this.addInfo("find_villager_first3", "建议找较为低平的位置，方便客户靠近");
@@ -352,7 +355,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addItemUsageInfo(SMCRegistrateItems.REDSTONE_RAFFLE.asItem(), "可以在§6机械师§r处兑换来自原版的材料，包括原木，石头，铁等。找不到机械师时可以尝试 在无业村民附近摆放§a[锻造台]§r 或 通过对话 转化普通村民。");
 
         this.add(SMCRegistrateItems.END_TELEPORTER.get(), "末地传送石");
-        this.addItemUsageInfo(SMCRegistrateItems.END_TELEPORTER.asItem(), "击杀牧师获得，潜行时右键以传送至末地主岛。为何牧师身上会有这玩意儿？");
+        this.addItemUsageInfo(SMCRegistrateItems.END_TELEPORTER.asItem(), "击杀牧师获得，潜行时右键以传送至末地主岛。为何牧师身上会有这玩意儿？我真的要使用这玩意儿提前去打boss吗？");
 
         this.addBiome(SMCBiomes.AIR, "虚空");
 
@@ -401,6 +404,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialogChoice(SMCEntities.START_NPC, 24, "盔甲抽奖券");
 
         this.addDialogChoice(SMCEntities.START_NPC, 25, "§a修缮外观");
+        this.addDialogChoice(SMCEntities.START_NPC, 26, "升级为烧烤店§6[新]");
 
         this.addDialog(SMCEntities.START_NPC, 1, "今天要做些什么呢？§6（觉得我占位置可以把我推开点哦）");
         this.addDialog(SMCEntities.START_NPC, 2, "本店亏损已久，承蒙大侠相助！");
@@ -417,6 +421,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialog(SMCEntities.START_NPC, 12, "兑换几张呢？");
         this.addDialog(SMCEntities.START_NPC, 13, "注意，升级会§c强行覆盖§r周边建筑，更高的升级可能§c重置§r整个建筑，升级前请先确定建筑内或周边无贵重物品！特别是你的§6存储仓库§r！ 本次修缮花费 %d ，确定升级吗？");
 
+        this.addDialog(SMCEntities.START_NPC, 14, "烧烤店是击败Boss后的全新玩法，需花费§6200,000§r绿宝石，是否继续？");
         this.add(SMCEntities.START_NPC_PLUS.get(), "§e人畜无害的村民§r");
         this.add(SMCEntities.START_NPC_PLUS.get() + "_empty", "§e⬇对话以开始经营⬇");
         this.add(SMCEntities.START_NPC_PLUS.get().getDescriptionId() + "_hired", "§a收入：%d §e| §a速度 %s");
@@ -524,6 +529,61 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialogChoice(SMCEntities.VIRGIL_VILLAGER, 3, "我就知道你会这么说（掏出武器）");
         this.addDialogChoice(SMCEntities.VIRGIL_VILLAGER, 4, "说不好。每次路过都会顺手清理刌民营地");
         this.addDialogChoice(SMCEntities.VIRGIL_VILLAGER, 5, " 该做个了解了！一了百了！");
+
+        this.add(SMCEntities.P1NERO.get(), "总导演：P1nero");
+        this.addDialog(SMCEntities.P1NERO, 0, "Cut!完美！太完美了！至此，平底锅侠的传奇故事告一段落，您的表演实在是太出色了！请问总体来说您愿意给整合包打几分？不用担心，我们不会泄露您的信息！§l§6（评分收集截止至2025.8.31 00:00 UTC +8）");
+        this.addDialog(SMCEntities.P1NERO, 1, "您觉得本整合包的创意如何？");
+        this.addDialog(SMCEntities.P1NERO, 2, "您觉得本整合包难度和节奏把控如何？");
+        this.addDialog(SMCEntities.P1NERO, 3, "您觉得本整合包美术体验如何？");
+        this.addDialog(SMCEntities.P1NERO, 4, "您觉得本整合包魔改程度、模组联动做得如何？");
+        this.addDialog(SMCEntities.P1NERO, 5, "您觉得本整合包耐玩性如何？");
+        this.addDialog(SMCEntities.P1NERO, 6, "您觉得作者如何？");
+        this.addDialog(SMCEntities.P1NERO, 7, "您觉得您自己的表现如何？");
+        this.addDialog(SMCEntities.P1NERO, 8, "很好！现在，让我们进入下一片场吧，准备好了就前往附近的新村庄找初始NPC对话吧！《平底锅侠2：天下大同》即将开拍！");
+        this.addDialog(SMCEntities.P1NERO, -1, "大胆！竟然敢袭击导演！遭天谴了吧！");
+        this.addDialogChoice(SMCEntities.P1NERO, 0, "§e⭐⭐⭐⭐⭐");
+        this.addDialogChoice(SMCEntities.P1NERO, 1, "§e⭐⭐⭐⭐");
+        this.addDialogChoice(SMCEntities.P1NERO, 2, "§e⭐⭐⭐");
+        this.addDialogChoice(SMCEntities.P1NERO, 3, "§e⭐⭐");
+        this.addDialogChoice(SMCEntities.P1NERO, 4, "§e⭐");
+        this.addDialogChoice(SMCEntities.P1NERO, 5, "§l§e0！分！");
+        this.addDialogChoice(SMCEntities.P1NERO, 6, "我准备好了！");
+        this.addDialogChoice(SMCEntities.P1NERO, 7, "还有后续？！");
+        this.addDialogChoice(SMCEntities.P1NERO, 8, "稍等一下");
+        this.addDialogChoice(SMCEntities.P1NERO, -1, "导演我错了");
+        this.addDialogChoice(SMCEntities.P1NERO, -2, "切，该死的神权！");
+
+        this.add(SMCEntities.START_NPC_BBQ.get(), "美好生活小助手 - BBQ版");
+        this.addDialog(SMCEntities.START_NPC_BBQ, 0, "老大，今天要干些什么呢？");
+        this.addDialog(SMCEntities.START_NPC_BBQ, 1, "老大，为什么要说又呢");
+        this.addDialog(SMCEntities.START_NPC_BBQ, 2, "老大，烧烤店只能在夜里开哦");
+        this.addDialog(SMCEntities.START_NPC_BBQ, 3, "老大，导演说了《平底锅侠2》还没开拍，未完待续哦");
+        this.addDialog(SMCEntities.START_NPC_BBQ, 4, "老大，要订购什么烧烤原料大礼包呢？");
+        this.addDialogChoice(SMCEntities.START_NPC_BBQ, 0, "你怎么又升级了？");
+        this.addDialogChoice(SMCEntities.START_NPC_BBQ, 1, "上班/下班");
+        this.addDialogChoice(SMCEntities.START_NPC_BBQ, 2, "§a订购烧烤原料大礼包");
+        this.addDialogChoice(SMCEntities.START_NPC_BBQ, 3, "离开");
+        this.addDialogChoice(SMCEntities.START_NPC_BBQ, 4, "烧烤配菜大礼包");
+        this.addDialogChoice(SMCEntities.START_NPC_BBQ, 5, "烧烤调料大礼包");
+
+        this.add(SMCEntities.ZOMBIE_MAN.get(), "小僵");
+        this.addDialog(SMCEntities.ZOMBIE_MAN, 0, "哟！这不是大明星 %s 吗？");
+        this.addDialogChoice(SMCEntities.ZOMBIE_MAN, 0, "你是哪位？怎么也戴着墨镜！");
+        this.addDialogChoice(SMCEntities.ZOMBIE_MAN, 1, "夭寿啦！僵尸说话啦！");
+        this.addDialog(SMCEntities.ZOMBIE_MAN, 1, "不要惊慌，我是来扮演《平底锅侠2》的龙套小僵！在《平底锅侠2：天下大同》当中，由于玩家消灭终界领主带来了主界和平，玩家将在夜里开设烧烤店将食材卖给怪物客户，并且有概率生成动物客户！");
+        this.addDialogChoice(SMCEntities.ZOMBIE_MAN, 2, "这和平底锅有什么关系…");
+        this.addDialog(SMCEntities.ZOMBIE_MAN, 2, "这是后传嘛。值得注意的是，虽然夜里不再有袭击，但白天有概率生成来自下界的袭击！什么，你问我不是天下大同了怎么还有袭击？导演说下界是下界，设定还没用上呢。");
+        this.addDialogChoice(SMCEntities.ZOMBIE_MAN, 3, "你怎么这么清楚…");
+        this.addDialog(SMCEntities.ZOMBIE_MAN, 3, "这是导演刚刚告诉我的");
+        this.addDialogChoice(SMCEntities.ZOMBIE_MAN, 4, "那导演人呢？");
+        this.addDialog(SMCEntities.ZOMBIE_MAN, 4, "他刚刚跟我说，关于《平底锅侠2》的怪物餐厅，§6他有一个绝妙的想法§r，但是他的时间不多了，让我先待在这里和你画画饼，他先构思去了。");
+        this.addDialogChoice(SMCEntities.ZOMBIE_MAN, 5, "什么？！你的意思是导演跑路了！");
+        this.addDialogChoice(SMCEntities.ZOMBIE_MAN, 6, "那我接下来玩什么？");
+        this.addDialog(SMCEntities.ZOMBIE_MAN, 5, "他说，他给你留下了这台超级烧烤机，你可以试着对着§6烧烤架§r和§6配料盘§r的思索，把它重新组装起来，体验一下宣传视频里的机械动力烧烤~别忘了看看地下室哦！");
+        this.addDialogChoice(SMCEntities.ZOMBIE_MAN, 7, "P1nero！你这该死的家伙！");
+        this.addDialog(SMCEntities.ZOMBIE_MAN, 6, "没什么事的话，我先领盒饭去啦～");
+        this.addDialogChoice(SMCEntities.ZOMBIE_MAN, 8, "告辞");
+
 
         this.add(SMCEntities.CUSTOMER.get(), "§e人畜无害的村民顾客§r");
         this.add(SMCEntities.FAKE_CUSTOMER.get(), "§e一位路过的村民§r");

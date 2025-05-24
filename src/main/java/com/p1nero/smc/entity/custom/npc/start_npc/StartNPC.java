@@ -5,6 +5,7 @@ import com.p1nero.api.component.DialogueComponentBuilder;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.block.entity.MainCookBlockEntity;
+import com.p1nero.smc.block.entity.MainCookBlockEntity2;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.TreeNode;
@@ -14,6 +15,7 @@ import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.custom.npc.SMCNpc;
 import com.p1nero.smc.entity.custom.npc.customer.FakeCustomer;
+import com.p1nero.smc.entity.custom.npc.special.zombie_man.ZombieMan;
 import com.p1nero.smc.event.ServerEvents;
 import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.network.PacketRelay;
@@ -62,6 +64,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -287,7 +290,7 @@ public class StartNPC extends SMCNpc {
 
     @Nullable
     @Override
-    protected SoundEvent getAmbientSound() {
+    public SoundEvent getAmbientSound() {
         return null;
     }
 
@@ -427,11 +430,17 @@ public class StartNPC extends SMCNpc {
             root.addLeaf(dialogueComponentBuilder.opt(2), (byte) 3); //告辞
             builder.setAnswerRoot(root);
         } else {
+            TreeNode startRoot = new TreeNode(dialogueComponentBuilder.ans(0));
+            if (DataManager.bossKilled.get(localPlayer)) {
+                startRoot.addChild(new TreeNode(ans(14), opt(26))
+                        .addLeaf(opt(8), (byte) 29)
+                        .addLeaf(opt(2)));
+            }
+            startRoot.addLeaf(dialogueComponentBuilder.opt(0, 100), (byte) 1); //入职
+            startRoot.addLeaf(dialogueComponentBuilder.opt(1, getUpgradeNpcNeed()), (byte) 2); //雇佣
+            startRoot.addLeaf(dialogueComponentBuilder.opt(2), (byte) 3);
             //初始态
-            builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.ans(0))
-                    .addLeaf(dialogueComponentBuilder.opt(0, 100), (byte) 1) //入职
-                    .addLeaf(dialogueComponentBuilder.opt(1, getUpgradeNpcNeed()), (byte) 2) //雇佣
-                    .addLeaf(dialogueComponentBuilder.opt(2), (byte) 3)); //告辞
+            builder.setAnswerRoot(startRoot); //告辞
         }
 
         if (!builder.isEmpty()) {
@@ -608,7 +617,7 @@ public class StartNPC extends SMCNpc {
                     }
                 }
             } else if(this.getShopLevel() == 3) {
-                if(smcPlayer.getStage() < 2){
+                if(smcPlayer.getStage() < 2 && !player.isCreative()){
                     player.displayClientMessage(SkilletManCoreMod.getInfo("level_no_enough", SMCPlayer.STAGE2_REQUIRE + 1), true);
                     player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.VILLAGER_NO, player.getSoundSource(), 1.0F, 1.0F);
                     this.setConversingPlayer(null);
@@ -618,11 +627,7 @@ public class StartNPC extends SMCNpc {
                     if(tryPlaceShopPart(player, getShopLocation(4), -6, -12, -9)){
                         SMCPlayer.consumeMoney(need, player);
                         StartNPCPlus startNPCPlus = new StartNPCPlus(player.serverLevel(), this.getSpawnPos());
-                        startNPCPlus.setOwner(Objects.requireNonNull(this.getOwner()));
-                        startNPCPlus.setState(this.getState());
-                        startNPCPlus.setIncomeSpeed(this.getIncomeSpeed());
-                        startNPCPlus.setShopLevel(this.getShopLevel());
-                        startNPCPlus.setHomePos(this.getHomePos());
+                        startNPCPlus.copyFrom(this);
                         level().addFreshEntity(startNPCPlus);
                         DataManager.shouldShowMachineTicketHint.put(player, true);
                         DataManager.hintUpdated.put(player, true);
@@ -634,7 +639,52 @@ public class StartNPC extends SMCNpc {
             }
         }
 
+        if(interactionID == 29) {
+            summonBBQ(player, smcPlayer);
+        }
+
         this.setConversingPlayer(null);
+    }
+
+    public void summonBBQ(ServerPlayer player, SMCPlayer smcPlayer){
+        if(SMCPlayer.hasMoney(player, 200000, true)) {
+            BlockPos referencePos = this.getHomePos().above(1);
+            if(tryPlaceShopPart(player, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "village/bbq"), -6, -12, -9)){
+                SMCPlayer.consumeMoney(200000, player);
+                DataManager.findBBQHint.put(player, false);
+                DataManager.hintUpdated.put(player, true);
+                addShopToMap(player);
+                for(int x = -10; x <= 10; x++) {
+                    for(int z = -10; z <= 10; z++) {
+                        BlockPos mainPos = referencePos.offset(x, 0 ,z);
+                        if(level().getBlockEntity(mainPos) instanceof MainCookBlockEntity2){
+                            level().destroyBlock(mainPos, false);
+                            Vec3 pos2 = mainPos.getCenter().offsetRandom(this.getRandom(), 0.5F).add(0, 1, 0);
+                            ZombieMan zombieMan = new ZombieMan(player, pos2);
+                            level().addFreshEntity(zombieMan);
+                            Vec3 pos1 = mainPos.getCenter().offsetRandom(this.getRandom(), 0.5F).add(0, 1, 0);
+                            StartNPCBBQ startNPCBBQ = new StartNPCBBQ(player, pos1);
+                            startNPCBBQ.setState(GUIDER);
+                            startNPCBBQ.setShopLevel(5);
+                            startNPCBBQ.setOwner(player);
+                            startNPCBBQ.setHomePos(mainPos);
+                            startNPCBBQ.setSpawnPos(mainPos);
+                            level().addFreshEntity(startNPCBBQ);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void copyFrom(StartNPC old) {
+        this.setOwnerUUID(old.getOwnerUUID());
+        this.setState(old.getState());
+        this.setIncomeSpeed(old.getIncomeSpeed());
+        this.setShopLevel(old.getShopLevel());
+        this.setHomePos(old.getHomePos());
+        this.setSpawnPos(old.getSpawnPos());
     }
 
     public String getBiomeTypeNameByBlock() {
@@ -661,7 +711,7 @@ public class StartNPC extends SMCNpc {
         BlockPos mainCookBlockPos = this.getHomePos();
         BlockState stove = level().getBlockState(mainCookBlockPos.above());
         if (!stove.is(ModBlocks.STOVE.get())) {
-            serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("error_when_try_to_upgrade_shop"), false);
+            serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("error_when_try_to_upgrade_shop").append(" NO STOVE ABOVE! CAN NOT LOCATE THE DIR."), false);
             return false;
         }
         Direction direction = stove.getValue(BlockStateProperties.HORIZONTAL_FACING);
@@ -693,6 +743,7 @@ public class StartNPC extends SMCNpc {
             optional = structureManager.get(location);
         } catch (ResourceLocationException e) {
             serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("error_when_try_to_upgrade_shop"), false);
+            SkilletManCoreMod.LOGGER.error("SMC: Error when try to load structure.", e);
         }
 
         if (optional.isPresent()) {

@@ -4,6 +4,7 @@ import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.entity.SMCEntities;
+import com.p1nero.smc.entity.custom.npc.me.P1nero;
 import com.p1nero.smc.entity.custom.npc.special.virgil.VirgilVillager;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
@@ -56,7 +57,7 @@ public class LivingEntityListeners {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onEntityHurt(LivingHurtEvent event) {
-        if(event.getEntity() instanceof Villager villager && villager.getVillagerData().getProfession() != VillagerProfession.CLERIC && event.getSource().getEntity() instanceof ServerPlayer player) {
+        if(event.getEntity() instanceof Villager villager && !(villager instanceof P1nero) && villager.getVillagerData().getProfession() != VillagerProfession.CLERIC && event.getSource().getEntity() instanceof ServerPlayer player) {
             event.setAmount(0);
             event.setCanceled(true);
             player.displayClientMessage(SkilletManCoreMod.getInfo("customer_is_first").withStyle(ChatFormatting.RED), true);

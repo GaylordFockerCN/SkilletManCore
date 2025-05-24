@@ -24,6 +24,7 @@ public interface SMCRaidComponents {
     ResourceKey<IRaidComponent> TRIAL_2 = create("trial_2");
     ResourceKey<IRaidComponent> TRIAL_3 = create("trial_3");
     List<ResourceKey<IRaidComponent>> RAIDS = new ArrayList<>();
+    List<ResourceKey<IRaidComponent>> NETHER_RAIDS = new ArrayList<>();
 
     static void register(BootstapContext<IRaidComponent> context) {
         HolderGetter<IResultComponent> results = HTResultComponents.registry().helper().lookup(context);
@@ -50,6 +51,26 @@ public interface SMCRaidComponents {
                     Arrays.asList(waves.getOrThrow(SMCWaveComponents.RAID_WAVES_1.get(i)),
                             waves.getOrThrow(SMCWaveComponents.RAID_WAVES_2.get(i)),
                             waves.getOrThrow(SMCWaveComponents.RAID_WAVES_3.get(i)))));
+
+            NETHER_RAIDS.add(create("nether_raid_" + i));
+
+            context.register(NETHER_RAIDS.get(i), new CommonRaid(HTRaidComponents.builder()
+                    .title(SkilletManCoreMod.getInfo("nether_raid_title", String.valueOf(i)))
+                    .victoryTitle(SkilletManCoreMod.getInfo("raid_victory"))
+                    .lossTitle(SkilletManCoreMod.getInfo("raid_loss"))
+                    .range(72)
+                    .blockInside(false)
+                    .blockOutside(false)
+                    .renderBorder(false)
+                    .color(BossBarColor.RED)
+                    .raidSound(HTSounds.PREPARE.getHolder())
+                    .waveSound(HTSounds.HUGE_WAVE.getHolder())
+                    .victorySound(HTSounds.VICTORY.getHolder())
+                    .lossSound(HTSounds.LOSS.getHolder())
+                    .lossResult(results.getOrThrow(SMCResultComponents.DEFEND_FAILED))
+                    .victoryResult(results.getOrThrow(SMCResultComponents.DEFEND_SUCCESS))
+                    .build(),
+                    List.of(waves.getOrThrow(SMCWaveComponents.NETHER_RAID_WAVES_1.get(i)))));
         }
 
         context.register(TRIAL_1, new CommonRaid(HTRaidComponents.builder()

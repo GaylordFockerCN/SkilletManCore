@@ -4,7 +4,9 @@ import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.block.custom.ChairBlock;
 import com.p1nero.smc.block.custom.DiamondCuisineSkilletBlock;
 import com.p1nero.smc.block.custom.GoldenCuisineSkilletBlock;
+import com.p1nero.smc.block.custom.MainCookBlock2;
 import com.p1nero.smc.block.entity.ChairBlockEntity;
+import com.p1nero.smc.block.entity.MainCookBlockEntity2;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import dev.xkmc.cuisinedelight.content.block.CuisineSkilletBlock;
@@ -14,6 +16,8 @@ import dev.xkmc.cuisinedelight.init.data.CopySkilletFunction;
 import dev.xkmc.cuisinedelight.init.registrate.CDItems;
 import dev.xkmc.l2library.util.data.LootTableTemplate;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -22,6 +26,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.registries.RegistryObject;
 import vectorwing.farmersdelight.common.block.SkilletBlock;
 
 public class SMCRegistrateBlocks {
@@ -32,8 +37,9 @@ public class SMCRegistrateBlocks {
 
     public static final BlockEntityEntry<CuisineSkilletBlockEntity> DIAMOND_BE_SKILLET;
     public static final BlockEntry<ChairBlock> CHAIR;
-
     public static final BlockEntityEntry<ChairBlockEntity> CHAIR_ENTITY;
+    public static final BlockEntry<MainCookBlock2> MAIN_COOK_BLOCK2;
+    public static final BlockEntityEntry<MainCookBlockEntity2> MAIN_COOK_BLOCK_ENTITY2;
 
     static {
         GOLDEN_SKILLET = SkilletManCoreMod.REGISTRATE.block("golden_cuisine_skillet", p -> new GoldenCuisineSkilletBlock(
@@ -91,6 +97,16 @@ public class SMCRegistrateBlocks {
 
         CHAIR_ENTITY = SkilletManCoreMod.REGISTRATE.blockEntity("power_chair", ChairBlockEntity::new)
                 .validBlock(CHAIR).register();
+
+        MAIN_COOK_BLOCK2 = SkilletManCoreMod.REGISTRATE.block("main_cook_block2", p -> new MainCookBlock2(
+                        BlockBehaviour.Properties.copy(Blocks.STRUCTURE_BLOCK)))
+                .simpleItem()
+                .defaultBlockstate()
+                .defaultLoot()
+                .register();
+
+        MAIN_COOK_BLOCK_ENTITY2 = SkilletManCoreMod.REGISTRATE.blockEntity("main_cook_block_entity2", MainCookBlockEntity2::new)
+                .validBlock(MAIN_COOK_BLOCK2).register();
     }
 
     public static void register() {

@@ -196,7 +196,7 @@ public class Thief1 extends SMCNpc implements SpecialNpc {
 
     @Override
     public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
-        if(this.isSolved() || player!= this.getOwner()) {
+        if (this.isSolved() || (player != this.getOwner() && !player.isCreative())) {
             return InteractionResult.PASS;
         }
         if (!level().isClientSide) {

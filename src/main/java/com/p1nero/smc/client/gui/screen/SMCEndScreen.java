@@ -10,6 +10,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.logging.LogUtils;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.client.gui.screen.component.LogoRenderer;
+import com.p1nero.smc.client.sound.player.WinMusicPlayer;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import net.minecraft.ChatFormatting;
@@ -28,6 +29,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
+import org.stringtemplate.v4.ST;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -70,16 +72,17 @@ public class SMCEndScreen extends Screen {
     }
 
     private float calculateScrollSpeed() {
-        return this.speedupActive ? this.unmodifiedScrollSpeed * (5.0F + (float)this.speedupModifiers.size() * 15.0F) * (float)this.direction : this.unmodifiedScrollSpeed * (float)this.direction;
+        return this.speedupActive ? this.unmodifiedScrollSpeed * (5.0F + (float) this.speedupModifiers.size() * 15.0F) * (float) this.direction : this.unmodifiedScrollSpeed * (float) this.direction;
     }
 
     public void tick() {
-        if(this.minecraft == null){
+        if (this.minecraft == null) {
             return;
         }
         this.minecraft.getMusicManager().tick();
         this.minecraft.getSoundManager().tick(false);
-        float $$0 = (float)(this.totalScrollLength + this.height + this.height + 24);
+        WinMusicPlayer.playWinMusic();
+        float $$0 = (float) (this.totalScrollLength + this.height + this.height + 24);
         if (this.scroll > $$0) {
             this.respawn();
         }
@@ -130,24 +133,27 @@ public class SMCEndScreen extends Screen {
             this.centeredLines = new IntOpenHashSet();
             String currentLang = this.minecraft.getLanguageManager().getSelected();
             if (this.poem && this.minecraft != null) {
-                if(currentLang.equals("zh_cn")){
-                    this.wrapCreditsIO(SkilletManCoreMod.MOD_ID + ":texts/end_" + this.minecraft.getLanguageManager().getSelected() + ".txt", this::addPoemFile);
+                String endTextPath = SkilletManCoreMod.MOD_ID + ":texts/end_" + this.minecraft.getLanguageManager().getSelected() + ".txt";
+                if (this.minecraft.getResourceManager().getResource(ResourceLocation.parse(endTextPath)).isPresent()) {
+                    this.wrapCreditsIO(endTextPath, this::addPoemFile);
                 } else {
-                    this.wrapCreditsIO(SkilletManCoreMod.MOD_ID + ":texts/end_en_us.txt", this::addPoemFile);
+                    this.wrapCreditsIO(SkilletManCoreMod.MOD_ID + ":texts/end_zh_cn.txt", this::addPoemFile);
                 }
             }
 
-            if(currentLang.equals("zh_cn")){
-                this.wrapCreditsIO(SkilletManCoreMod.MOD_ID + ":texts/credits_zh_cn.json", this::addCreditsFile);
+            String creditsTextPath = SkilletManCoreMod.MOD_ID + ":texts/credits_" + currentLang + ".json";
+            if (this.minecraft.getResourceManager().getResource(ResourceLocation.parse(creditsTextPath)).isPresent()) {
+                this.wrapCreditsIO(SkilletManCoreMod.MOD_ID + ":texts/credits_" + currentLang + ".json", this::addCreditsFile);
             } else {
-                this.wrapCreditsIO(SkilletManCoreMod.MOD_ID + ":texts/credits_en_us.json", this::addCreditsFile);
+                this.wrapCreditsIO(SkilletManCoreMod.MOD_ID + ":texts/credits_zh_cn.json", this::addCreditsFile);
             }
 
             if (this.poem && this.minecraft != null) {
-                if(currentLang.equals("zh_cn")){
-                    this.wrapCreditsIO(SkilletManCoreMod.MOD_ID + ":texts/postcredits_" + this.minecraft.getLanguageManager().getSelected() + ".txt", this::addPoemFile);
+                String postTextPath = SkilletManCoreMod.MOD_ID + ":texts/postcredits_" + this.minecraft.getLanguageManager().getSelected() + ".txt";
+                if (this.minecraft.getResourceManager().getResource(ResourceLocation.parse(postTextPath)).isPresent()) {
+                    this.wrapCreditsIO(postTextPath, this::addPoemFile);
                 } else {
-                    this.wrapCreditsIO(SkilletManCoreMod.MOD_ID + ":texts/postcredits_en_us.txt", this::addPoemFile);
+                    this.wrapCreditsIO(SkilletManCoreMod.MOD_ID + ":texts/postcredits_zh_cn.txt", this::addPoemFile);
                 }
             }
 
@@ -158,7 +164,6 @@ public class SMCEndScreen extends Screen {
     private void wrapCreditsIO(String creditsLocation, CreditsReader p_reader) {
         try {
             Reader reader = this.minecraft.getResourceManager().openAsReader(ResourceLocation.parse(creditsLocation));
-
             try {
                 p_reader.read(reader);
             } catch (Throwable var7) {
@@ -175,7 +180,6 @@ public class SMCEndScreen extends Screen {
         } catch (Exception var8) {
             LOGGER.error("Couldn't load credits", var8);
         }
-
     }
 
     private void addPoemFile(Reader reader) throws IOException {
@@ -184,10 +188,10 @@ public class SMCEndScreen extends Screen {
 
         String $$3;
         int $$4;
-        while(($$3 = $$1.readLine()) != null) {
+        while (($$3 = $$1.readLine()) != null) {
             String $$5;
             String $$6;
-            for($$3 = $$3.replaceAll("PLAYERNAME", this.minecraft.getUser().getName()); ($$4 = $$3.indexOf(OBFUSCATE_TOKEN)) != -1; $$3 = $$5 + ChatFormatting.WHITE + ChatFormatting.OBFUSCATED + "XXXXXXXX".substring(0, $$2.nextInt(4) + 3) + $$6) {
+            for ($$3 = $$3.replaceAll("PLAYERNAME", this.minecraft.getUser().getName()); ($$4 = $$3.indexOf(OBFUSCATE_TOKEN)) != -1; $$3 = $$5 + ChatFormatting.WHITE + ChatFormatting.OBFUSCATED + "XXXXXXXX".substring(0, $$2.nextInt(4) + 3) + $$6) {
                 $$5 = $$3.substring(0, $$4);
                 $$6 = $$3.substring($$4 + OBFUSCATE_TOKEN.length());
             }
@@ -196,7 +200,7 @@ public class SMCEndScreen extends Screen {
             this.addEmptyLine();
         }
 
-        for($$4 = 0; $$4 < 8; ++$$4) {
+        for ($$4 = 0; $$4 < 8; ++$$4) {
             this.addEmptyLine();
         }
 
@@ -206,8 +210,8 @@ public class SMCEndScreen extends Screen {
         JsonArray $$1 = GsonHelper.parseArray(reader);
         Iterator var3 = $$1.iterator();
 
-        while(var3.hasNext()) {
-            JsonElement $$2 = (JsonElement)var3.next();
+        while (var3.hasNext()) {
+            JsonElement $$2 = (JsonElement) var3.next();
             JsonObject $$3 = $$2.getAsJsonObject();
             String $$4 = $$3.get("section").getAsString();
             this.addCreditsLine(SECTION_HEADING, true);
@@ -218,8 +222,8 @@ public class SMCEndScreen extends Screen {
             JsonArray $$5 = $$3.getAsJsonArray("disciplines");
             Iterator var8 = $$5.iterator();
 
-            while(var8.hasNext()) {
-                JsonElement $$6 = (JsonElement)var8.next();
+            while (var8.hasNext()) {
+                JsonElement $$6 = (JsonElement) var8.next();
                 JsonObject $$7 = $$6.getAsJsonObject();
                 String $$8 = $$7.get("discipline").getAsString();
                 if (StringUtils.isNotEmpty($$8)) {
@@ -270,7 +274,7 @@ public class SMCEndScreen extends Screen {
         float $$2 = this.scroll * 0.5F;
         float $$4 = this.scroll / this.unmodifiedScrollSpeed;
         float $$5 = $$4 * 0.02F;
-        float $$6 = (float)(this.totalScrollLength + this.height + this.height + 24) / this.unmodifiedScrollSpeed;
+        float $$6 = (float) (this.totalScrollLength + this.height + this.height + 24) / this.unmodifiedScrollSpeed;
         float $$7 = ($$6 - 20.0F - $$4) * 0.005F;
         if ($$7 < $$5) {
             $$5 = $$7;
@@ -298,15 +302,15 @@ public class SMCEndScreen extends Screen {
         this.logoRenderer.renderLogo(guiGraphics, this.width, 1.0F, $$5);
         int $$7 = $$5 + 100;
 
-        for(int $$8 = 0; $$8 < this.lines.size(); ++$$8) {
+        for (int $$8 = 0; $$8 < this.lines.size(); ++$$8) {
             if ($$8 == this.lines.size() - 1) {
-                float $$9 = (float)$$7 + $$6 - (float)(this.height / 2 - 6);
+                float $$9 = (float) $$7 + $$6 - (float) (this.height / 2 - 6);
                 if ($$9 < 0.0F) {
                     guiGraphics.pose().translate(0.0F, -$$9, 0.0F);
                 }
             }
 
-            if ((float)$$7 + $$6 + 12.0F + 8.0F > 0.0F && (float)$$7 + $$6 < (float)this.height) {
+            if ((float) $$7 + $$6 + 12.0F + 8.0F > 0.0F && (float) $$7 + $$6 < (float) this.height) {
                 FormattedCharSequence $$10 = this.lines.get($$8);
                 if (this.centeredLines.contains($$8)) {
                     guiGraphics.drawCenteredString(this.font, $$10, $$4 + 128, $$7, 16777215);
@@ -327,12 +331,8 @@ public class SMCEndScreen extends Screen {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
     }
 
-    public void removed() {
-        this.minecraft.getMusicManager().stopPlaying(Musics.CREDITS);
-    }
-
     public Music getBackgroundMusic() {
-        return Musics.CREDITS;
+        return null;
     }
 
     static {

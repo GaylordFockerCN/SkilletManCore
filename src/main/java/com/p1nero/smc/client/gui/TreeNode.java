@@ -1,5 +1,6 @@
 package com.p1nero.smc.client.gui;
 
+import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.client.gui.screen.DialogueScreen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
@@ -58,7 +59,11 @@ public class TreeNode {
     }
 
     public TreeNode addChild(TreeNode node) {
-        options.add(node);
+        if(options.contains(node)) {
+            SkilletManCoreMod.LOGGER.warn("SMC: Waring! Adding duplicated tree node! Skipped!");
+        } else {
+            options.add(node);
+        }
         return this;
     }
 
@@ -76,6 +81,15 @@ public class TreeNode {
         if(screenConsumer != null){
             screenConsumer.accept(screen);
         }
+    }
+
+    public TreeNode copy() {
+        TreeNode treeNode = new TreeNode(answer);
+        treeNode.option = this.option;
+        treeNode.options = this.options;
+        treeNode.screenConsumer = this.screenConsumer;
+        treeNode.executeValue = this.executeValue;
+        return treeNode;
     }
 
     public boolean canExecute(){

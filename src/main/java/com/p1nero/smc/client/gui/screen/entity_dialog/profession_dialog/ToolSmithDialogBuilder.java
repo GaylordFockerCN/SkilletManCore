@@ -153,6 +153,10 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
                 new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 16),
                 new ItemStack(Items.AMETHYST_SHARD, 64),
                 142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 2),
+                new ItemStack(Items.LAVA_BUCKET, 5),
+                142857, 0, 0));
         villager.setOffers(merchantOffers);
         villager.openTradingScreen(serverPlayer, getName(), 5);
     }
@@ -249,6 +253,10 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
                     new ItemStack(AllBlocks.DEPLOYER, 1),
                     142857, 0, 0));
+            merchantOffers.add(new MerchantOffer(
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
+                    new ItemStack(AllItems.PRECISION_MECHANISM, 1),
+                    142857, 0, 0));
         }
 
         if(smcPlayer.getLevel() > SMCPlayer.STAGE3_REQUIRE){
@@ -266,10 +274,6 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 10),
                     new ItemStack(AllItems.ELECTRON_TUBE, 1),
-                    142857, 0, 0));
-            merchantOffers.add(new MerchantOffer(
-                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
-                    new ItemStack(AllItems.PRECISION_MECHANISM, 1),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),

@@ -346,7 +346,9 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity {
         level().playSound(null, getX(), getY(), getZ(), SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.BLOCKS, 1, 1);
         if(level() instanceof ServerLevel serverLevel) {
             for(ServerPlayer serverPlayer : serverLevel.players()){
-                SMCCapabilityProvider.getSMCPlayer(serverPlayer).setTickAfterBossDieLeft(200);
+                SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+                smcPlayer.setTickAfterBossDieLeft(200);
+                smcPlayer.setTodayInRaid(true);
             }
         }
         super.die(source);

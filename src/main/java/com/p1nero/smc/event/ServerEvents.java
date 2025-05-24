@@ -16,9 +16,6 @@ import com.teamtea.eclipticseasons.api.constant.solar.SolarTerm;
 import com.teamtea.eclipticseasons.api.util.EclipticUtil;
 import com.teamtea.eclipticseasons.common.registry.BlockRegistry;
 import hungteen.htlib.common.world.entity.DummyEntityManager;
-import net.minecraft.CrashReport;
-import net.minecraft.CrashReportCategory;
-import net.minecraft.ReportedException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
@@ -28,15 +25,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BaseCommandBlock;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.WorldOptions;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import net.minecraft.world.level.material.MapColor;
@@ -47,7 +40,6 @@ import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -56,6 +48,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import vectorwing.farmersdelight.common.world.VillageStructures;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 控制服务端SaveUtil的读写
@@ -63,8 +57,9 @@ import java.util.*;
 @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID)
 public class ServerEvents {
 
-    public static List<MapColor> surfacematerials = Arrays.asList(MapColor.WATER, MapColor.ICE);
+    public static List<MapColor> surfaceMaterials = Arrays.asList(MapColor.WATER, MapColor.ICE);
 
+    private static final Pattern LOCATE_PATTERN = Pattern.compile(".*?\\[\\s*(-?\\d+)\\s*,\\s*~\\s*,\\s*(-?\\d+)\\s*\\].*");
     @SubscribeEvent
     public static void onServerTick(TickEvent.ServerTickEvent event) {
         if (event.phase.equals(TickEvent.Phase.START)) {
@@ -77,13 +72,27 @@ public class ServerEvents {
                 //夜晚生成袭击
                 if (overworld.isNight() && dayTick > 10000) {
                     //2天后每两天来一次袭击，10天后每天都将生成袭击
-                    if (dayTime > 2 && (dayTime % 2 == 1 || dayTime > 10)) {
+                    if (dayTime > 2 && (dayTime % 2 == 0 || dayTime > 10)) {
                         for (ServerPlayer serverPlayer : event.getServer().getPlayerList().getPlayers()) {
                             SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
                             if (!smcPlayer.isTodayInRaid()) {
-                                SMCRaidManager.startNightRaid(serverPlayer, smcPlayer);
+                                if (!DataManager.bossKilled.get(serverPlayer)) {
+                                    SMCRaidManager.startNightRaid(serverPlayer, smcPlayer);
+                                }
                                 DataManager.specialSolvedToday.put(serverPlayer, false);
                             }
+                        }
+                    }
+                }
+
+                if (overworld.isDay() && dayTick > 200) {
+                    for (ServerPlayer serverPlayer : event.getServer().getPlayerList().getPlayers()) {
+                        SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+                        if (!smcPlayer.isTodayInRaid()) {
+                            if (DataManager.bossKilled.get(serverPlayer)) {
+                                SMCRaidManager.startDayNetherRaid(serverPlayer, smcPlayer);
+                            }
+                            DataManager.specialSolvedToday.put(serverPlayer, false);
                         }
                     }
                 }
@@ -199,145 +208,57 @@ public class ServerEvents {
 
     @SubscribeEvent
     public static void onWorldLoad(LevelEvent.CreateSpawnPosition e) {
-        Level level = getWorldIfInstanceOfAndNotRemote(e.getLevel());
-        if (level == null) {
-            return;
-        }
-
-        ServerLevel serverLevel = (ServerLevel) level;
-        if (onWorldLoad(serverLevel)) {
-            e.setCanceled(true);
+        if (e.getLevel() instanceof ServerLevel serverLevel) {
+            if (spawnAtVillage(serverLevel)) {
+                e.setCanceled(true);
+            }
         }
     }
 
-    public static boolean onWorldLoad(ServerLevel serverLevel) {
-        if (ModList.get().isLoaded("biomespawnpoint")) {
+    public static boolean spawnAtVillage(ServerLevel serverLevel) {
+        if (!serverLevel.getServer().getWorldData().worldGenOptions().generateStructures()) {
             return false;
         }
-
-        WorldOptions worldGeneratorOptions = serverLevel.getServer().getWorldData().worldGenOptions();
-
-        if (!worldGeneratorOptions.generateStructures()) {
-            return false;
+        BlockPos spawnPos = getNearbyVillage(serverLevel, BlockPos.ZERO);
+        if(spawnPos != BlockPos.ZERO){
+            serverLevel.setDefaultSpawnPos(spawnPos, 1.0f);
+            return true;
         }
-
-        BlockPos spawnpos = getCenterNearbyVillage(serverLevel);
-        if (spawnpos == null) {
-            return false;
-        }
-
-        serverLevel.setDefaultSpawnPos(spawnpos, 1.0f);
-
-        return true;
-    }
-
-    public static Level getWorldIfInstanceOfAndNotRemote(LevelAccessor levelAccessor) {
-        if (levelAccessor.isClientSide()) {
-            return null;
-        }
-        if (levelAccessor instanceof Level) {
-            return ((Level) levelAccessor);
-        }
-        return null;
-    }
-
-    public static BlockPos getCenterNearbyVillage(ServerLevel serverLevel) {
-        return getNearbyVillage(serverLevel, new BlockPos(0, 0, 0));
+        return false;
     }
 
     public static BlockPos getNearbyVillage(ServerLevel serverLevel, BlockPos nearPos) {
-        BlockPos closestvillage = null;
-        if (!serverLevel.getServer().getWorldData().worldGenOptions().generateStructures()) {
-            return null;
-        }
-
-        String rawOutput = getRawCommandOutput(serverLevel, Vec3.atBottomCenterOf(nearPos), "/locate structure #minecraft:village");
-
-        if (rawOutput.contains("[") && rawOutput.contains("]") && rawOutput.contains(", ")) {
-            String[] coords;
+        String output = getCommandOutput(serverLevel, Vec3.atBottomCenterOf(nearPos), "/locate structure #minecraft:village");
+        Matcher matcher = LOCATE_PATTERN.matcher(output);
+        if(matcher.find()) {
             try {
-                if (rawOutput.contains(":")) {
-                    rawOutput = rawOutput.split(":", 2)[1];
-                }
-
-                String rawcoords = rawOutput.split("\\[")[1].split("]")[0];
-                coords = rawcoords.split(", ");
-            } catch (IndexOutOfBoundsException ex) {
-                return null;
-            }
-
-            if (coords.length == 3) {
-                String sx = coords[0];
-                String sz = coords[2];
-                if (isNumeric(sx) && isNumeric(sz)) {
-                    return getSurfaceBlockPos(serverLevel, Integer.parseInt(sx), Integer.parseInt(sz));
-                }
+                String xStr = matcher.group(1).trim();
+                String zStr = matcher.group(2).trim();
+                return getSurfaceBlockPos(serverLevel, Integer.parseInt(xStr), Integer.parseInt(zStr));
+            } catch (NumberFormatException ignored) {
             }
         }
-
-        return closestvillage;
-    }
-
-    public static boolean isNumeric(String string) {
-        if (string == null) {
-            return false;
-        }
-
-        return string.matches("-?\\d+(\\.\\d+)?");
+        return nearPos;
     }
 
     public static BlockPos getSurfaceBlockPos(ServerLevel serverLevel, int x, int z) {
         int height = serverLevel.getHeight();
-        int lowestY = serverLevel.getMinBuildHeight();
-
-        BlockPos returnPos = new BlockPos(x, height - 1, z);
-        if (!isNether(serverLevel)) {
-            BlockPos pos = new BlockPos(x, height, z);
-            for (int y = height; y > lowestY; y--) {
-                boolean continueCycle = false;
-
-                BlockState blockState = serverLevel.getBlockState(pos);
-
-                if (!continueCycle) {
-                    MapColor material = blockState.getMapColor(serverLevel, pos);
-                    if (blockState.getLightBlock(serverLevel, pos) >= 15 || surfacematerials.contains(material)) {
-                        returnPos = pos.above().immutable();
-                        break;
-                    }
-                }
-
-                pos = pos.below();
+        int minY = serverLevel.getMinBuildHeight();
+        BlockPos pos = new BlockPos(x, height, z);
+        for (int y = height; y > minY; y--) {
+            BlockState blockState = serverLevel.getBlockState(pos);
+            MapColor mapColor = blockState.getMapColor(serverLevel, pos);
+            if (blockState.getLightBlock(serverLevel, pos) >= 15 || surfaceMaterials.contains(mapColor)) {
+                return pos.above().immutable();
             }
-        } else {
-            int maxHeight = 128;
-            BlockPos pos = new BlockPos(x, lowestY, z);
-            for (int y = lowestY; y < maxHeight; y++) {
-                BlockState blockState = serverLevel.getBlockState(pos);
-                if (blockState.getBlock().equals(Blocks.AIR)) {
-                    BlockState upstate = serverLevel.getBlockState(pos.above());
-                    if (upstate.getBlock().equals(Blocks.AIR)) {
-                        returnPos = pos.immutable();
-                        break;
-                    }
-                }
-
-                pos = pos.above();
-            }
+            pos = pos.below();
         }
 
-        return returnPos;
+        return new BlockPos(x, height - 1, z);
     }
 
-    public static boolean isNether(Level level) {
-        return getWorldDimensionName(level).toLowerCase().endsWith("nether");
-    }
-
-    public static String getWorldDimensionName(Level level) {
-        return level.dimension().location().toString();
-    }
-
-    public static String getRawCommandOutput(ServerLevel serverLevel, @Nullable Vec3 vec, String command) {
-        BaseCommandBlock bcb = new BaseCommandBlock() {
+    public static String getCommandOutput(ServerLevel serverLevel, @Nullable Vec3 vec, String command) {
+        BaseCommandBlock baseCommandBlock = new BaseCommandBlock() {
             @Override
             public @NotNull ServerLevel getLevel() {
                 return serverLevel;
@@ -365,43 +286,28 @@ public class ServerEvents {
             @Override
             public boolean performCommand(Level pLevel) {
                 if (!pLevel.isClientSide) {
-                    if ("Searge".equalsIgnoreCase(this.getCommand())) {
-                        this.setLastOutput(Component.literal("#itzlipofutzli"));
-                        this.setSuccessCount(1);
-                    } else {
-                        this.setSuccessCount(0);
-                        MinecraftServer minecraftserver = this.getLevel().getServer();
-                        if (!StringUtil.isNullOrEmpty(this.getCommand())) {
-                            try {
-                                this.setLastOutput(null);
-                                CommandSourceStack commandsourcestack = this.createCommandSourceStack().withCallback((p_45417_, p_45418_, p_45419_) -> {
-                                    if (p_45418_) {
-                                        this.setSuccessCount(this.getSuccessCount() + 1);
-                                    }
-
-                                });
-                                minecraftserver.getCommands().performPrefixedCommand(commandsourcestack, this.getCommand());
-                            } catch (Throwable throwable) {
-                                CrashReport crashreport = CrashReport.forThrowable(throwable, "Executing command block");
-                                CrashReportCategory crashreportcategory = crashreport.addCategory("Command to be executed");
-                                crashreportcategory.setDetail("Command", this::getCommand);
-                                crashreportcategory.setDetail("Name", () -> this.getName().getString());
-                                throw new ReportedException(crashreport);
+                    this.setSuccessCount(0);
+                    MinecraftServer server = this.getLevel().getServer();
+                    try {
+                        this.setLastOutput(null);
+                        CommandSourceStack commandSourceStack = this.createCommandSourceStack().withCallback((context, success, i) -> {
+                            if (success) {
+                                this.setSuccessCount(this.getSuccessCount() + 1);
                             }
-                        }
+                        });
+                        server.getCommands().performPrefixedCommand(commandSourceStack, this.getCommand());
+                    } catch (Throwable ignored) {
                     }
-                    return true;
-                } else {
-                    return false;
                 }
+                return true;
             }
         };
 
-        bcb.setCommand(command);
-        bcb.setTrackOutput(true);
-        bcb.performCommand(serverLevel);
+        baseCommandBlock.setCommand(command);
+        baseCommandBlock.setTrackOutput(true);
+        baseCommandBlock.performCommand(serverLevel);
 
-        return bcb.getLastOutput().getString();
+        return baseCommandBlock.getLastOutput().getString();
     }
 
 }

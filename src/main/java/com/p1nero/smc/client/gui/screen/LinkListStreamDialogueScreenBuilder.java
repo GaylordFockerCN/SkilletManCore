@@ -61,6 +61,14 @@ public class LinkListStreamDialogueScreenBuilder {
         this.answerRoot = root;
     }
 
+    public void setYOffset(int yOffset) {
+        this.screen.setYOffset(yOffset);
+    }
+
+    public void setSilent(boolean silent) {
+        this.screen.setSilent(silent);
+    }
+
     /**
      * 重写这个是为了让你记得这才是Screen真正被调用的初始化的地方。建议在这里作些判断再调用start。
      */
@@ -228,6 +236,7 @@ public class LinkListStreamDialogueScreenBuilder {
                 screen.execute(node.getExecuteValue());
             }
             screen.setDialogueAnswer(node.getAnswer());
+            screen.playSound();
             List<DialogueChoiceComponent> choiceList = new ArrayList<>();
             List<TreeNode> options = node.getChildren();
             if (options == null) {

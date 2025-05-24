@@ -34,6 +34,7 @@ public interface SMCWaveComponents {
     List<ResourceKey<IWaveComponent>> RAID_WAVES_1 = new ArrayList<>();
     List<ResourceKey<IWaveComponent>> RAID_WAVES_2 = new ArrayList<>();
     List<ResourceKey<IWaveComponent>> RAID_WAVES_3 = new ArrayList<>();
+    List<ResourceKey<IWaveComponent>> NETHER_RAID_WAVES_1 = new ArrayList<>();
     static void register(BootstapContext<IWaveComponent> context) {
         HolderGetter<ISpawnComponent> spawns = HTSpawnComponents.registry().helper().lookup(context);
         HolderGetter<IPositionComponent> positions = HTPositionComponents.registry().helper().lookup(context);
@@ -77,9 +78,18 @@ public interface SMCWaveComponents {
             RAID_WAVES_1.add(create("raid_wave_" + i));
             RAID_WAVES_2.add(create("raid_wave2_" + i));
             RAID_WAVES_3.add(create("raid_wave3_" + i));
+            NETHER_RAID_WAVES_1.add(create("nether_raid_wave_" + i));
             ImmutableList.Builder<Pair<IntProvider, Holder<ISpawnComponent>>> wave1builder = ImmutableList.builder();
             ImmutableList.Builder<Pair<IntProvider, Holder<ISpawnComponent>>> wave2builder = ImmutableList.builder();
             ImmutableList.Builder<Pair<IntProvider, Holder<ISpawnComponent>>> wave3builder = ImmutableList.builder();
+            ImmutableList.Builder<Pair<IntProvider, Holder<ISpawnComponent>>> netherWave = ImmutableList.builder();
+
+            spawns.get(SMCSpawnComponents.PIGLIN.get(i)).ifPresent(reference -> {
+                netherWave.add(Pair.of(ConstantInt.of(10), reference));
+            });
+            spawns.get(SMCSpawnComponents.PIGLIN_BRUTE.get(i)).ifPresent(reference -> {
+                netherWave.add(Pair.of(ConstantInt.of(10), reference));
+            });
             spawns.get(SMCSpawnComponents.ZOMBIES.get(i)).ifPresent(reference -> {
                 wave1builder.add(Pair.of(ConstantInt.of(10), reference));
                 wave2builder.add(Pair.of(ConstantInt.of(10), reference));
@@ -150,6 +160,12 @@ public interface SMCWaveComponents {
                     .placement(raidPosition)
                     .build(),
                     wave3builder.build()));
+            context.register(NETHER_RAID_WAVES_1.get(i), new CommonWave(HTWaveComponents.builder()
+                    .prepare(100)
+                    .wave(12800)
+                    .placement(raidPosition)
+                    .build(),
+                    netherWave.build()));
         }
 
 

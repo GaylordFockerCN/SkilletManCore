@@ -1,6 +1,7 @@
 package com.p1nero.smc.entity.custom.npc;
 
 import com.mojang.serialization.Dynamic;
+import com.p1nero.api.component.DialogueComponentBuilder;
 import com.p1nero.smc.archive.SMCArchiveManager;
 import com.p1nero.smc.entity.ai.behavior.VillagerTasks;
 import com.p1nero.smc.entity.ai.goal.NpcDialogueGoal;
@@ -25,6 +26,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -52,7 +54,8 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
     private Player conversingPlayer;
     @Nullable
     private Player tradingPlayer;
-
+    protected DialogueComponentBuilder dBuilder;
+    protected static final EntityDataAccessor<Integer> IS_TALKING = SynchedEntityData.defineId(SMCNpc.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<BlockPos> HOME_POS = SynchedEntityData.defineId(SMCNpc.class, EntityDataSerializers.BLOCK_POS);
     protected static final EntityDataAccessor<BlockPos> SPAWN_POS = SynchedEntityData.defineId(SMCNpc.class, EntityDataSerializers.BLOCK_POS);
     protected static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(SMCNpc.class, EntityDataSerializers.OPTIONAL_UUID);//服务的玩家
@@ -60,6 +63,7 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
         super(entityType, level);
         setHomePos(getOnPos());
         ((GroundPathNavigation)this.getNavigation()).setCanOpenDoors(true);
+        dBuilder = new DialogueComponentBuilder(this);
     }
 
     public void setSpawnPos(BlockPos pos) {
@@ -70,9 +74,22 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
         return getEntityData().get(SPAWN_POS);
     }
 
+    public boolean isInTalkingAnim() {
+        return this.entityData.get(IS_TALKING) > 0;
+    }
+
+    public void setTalkingAnimTimer(int talking) {
+        this.entityData.set(IS_TALKING, talking);
+    }
+
+    public int getTalkingTimer() {
+        return entityData.get(IS_TALKING);
+    }
+
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
+        getEntityData().define(IS_TALKING, 0);
         getEntityData().define(HOME_POS, getOnPos());
         getEntityData().define(SPAWN_POS, getOnPos());
         this.entityData.define(OWNER_UUID, Optional.empty());
@@ -176,6 +193,9 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
     @Override
     public void tick() {
         super.tick();
+        if(isInTalkingAnim()) {
+            this.setTalkingAnimTimer(this.getTalkingTimer() - 1);
+        }
         if(tickCount % 20 == 0){
             this.onSecond();
         }
@@ -243,12 +263,21 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
 
     @Override
     public void setConversingPlayer(@Nullable Player conversingPlayer) {
+        setTalkingAnimTimer(conversingPlayer != null ? 30 : 0);
         this.conversingPlayer = conversingPlayer;
     }
 
     @Override
     public @Nullable Player getConversingPlayer() {
         return conversingPlayer;
+    }
+
+    public Component ans(int i, Object... objects) {
+        return dBuilder.ans(i, objects);
+    }
+
+    public Component opt(int i, Object... objects) {
+        return dBuilder.opt(i, objects);
     }
 
     /**

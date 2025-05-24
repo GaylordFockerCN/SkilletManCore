@@ -83,7 +83,7 @@ public class Thief2 extends SMCNpc implements SpecialNpc {
     }
 
     @Override
-    public boolean isTalked(){
+    public boolean isTalked() {
         return this.isSolved() || this.getEntityData().get(TALKED);
     }
 
@@ -183,10 +183,10 @@ public class Thief2 extends SMCNpc implements SpecialNpc {
 
     @Override
     public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
-        if(this.isSolved() || player!= this.getOwner()) {
+        if (this.isSolved() || (player != this.getOwner() && !player.isCreative())) {
             return InteractionResult.PASS;
         }
-        if(!level().isClientSide){
+        if (!level().isClientSide) {
             this.setTalked(true);
         }
         return super.mobInteract(player, hand);
@@ -217,10 +217,10 @@ public class Thief2 extends SMCNpc implements SpecialNpc {
             this.playSound(SoundEvents.VILLAGER_AMBIENT, this.getSoundVolume(), this.getVoicePitch());
             return;
         }
-        if(interactionID == 1) {
+        if (interactionID == 1) {
             SMCPlayer.addMoney(800, player);
             this.setSolved(true);
-            if(this.thief1 == null || !this.thief1.isAlive() || this.thief1.isSolved()) {
+            if (this.thief1 == null || !this.thief1.isAlive() || this.thief1.isSolved()) {
                 SMCAdvancementData.finishAdvancement("thief", player);
                 DataManager.inSpecial.put(player, false);
                 DataManager.specialEvent3Solved.put(player, true);

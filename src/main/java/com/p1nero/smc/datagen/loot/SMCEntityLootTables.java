@@ -30,6 +30,9 @@ public class SMCEntityLootTables extends EntityLootSubProvider {
         add(SMCEntities.VILLAGER_NO_BRAIN.get(), emptyLootTable());
         add(SMCEntities.START_NPC.get(), emptyLootTable());
         add(SMCEntities.START_NPC_PLUS.get(), emptyLootTable());
+        add(SMCEntities.P1NERO.get(), emptyLootTable());
+        add(SMCEntities.START_NPC_BBQ.get(), emptyLootTable());
+        add(SMCEntities.ZOMBIE_MAN.get(), emptyLootTable());
         add(SMCEntities.CUSTOMER.get(), emptyLootTable());
         add(SMCEntities.FAKE_CUSTOMER.get(), emptyLootTable());
         add(SMCEntities.HE_SHEN.get(), emptyLootTable());

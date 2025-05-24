@@ -2,7 +2,9 @@ package com.p1nero.smc.entity;
 
 import com.merlin204.supergolem.gameassets.SuperGolemArmature;
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.capability.epicfight.NPCPatch;
 import com.p1nero.smc.entity.custom.CustomColorItemEntity;
+import com.p1nero.smc.entity.custom.npc.me.P1nero;
 import com.p1nero.smc.entity.custom.npc.special.HeShen;
 import com.p1nero.smc.entity.custom.npc.VillagerWithoutBrain;
 import com.p1nero.smc.entity.custom.npc.customer.FakeCustomer;
@@ -11,6 +13,8 @@ import com.p1nero.smc.entity.custom.npc.special.Thief2;
 import com.p1nero.smc.entity.custom.npc.special.TwoKid;
 import com.p1nero.smc.entity.custom.npc.special.virgil.VirgilVillager;
 import com.p1nero.smc.entity.custom.npc.special.virgil.VirgilVillagerPatch;
+import com.p1nero.smc.entity.custom.npc.special.zombie_man.ZombieMan;
+import com.p1nero.smc.entity.custom.npc.start_npc.StartNPCBBQ;
 import com.p1nero.smc.entity.custom.npc.start_npc.StartNPCPlus;
 import com.p1nero.smc.entity.custom.super_golem.SuperBadIronGolem;
 import com.p1nero.smc.entity.custom.boss.goldenflame.GoldenFlamePatch;
@@ -39,6 +43,7 @@ import yesman.epicfight.api.client.forgeevent.PatchedRenderersEvent;
 import yesman.epicfight.api.forgeevent.EntityPatchRegistryEvent;
 import yesman.epicfight.api.forgeevent.ModelBuildEvent;
 import yesman.epicfight.gameasset.Armatures;
+import yesman.epicfight.world.capabilities.entitypatch.HumanoidMobPatch;
 
 
 @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -48,9 +53,15 @@ public class SMCEntities {
     public static final RegistryObject<EntityType<VillagerWithoutBrain>> VILLAGER_NO_BRAIN = register("villager_no_brain",
             EntityType.Builder.of(VillagerWithoutBrain::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
     public static final RegistryObject<EntityType<StartNPC>> START_NPC = register("start_npc",
-            EntityType.Builder.<StartNPC>of(StartNPC::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());;
+            EntityType.Builder.<StartNPC>of(StartNPC::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
+    public static final RegistryObject<EntityType<P1nero>> P1NERO = register("p1nero",
+            EntityType.Builder.<P1nero>of(P1nero::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
     public static final RegistryObject<EntityType<StartNPCPlus>> START_NPC_PLUS = register("start_npc_plus",
             EntityType.Builder.<StartNPCPlus>of(StartNPCPlus::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
+    public static final RegistryObject<EntityType<StartNPCBBQ>> START_NPC_BBQ = register("start_npc_bbq",
+            EntityType.Builder.<StartNPCBBQ>of(StartNPCBBQ::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
+    public static final RegistryObject<EntityType<ZombieMan>> ZOMBIE_MAN = register("zombie_man",
+            EntityType.Builder.<ZombieMan>of(ZombieMan::new, MobCategory.CREATURE).sized(0.6f, 1.9f).fireImmune());
 
     public static final RegistryObject<EntityType<Customer>> CUSTOMER = register("customer",
             EntityType.Builder.<Customer>of(Customer::new, MobCategory.CREATURE).sized(0.6f, 1.9f).noSave().fireImmune());
@@ -94,6 +105,8 @@ public class SMCEntities {
         event.getTypeEntry().put(SUPER_GOLEM.get(), (entity) -> SuperBadIronGolemPatch::new);
         event.getTypeEntry().put(SUPER_GOOD_GOLEM.get(), (entity) -> SuperBadIronGolemPatch::new);
         event.getTypeEntry().put(VIRGIL_VILLAGER.get(), (entity) -> VirgilVillagerPatch::new);
+        event.getTypeEntry().put(P1NERO.get(), (entity) -> NPCPatch::new);
+        event.getTypeEntry().put(ZOMBIE_MAN.get(), (entity) -> NPCPatch::new);
     }
 
     /**
@@ -107,6 +120,8 @@ public class SMCEntities {
         Armatures.registerEntityTypeArmature(SUPER_GOLEM.get(), superGolemArmature);
         Armatures.registerEntityTypeArmature(SUPER_GOOD_GOLEM.get(), superGolemArmature);
         Armatures.registerEntityTypeArmature(VIRGIL_VILLAGER.get(), Armatures.BIPED);
+        Armatures.registerEntityTypeArmature(P1NERO.get(), Armatures.BIPED);
+        Armatures.registerEntityTypeArmature(ZOMBIE_MAN.get(), Armatures.BIPED);
     }
 
     @SubscribeEvent
@@ -120,6 +135,8 @@ public class SMCEntities {
         event.put(VILLAGER_NO_BRAIN.get(), StartNPC.setAttributes());
         event.put(START_NPC.get(), StartNPC.setAttributes());
         event.put(START_NPC_PLUS.get(), StartNPC.setAttributes());
+        event.put(START_NPC_BBQ.get(), StartNPC.setAttributes());
+        event.put(ZOMBIE_MAN.get(), StartNPC.setAttributes());
         event.put(CUSTOMER.get(), StartNPC.setAttributes());
         event.put(FAKE_CUSTOMER.get(), StartNPC.setAttributes());
         event.put(HE_SHEN.get(), StartNPC.setAttributes());
@@ -127,6 +144,7 @@ public class SMCEntities {
         event.put(THIEF1.get(), Thief1.setAttributes());
         event.put(THIEF2.get(), Thief1.setAttributes());
         event.put(VIRGIL_VILLAGER.get(), VirgilVillager.createAttributes().build());
+        event.put(P1NERO.get(), StartNPC.setAttributes());
     }
 
     @SubscribeEvent
@@ -136,6 +154,10 @@ public class SMCEntities {
         event.register(START_NPC.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
         event.register(START_NPC_PLUS.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(START_NPC_BBQ.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(ZOMBIE_MAN.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
         event.register(CUSTOMER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 StartNPC::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);

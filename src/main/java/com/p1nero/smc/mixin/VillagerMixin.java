@@ -22,6 +22,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import yesman.epicfight.gameasset.EpicFightSounds;
 
 /**
  * 禁用村民交易，改为根据职业对话
@@ -58,7 +59,7 @@ public abstract class VillagerMixin extends AbstractVillager {
     @Inject(method = "getAmbientSound", at = @At("HEAD"), cancellable = true)
     private void smc$getAmbientSound(CallbackInfoReturnable<SoundEvent> cir) {
         if (this.getRandom().nextInt(6) != 1) {
-            cir.setReturnValue(null);
+            cir.setReturnValue(EpicFightSounds.NO_SOUND.get());
         }
     }
 

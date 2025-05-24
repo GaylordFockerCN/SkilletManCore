@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public class GoldenFlameRenderer extends HumanoidMobRenderer<GoldenFlame, HumanoidModel<GoldenFlame>> {
+    private final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/entity/golden_flame.png");
     public GoldenFlameRenderer(EntityRendererProvider.Context context) {
         super(context, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER)), 0.5f);
         this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), context.getModelManager()));
@@ -27,6 +28,6 @@ public class GoldenFlameRenderer extends HumanoidMobRenderer<GoldenFlame, Humano
 
     @Override
     public @NotNull ResourceLocation getTextureLocation(@NotNull GoldenFlame entity) {
-        return ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "textures/entity/golden_flame.png");
+        return TEXTURE;
     }
 }

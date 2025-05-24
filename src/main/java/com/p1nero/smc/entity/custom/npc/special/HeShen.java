@@ -182,7 +182,7 @@ public class HeShen extends SMCNpc implements SpecialNpc {
 
     @Override
     public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
-        if(this.isSolved() || player!= this.getOwner()) {
+        if(this.isSolved() || (player != this.getOwner() && !player.isCreative())) {
             return InteractionResult.PASS;
         }
         if(!level().isClientSide){
@@ -200,7 +200,6 @@ public class HeShen extends SMCNpc implements SpecialNpc {
         DialogueComponentBuilder dialogueComponentBuilder = new DialogueComponentBuilder(this);
 
         builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.ans(0))
-                        .addExecutable((byte) 4)
                 .addChild(new TreeNode(dialogueComponentBuilder.ans(1), dialogueComponentBuilder.opt(0))//普通
                         .addExecutable((byte) 1)
                         .addLeaf(dialogueComponentBuilder.opt(-1)))

@@ -1,7 +1,6 @@
 package com.p1nero.smc.client.gui.screen.entity_dialog.profession_dialog;
 
 import com.p1nero.smc.SkilletManCoreMod;
-import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.TreeNode;
@@ -21,8 +20,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.util.Objects;
-
 /**
  * 主线!
  */
@@ -40,8 +37,8 @@ public class ClericDialogBuilder extends VillagerDialogScreenHandler.VillagerDia
         }
 
         if(interactionID == 2) {
-            if(smcPlayer.getStage() <= 1) {
-                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("game_time_no_enough"), true);
+            if(smcPlayer.getLevel() < 15) {
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("game_time_no_enough", 15), true);
             } else {
                 ServerLevel end = serverPlayer.serverLevel().getServer().getLevel(Level.END);
                 if(end != null){
@@ -102,7 +99,7 @@ public class ClericDialogBuilder extends VillagerDialogScreenHandler.VillagerDia
 
         generator.addVillagerOpt(this.profession, 6, "进行突破试炼");
         generator.addVillagerOpt(this.profession, 7, "再等等");
-        generator.addVillagerAns(this.profession, 4, "你确定要直接挑战最终boss吗？我可以将你传送至终界，但无法将你送回来…");
+        generator.addVillagerAns(this.profession, 4, "你确定要直接挑战最终boss吗？我可以将你传送至终界，但无法将你送回来…不过，§6击败最终boss后，世界将获得永恒的安宁，不再有袭击出现！");
         generator.addVillagerAns(this.profession, 5, "确定要进行突破试炼吗？");
         generator.addVillagerOpt(this.profession, 8, "确定");
 

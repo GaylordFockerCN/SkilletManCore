@@ -5,7 +5,6 @@ import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.p1nero.smc.SMCConfig;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import com.p1nero.smc.archive.SMCArchiveManager;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
@@ -59,10 +58,10 @@ public class SMCSetConfigCommand {
                         )
                         .then(Commands.literal("task_tip_y")
                                 .then(Commands.argument("value", DoubleArgumentType.doubleArg(0, 1))
-                                        .executes((context) -> setData(SMCConfig.INFO_Y, DoubleArgumentType.getDouble(context, "value"), context))
+                                        .executes((context) -> setData(SMCConfig.INFO_Y_R, DoubleArgumentType.getDouble(context, "value"), context))
                                 )
                                 .then(Commands.literal("reset")
-                                        .executes((context) -> resetData(SMCConfig.INFO_Y, context))
+                                        .executes((context) -> resetData(SMCConfig.INFO_Y_R, context))
                                 )
                         )
                         .then(Commands.literal("task_tip_size")

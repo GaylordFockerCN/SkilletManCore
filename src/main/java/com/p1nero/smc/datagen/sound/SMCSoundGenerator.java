@@ -19,5 +19,7 @@ public class SMCSoundGenerator extends SMCSoundProvider {
         generateNewSoundWithSubtitle(SMCSounds.DRUMBEAT_3, "drumbeat3", 1);
         generateNewSoundWithSubtitle(SMCSounds.WORKING_BGM, "bgm/working_bgm", 2);
         generateNewSoundWithSubtitle(SMCSounds.RAID_BGM, "bgm/raid_bgm", 1);
+        generateNewSoundWithSubtitle(SMCSounds.WIN_BGM, "bgm/win_bgm", 1);
+        generateNewSoundWithSubtitle(SMCSounds.TALKING, "talking", 2);
     }
 }

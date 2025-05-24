@@ -152,7 +152,7 @@
         ]
       },
       {
-        "discipline": "美术",
+        "discipline": "美术设计",
         "titles": [
           {
             "title": "",
@@ -174,12 +174,12 @@
         ]
       },
       {
-        "discipline": "1~3级店铺建筑",
+        "discipline": "各级店铺建筑 & 风车",
         "titles": [
           {
             "title": "",
             "names": [
-              "P1nero（改自BetterVillage的平原ButcherShop1）"
+              "P1nero"
             ]
           }
         ]
@@ -202,7 +202,14 @@
           {
             "title": "蓝图",
             "names": [
-              "JackNeksa"
+              "JackNeksa",
+              "RSGed"
+            ]
+          },
+          {
+            "title": "机械动力教程",
+            "names": [
+              "A"
             ]
           }
         ]
@@ -230,7 +237,9 @@
             "title": "",
             "names": [
               "紫斗",
-              "佩拉瑞斯"
+              "佩拉瑞斯",
+              "雪落无痕",
+              "RSGed"
             ]
           }
         ]
@@ -246,7 +255,8 @@
           {
             "title": "广告招租",
             "names": [
-              "广告招租"
+              "广告招租",
+              "有意者联系 P1nero"
             ]
           }
         ]
@@ -260,46 +270,21 @@
         "discipline": "",
         "titles": [
           {
-            "title": "整合包所用到的其他模组",
+            "title": "",
             "names": [
               "Minecraft",
               "Minecraft Forge",
-              "Epic Fight",
-              "Weapons of Miracles",
-              "Epic Fight - Impactful",
-              "Epic Fight - Super Golem",
-              "Fantasy Armor",
-              "Hung Teen's Lib",
-              "Farmer's Delight",
-              "Cuisine Delight",
-              "Create",
-              "Create: Connected",
-              "JEI",
-              "Xaero's Map",
-              "Waystone",
-              "YUNG's Better End Island",
-              "Kaleidoscope Doll",
-              "Epic Terrain",
-              "Leawind Third Person",
-              "TrashSlot",
-              "Sophisticated Backpacks",
-              "Spice of Life: Carrot Edition",
-              "Oculus",
-              "Embeddium",
-              "Fancy Menu",
-              "Biomes O' Plenty",
-              "Ecliptic Seasons",
-              "Lithostitched"
+              "以及整合包中所有的模组"
             ]
           },
           {
-            "title": "对话系统所借鉴的项目",
+            "title": "对话系统所借鉴的开源项目（Licensed under GNU Lesser General Public License v3.0）",
             "names": [
               "The Aether"
             ]
           },
           {
-            "title": "部分素材来源网站",
+            "title": "部分素材来源网站 侵删",
             "names": [
               "pixabay",
               "爱给网"

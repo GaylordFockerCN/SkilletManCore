@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * LZY:添加了实现打字机效果
+ * P1nero:添加了实现打字机效果
  * A widget to handle an NPC's key and their response inside the dialogue screen.
- * @author LZY
+ * @author P1nero
  * @author The Aether
  */
 public class DialogueAnswerComponent {
@@ -61,7 +61,7 @@ public class DialogueAnswerComponent {
      * @param width The {@link Integer} for the parent screen width.
      * @param height The {@link Integer} for the parent screen height.
      */
-    public void reposition(int width, int height) {
+    public void reposition(int width, int height, int yOffset) {
 
         //不用Foreach是为了打字机效果能够跳过boss名
 //        int i = 0;
@@ -82,7 +82,7 @@ public class DialogueAnswerComponent {
             } else {
                 dialogue.x = width / 2 - dialogue.width / 2;
             }
-            dialogue.y = height / 2 + j * 12;
+            dialogue.y = height / 2 + j * 12 + yOffset;
             j++;
         }
         this.height = this.splitLines.size() * 12;
@@ -121,8 +121,6 @@ public class DialogueAnswerComponent {
 
     /**
      * 添加打字机效果，一次更新一个字
-     * 不知道为什么Component提供根据下标截取String的方法，太感人了
-     * @return 字是否全显示完了
      */
     public void updateTypewriterDialogue() {
         Style style = message.getStyle();

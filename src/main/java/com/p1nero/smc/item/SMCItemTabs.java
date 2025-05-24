@@ -2,6 +2,7 @@ package com.p1nero.smc.item;
 
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.block.SMCBlocks;
+import com.p1nero.smc.registrate.SMCRegistrateBlocks;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import dev.xkmc.cuisinedelight.init.registrate.CDItems;
 import net.minecraft.core.registries.Registries;
@@ -24,6 +25,7 @@ public class SMCItemTabs {
                 return new ItemStack(SMCRegistrateItems.DIAMOND_SPATULA_V5.get());
             }).withTabsBefore(CDItems.TAB.getKey()).displayItems((params, output) -> {
                 output.accept(SMCBlocks.MAIN_COOK_BLOCK.get());
+                output.accept(SMCRegistrateBlocks.MAIN_COOK_BLOCK2.get().asItem().getDefaultInstance());
                 output.accept(SMCRegistrateItems.END_TELEPORTER.get());
                 output.accept(SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get());
                 output.accept(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get());

@@ -237,7 +237,7 @@ public class VirgilVillager extends Vindicator implements NpcDialogue {
             return InteractionResult.PASS;
         }
         this.playSound(SoundEvents.VILLAGER_AMBIENT);
-        if (player instanceof ServerPlayer serverPlayer) {
+        if (player instanceof ServerPlayer serverPlayer && (player == this.getOwner() || player.isCreative())) {
             if (this.getConversingPlayer() == null) {
                 PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCDialoguePacket(this.getId(), new CompoundTag()), serverPlayer);
                 this.setConversingPlayer(serverPlayer);
@@ -272,7 +272,7 @@ public class VirgilVillager extends Vindicator implements NpcDialogue {
     }
 
     @Override
-    protected SoundEvent getAmbientSound() {
+    public SoundEvent getAmbientSound() {
         return SoundEvents.VILLAGER_AMBIENT;
     }
 
@@ -285,6 +285,9 @@ public class VirgilVillager extends Vindicator implements NpcDialogue {
     @OnlyIn(Dist.CLIENT)
     public void openDialogueScreen(CompoundTag senderData) {
         LinkListStreamDialogueScreenBuilder builder = new LinkListStreamDialogueScreenBuilder(this);
+        if(getAmbientSound() != null) {
+            level().playLocalSound(getX(), getY(), getZ(), getAmbientSound(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+        }
         builder.start(0)
                 .addChoice(0, 1)
                 .addChoice(1, 2)
@@ -303,7 +306,6 @@ public class VirgilVillager extends Vindicator implements NpcDialogue {
 
     @Override
     public void handleNpcInteraction(ServerPlayer player, byte interactionID) {
-        this.playSound(SoundEvents.VILLAGER_AMBIENT);
         if(interactionID == 5) {
             this.setFighting(true);
         }

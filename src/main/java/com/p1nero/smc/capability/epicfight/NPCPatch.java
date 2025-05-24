@@ -3,6 +3,8 @@ package com.p1nero.smc.capability.epicfight;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.p1nero.smc.entity.custom.npc.SMCNpc;
+import com.p1nero.smc.gameasset.SMCAnimations;
+import com.p1nero.smc.gameasset.SMCLivingMotions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import reascer.wom.gameasset.WOMAnimations;
@@ -55,10 +57,7 @@ public class NPCPatch extends HumanoidMobPatch<SMCNpc> {
     @Override
     public void initAnimator(Animator animator) {
         super.commonAggresiveMobAnimatorInit(animator);
-//        animator.addLivingAnimation(LivingMotions.IDLE, idle.get());
-//        if(talking != null){
-//            animator.addLivingAnimation(DOTELivingMotions.TALKING, talking.get());
-//        }
+        animator.addLivingAnimation(SMCLivingMotions.TALKING, SMCAnimations.TALKING);
     }
 
     public void playIdleToTalking(){
@@ -76,10 +75,10 @@ public class NPCPatch extends HumanoidMobPatch<SMCNpc> {
     @Override
     public void updateMotion(boolean b) {
         super.commonAggressiveMobUpdateMotion(b);
-//        if(getOriginal().getConversingPlayer() != null && talking != null){
-//            this.currentLivingMotion = DOTELivingMotions.TALKING;
-//        } else {
-//            this.currentLivingMotion = LivingMotions.IDLE;
-//        }
+        if(this.getOriginal().isInTalkingAnim()){
+            this.currentLivingMotion = SMCLivingMotions.TALKING;
+        } else {
+            this.currentLivingMotion = LivingMotions.IDLE;
+        }
     }
 }

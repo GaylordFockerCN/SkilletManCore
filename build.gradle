@@ -86,6 +86,11 @@ repositories {
         url = "https://maven.blamejared.com/"
     }
 
+    maven {
+        name "create maven"
+        url "https://maven.createmod.net"
+    }
+
     maven { // Registrate
         url "https://maven.tterrag.com/"
     }
@@ -171,9 +176,13 @@ dependencies {
     implementation fg.deobf("curse.maven:spice-of-life-carrot-edition-277616:4888575")
 
     //机械动力
-    implementation fg.deobf("curse.maven:create-328085:6323270")
+    implementation fg.deobf("com.simibubi.create:create-${create_minecraft_version}:${create_version}-${create_version_build}:slim") { transitive = false }
+    implementation fg.deobf("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}") { transitive = false }
+    implementation fg.deobf("dev.engine-room.flywheel:flywheel-forge-${flywheel_minecraft_version}:${flywheel_version}")
+
     implementation fg.deobf("curse.maven:create-connected-947914:6401676")
     implementation fg.deobf("libs:create_cuisine:1.0.0")
+    implementation fg.deobf("libs:create_arm_made_bbq:1.0.0")
 
     implementation fg.deobf("curse.maven:hungteens-lib-794622:5782587")
 

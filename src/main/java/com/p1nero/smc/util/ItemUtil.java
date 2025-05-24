@@ -48,7 +48,7 @@ public class ItemUtil {
                 applyItems.add(itemList.get(serverPlayer.getRandom().nextInt(itemList.size())));
             }
             for (ItemStack itemStack : applyItems) {
-                ItemUtil.addItemEntity(serverPlayer, itemStack);
+                ItemUtil.addItemEntity(serverPlayer, itemStack.copy());//复制一份以防万一
             }
             return true;
         }

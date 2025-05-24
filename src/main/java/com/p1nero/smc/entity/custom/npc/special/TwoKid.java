@@ -94,7 +94,7 @@ public class TwoKid extends SMCNpc implements SpecialNpc {
     }
 
     @Override
-    public boolean isTalked(){
+    public boolean isTalked() {
         return this.isSolved() || this.getEntityData().get(TALKED);
     }
 
@@ -149,16 +149,16 @@ public class TwoKid extends SMCNpc implements SpecialNpc {
     @Override
     public void tick() {
         super.tick();
-        if(level().isClientSide){
+        if (level().isClientSide) {
             return;
         }
-        if(lookTarget == null) {
-            if(!this.isSolved()){
+        if (lookTarget == null) {
+            if (!this.isSolved()) {
                 lookTarget = getNearestTwoKid();
-                if(lookTarget != null){
-                    ((TwoKid)lookTarget).lookTarget = this;
+                if (lookTarget != null) {
+                    ((TwoKid) lookTarget).lookTarget = this;
                     this.getLookControl().setLookAt(lookTarget);
-                    ((TwoKid)lookTarget).getLookControl().setLookAt(this);
+                    ((TwoKid) lookTarget).getLookControl().setLookAt(this);
                 }
             }
         } else {
@@ -168,19 +168,20 @@ public class TwoKid extends SMCNpc implements SpecialNpc {
             this.getNavigation().moveTo(this.getNavigation().createPath(this.isSolved() ? this.getSpawnPos() : this.getHomePos(), 3), 1.0F);
         }
 
-        if(soundTimer > 0 && tickCount % 5 == 0){
+        if (soundTimer > 0 && tickCount % 5 == 0) {
             soundTimer--;
             this.playSound(SoundEvents.VILLAGER_AMBIENT, this.getSoundVolume(), this.getVoicePitch());
         }
 
     }
 
-    public TwoKid getNearestTwoKid(){
-        for(TwoKid twoKid : EntityUtil.getNearByEntities(TwoKid.class, this, 10)){
+    public TwoKid getNearestTwoKid() {
+        for (TwoKid twoKid : EntityUtil.getNearByEntities(TwoKid.class, this, 10)) {
             return twoKid;
         }
         return null;
     }
+
     @Override
     public void onSecond() {
         super.onSecond();
@@ -219,12 +220,12 @@ public class TwoKid extends SMCNpc implements SpecialNpc {
 
     @Override
     public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
-        if(this.isSolved() || player!= this.getOwner()) {
+        if (this.isSolved() || (player != this.getOwner() && !player.isCreative())) {
             return InteractionResult.PASS;
         }
         if (player instanceof ServerPlayer serverPlayer) {
             this.setTalked(true);
-            if(this.lookTarget instanceof TwoKid twoKid) {
+            if (this.lookTarget instanceof TwoKid twoKid) {
                 twoKid.setTalked(true);
             }
 
@@ -245,7 +246,7 @@ public class TwoKid extends SMCNpc implements SpecialNpc {
 
         DialogueComponentBuilder dBuilder = new DialogueComponentBuilder(this);
         LocalPlayer localPlayer = Minecraft.getInstance().player;
-        if(localPlayer == null){
+        if (localPlayer == null) {
             return;
         }
         builder.setAnswerRoot(new TreeNode(dBuilder.ans(0, localPlayer.getGameProfile().getName()))
@@ -288,25 +289,25 @@ public class TwoKid extends SMCNpc implements SpecialNpc {
 
     @Override
     public void handleNpcInteraction(ServerPlayer player, byte interactionID) {
-        if(interactionID == 0) {
+        if (interactionID == 0) {
             this.setConversingPlayer(null);
             this.setLookTarget(null);
             return;
         }
-        if(interactionID == 1) {
-            if(this.lookTarget instanceof TwoKid twoKid) {
+        if (interactionID == 1) {
+            if (this.lookTarget instanceof TwoKid twoKid) {
                 twoKid.setLookTarget(player);
             }
             this.setLookTarget(player);
             this.soundTimer = 10;
             return;
         }
-        if(interactionID == 2){
+        if (interactionID == 2) {
             this.soundTimer = 10;
             return;
         }
         TwoKid anotherTwoKid = this.getNearestTwoKid();
-        if(anotherTwoKid != null) {
+        if (anotherTwoKid != null) {
             anotherTwoKid.setSolved(true);
             anotherTwoKid.setConversingPlayer(null);
         }

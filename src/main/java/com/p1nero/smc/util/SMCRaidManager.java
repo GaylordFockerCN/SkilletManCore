@@ -69,6 +69,26 @@ public class SMCRaidManager {
         }
     }
 
+    public static void startDayNetherRaid(ServerPlayer serverPlayer, SMCPlayer smcPlayer) {
+        if(Level.isInSpawnableBounds(serverPlayer.blockPosition())) {
+            //保险
+            if(DummyEntityManager.getDummyEntities(serverPlayer.serverLevel()).size() > serverPlayer.serverLevel().players().size()){
+                return;
+            }
+
+            int day = (int) (serverPlayer.serverLevel().getDayTime() / 24000);
+            if(day > 30) {
+                day = 30;
+            }
+            DummyEntity dummyEntity = createRaid(serverPlayer.serverLevel(), ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "nether_raid_" + day), serverPlayer.position());
+            if(dummyEntity != null) {
+                smcPlayer.setTodayInRaid(true);
+                DataManager.inRaid.put(serverPlayer, true);
+//                RAID_MAP.put(dummyEntity.getEntityID(), serverPlayer.getUUID());
+            }
+        }
+    }
+
     /**
      * 白天的随机袭击
      */
