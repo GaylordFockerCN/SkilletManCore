@@ -1,5 +1,6 @@
 package com.p1nero.smc.capability;
 
+import com.jesz.createdieselgenerators.CDGBlocks;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.client.sound.SMCSounds;
@@ -18,7 +19,7 @@ import com.p1nero.smc.util.ItemUtil;
 import com.p1nero.smc.util.gacha.ArmorGachaSystem;
 import com.p1nero.smc.util.gacha.SkillBookGachaSystem;
 import com.p1nero.smc.util.gacha.WeaponGachaSystem;
-import com.p1nero.smc.worldgen.portal.SMCTeleporter;
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.teamtea.eclipticseasons.api.constant.solar.SolarTerm;
 import com.teamtea.eclipticseasons.api.util.EclipticUtil;
@@ -29,7 +30,6 @@ import hungteen.htlib.common.world.entity.DummyEntityManager;
 import net.kenddie.fantasyarmor.item.FAItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.player.RemotePlayer;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -44,7 +44,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.p3pp3rf1y.sophisticatedbackpacks.init.ModItems;
 import org.jetbrains.annotations.Nullable;
@@ -99,8 +98,8 @@ public class SMCPlayer {
     private int armorPity4Star;
     private int armorPity5Star;
 
-    public void setArmorGachaingCount(int armorGachaingCount) {
-        this.armorGachaingCount = armorGachaingCount;
+    public void addArmorGachaingCount(int armorGachaingCount) {
+        this.armorGachaingCount += armorGachaingCount;
     }
 
     public int getArmorPity4Star() {
@@ -139,8 +138,8 @@ public class SMCPlayer {
     private int skillBookGachaingCount;
     private int skillBookPity;
 
-    public void setSkillBookGachaingCount(int skillBookGachaingCount) {
-        this.skillBookGachaingCount = skillBookGachaingCount;
+    public void addSkillBookGachaingCount(int skillBookGachaingCount) {
+        this.skillBookGachaingCount += skillBookGachaingCount;
     }
 
     public int getSkillBookPity() {
@@ -164,8 +163,8 @@ public class SMCPlayer {
     private int weaponPity4Star;
     private int weaponPity5Star;
 
-    public void setWeaponGachaingCount(int weaponGachaingCount) {
-        this.weaponGachaingCount = weaponGachaingCount;
+    public void addWeaponGachaingCount(int weaponGachaingCount) {
+        this.weaponGachaingCount += weaponGachaingCount;
     }
 
     public int getWeaponPity4Star() {
@@ -234,7 +233,6 @@ public class SMCPlayer {
         STAGE1_FOOD_LIST.addAll(MEAT_AND_MIX);//增加概率
 
         STAGE2_FOOD_LIST.addAll(STAGE1_FOOD_LIST);
-        STAGE2_FOOD_LIST.addAll(SEAFOOD_LIST);
         STAGE2_FOOD_LIST.addAll(SEAFOOD_LIST);
         STAGE2_FOOD_LIST.addAll(SEAFOOD_LIST);//增加概率
 
@@ -418,10 +416,10 @@ public class SMCPlayer {
         SMCAdvancementData.finishAdvancement("start_fight", serverPlayer);
         if (dayTime >= 30) {
             SMCAdvancementData.finishAdvancement("raid30d", serverPlayer);
-        } else if (dayTime >= 20) {
-            SMCAdvancementData.finishAdvancement("raid20d", serverPlayer);
-        } else if (dayTime >= 10) {
-            SMCAdvancementData.finishAdvancement("raid10d", serverPlayer);
+        } else if (dayTime >= 15) {
+            SMCAdvancementData.finishAdvancement("raid15d", serverPlayer);
+        } else if (dayTime >= 5) {
+            SMCAdvancementData.finishAdvancement("raid5d", serverPlayer);
         }
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("raid_success_for_day", dayTime), false);
         addMoney(1600 * (1 + dayTime), serverPlayer);
@@ -455,6 +453,7 @@ public class SMCPlayer {
         ItemUtil.addItem(serverPlayer, SMCItems.NO_BRAIN_VILLAGER_SPAWN_EGG.get(), 5, true);
         ItemUtil.addItem(serverPlayer, ModItems.FEEDING_UPGRADE.get().getDefaultInstance(), true);
         ItemUtil.addItem(serverPlayer, Content.terminal.get().asItem().getDefaultInstance(), true);
+        ItemUtil.addItem(serverPlayer, Content.connector.get().asItem().getDefaultInstance(), true);
         ItemUtil.addItem(serverPlayer, Content.advWirelessTerminal.get().asItem().getDefaultInstance(), true);
         DataManager.showFirstPlaceWirelessTerminal.put(serverPlayer, true);
         DataManager.hintUpdated.put(serverPlayer, true);
@@ -469,11 +468,12 @@ public class SMCPlayer {
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("unlock_game_stage", STAGE3_REQUIRE), false);
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("unlock_stage2_info"), false);
 
-        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.asStack(1), true);
         ItemUtil.addItem(serverPlayer, ModItems.ADVANCED_FEEDING_UPGRADE.get().getDefaultInstance(), true);
-        ItemUtil.addItem(serverPlayer, AllItems.GOGGLES.asStack(), true);
+        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.asStack(1), true);
+        ItemUtil.addItem(serverPlayer, SMCRegistrateItems.CREATE_FUEL_GUIDE_BOOK.asStack(1), true);
+        ItemUtil.addItem(serverPlayer, AllBlocks.BASIN.asStack(), true);
+        ItemUtil.addItem(serverPlayer, CDGBlocks.BASIN_LID.asStack(), true);
         ItemUtil.addItem(serverPlayer, SMCRegistrateItems.CREATE_RAFFLE.asStack(5), true);
-        ItemUtil.addItem(serverPlayer, Items.SMITHING_TABLE.getDefaultInstance(), true);
         SMCAdvancementData.finishAdvancement("level10_1", serverPlayer);
         SMCAdvancementData.finishAdvancement("level10_2", serverPlayer);
     }

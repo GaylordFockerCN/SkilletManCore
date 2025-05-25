@@ -24,18 +24,13 @@ import com.p1nero.smc.util.SMCRaidManager;
 import dev.xkmc.cuisinedelight.content.item.CuisineSkilletItem;
 import hungteen.htlib.common.world.entity.DummyEntityManager;
 import net.minecraft.ChatFormatting;
-import net.minecraft.ResourceLocationException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
-import net.minecraft.util.StringUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -43,15 +38,9 @@ import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -72,11 +61,12 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
     @Nullable
     private StartNPC startNPC;
     private boolean isWorking;
+    private int shopLevel;
     public static final int WORKING_RADIUS = 8;
     private final List<Customer> customers = new ArrayList<>();
     public static final List<VillagerProfession> PROFESSION_LIST = ForgeRegistries.VILLAGER_PROFESSIONS.getValues().stream().toList();
     public boolean firstCustomerSummoned = false;//摆锅马上就有客户
-    public static final int SEARCH_DIS = 4;
+    public static final int SEARCH_DIS = 5;
 
     public MainCookBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(SMCBlockEntities.MAIN_COOK_BLOCK_ENTITY.get(), blockPos, blockState);
@@ -88,6 +78,14 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
 
     public boolean isWorking() {
         return isWorking;
+    }
+
+    public void setShopLevel(int shopLevel) {
+        this.shopLevel = shopLevel;
+    }
+
+    public int getShopLevel() {
+        return shopLevel;
     }
 
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState state, T t) {
@@ -110,6 +108,9 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
                     mainCookBlockEntity.startNPC = startNPC1;
                     startNPC1.setHomePos(pos);
                     startNPC1.setVillagerData(startNPC1.getVillagerData().setType(VillagerType.byBiome(startNPC1.level().getBiome(pos))));
+                    if(mainCookBlockEntity.shopLevel > startNPC1.getShopLevel()) {
+                        startNPC1.setShopLevel(mainCookBlockEntity.shopLevel);
+                    }
                     level.addFreshEntity(startNPC1);
                 }
             }
@@ -144,13 +145,14 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
     protected void saveAdditional(@NotNull CompoundTag compoundTag) {
         super.saveAdditional(compoundTag);
         compoundTag.putBoolean("isWorking", isWorking);
+        compoundTag.putInt("shopLevel", shopLevel);
     }
 
     @Override
     public void load(@NotNull CompoundTag compoundTag) {
         super.load(compoundTag);
         isWorking = compoundTag.getBoolean("isWorking");
-
+        shopLevel = compoundTag.getInt("shopLevel");
     }
 
     public void updateWorkingState(ServerPlayer serverPlayer) {

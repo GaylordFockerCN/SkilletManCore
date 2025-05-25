@@ -84,7 +84,7 @@ public class VillagerWithoutBrain extends Villager {
 
     @Override
     public boolean hurt(@NotNull DamageSource source, float value) {
-        if(source.isCreativePlayer() || this.getVillagerData().getProfession() == VillagerProfession.CLERIC) {
+        if(source.isCreativePlayer() || (this.getVillagerData().getProfession() == VillagerProfession.CLERIC && source.getEntity() instanceof Player)) {
             return super.hurt(source, value);
         }
         return false;

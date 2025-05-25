@@ -53,7 +53,7 @@ public class ClientModEvents {
         EntityRenderers.register(SMCEntities.BLACK_HOLE.get(), BlackHoleRenderer::new);
         EntityRenderers.register(SMCEntities.FLAME_CIRCLE.get(), FlameCircleRenderer::new);
 
-        EntityRenderers.register(SMCEntities.SUPER_GOLEM.get(), SuperGolemRenderer::new);
+        EntityRenderers.register(SMCEntities.SUPER_BAD_GOLEM.get(), SuperGolemRenderer::new);
         EntityRenderers.register(SMCEntities.SUPER_GOOD_GOLEM.get(), SuperGolemRenderer::new);
 
         //NPC
@@ -107,7 +107,7 @@ public class ClientModEvents {
     public static void onRenderPatched(PatchedRenderersEvent.Add event) {
         EntityRendererProvider.Context context = event.getContext();
         event.addPatchedEntityRenderer(SMCEntities.GOLDEN_FLAME.get(), (entityType) -> new GoldenFlamePatchedRenderer(() -> Meshes.SKELETON, context, entityType).initLayerLast(context, entityType));
-        event.addPatchedEntityRenderer(SMCEntities.SUPER_GOLEM.get(), (entityType) -> new SGPatchedRenderer(context, entityType).initLayerLast(context, entityType));
+        event.addPatchedEntityRenderer(SMCEntities.SUPER_BAD_GOLEM.get(), (entityType) -> new SGPatchedRenderer(context, entityType).initLayerLast(context, entityType));
         event.addPatchedEntityRenderer(SMCEntities.SUPER_GOOD_GOLEM.get(), (entityType) -> new SGPatchedRenderer(context, entityType).initLayerLast(context, entityType));
         event.addPatchedEntityRenderer(SMCEntities.VIRGIL_VILLAGER.get(), (entityType) -> new PVindicatorRenderer(context, entityType).initLayerLast(context, entityType));
         event.addPatchedEntityRenderer(SMCEntities.P1NERO.get(), (entityType) -> new PHumanoidRenderer<>(() -> Meshes.ALEX, context, entityType).initLayerLast(context, entityType));

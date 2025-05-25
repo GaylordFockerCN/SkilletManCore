@@ -226,6 +226,7 @@ public class LinkListStreamDialogueScreenBuilder {
 
         //否则继续递归创建按钮
         return button -> {
+            screen.setYOffset(0);
             if (node.canExecute()) {
                 node.execute(screen);
             }

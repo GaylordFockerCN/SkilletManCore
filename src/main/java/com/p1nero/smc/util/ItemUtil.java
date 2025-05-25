@@ -98,10 +98,10 @@ public class ItemUtil {
             player.displayClientMessage(SkilletManCoreMod.getInfo("add_item_tip", itemStack.getDisplayName(), itemStack.getCount()), false);
             player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_PICKUP, player.getSoundSource(), 1.0F, 1.0F);
         }
-//        if(!player.addItem(itemStack)){
-//            addItemEntity(player, itemStack);
-//        }
-        player.getInventory().placeItemBackInInventory(itemStack);
+        if(!player.addItem(itemStack)){
+            addItemEntity(player, itemStack);
+        }
+//        player.getInventory().placeItemBackInInventory(itemStack);
     }
 
     /**

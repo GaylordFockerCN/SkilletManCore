@@ -230,7 +230,7 @@ public class Thief1 extends SMCNpc implements SpecialNpc {
             return;
         }
         if (interactionID == 1) {
-            SMCPlayer.addMoney(800, player);
+            SMCPlayer.addMoney(3200, player);
             this.setSolved(true);
             if (this.thief2 == null || !this.thief2.isAlive() || this.thief2.isSolved()) {
                 SMCAdvancementData.finishAdvancement("thief", player);

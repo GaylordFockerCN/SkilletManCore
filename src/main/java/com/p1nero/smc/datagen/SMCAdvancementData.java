@@ -1,5 +1,8 @@
 package com.p1nero.smc.datagen;
 
+import com.jesz.createdieselgenerators.CDGBlocks;
+import com.jesz.createdieselgenerators.CDGFluids;
+import com.jesz.createdieselgenerators.CDGItems;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
@@ -96,9 +99,9 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement parryMaster2 = registerAdvancement(parryMaster, "parry_master2", FrameType.GOAL, SMCRegistrateItems.PARRY_ICON, true, true, false);//招架10次， 100次， 1000次
             Advancement dodgeMaster3 = registerAdvancement(dodgeMaster2, "dodge_master3", FrameType.GOAL, SMCRegistrateItems.DODGE_ICON, true, true, false);//闪避10次， 100次， 1000次
             Advancement parryMaster3 = registerAdvancement(parryMaster2, "parry_master3", FrameType.GOAL, SMCRegistrateItems.PARRY_ICON, true, true, false);//招架10次， 100次， 1000次
-            Advancement raid10d = registerAdvancement(startFight, "raid10d", FrameType.GOAL, Items.GOLDEN_SWORD, true, true, false);//抵御袭击天数
-            Advancement raid20d = registerAdvancement(raid10d, "raid20d", FrameType.GOAL, Items.DIAMOND_SWORD, true, true, false);//抵御袭击天数
-            Advancement raid30d = registerAdvancement(raid20d, "raid30d", FrameType.GOAL, Items.NETHERITE_SWORD, true, true, false);//抵御袭击天数
+            Advancement raid5d = registerAdvancement(startFight, "raid5d", FrameType.GOAL, Items.GOLDEN_SWORD, true, true, false);//抵御袭击天数
+            Advancement raid15d = registerAdvancement(raid5d, "raid15d", FrameType.GOAL, Items.DIAMOND_SWORD, true, true, false);//抵御袭击天数
+            Advancement raid30d = registerAdvancement(raid15d, "raid30d", FrameType.GOAL, Items.NETHERITE_SWORD, true, true, false);//抵御袭击天数
 
             Advancement startChangeVillager = registerAdvancement(root, "change_villager", FrameType.TASK, Items.WHEAT, true, true, false);
             Advancement talkToCleric = registerAdvancement(startChangeVillager, "talk_to_cleric", FrameType.TASK, Items.ENDER_EYE, true, true, false);
@@ -282,7 +285,7 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement level10_3 = registerAdvancement(level5, "level5_3", FrameType.GOAL, Content.terminal.get(), true, true, false);
             Advancement level10 = registerAdvancement(level5_2, "level10", FrameType.GOAL, SMCRegistrateItems.GOLDEN_SPATULA_V5, true, true, false);
             Advancement level10_1 = registerAdvancement(level10, "level10_1", FrameType.GOAL, net.p3pp3rf1y.sophisticatedbackpacks.init.ModItems.ADVANCED_FEEDING_UPGRADE.get(), true, true, false);
-            Advancement level10_2 = registerAdvancement(level10, "level10_2", FrameType.GOAL, AllItems.GOGGLES, true, true, false);
+            Advancement level10_2 = registerAdvancement(level10, "level10_2", FrameType.GOAL, AllBlocks.BASIN, true, true, false);
             Advancement level15 = registerAdvancement(level10_2, "level15", FrameType.GOAL, SMCRegistrateItems.GOLDEN_SKILLET_V5, true, true,  false);
             Advancement level20 = registerAdvancement(level15, "level20", FrameType.GOAL, AllItems.POTATO_CANNON, true, true, false);
             Advancement level20_1 = registerAdvancement(level20, "level20_1", FrameType.GOAL, FAItems.DRAGONSLAYER_HELMET.get(), true, true, false);//突破奖励
@@ -298,10 +301,12 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
                             FrameType.GOAL, false, false, false)
                     .addCriterion(SkilletManCoreMod.MOD_ID, new ImpossibleTrigger.TriggerInstance())
                     .save(consumer, ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, SkilletManCoreMod.MOD_ID + "_create"), existingFileHelper);
-            Advancement add_power = registerAdvancement(createRoot, "add_power", FrameType.GOAL, AllBlocks.COGWHEEL, true, true, false);
-            Advancement arm1 = registerAdvancement(add_power, "arm1", FrameType.GOAL, AllBlocks.MECHANICAL_ARM, true, true, false);
-            Advancement arm2 = registerAdvancement(add_power, "arm2", FrameType.GOAL, AllBlocks.MECHANICAL_ARM, true, true, false);
-            Advancement arm3 = registerAdvancement(add_power, "arm3", FrameType.GOAL, AllBlocks.MECHANICAL_ARM, true, true, false);
+            Advancement add_power = registerAdvancement(createRoot, "add_power", FrameType.GOAL, CDGBlocks.HUGE_DIESEL_ENGINE, true, true, false, InventoryChangeTrigger.TriggerInstance.hasItems(CDGBlocks.HUGE_DIESEL_ENGINE));
+            Advancement super_ferment = registerAdvancement(add_power, "super_ferment", FrameType.GOAL, CDGBlocks.BULK_FERMENTER, true, true, false, InventoryChangeTrigger.TriggerInstance.hasItems(CDGBlocks.BULK_FERMENTER));
+            Advancement add_power2 = registerAdvancement(add_power, "add_power2", FrameType.GOAL, CDGFluids.BIODIESEL.get().getBucket(), true, true, false, InventoryChangeTrigger.TriggerInstance.hasItems(CDGFluids.BIODIESEL.get().getBucket()));
+            Advancement arm1 = registerAdvancement(add_power2, "arm1", FrameType.GOAL, AllBlocks.MECHANICAL_ARM, true, true, false);
+            Advancement arm2 = registerAdvancement(add_power2, "arm2", FrameType.GOAL, AllBlocks.MECHANICAL_ARM, true, true, false);
+            Advancement arm3 = registerAdvancement(add_power2, "arm3", FrameType.GOAL, AllBlocks.MECHANICAL_ARM, true, true, false);
             Advancement belt = registerAdvancement(arm1, "belt", FrameType.GOAL, AllBlocks.BELT, true, true, false);
             Advancement stock_ticker = registerAdvancement(arm1, "stock_ticker", FrameType.GOAL, AllBlocks.STOCK_TICKER, true, true,  false, InventoryChangeTrigger.TriggerInstance.hasItems(AllBlocks.STOCK_TICKER));
             Advancement pulse_repeater = registerAdvancement(arm3, "pulse_repeater", FrameType.GOAL, AllBlocks.PULSE_REPEATER, true, true, false, InventoryChangeTrigger.TriggerInstance.hasItems(AllBlocks.PULSE_REPEATER));

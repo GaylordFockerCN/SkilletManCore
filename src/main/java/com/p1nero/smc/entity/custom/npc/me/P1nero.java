@@ -71,7 +71,7 @@ public class P1nero extends SMCNpc {
     public boolean hurt(@NotNull DamageSource source, float value) {
         if(source.getEntity() instanceof ServerPlayer serverPlayer) {
             //彩蛋对话
-            if (this.getConversingPlayer() == null){
+            if (this.getConversingPlayer() == null || this.getConversingPlayer() == serverPlayer){
                 CompoundTag compoundTag = new CompoundTag();
                 compoundTag.putBoolean("from_hurt", true);
                 PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCDialoguePacket(this.getId(), compoundTag), serverPlayer);

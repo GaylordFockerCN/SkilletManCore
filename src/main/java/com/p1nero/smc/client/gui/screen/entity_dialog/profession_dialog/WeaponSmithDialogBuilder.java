@@ -37,17 +37,17 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
     public void handle(ServerPlayer serverPlayer, Villager villager, byte interactionID) {
         super.handle(serverPlayer, villager, interactionID);
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
-        int moneyBase = (int) (160 * smcPlayer.getLevelMoneyRate());
+        int moneyBase =  160 * (int)smcPlayer.getLevelMoneyRate();
         if (interactionID == 1) {
             int ticketCount = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asItem(), 1);
             if (ticketCount == 0) {
                 if (SMCPlayer.hasMoney(serverPlayer, moneyBase, true)) {
-                    SMCPlayer.consumeMoney(160, serverPlayer);
-                    smcPlayer.setWeaponGachaingCount(1);
+                    SMCPlayer.consumeMoney(moneyBase, serverPlayer);
+                    smcPlayer.addWeaponGachaingCount(1);
                 }
             } else {
                 serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
-                smcPlayer.setWeaponGachaingCount(1);
+                smcPlayer.addWeaponGachaingCount(1);
             }
         }
         if (interactionID == 2) {
@@ -56,11 +56,11 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
                 int need = 10 - ticketCount;
                 if (SMCPlayer.hasMoney(serverPlayer, moneyBase * need, true)) {
                     SMCPlayer.consumeMoney(moneyBase * need, serverPlayer);
-                    smcPlayer.setWeaponGachaingCount(10);
+                    smcPlayer.addWeaponGachaingCount(10);
                 }
             } else {
                 serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
-                smcPlayer.setWeaponGachaingCount(10);
+                smcPlayer.addWeaponGachaingCount(10);
             }
         }
 
@@ -156,7 +156,7 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
             TreeNode pull = new TreeNode(answer(1), choice(0));
 
             SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(localPlayer);
-            int moneyBase = (int) (160 * smcPlayer.getLevelMoneyRate());
+            int moneyBase = 160 * (int) smcPlayer.getLevelMoneyRate();
             if (ticketCount < 1) {
                 pull.addChild(new TreeNode(answer(2, moneyBase), choice(2))
                                 .addLeaf(choice(4), (byte) 1)

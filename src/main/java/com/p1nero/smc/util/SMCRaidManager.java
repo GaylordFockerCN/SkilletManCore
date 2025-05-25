@@ -56,7 +56,7 @@ public class SMCRaidManager {
                 return;
             }
 
-            int day = (int) (serverPlayer.serverLevel().getDayTime() / 24000);
+            int day = smcPlayer.getLevel();
             if(day > 30) {
                 day = 30;
             }
@@ -76,7 +76,7 @@ public class SMCRaidManager {
                 return;
             }
 
-            int day = (int) (serverPlayer.serverLevel().getDayTime() / 24000);
+            int day = smcPlayer.getLevel();
             if(day > 30) {
                 day = 30;
             }
@@ -95,7 +95,11 @@ public class SMCRaidManager {
     public static void startRandomRaid(ServerPlayer serverPlayer) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
         if(Level.isInSpawnableBounds(serverPlayer.blockPosition())) {
-            int day = (int) (serverPlayer.serverLevel().getDayTime() / 24000);
+            //保险
+            if(DummyEntityManager.getDummyEntities(serverPlayer.serverLevel()).size() > serverPlayer.serverLevel().players().size()){
+                return;
+            }
+            int day = smcPlayer.getLevel() / 2;
             if(day > 30) {
                 day = 30;
             }

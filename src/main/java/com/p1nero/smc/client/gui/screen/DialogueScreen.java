@@ -5,6 +5,7 @@ import com.p1nero.smc.client.gui.screen.component.DialogueAnswerComponent;
 import com.p1nero.smc.client.gui.screen.component.DialogueChoiceComponent;
 import com.p1nero.smc.entity.api.NpcDialogue;
 import com.p1nero.smc.entity.custom.npc.SMCNpc;
+import com.p1nero.smc.mixin.MobInvoker;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.packet.serverbound.AddDialogPacket;
@@ -25,13 +26,13 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -130,18 +131,28 @@ public class DialogueScreen extends Screen {
     }
 
     /**
-     * Repositions the Valkyrie Queen's dialogue answer and the player's dialogue choices based on the amount of choices.
+     * Repositions the dialogue answer and the player's dialogue choices based on the amount of choices.
      */
     protected void positionDialogue() {
         // Dialogue answer.
-        this.dialogueAnswer.reposition(this.width, this.height * 5 / 4, yOffset);//相较于天堂的下移了一点
+        this.dialogueAnswer.reposition(this.width, this.height * 5 / 4, yOffset);//相较于天堂的下移了一点，因为是中文
         // Dialogue choices.
         int lineNumber = this.dialogueAnswer.height / 12 + 1;
-        for (Renderable renderable : this.renderables) {
+        Iterator<Renderable> iterator = this.renderables.iterator();
+        while (iterator.hasNext()) {
+            Renderable renderable = iterator.next();
             if (renderable instanceof DialogueChoiceComponent option) {
                 option.setX(this.width / 2 - option.getWidth() / 2);
-                option.setY(this.height / 2 * 5 / 4 + 12 * lineNumber + yOffset);//调低一点
+                int y = this.height / 2 * 5 / 4 + 12 * lineNumber + yOffset;
+                option.setY(y);
                 lineNumber++;
+                int h = option.getHeight() + 2;
+                if (!iterator.hasNext() && y + h > this.height && typewriterTimer < 0) {
+                    yOffset -= h;
+                    this.dialogueAnswer.reposition(this.width, this.height * 5 / 4, yOffset);
+                    y = this.height / 2 * 5 / 4 + 12 * lineNumber + yOffset;
+                    option.setY(y);//调低一点
+                }
             }
         }
     }
@@ -200,11 +211,11 @@ public class DialogueScreen extends Screen {
         if(this.isSilent || this.entity == null) {
             return;
         }
-        if(this.entity instanceof Mob mob && mob.getAmbientSound() != null) {
+        if(this.entity instanceof Mob mob && ((MobInvoker)mob).smc$invokeGetAmbientSound() != null) {
             if(this.entity instanceof SMCNpc smcNpc) {
                 smcNpc.setTalkingAnimTimer(30);
             }
-            mob.level().playLocalSound(mob.getX(), mob.getY(), mob.getZ(), mob.getAmbientSound(), mob.getSoundSource(), 1.0F, 1.0F, false);
+            mob.level().playLocalSound(mob.getX(), mob.getY(), mob.getZ(),  ((MobInvoker)mob).smc$invokeGetAmbientSound(), mob.getSoundSource(), 1.0F, 1.0F, false);
         }
     }
 

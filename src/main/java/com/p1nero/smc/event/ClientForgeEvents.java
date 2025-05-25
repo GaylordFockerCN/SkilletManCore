@@ -78,7 +78,7 @@ public class ClientForgeEvents {
 
     public static final List<String> TIPS = new ArrayList<>();
     static {
-        TIPS.add("袭击会随天数增加而变难，尽早升级并挑战最终boss吧！");
+        TIPS.add("袭击会随天数和等级的增加而变难，尽早升级并挑战最终boss吧！");
         TIPS.add("大部分的动物都可以对话哦");
         TIPS.add("多次和无业游民对话可使其转化成理想职业");
         TIPS.add("不要吝啬于升级你的武器，多抽取武器盔甲和技能书以获取更好的体验！");
@@ -88,6 +88,7 @@ public class ClientForgeEvents {
         TIPS.add("任何时候开始学机械动力都不晚！");
         TIPS.add("我知道你根本就不会看作者在左上角给的提示，对吧~");
         TIPS.add("[提示框广告招租，五元一条不限时！]");
+        TIPS.add("玩家被最终boss击败时，最终boss将恢复最大生命值1/3的血量。");
     }
     /**
      * 画提示

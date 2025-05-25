@@ -1,0 +1,21 @@
+{
+  "type": "createdieselgenerators:basin_fermenting",
+  "ingredients": [
+    {
+      "tag": "skillet_man_core:fermentable1"
+    },
+    {
+      "item": "minecraft:spider_eye"
+    }
+  ],
+  "processingTime": 400,
+  "results": [
+    {
+      "item": "minecraft:fermented_spider_eye"
+    },
+    {
+      "fluid": "createdieselgenerators:biodiesel",
+      "amount": 50
+    }
+  ]
+}

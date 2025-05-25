@@ -80,10 +80,9 @@ public abstract class NormalCustomerData extends Customer.CustomerData {
                 case BEST -> new TreeNode(answer(1), choice(0))
                                 .addExecutable(BEST)
                                 .addLeaf(choice(1));
-                case MIDDLE -> new TreeNode(answer(0, foodName))
-                        .addChild(new TreeNode(answer(2), choice(0))
+                case MIDDLE -> new TreeNode(answer(2), choice(0))
                                 .addExecutable(MIDDLE)
-                                .addLeaf(choice(2)));
+                                .addLeaf(choice(2));
                 default -> new TreeNode(answer(0, foodName))
                         .addChild(new TreeNode(answer(3), choice(0))
                                 .addExecutable(BAD)

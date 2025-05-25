@@ -111,12 +111,12 @@ public class PlayerEventListeners {
                 }
             }
             if(namespace.equals(Create.ID)) {
-                if(path.contains("water_wheel") || path.contains("windmill")) {
-                    SMCAdvancementData.finishAdvancement("add_power", serverPlayer);
-                }
-                if(path.contains("belt")) {
-                    SMCAdvancementData.finishAdvancement("belt", serverPlayer);
-                }
+//                if(path.contains("water_wheel") || path.contains("windmill")) {
+//                    SMCAdvancementData.finishAdvancement("add_power", serverPlayer);
+//                }
+//                if(path.contains("belt")) {
+//                    SMCAdvancementData.finishAdvancement("belt", serverPlayer);
+//                }
             }
         }
     }

@@ -1,0 +1,18 @@
+{
+  "type": "createdieselgenerators:bulk_fermenting",
+  "ingredients": [
+    {
+      "tag": "skillet_man_core:fermentable2"
+    },
+    {
+      "item": "minecraft:rotten_flesh"
+    }
+  ],
+  "processingTime": 200,
+  "results": [
+    {
+      "fluid": "createdieselgenerators:biodiesel",
+      "amount": 100
+    }
+  ]
+}

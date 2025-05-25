@@ -33,15 +33,17 @@ public record EndScreenCallbackPacket() implements BasePacket {
                 if(player.level().dimension() != Level.OVERWORLD) {
                     serverPlayer.changeDimension(overworld, new SMCTeleporter(overworld.getSharedSpawnPos()));
                 }
-                serverPlayer.setRespawnPosition(Level.OVERWORLD, overworld.getSharedSpawnPos(), 0.0F, false, true);
-                SMCPlayer.addMoney(200000, serverPlayer);
-                SMCAdvancementData.finishAdvancement("end", serverPlayer);
-                DataManager.bossKilled.put(serverPlayer, true);
-                Vec3 view = serverPlayer.getViewVector(1.0F).normalize().scale(2);
-                P1nero p1nero = new P1nero(serverPlayer, serverPlayer.position().add(view.x, 2, view.z));
-                if(serverPlayer.serverLevel().addFreshEntity(p1nero)){
-                    p1nero.setConversingPlayer(serverPlayer);
-                    PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCDialoguePacket(p1nero.getId(), new CompoundTag()), serverPlayer);
+                if(!DataManager.bossKilled.get(serverPlayer)) {
+                    serverPlayer.setRespawnPosition(Level.OVERWORLD, overworld.getSharedSpawnPos(), 0.0F, false, true);
+                    SMCPlayer.addMoney(200000, serverPlayer);
+                    SMCAdvancementData.finishAdvancement("end", serverPlayer);
+                    DataManager.bossKilled.put(serverPlayer, true);
+                    Vec3 view = serverPlayer.getViewVector(1.0F).normalize().scale(2);
+                    P1nero p1nero = new P1nero(serverPlayer, serverPlayer.position().add(view.x, 2, view.z));
+                    if(serverPlayer.serverLevel().addFreshEntity(p1nero)){
+                        p1nero.setConversingPlayer(serverPlayer);
+                        PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCDialoguePacket(p1nero.getId(), new CompoundTag()), serverPlayer);
+                    }
                 }
             }
         }

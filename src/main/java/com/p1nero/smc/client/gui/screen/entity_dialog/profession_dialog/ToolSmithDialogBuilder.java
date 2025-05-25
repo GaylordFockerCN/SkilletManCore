@@ -1,6 +1,7 @@
 package com.p1nero.smc.client.gui.screen.entity_dialog.profession_dialog;
 
 import com.hlysine.create_connected.CCItems;
+import com.jesz.createdieselgenerators.CDGItems;
 import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
@@ -168,6 +169,14 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
 
         merchantOffers.add(new MerchantOffer(
                 new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 1),
+                new ItemStack(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM, 1),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 1),
+                new ItemStack(SMCRegistrateItems.CREATE_FUEL_GUIDE_BOOK, 1),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 1),
                 new ItemStack(AllItems.WRENCH, 1),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
@@ -180,35 +189,17 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
                 new ItemStack(AllItems.EMPTY_SCHEMATIC, 1),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 1),
-                new ItemStack(AllItems.SCHEMATIC_AND_QUILL, 1),
-                142857, 0, 0));
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 2),
-                new ItemStack(AllBlocks.SCHEMATICANNON, 1),
-                142857, 0, 0));
-        merchantOffers.add(new MerchantOffer(
                 new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 2),
                 new ItemStack(AllBlocks.SCHEMATIC_TABLE, 1),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 5),
+                new ItemStack(AllBlocks.SCHEMATICANNON, 1),
+                142857, 0, 0));
+
+        merchantOffers.add(new MerchantOffer(
                 new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 1),
-                new ItemStack(AllItems.CRAFTING_BLUEPRINT, 1),
-                142857, 0, 0));
-
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 12),
-                new ItemStack(AllBlocks.COPPER_CASING, 10),
-                142857, 0, 0));
-
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 12),
-                new ItemStack(AllBlocks.ANDESITE_CASING, 10),
-                142857, 0, 0));
-
-        merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 2),
-                new ItemStack(AllItems.BELT_CONNECTOR, 10),
+                new ItemStack(CDGItems.ENGINE_SILENCER, 1),
                 142857, 0, 0));
 
         merchantOffers.add(new MerchantOffer(
@@ -233,16 +224,44 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
                 142857, 0, 0));
 
         if(smcPlayer.getLevel() > SMCPlayer.STAGE2_REQUIRE){
+
+            merchantOffers.add(new MerchantOffer(
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 12),
+                    new ItemStack(AllBlocks.ANDESITE_CASING, 10),
+                    142857, 0, 0));
+
+            merchantOffers.add(new MerchantOffer(
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 12),
+                    new ItemStack(AllBlocks.COPPER_CASING, 5),
+                    142857, 0, 0));
+
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 2),
-                    new ItemStack(AllBlocks.BRASS_CASING, 10),
+                    new ItemStack(AllItems.BELT_CONNECTOR, 10),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 2),
+                    new ItemStack(AllBlocks.SHAFT, 10),
+                    142857, 0, 0));
+            merchantOffers.add(new MerchantOffer(
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 2),
+                    new ItemStack(AllBlocks.COGWHEEL, 5),
+                    142857, 0, 0));
+            merchantOffers.add(new MerchantOffer(
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 2),
+                    new ItemStack(AllBlocks.LARGE_COGWHEEL, 10),
+                    142857, 0, 0));
+
+            merchantOffers.add(new MerchantOffer(
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 12),
+                    new ItemStack(AllBlocks.BRASS_CASING, 3),
+                    142857, 0, 0));
+            merchantOffers.add(new MerchantOffer(
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
                     new ItemStack(AllItems.BRASS_SHEET, 8),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
-                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 2),
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
                     new ItemStack(AllItems.BRASS_INGOT, 10),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
@@ -284,7 +303,7 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
                     new ItemStack(AllItems.TRANSMITTER, 1),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
-                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 10),
                     new ItemStack(AllItems.POTATO_CANNON, 1),
                     142857, 0, 0));
         }

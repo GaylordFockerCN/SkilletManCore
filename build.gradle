@@ -181,6 +181,7 @@ dependencies {
     implementation fg.deobf("dev.engine-room.flywheel:flywheel-forge-${flywheel_minecraft_version}:${flywheel_version}")
 
     implementation fg.deobf("curse.maven:create-connected-947914:6401676")
+    implementation fg.deobf("curse.maven:create-diesel-generators-869316:6286179")
     implementation fg.deobf("libs:create_cuisine:1.0.0")
     implementation fg.deobf("libs:create_arm_made_bbq:1.0.0")
 
@@ -216,7 +217,7 @@ dependencies {
     implementation fg.deobf("curse.maven:melody-938643:5109692")
 
     //相机
-    implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
+//    implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
 //    implementation fg.deobf("curse.maven:leawind-third-person-930880:5961735")
 //    implementation fg.deobf("libs:eflw:20.9.0")
 
@@ -224,6 +225,7 @@ dependencies {
     implementation fg.deobf("curse.maven:embeddium-908741:5681725")
 //    implementation fg.deobf("curse.maven:entityculling-448233:6355861")
     implementation fg.deobf("curse.maven:immediatelyfast-686911:6312293")
+
 
     implementation fg.deobf("curse.maven:oculus-581495:6020952")
 //    implementation fg.deobf("curse.maven:distant-horizons-508933:6387680")

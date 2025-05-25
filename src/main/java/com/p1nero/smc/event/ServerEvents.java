@@ -6,8 +6,6 @@ import com.p1nero.smc.archive.SMCArchiveManager;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.entity.custom.npc.start_npc.StartNPC;
-import com.p1nero.smc.mixin.CreateWorldScreenMixin;
-import com.p1nero.smc.mixin.WorldListEntryMixin;
 import com.p1nero.smc.util.ItemUtil;
 import com.p1nero.smc.util.SMCRaidManager;
 import com.p1nero.smc.worldgen.biome.SMCBiomeProvider;
@@ -72,7 +70,7 @@ public class ServerEvents {
                 //夜晚生成袭击
                 if (overworld.isNight() && dayTick > 10000) {
                     //2天后每两天来一次袭击，10天后每天都将生成袭击
-                    if (dayTime > 2 && (dayTime % 2 == 0 || dayTime > 10)) {
+                    if (dayTime > 2) {
                         for (ServerPlayer serverPlayer : event.getServer().getPlayerList().getPlayers()) {
                             SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
                             if (!smcPlayer.isTodayInRaid()) {
@@ -85,14 +83,11 @@ public class ServerEvents {
                     }
                 }
 
-                if (overworld.isDay() && dayTick > 200) {
+                if (overworld.isDay() && dayTick == 2000) {
                     for (ServerPlayer serverPlayer : event.getServer().getPlayerList().getPlayers()) {
                         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
-                        if (!smcPlayer.isTodayInRaid()) {
-                            if (DataManager.bossKilled.get(serverPlayer)) {
-                                SMCRaidManager.startDayNetherRaid(serverPlayer, smcPlayer);
-                            }
-                            DataManager.specialSolvedToday.put(serverPlayer, false);
+                        if (DataManager.bossKilled.get(serverPlayer) && !DataManager.inRaid.get(serverPlayer)) {
+                            SMCRaidManager.startDayNetherRaid(serverPlayer, smcPlayer);
                         }
                     }
                 }

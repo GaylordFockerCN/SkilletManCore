@@ -14,12 +14,8 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class LibrarianDialogBuilder extends VillagerDialogScreenHandler.VillagerDialogBuilder {
     public LibrarianDialogBuilder() {
@@ -31,17 +27,17 @@ public class LibrarianDialogBuilder extends VillagerDialogScreenHandler.Villager
         super.handle(serverPlayer, villager, interactionID);
 
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
-        int moneyBase = (int) (1600 * smcPlayer.getLevelMoneyRate());
+        int moneyBase = (1600 * (int) smcPlayer.getLevelMoneyRate());
         if (interactionID == 1) {
             int ticketCount = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asItem(), 1);
             if (ticketCount == 0) {
                 if(SMCPlayer.hasMoney(serverPlayer, moneyBase, true)) {
                     SMCPlayer.consumeMoney(moneyBase, serverPlayer);
-                    smcPlayer.setSkillBookGachaingCount(1);
+                    smcPlayer.addSkillBookGachaingCount(1);
                 }
             } else {
                 serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
-                smcPlayer.setSkillBookGachaingCount(1);
+                smcPlayer.addSkillBookGachaingCount(1);
             }
         }
         if (interactionID == 2) {
@@ -50,11 +46,11 @@ public class LibrarianDialogBuilder extends VillagerDialogScreenHandler.Villager
                 int need = 10 - ticketCount;
                 if(SMCPlayer.hasMoney(serverPlayer, moneyBase * need, true)) {
                     SMCPlayer.consumeMoney(moneyBase * need, serverPlayer);
-                    smcPlayer.setSkillBookGachaingCount(10);
+                    smcPlayer.addSkillBookGachaingCount(10);
                 }
             } else {
                 serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
-                smcPlayer.setSkillBookGachaingCount(10);
+                smcPlayer.addSkillBookGachaingCount(10);
             }
         }
     }
@@ -70,7 +66,7 @@ public class LibrarianDialogBuilder extends VillagerDialogScreenHandler.Villager
             TreeNode pull = new TreeNode(answer(2), choice(2));
 
             SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(localPlayer);
-            int moneyBase = (int) (1600 * smcPlayer.getLevelMoneyRate());
+            int moneyBase = (1600 * (int) smcPlayer.getLevelMoneyRate());
 
             if (ticketCount < 1) {
                 pull.addChild(new TreeNode(answer(3, moneyBase), choice(3))

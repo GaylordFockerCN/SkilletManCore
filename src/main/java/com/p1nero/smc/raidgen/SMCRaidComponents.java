@@ -36,7 +36,7 @@ public interface SMCRaidComponents {
                     .title(SkilletManCoreMod.getInfo("raid_title", String.valueOf(i)))
                     .victoryTitle(SkilletManCoreMod.getInfo("raid_victory"))
                     .lossTitle(SkilletManCoreMod.getInfo("raid_loss"))
-                    .range(72)
+                    .range(48)
                     .blockInside(false)
                     .blockOutside(false)
                     .renderBorder(false)
@@ -49,7 +49,6 @@ public interface SMCRaidComponents {
                     .victoryResult(results.getOrThrow(SMCResultComponents.DEFEND_SUCCESS))
                     .build(),
                     Arrays.asList(waves.getOrThrow(SMCWaveComponents.RAID_WAVES_1.get(i)),
-                            waves.getOrThrow(SMCWaveComponents.RAID_WAVES_2.get(i)),
                             waves.getOrThrow(SMCWaveComponents.RAID_WAVES_3.get(i)))));
 
             NETHER_RAIDS.add(create("nether_raid_" + i));
@@ -58,7 +57,7 @@ public interface SMCRaidComponents {
                     .title(SkilletManCoreMod.getInfo("nether_raid_title", String.valueOf(i)))
                     .victoryTitle(SkilletManCoreMod.getInfo("raid_victory"))
                     .lossTitle(SkilletManCoreMod.getInfo("raid_loss"))
-                    .range(72)
+                    .range(48)
                     .blockInside(false)
                     .blockOutside(false)
                     .renderBorder(false)
@@ -78,7 +77,7 @@ public interface SMCRaidComponents {
                 .victoryTitle(SkilletManCoreMod.getInfo("trail_success"))
                 .lossTitle(SkilletManCoreMod.getInfo("trail_failed"))
                 .blockInside(false)
-                .blockOutside(false)
+                .blockOutside(true)
                 .renderBorder(true)
                 .victoryResult(results.getOrThrow(SMCResultComponents.STAGE_UP))
                 .color(BossBarColor.YELLOW)
@@ -92,7 +91,7 @@ public interface SMCRaidComponents {
                 .victoryTitle(SkilletManCoreMod.getInfo("trail_success"))
                 .lossTitle(SkilletManCoreMod.getInfo("trail_failed"))
                 .blockInside(false)
-                .blockOutside(false)
+                .blockOutside(true)
                 .renderBorder(true)
                 .victoryResult(results.getOrThrow(SMCResultComponents.STAGE_UP))
                 .color(BossBarColor.YELLOW)

@@ -100,12 +100,6 @@ public class CustomGuiRenderer {
 
     public static void renderTutorial(GuiGraphics guiGraphics, LocalPlayer localPlayer, SMCPlayer smcPlayer, Font font, int lineHeight, int screenW, int screenH, int x, int y) {
         List<TutorialCondition> conditions = Arrays.asList(
-                new TutorialCondition(() -> DataManager.findBBQHint.get(localPlayer),
-                        new Component[]{
-                                SkilletManCoreMod.getInfo("find_bbq").withStyle(ChatFormatting.BOLD, ChatFormatting.GOLD),
-                                SkilletManCoreMod.getInfo("find_bbq2").withStyle(ChatFormatting.GRAY)
-                        }
-                ),
                 new TutorialCondition(
                         () -> !DataManager.firstGiftGot.get(localPlayer),
                         new Component[]{
@@ -141,14 +135,18 @@ public class CustomGuiRenderer {
                         () -> DataManager.trailRequired.get(localPlayer),
                         new Component[]{
                                 SkilletManCoreMod.getInfo("trial_required").withStyle(ChatFormatting.BOLD, ChatFormatting.GOLD),
-                                SkilletManCoreMod.getInfo("trial_required2").withStyle(ChatFormatting.GRAY)
+                                SkilletManCoreMod.getInfo("trial_required2").withStyle(ChatFormatting.GRAY),
+                                SkilletManCoreMod.getInfo("trial_required3").withStyle(ChatFormatting.GRAY)
                         }
                 ),
                 new TutorialCondition(
                         () -> DataManager.showFirstPlaceWirelessTerminal.get(localPlayer),
                         new Component[]{
                                 SkilletManCoreMod.getInfo("first_place_wireless_terminal").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GREEN),
-                                SkilletManCoreMod.getInfo("first_place_wireless_terminal2").withStyle(ChatFormatting.GRAY)
+                                SkilletManCoreMod.getInfo("first_place_wireless_terminal1").withStyle(ChatFormatting.GRAY),
+                                SkilletManCoreMod.getInfo("first_place_wireless_terminal2").withStyle(ChatFormatting.GRAY),
+                                SkilletManCoreMod.getInfo("first_place_wireless_terminal3").withStyle(ChatFormatting.GRAY),
+                                SkilletManCoreMod.getInfo("first_place_wireless_terminal4").withStyle(ChatFormatting.GRAY)
                         }
                 ),
                 new TutorialCondition(
@@ -156,6 +154,12 @@ public class CustomGuiRenderer {
                         new Component[]{
                                 SkilletManCoreMod.getInfo("should_trade_machine_ticket").withStyle(ChatFormatting.BOLD, ChatFormatting.YELLOW),
                                 SkilletManCoreMod.getInfo("should_trade_machine_ticket2").withStyle(ChatFormatting.GRAY)
+                        }
+                ),
+                new TutorialCondition(() -> DataManager.findBBQHint.get(localPlayer),
+                        new Component[]{
+                                SkilletManCoreMod.getInfo("find_bbq").withStyle(ChatFormatting.BOLD, ChatFormatting.GOLD),
+                                SkilletManCoreMod.getInfo("find_bbq1").withStyle(ChatFormatting.GRAY)
                         }
                 )
         );
@@ -202,6 +206,7 @@ public class CustomGuiRenderer {
         if (!found) {
             Component[] defaultComponents = {
                     SkilletManCoreMod.getInfo("no_task").withStyle(ChatFormatting.BOLD, ChatFormatting.DARK_GRAY),
+                    SkilletManCoreMod.getInfo("no_task1").withStyle(ChatFormatting.GRAY),
                     SkilletManCoreMod.getInfo("no_task2").withStyle(ChatFormatting.GRAY)
             };
             renderCondition(guiGraphics, font, lineHeight, y, defaultComponents);

@@ -17,8 +17,8 @@ import com.p1nero.smc.event.ClientForgeEvents;
 import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.item.custom.CookGuideBookItem;
 import com.p1nero.smc.item.custom.CreateCookGuideBookItem;
+import com.p1nero.smc.item.custom.CreateFuelGuideBookItem;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
-import com.p1nero.smc.util.BookManager;
 import com.p1nero.smc.worldgen.biome.SMCBiomes;
 import dev.xkmc.cuisinedelight.init.registrate.CDItems;
 import net.minecraft.data.PackOutput;
@@ -49,7 +49,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("best_for_season", "恭喜 [%s] 获得 [%s] 季度销冠！");
         this.addInfo("best_seller", "§e本季度当前累积资产最多的玩家：[%s]§e！");
         this.addInfo("current_money_list_pre", "§6本季度玩家累积获得的金币排行榜：");
-        this.addInfo("current_money_count", "%s §6持有 %d §6金币");
+        this.addInfo("current_money_count", "%s §6累积获得 %d §6金币");
         this.addInfo("current_money_list_end", "§6使用§a\"/smc listCurrentRank\"§6可显示本表。  本表每季度（6天）将结算一次，本季度的销冠将获得奖杯！");
         this.addInfo("level_no_enough", "声望等级不足！需声望等级 %d 解锁！");
         this.addInfo("weapon_level_max", "武器已达最大等级！无法继续提升！");
@@ -66,7 +66,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("end_work", "§c下班！");
         this.add("key.smc.new_shop", "一家新店铺");
 
-        this.addInfo("die_tip", "§6建议多练习招架和闪避\n金币充足时，建议寻找特定村民抽取强力武器，盔甲，技能书！\n（本包所有伤害都已经降低1/2了哦~）");
+        this.addInfo("die_tip", "§6建议多练习招架和闪避，或提升火力。\n金币充足时，建议寻找特定村民抽取强力武器，盔甲，技能书！\n§a（本包所有伤害都已经降低1/2了哦~）");
 
         this.addInfo("full_score", "§e满分！！");
         this.addInfo("middle_score", "§a优秀！");
@@ -75,7 +75,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("first_food_bad", "\n §e胡来！胡来！这样的菜怎么能给客人吃！速速再去多翻几遍烹饪宝典学习一番怎么做菜！！！第一道菜就这么烂，怎么行！");
         this.addInfo("sorry", "呜呜呜我错了灶王爷我下次再也不敢了！");
         this.addInfo("give_me_another_chance", "伟大的炉神啊！再赐予我一次机会吧！");
-        this.addInfo("cannot_left_customers", "\n §e嘿小子，你不能丢下你的顾客不管！");
+        this.addInfo("cannot_left_customers", "\n §e嘿小子，你不能丢下你的顾客不管！好歹先把锅拆了下班了再跑路！");
         this.addInfo("alr", "好好好");
         this.addInfo("god_stove_talk", "我去！灶王公说话了！");
         this.addInfo("special_event_ans", "\n §e嘿小子！大事不妙！店里失窃了！快去看看怎么回事再回来继续营业吧！");
@@ -94,7 +94,7 @@ public class SMCLangGenerator extends SMCLangProvider {
 
         this.addInfo("weapon_level", "武器等级：");
         this.addInfo("nether_raid_title", "下界入侵！ 第 %s 天 ！");
-        this.addInfo("raid_title", "袭击 ：第 %s 天");
+        this.addInfo("raid_title", "袭击 ： %s 级");
         this.addInfo("raid_success_for_day", "成功抵御了第 %d 天的袭击！");
         this.addInfo("raid_victory", "成功抵御了袭击！");
         this.addInfo("raid_loss", "抵御失败！损失惨重！");
@@ -110,12 +110,15 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("someone_s_pet", " 的 ");
         this.addInfo("trial_required", "寻找牧师通过试炼以突破声望等级限制！");
         this.addInfo("trial_required2", "提示：可通过§a[酿造台]§r或对话转化无业村民");
+        this.addInfo("trial_required3", "金币充足时，别忘了先抽卡或升级武器盔甲哦~");
         this.addInfo("should_trade_machine_ticket", "寻找机械师兑换机械动力材料");
         this.addInfo("should_trade_machine_ticket2", "提示：可通过§a[锻造台]§r或对话转化无业村民");
         this.addInfo("press_x_to_show_hint", "按[%s]隐藏/显示当前引导");
         this.addInfo("no_task", "当前无引导");
-        this.addInfo("no_task2", "先去提升等级吧~");
-        this.addInfo("game_time_no_enough", "§4等级不足 %d 级！禁止挑战最终boss！");
+        this.addInfo("no_task1", "先去提升等级，或看看进度吧~");
+        this.addInfo("no_task2", "实在不行去打个最终boss也行~");
+        this.addInfo("game_time_no_enough", "§4等级不足 %d §4级！禁止挑战最终boss！");
+        this.addInfo("in_raid_no_boss", "§4袭击中！禁止挑战最终boss！");
         this.addInfo("add_item_tip", "§a获得新物品：%s × %d");
         this.addInfo("advancement_look_tip", "不知道做什么时，可以按§a[L]§r查看进度");
         this.addInfo("unlock_new_order", "§a客户解锁了新的需求！ 当前可能的请求");
@@ -147,7 +150,10 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("first_stop_work", "将炒锅拆下以下班！");
         this.addInfo("first_stop_work2", "夜里会自动下班哦~");
         this.addInfo("first_place_wireless_terminal", "将高级无限终端连接到存储终端上");
-        this.addInfo("first_place_wireless_terminal2", "仓库记得建远一些防止§c升级时覆盖§r哦~");
+        this.addInfo("first_place_wireless_terminal1", "首先将大量的容器（木桶或箱子）§6相邻§r摆放，再在任意");
+        this.addInfo("first_place_wireless_terminal2", "一个容器相邻位置摆放§6存储连接器§r，再摆放§6存储终端§r，");
+        this.addInfo("first_place_wireless_terminal3", "仓库就构建完成啦！再连接§6高级无限终端§r即可完成。");
+        this.addInfo("first_place_wireless_terminal4", "仓库记得建远一些防止§c升级时覆盖§r哦~");
         this.addInfo("special_customer", "§6特殊顾客！经营奖励系数将采用累乘！");
         this.addInfo("level_mul", "声望等级加成！× %.1f");
         this.addInfo("seafood_mul", "海鲜加成！× %.1f");
@@ -210,10 +216,10 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("level5", "声望等级5 奖励", "炒锅 §6⭐⭐⭐⭐⭐： §a其实五星的普通炒锅可能比一星的黄金武器还好用...");
         this.addAdvancement("level5_1", "    突破奖励    ", "§6喂食升级：§a解放双手，专注于工作和战斗！");
         this.addAdvancement("level5_2", "    突破奖励    ", "§6无脑村民刷怪蛋 × 5§a： 在家里也能抽卡！");
-        this.addAdvancement("level5_3", "    突破奖励    ", "§6存储终端§r + §6高级无线终端： §a管理物品更加方便！只需将它放在木桶、箱子等容器上即可使用！相邻的容器会被视为一个整体。而高级无线终端在下蹲时和存储终端绑定即可远程使用！");
+        this.addAdvancement("level5_3", "    突破奖励    ", "§6存储终端§r + §6高级无线终端 + §存储连接器： §a管理物品更加方便！和背包说再见吧！");
         this.addAdvancement("level10", "声望等级10 奖励", "§e黄金锅铲 §6⭐⭐⭐⭐⭐");
         this.addAdvancement("level10_1", "    突破奖励    ", "§6高级喂食升级：§a背包可自动喂食，更多配置项");
-        this.addAdvancement("level10_2", "    突破奖励    ", "§6工程师护目镜：§a提醒你一下本包有机械动力。差不多该步入机械时代了，快升级一下店铺，有惊喜哦！");
+        this.addAdvancement("level10_2", "    突破奖励    ", "§6工作盆+盆盖儿：§a做废或多余的料理可发酵回收利用哦~不过§c乙醇产量和份量无关§r§a，可别故意浪费食物！");
         this.addAdvancement("level15", "声望等级15 奖励", "§e黄金平底锅 §6⭐⭐⭐⭐⭐");
         this.addAdvancement("level20", "声望等级20 奖励", "§6土豆加农炮：§a大人，时代变了");
         this.addAdvancement("level20_1", "    突破奖励    ", "§d屠龙套装");
@@ -222,7 +228,9 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("level30", "声望等级30 奖励", "§6左锅右铲§r + §6英雄套装");
 
         this.addAdvancement(SkilletManCoreMod.MOD_ID + "_create", "三只机械臂", "声望等级达到12级，店铺升到四级后，开始享受本包自制的自动化炒菜吧！");
-        this.addAdvancement("add_power", "来些动力吧！", "使水车或风车动起来，然后将它接入地下室的三只机械臂。本关考察玩家机械动力基础");
+        this.addAdvancement("add_power", "新时代的动力！", "§6获得大型柴油引擎。§r大型柴油引擎是最适合本整合包的动力源。§e如果觉得太吵了别忘了加消音器哦");
+        this.addAdvancement("super_ferment", "超级发酵塔！", "§6获得发酵塔Bulk Fermenter§r连接物品仓口以添加发酵物，大大增加发酵效率！");
+        this.addAdvancement("add_power2", "来些燃料吧！", "§6获得生物柴油桶。§r开采油田太麻烦啦，我们可以直接使用料理发酵得到生物柴油。值得注意的是，这并不是唯一燃料哦~请在JEI查看生物柴油的§e发酵配方§r。");
         this.addAdvancement("arm1", "第一只臂狠下料", "使用机械臂将食物放入炒锅，可以看看炒锅思索。别忘了拆下来重新设好目标再装上去哦");
         this.addAdvancement("arm2", "第二只臂勤翻炒", "使机械臂拿锅铲与炒锅交互，可以看看炒锅思索。别忘了拆下来重新设好目标再装上去哦");
         this.addAdvancement("arm3", "第三只臂把菜盛", "使机械臂拿着盘子将炒好的料理端出，并放到合适的位置去。可以看看炒锅思索，留意它下面的红石火把哦~");
@@ -282,10 +290,10 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("end", "结束了？", "击败最终boss");
         this.addAdvancement("true_end", "真结局", "和牧师对话解锁真相");
 
-        this.addAdvancement("start_fight", "战斗之路", "第一次成功抵御来自终界的袭击");
-        this.addAdvancement("raid10d", "村庄卫士", "抵御十天的袭击");
-        this.addAdvancement("raid20d", "村庄英雄", "抵御二十天的袭击");
-        this.addAdvancement("raid30d", "你怎么还没去打最终boss？", "抵御三十天的袭击");
+        this.addAdvancement("start_fight", "战斗之路", "第一次成功抵御来自终界的袭击。注意，夜间的袭击在第三天后才会开始，隔两天生成一次哦");
+        this.addAdvancement("raid5d", "村庄卫士", "抵御五天的袭击");
+        this.addAdvancement("raid15d", "村庄英雄", "抵御十五天的袭击。袭击那么烦人，你怎么忍住不去打最终boss的。");
+        this.addAdvancement("raid30d", "你怎么还没去打最终boss？", "抵御三十天的袭击。");
         this.addAdvancement("dodge_master", "闪避大师", "完美闪避10次");
         this.addAdvancement("dodge_master2", "闪避大师2", "完美闪避100次");
         this.addAdvancement("dodge_master3", "闪避大师3", "完美闪避1000次");
@@ -304,11 +312,14 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("dog_no_eat", "狗都不吃", "企图给狗吃做坏的食材。");
 
         this.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get(), "烹饪宝典");
-        this.addItemUsageInfo(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get(), "右键以学习料理乐事的烹饪基础知识，建议熟悉后再开始上班哦~");
+        this.addItemUsageInfo(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get(), "右键以学习料理乐事的烹饪基础知识，建议熟悉后再开始上班哦~炒菜难度设置可在这里调整。");
         CookGuideBookItem.addTranslation(this);
         this.add(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get(), "论机械动力与料理乐事相结合");
         this.addItemUsageInfo(SMCRegistrateItems.CREATE_COOK_GUIDE_BOOK_ITEM.get(), "右键以学习料理乐事和机械动力结合所需的知识。本书应和 炒锅 的 [思索] 结合阅读。");
         CreateCookGuideBookItem.addTranslation(this);
+        this.add(SMCRegistrateItems.CREATE_FUEL_GUIDE_BOOK.get(), "论美食与柴油动力");
+        this.addItemUsageInfo(SMCRegistrateItems.CREATE_FUEL_GUIDE_BOOK.get(), "右键以学习柴油动力在本整合包的特殊玩法。本书应和 工作盆盖板 与 柴油引擎 的 [思索] 结合阅读。");
+        CreateFuelGuideBookItem.addTranslation(this);
 
         this.add(SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get(), "左锅右铲");
         this.add(SMCRegistrateItems.SPATULA_V2.get(), "锅铲");
@@ -360,7 +371,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add("itemGroup.smc.items", "平底锅侠 - 核心");
 
         this.add(SMCEntities.GOLDEN_FLAME.get(), "终界领主");
-        this.add(SMCEntities.SUPER_GOLEM.get(), "超雄铁哥");
+        this.add(SMCEntities.SUPER_BAD_GOLEM.get(), "超雄铁哥");
         this.add(SMCEntities.SUPER_GOOD_GOLEM.get(), "超雄铁哥");
         this.add(SMCItems.GOOD_SUPER_GOLEM_SPAWN_EGG.get(), "超雄铁哥刷怪蛋");
 
@@ -409,7 +420,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialog(SMCEntities.START_NPC, 3, "§a已全部取出！");
         this.addDialog(SMCEntities.START_NPC, 4, "§a已升级！");
         this.addDialog(SMCEntities.START_NPC, 5, "准备好开业了吗！记得留意四周哦，村民将从四面八方生成！");
-        this.addDialog(SMCEntities.START_NPC, 6, "建议优先寻找§6盔甲匠§r和§6武器匠§r抽取盔甲和武器！以获得更好的游玩体验！ 将§6炒锅§r摆上§6炉灶§r以开始营业，长按拆下以下班。右键顾客以查看所需食材，烹饪完成后将食材放至§6主手§r，再次对话以交付食材。根据食材的品质将获得不同奖励。而§c第二天开始夜晚会有袭击事件§r，拿起平底锅保卫村庄！");
+        this.addDialog(SMCEntities.START_NPC, 6, "建议优先寻找§6盔甲匠§r和§6武器匠§r抽取盔甲和武器！以获得更好的游玩体验！ 将§6炒锅§r摆上§6炉灶§r以开始营业，长按拆下以下班。右键顾客以查看所需食材，烹饪完成后将食材放至§6主手§r，再次对话以交付食材。根据食材的品质将获得不同奖励。而§c第三天开始夜晚会有袭击事件§r，拿起平底锅保卫村庄！");
         this.addDialog(SMCEntities.START_NPC, 7, "炒菜时，拿着食材右键§6炒锅§r以把对应的食材丢入锅中，用§6锅铲§r右键即可翻炒。左边的仪表盘提示食物是否§c烧焦§r，请在合适的时候用盘子将其取出！ 使用§a[JEI]§r可查看料理配方。在物品栏可查看食材§6烹饪时间区间§r，做好计算再下锅吧！用到的食材越高级，声望等级越高，奖励越丰富！如果手忙脚乱，§6[预制菜]§r 是一个不错的选择。");
         this.addDialog(SMCEntities.START_NPC, 8, "接待足够多的村民或成功抵御一次袭击，将提升一次店铺声望等级.随着声望等级提升将解锁新的资源和玩法。到一定声望等级时将开启§6突破试炼§r，若试炼成功则可获得大量奖励并且进入下一游戏阶段。");
         this.addDialog(SMCEntities.START_NPC, 9, "Zzz...Zzz...Zzz...(忙碌了一天的员工睡得正香，  此刻也许你会好奇它为什么能够站着睡着。平底锅侠的世界就是如此奇妙，无需那么多为什么。)");
@@ -551,7 +562,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialogChoice(SMCEntities.P1NERO, -1, "导演我错了");
         this.addDialogChoice(SMCEntities.P1NERO, -2, "切，该死的神权！");
 
-        this.add(SMCEntities.START_NPC_BBQ.get(), "美好生活小助手 - BBQ版");
+        this.add(SMCEntities.START_NPC_BBQ.get(), "§6美好生活小助手 - BBQ版");
         this.addDialog(SMCEntities.START_NPC_BBQ, 0, "老大，今天要干些什么呢？");
         this.addDialog(SMCEntities.START_NPC_BBQ, 1, "老大，为什么要说又呢");
         this.addDialog(SMCEntities.START_NPC_BBQ, 2, "老大，烧烤店只能在夜里开哦");

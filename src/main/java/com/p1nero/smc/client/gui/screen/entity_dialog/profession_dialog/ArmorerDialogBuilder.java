@@ -13,12 +13,10 @@ import net.kenddie.fantasyarmor.item.FAItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraftforge.api.distmarker.Dist;
@@ -36,17 +34,17 @@ public class ArmorerDialogBuilder extends VillagerDialogScreenHandler.VillagerDi
     public void handle(ServerPlayer serverPlayer, Villager villager, byte interactionID) {
         super.handle(serverPlayer, villager, interactionID);
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
-        int moneyBase = (int) (160 * smcPlayer.getLevelMoneyRate());
+        int moneyBase = 160 * (int) smcPlayer.getLevelMoneyRate();
         if (interactionID == 1) {
             int ticketCount = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.ARMOR_RAFFLE_TICKET.asItem(), 1);
             if (ticketCount == 0) {
                 if (SMCPlayer.hasMoney(serverPlayer, moneyBase, true)) {
                     SMCPlayer.consumeMoney(moneyBase, serverPlayer);
-                    smcPlayer.setArmorGachaingCount(1);
+                    smcPlayer.addArmorGachaingCount(1);
                 }
             } else {
                 serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
-                smcPlayer.setArmorGachaingCount(1);
+                smcPlayer.addArmorGachaingCount(1);
             }
         }
         if (interactionID == 2) {
@@ -55,11 +53,11 @@ public class ArmorerDialogBuilder extends VillagerDialogScreenHandler.VillagerDi
                 int need = 10 - ticketCount;
                 if (SMCPlayer.hasMoney(serverPlayer, moneyBase * need, true)) {
                     SMCPlayer.consumeMoney(moneyBase * need, serverPlayer);
-                    smcPlayer.setArmorGachaingCount(10);
+                    smcPlayer.addArmorGachaingCount(10);
                 }
             } else {
                 serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
-                smcPlayer.setArmorGachaingCount(10);
+                smcPlayer.addArmorGachaingCount(10);
             }
         }
         if (interactionID == 3) {
@@ -254,7 +252,7 @@ public class ArmorerDialogBuilder extends VillagerDialogScreenHandler.VillagerDi
             TreeNode pull = new TreeNode(answer(1, FAItems.SPARK_OF_DAWN_HELMET.get().getDefaultInstance().getDisplayName().copy().withStyle(ChatFormatting.GOLD)), choice(0));
 
             SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(localPlayer);
-            int moneyBase = (int) (160 * smcPlayer.getLevelMoneyRate());
+            int moneyBase = 160 * (int) smcPlayer.getLevelMoneyRate();
 
             if (ticketCount < 1) {
                 pull.addChild(new TreeNode(answer(2, moneyBase), choice(2))

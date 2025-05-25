@@ -176,6 +176,11 @@ public class StartNPC extends SMCNpc {
     }
 
     public void setShopLevel(int level) {
+        if(level().getBlockEntity(this.getHomePos()) instanceof MainCookBlockEntity mainCookBlockEntity) {
+            if(mainCookBlockEntity.getShopLevel() < level) {
+                mainCookBlockEntity.setShopLevel(level);
+            }
+        }
         this.getEntityData().set(SHOP_LEVEL, level);
     }
 
@@ -238,7 +243,7 @@ public class StartNPC extends SMCNpc {
                 }
             }
 
-            if (this.position().distanceTo(this.getHomePos().getCenter()) > MainCookBlockEntity.SEARCH_DIS - 0.1) {
+            if (this.position().distanceTo(this.getHomePos().getCenter()) > MainCookBlockEntity.SEARCH_DIS - 0.3) {
                 this.setPos(this.getSpawnPos().getCenter());
                 if (lastPushPlayer != null) {
                     SMCAdvancementData.finishAdvancement("try_push", lastPushPlayer);

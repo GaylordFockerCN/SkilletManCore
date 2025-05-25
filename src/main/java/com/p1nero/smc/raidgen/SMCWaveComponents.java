@@ -90,13 +90,15 @@ public interface SMCWaveComponents {
             spawns.get(SMCSpawnComponents.PIGLIN_BRUTE.get(i)).ifPresent(reference -> {
                 netherWave.add(Pair.of(ConstantInt.of(10), reference));
             });
+            spawns.get(SMCSpawnComponents.GHAST.get(i)).ifPresent(reference -> {
+                netherWave.add(Pair.of(ConstantInt.of(10), reference));
+            });
             spawns.get(SMCSpawnComponents.ZOMBIES.get(i)).ifPresent(reference -> {
                 wave1builder.add(Pair.of(ConstantInt.of(10), reference));
                 wave2builder.add(Pair.of(ConstantInt.of(10), reference));
                 wave3builder.add(Pair.of(ConstantInt.of(10), reference));
             });
             spawns.get(SMCSpawnComponents.SKELETONS.get(i)).ifPresent(reference -> {
-                wave1builder.add(Pair.of(ConstantInt.of(50), reference));
                 wave2builder.add(Pair.of(ConstantInt.of(50), reference));
                 wave3builder.add(Pair.of(ConstantInt.of(50), reference));
             });

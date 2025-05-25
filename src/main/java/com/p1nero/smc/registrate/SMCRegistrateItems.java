@@ -170,6 +170,9 @@ public class SMCRegistrateItems {
     public static final ItemEntry<CreateCookGuideBookItem> CREATE_COOK_GUIDE_BOOK_ITEM = SkilletManCoreMod.REGISTRATE.item("create_cook_guide_book", p -> new CreateCookGuideBookItem(p.stacksTo(1).rarity(Rarity.EPIC)))
             .defaultModel()
             .defaultLang().register();
+    public static final ItemEntry<CreateFuelGuideBookItem> CREATE_FUEL_GUIDE_BOOK = SkilletManCoreMod.REGISTRATE.item("create_fuel_guide_book", p -> new CreateFuelGuideBookItem(p.stacksTo(1).rarity(Rarity.EPIC)))
+            .defaultModel()
+            .defaultLang().register();
 
     //房子图标
     public static final ItemEntry<Item> PLAIN_1 = SkilletManCoreMod.REGISTRATE.item("plain1", Item::new)

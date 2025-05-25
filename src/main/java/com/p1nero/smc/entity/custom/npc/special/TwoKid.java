@@ -314,7 +314,7 @@ public class TwoKid extends SMCNpc implements SpecialNpc {
         this.setSolved(true);
         SMCAdvancementData.finishAdvancement("two_kid", player);
         SMCPlayer.levelUPPlayer(player);
-        SMCPlayer.addMoney(1600, player);
+        SMCPlayer.addMoney(3200, player);
         DataManager.inSpecial.put(player, false);
         DataManager.specialEvent2Solved.put(player, true);
         DataManager.specialSolvedToday.put(player, true);

@@ -1,6 +1,7 @@
 package com.p1nero.smc.entity.custom.npc.special.virgil;
 
 import com.p1nero.smc.archive.DataManager;
+import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
 import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.datagen.SMCAdvancementData;
@@ -174,7 +175,10 @@ public class VirgilVillager extends Vindicator implements NpcDialogue {
     }
 
     public static AttributeSupplier.@NotNull Builder createAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.35F).add(Attributes.MAX_HEALTH, 80.0D).add(Attributes.ATTACK_DAMAGE, 5.0D).add(Attributes.FOLLOW_RANGE, 32.0D);
+        return Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.35F)
+                .add(Attributes.MAX_HEALTH, 280.0D)
+                .add(Attributes.ATTACK_DAMAGE, 5.0D)
+                .add(Attributes.FOLLOW_RANGE, 32.0D);
     }
 
     public boolean isFighting() {
@@ -223,6 +227,7 @@ public class VirgilVillager extends Vindicator implements NpcDialogue {
     public void setFinished(ServerPlayer player) {
         player.removeEffect(MobEffects.BAD_OMEN);
         SMCAdvancementData.finishAdvancement("virgil", player);
+        SMCPlayer.addMoney(20000, player);
         DataManager.inSpecial.put(player, false);
         DataManager.specialEvent4Solved.put(player, true);
         DataManager.specialSolvedToday.put(player, true);

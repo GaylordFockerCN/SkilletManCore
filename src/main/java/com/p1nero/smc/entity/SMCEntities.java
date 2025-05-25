@@ -43,7 +43,6 @@ import yesman.epicfight.api.client.forgeevent.PatchedRenderersEvent;
 import yesman.epicfight.api.forgeevent.EntityPatchRegistryEvent;
 import yesman.epicfight.api.forgeevent.ModelBuildEvent;
 import yesman.epicfight.gameasset.Armatures;
-import yesman.epicfight.world.capabilities.entitypatch.HumanoidMobPatch;
 
 
 @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -83,7 +82,7 @@ public class SMCEntities {
             EntityType.Builder.<FlameCircleEntity>of(FlameCircleEntity::new, MobCategory.AMBIENT).sized(1.0f, 1.0f));
     public static final RegistryObject<EntityType<GoldenFlame>> GOLDEN_FLAME = register("golden_flame",
             EntityType.Builder.of(GoldenFlame::new, MobCategory.MONSTER).sized(0.8f, 2.5f));
-    public static final RegistryObject<EntityType<SuperBadIronGolem>> SUPER_GOLEM = register("super_golem",
+    public static final RegistryObject<EntityType<SuperBadIronGolem>> SUPER_BAD_GOLEM = register("super_golem",
             EntityType.Builder.of(SuperBadIronGolem::new, MobCategory.MISC).sized(1.4F, 2.7f));
     public static final RegistryObject<EntityType<SuperGoodIronGolem>> SUPER_GOOD_GOLEM = register("super_good_golem",
             EntityType.Builder.of(SuperGoodIronGolem::new, MobCategory.MISC).sized(1.4F, 2.7f));
@@ -102,7 +101,7 @@ public class SMCEntities {
     public static void setPatch(EntityPatchRegistryEvent event) {
         //BOSS
         event.getTypeEntry().put(GOLDEN_FLAME.get(), (entity) -> GoldenFlamePatch::new);
-        event.getTypeEntry().put(SUPER_GOLEM.get(), (entity) -> SuperBadIronGolemPatch::new);
+        event.getTypeEntry().put(SUPER_BAD_GOLEM.get(), (entity) -> SuperBadIronGolemPatch::new);
         event.getTypeEntry().put(SUPER_GOOD_GOLEM.get(), (entity) -> SuperBadIronGolemPatch::new);
         event.getTypeEntry().put(VIRGIL_VILLAGER.get(), (entity) -> VirgilVillagerPatch::new);
         event.getTypeEntry().put(P1NERO.get(), (entity) -> NPCPatch::new);
@@ -117,7 +116,7 @@ public class SMCEntities {
         //Boss
         Armatures.registerEntityTypeArmature(GOLDEN_FLAME.get(), Armatures.SKELETON);
         SuperGolemArmature superGolemArmature = event.get(SkilletManCoreMod.MOD_ID, "entity/super_golem", SuperGolemArmature::new);
-        Armatures.registerEntityTypeArmature(SUPER_GOLEM.get(), superGolemArmature);
+        Armatures.registerEntityTypeArmature(SUPER_BAD_GOLEM.get(), superGolemArmature);
         Armatures.registerEntityTypeArmature(SUPER_GOOD_GOLEM.get(), superGolemArmature);
         Armatures.registerEntityTypeArmature(VIRGIL_VILLAGER.get(), Armatures.BIPED);
         Armatures.registerEntityTypeArmature(P1NERO.get(), Armatures.BIPED);
@@ -128,7 +127,7 @@ public class SMCEntities {
     public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
         //BOSS
         event.put(GOLDEN_FLAME.get(), GoldenFlame.setAttributes());
-        event.put(SUPER_GOLEM.get(), SuperBadIronGolem.setAttributes());
+        event.put(SUPER_BAD_GOLEM.get(), SuperBadIronGolem.setAttributes());
         event.put(SUPER_GOOD_GOLEM.get(), SuperGoodIronGolem.setAttributes());
 
         //NPC

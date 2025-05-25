@@ -4,6 +4,8 @@ import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.entity.SMCEntities;
+import com.p1nero.smc.entity.custom.boss.SMCBoss;
+import com.p1nero.smc.entity.custom.boss.goldenflame.GoldenFlame;
 import com.p1nero.smc.entity.custom.npc.me.P1nero;
 import com.p1nero.smc.entity.custom.npc.special.virgil.VirgilVillager;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
@@ -22,6 +24,7 @@ import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
@@ -80,6 +83,9 @@ public class LivingEntityListeners {
 
         if(event.getEntity() instanceof ServerPlayer serverPlayer){
             serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("die_tip"), false);
+            if(event.getSource().getEntity() instanceof SMCBoss smcBoss) {
+                smcBoss.setHealth(smcBoss.getHealth() + smcBoss.getMaxHealth() / 3);
+            }
         }
 
     }
@@ -105,6 +111,10 @@ public class LivingEntityListeners {
 
     @SubscribeEvent
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
+
+        if(event.getEntity() instanceof AbstractPiglin piglin) {
+            piglin.setImmuneToZombification(true);
+        }
 
         if(event.getEntity() instanceof EnderDragon enderDragon) {
             if(event.getLevel() instanceof ServerLevel serverLevel){
@@ -134,6 +144,7 @@ public class LivingEntityListeners {
 
         if(event.getEntity() instanceof Monster monster) {
             if(monster instanceof VirgilVillager){
+                monster.setItemInHand(InteractionHand.MAIN_HAND, SMCRegistrateItems.IRON_SKILLET_LEVEL5.asStack());
                 return;
             }
             if(monster.getMainHandItem().isEmpty()) {

@@ -25,6 +25,7 @@
     "HurtEventMixin",
     "IronGolemMixin",
     "MainFrameAnimationMixin",
+    "MobInvoker",
     "MobMixin",
     "OpenMatrix4fMixin",
     "PigMixin",
