@@ -1,6 +1,7 @@
 package com.p1nero.smc.registrate;
 
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.effect.SMCEffects;
 import com.p1nero.smc.item.custom.*;
 import com.p1nero.smc.item.custom.skillets.*;
 import com.p1nero.smc.item.custom.spatulas.*;
@@ -10,6 +11,8 @@ import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import dev.xkmc.cuisinedelight.init.data.TagGen;
 import dev.xkmc.cuisinedelight.init.registrate.CDBlocks;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -171,6 +174,29 @@ public class SMCRegistrateItems {
             .defaultModel()
             .defaultLang().register();
     public static final ItemEntry<CreateFuelGuideBookItem> CREATE_FUEL_GUIDE_BOOK = SkilletManCoreMod.REGISTRATE.item("create_fuel_guide_book", p -> new CreateFuelGuideBookItem(p.stacksTo(1).rarity(Rarity.EPIC)))
+            .defaultModel()
+            .defaultLang().register();
+
+    public static final ItemEntry<RumorItem> RUMOR_ITEM = SkilletManCoreMod.REGISTRATE.item("rumor_item", p -> new RumorItem(p.rarity(Rarity.RARE)))
+            .defaultModel()
+            .defaultLang().register();
+
+    public static final ItemEntry<LuckyCat> LUCKY_CAT = SkilletManCoreMod.REGISTRATE.item("lucky_cat", p -> new LuckyCat(p.rarity(Rarity.RARE)))
+            .defaultModel()
+            .defaultLang().register();
+
+    public static final ItemEntry<BadCat> BAD_CAT = SkilletManCoreMod.REGISTRATE.item("bad_cat", p -> new BadCat(p.rarity(Rarity.RARE)))
+            .defaultModel()
+            .defaultLang().register();
+    public static final ItemEntry<GuoChaoBoxItem> GUO_CHAO = SkilletManCoreMod.REGISTRATE.item("guo_chao", p -> new GuoChaoBoxItem(p.rarity(Rarity.RARE)))
+            .defaultModel()
+            .defaultLang().register();
+    public static final ItemEntry<SimpleDescriptionFoilItem> SUPER_CHEF_PILL = SkilletManCoreMod.REGISTRATE.item("super_chef", p ->
+                    new SimpleDescriptionFoilItem(p.food(new FoodProperties.Builder().effect(()-> new MobEffectInstance(SMCEffects.SUPER_CHEF.get(), 1200), 1.0F).build()).rarity(Rarity.RARE)))
+            .defaultModel()
+            .defaultLang().register();
+    public static final ItemEntry<PiShuangItem> PI_SHUANG = SkilletManCoreMod.REGISTRATE.item("pi_shuang", p ->
+                    new PiShuangItem(p.rarity(Rarity.RARE)))
             .defaultModel()
             .defaultLang().register();
 

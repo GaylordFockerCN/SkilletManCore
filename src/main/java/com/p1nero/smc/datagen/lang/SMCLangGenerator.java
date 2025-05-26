@@ -64,6 +64,7 @@ public class SMCLangGenerator extends SMCLangProvider {
 
         this.addInfo("start_work", "§a上班！");
         this.addInfo("end_work", "§c下班！");
+        this.addInfo("cat_go", "猫猫出击！");
         this.add("key.smc.new_shop", "一家新店铺");
 
         this.addInfo("die_tip", "§6建议多练习招架和闪避，或提升火力。\n金币充足时，建议寻找特定村民抽取强力武器，盔甲，技能书！\n§a（本包所有伤害都已经降低1/2了哦~）");
@@ -107,6 +108,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("level_up_left", " 距离升级还需完成 %d 次交易");
         this.addInfo("gold_item_got", " §e刚刚 获得传说级物品：%s §e！");
         this.addInfo("rare_item_got", " §d刚刚 获得史诗级物品：%s §d！");
+        this.addInfo("common_item_got", " 刚刚 获得物品：%s §d！");
         this.addInfo("someone_s_pet", " 的 ");
         this.addInfo("trial_required", "寻找牧师通过试炼以突破声望等级限制！");
         this.addInfo("trial_required2", "提示：可通过§a[酿造台]§r或对话转化无业村民");
@@ -136,6 +138,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("resting", "休息中");
         this.addInfo("foods_need_cut", "§6该食材需砧板加工处理！");
         this.addInfo("raid_no_work", "§c§l世界某处正在遭遇袭击！紧急下班！");
+        this.addInfo("rumor_no_work", "§c§l受到谣言影响！无法上班！");
         this.addInfo("find_bbq", "前往新的村庄与初始店铺NPC对话");
         this.addInfo("find_bbq1", "快去看看有什么附加内容吧！");
         this.addInfo("find_villager_first", "在村庄找到店铺并领取新手福利");
@@ -160,6 +163,9 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("meat_mul", "肉类加成！× %.1f");
         this.addInfo("type_mul", "品种加成！× %.1f");
         this.addInfo("size_mul", "份量加成！× %.1f");
+        this.addInfo("honey_mul", "美汁汁加成！× %.1f");
+        this.addInfo("honey_custom_name", "§6美汁汁！");
+        this.addInfo("honey_bottle_item_usage", "可作为调味料下锅，使本次收入翻倍！");
         this.addInfo("all_taken", "已全部取出！");
         this.addInfo("customer_is_first", "§c顾客就是上帝！");
         this.addInfo("no_your_power", "Oh 不, 这份力量并不属于你...设定上你只能使用平底锅和锅铲");
@@ -171,6 +177,15 @@ public class SMCLangGenerator extends SMCLangProvider {
         BanPortalScreenHandler.onGenerate(this);
 
         this.addEffect(SMCEffects.BURNT, "灼伤");
+        this.addEffect(SMCEffects.RUMOR, "谣言");
+        this.addEffect(SMCEffects.BAD_CAT, "哈气米");
+        this.addEffect(SMCEffects.SUPER_CHEF, "超级厨师！");
+        this.addItem(SMCRegistrateItems.RUMOR_ITEM, "谣言");
+        this.addItemUsageInfo(SMCRegistrateItems.RUMOR_ITEM.get(), "右键抛出，使范围内玩家获得0~2分钟“谣言”效果（取决于有没有砸中），处于“谣言”效果时，无法上班！小心别泼到自己哦~");
+        this.addItem(SMCRegistrateItems.LUCKY_CAT, "招财猫");
+        this.addItemUsageInfo(SMCRegistrateItems.LUCKY_CAT.get(), "在白天内，对着猫猫使用后为自己额外生成五个客户。（没有预制菜你真的应付得来吗）");
+        this.addItem(SMCRegistrateItems.BAD_CAT, "哈气米");
+        this.addItemUsageInfo(SMCRegistrateItems.BAD_CAT.get(), "在白天内，对着猫猫使用后，§a30s内§r将对周围16格内其他玩家的客户哈气，并驱散他们！");
 
         this.addSkill("better_dodge_display", "完美闪避显示", "成功闪避将留下残影和播放音效，并额外恢复一点耐力");
 
@@ -310,6 +325,10 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("too_many_mouth", "工伤请求", "接待话很多的村民");
         this.addAdvancement("pre_cook", "预制菜", "在大晚上的做菜卖给谁呢？");
         this.addAdvancement("dog_no_eat", "狗都不吃", "企图给狗吃做坏的食材。");
+        this.addAdvancement("super_poison", "绝命毒师", "制作出带有“国潮”和“剧毒”标签的料理。");
+        this.addAdvancement("rumor", "谣言散播者", "散播出“谣言”");
+        this.addAdvancement("rumor_hurt_self", "害人终害己", "散播“谣言”时散播到自己身上。");
+        this.addAdvancement("cat_group", "喵喵队立大功！", "使用“招财猫”或“哈气米”。");
 
         this.add(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get(), "烹饪宝典");
         this.addItemUsageInfo(SMCRegistrateItems.COOK_GUIDE_BOOK_ITEM.get(), "右键以学习料理乐事的烹饪基础知识，建议熟悉后再开始上班哦~炒菜难度设置可在这里调整。");
@@ -347,6 +366,16 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add(SMCRegistrateItems.DIRT_PLATE.get(), "脏盘子");
         this.add(SMCRegistrateItems.DIRT_PLATE.get().getDescriptionId() + ".disc", "上面充满了油渍，对着水右键可以洗干净。");
         this.add(SMCBlocks.MAIN_COOK_BLOCK.get(), "核心方块");
+        this.add(SMCRegistrateItems.GUO_CHAO.get(), "国潮外卖盒");
+        this.addItemUsageInfo(SMCRegistrateItems.GUO_CHAO.get(), "可当做盘子使用。但过度使用的话，后果很严重...");
+        this.addInfo("poisoned_skillet_item_info", "§2§l剧毒！！");
+        this.addInfo("guo_chao_item_info", "§c§l国潮来袭！美味诱人！");
+        this.addInfo("villager_die_for_guo_chao", "不好啦！客户吃了国潮外卖，中毒身亡！");
+        this.addInfo("villager_die_for_poison", "不好啦！客户中毒身亡啦！锅被下毒啦！");
+        this.add(SMCRegistrateItems.SUPER_CHEF_PILL.get(), "超级厨师药丸");
+        this.addItemUsageInfo(SMCRegistrateItems.SUPER_CHEF_PILL.get(), "食用后获得一分钟“超级厨师”效果，效果持续期间内炒出的§6料理品质视为100%，无视未熟和烧焦惩罚！");
+        this.add(SMCRegistrateItems.PI_SHUANG.get(), "砒霜");
+        this.addItemUsageInfo(SMCRegistrateItems.PI_SHUANG.get(), "右键对放置的平底锅使用，使其炒出来的料理都带有剧毒属性，无法消除！不过...用下过毒的平底锅攻击敌人亦可使敌人中毒！");
 
         this.add(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.get(), "技能书抽奖券");
         this.addItemUsageInfo(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asItem(), "可以在§6图书管理员§r处抽取技能书。找不到武器匠时可以尝试 在无业村民附近摆放§a[讲台]§r 或 通过对话 转化普通村民");

@@ -28,6 +28,7 @@ import com.p1nero.smc.util.ItemUtil;
 import dev.xkmc.cuisinedelight.content.logic.FoodType;
 import dev.xkmc.cuisinedelight.content.logic.IngredientConfig;
 import dev.xkmc.cuisinedelight.init.registrate.CDItems;
+import hungteen.htlib.common.world.entity.DummyEntityManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.client.Minecraft;

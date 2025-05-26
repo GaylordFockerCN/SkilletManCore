@@ -1,6 +1,7 @@
 package com.p1nero.smc.mixin;
 
 import com.mao.barbequesdelight.init.registrate.BBQDItems;
+import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.block.custom.DiamondCuisineSkilletBlock;
 import com.p1nero.smc.block.custom.GoldenCuisineSkilletBlock;
 import dev.xkmc.cuisinedelight.content.block.CuisineSkilletBlockEntity;
@@ -10,6 +11,9 @@ import dev.xkmc.cuisinedelight.content.logic.transform.Stage;
 import dev.xkmc.cuisinedelight.init.data.CDConfig;
 import dev.xkmc.l2library.base.tile.BaseBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -59,8 +63,13 @@ public abstract class CuisineSkilletBlockEntityMixin extends BaseBlockEntity {
      * 自动接收上方的物品
      */
     @Inject(method = "tick", at = @At("TAIL"), remap = false)
-    private void smc$tick(Level pLevel, BlockPos pPos, BlockState pState, CallbackInfo ci) {
-        for (ItemEntity itemEntity : smc$getItemsAtAndAbove(pLevel, pPos)) {
+    private void smc$tick(Level pLevel, BlockPos pos, BlockState pState, CallbackInfo ci) {
+
+        if(this.baseItem.hasTag() && this.baseItem.getOrCreateTag().getBoolean(SkilletManCoreMod.POISONED_SKILLET) && level instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(new DustParticleOptions(Vec3.fromRGB24(0x1ba100).toVector3f(), 1.0F), pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 2, 0.0, 0.0, 0.0, 1.0);
+        }
+
+        for (ItemEntity itemEntity : smc$getItemsAtAndAbove(pLevel, pos)) {
             ItemStack heldStack = itemEntity.getItem();
             IngredientConfig.IngredientEntry config = IngredientConfig.get().getEntry(heldStack);
             if (config != null) {
@@ -86,7 +95,7 @@ public abstract class CuisineSkilletBlockEntityMixin extends BaseBlockEntity {
                         itemEntity.discard();
                     }
                     this.sync();
-                    pLevel.playSound(null, pPos.getX(), pPos.getY(), pPos.getZ(), ModSounds.BLOCK_SKILLET_ADD_FOOD.get(), SoundSource.BLOCKS, 1.0F, pLevel.random.nextFloat() * 0.2F + 0.9F);
+                    pLevel.playSound(null, pos.getX(), pos.getY(), pos.getZ(), ModSounds.BLOCK_SKILLET_ADD_FOOD.get(), SoundSource.BLOCKS, 1.0F, pLevel.random.nextFloat() * 0.2F + 0.9F);
                 }
             }
         }
@@ -113,7 +122,7 @@ public abstract class CuisineSkilletBlockEntityMixin extends BaseBlockEntity {
                 int count = 1 + this.cookingData.contents.size() / 3;
                 this.cookingData = new CookingData();
                 this.sync();
-                Vec3 center = pPos.getCenter();
+                Vec3 center = pos.getCenter();
                 ItemEntity itemEntity = new ItemEntity(level, center.x, center.y, center.z, BBQDItems.BURNT_FOOD.asStack(count));
                 level.addFreshEntity(itemEntity);
             }

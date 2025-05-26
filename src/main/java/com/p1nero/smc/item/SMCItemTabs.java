@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
@@ -21,9 +22,7 @@ public class SMCItemTabs {
     public static final DeferredRegister<CreativeModeTab> REGISTRY = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, SkilletManCoreMod.MOD_ID);
 
     public static final RegistryObject<CreativeModeTab> ITEMS = REGISTRY.register("items",
-            () -> CreativeModeTab.builder().title(Component.translatable("itemGroup.smc.items")).icon(() -> {
-                return new ItemStack(SMCRegistrateItems.DIAMOND_SPATULA_V5.get());
-            }).withTabsBefore(CDItems.TAB.getKey()).displayItems((params, output) -> {
+            () -> CreativeModeTab.builder().title(Component.translatable("itemGroup.smc.items")).icon(() -> new ItemStack(SMCRegistrateItems.DIAMOND_SPATULA_V5.get())).withTabsBefore(CDItems.TAB.getKey()).displayItems((params, output) -> {
                 output.accept(SMCBlocks.MAIN_COOK_BLOCK.get());
                 output.accept(SMCRegistrateBlocks.MAIN_COOK_BLOCK2.get().asItem().getDefaultInstance());
                 output.accept(SMCRegistrateItems.END_TELEPORTER.get());
@@ -69,5 +68,18 @@ public class SMCItemTabs {
                 output.accept(SMCRegistrateItems.PET_RAFFLE_TICKET);
                 output.accept(SMCItems.NO_BRAIN_VILLAGER_SPAWN_EGG.get());
                 output.accept(SMCItems.GOOD_SUPER_GOLEM_SPAWN_EGG.get());
+
+                output.accept(SMCRegistrateItems.RUMOR_ITEM.get().getDefaultInstance());
+                output.accept(SMCRegistrateItems.LUCKY_CAT.get());
+                output.accept(SMCRegistrateItems.BAD_CAT.get());
+                output.accept(SMCRegistrateItems.GUO_CHAO.get());
+                output.accept(SMCRegistrateItems.SUPER_CHEF_PILL.get());
+                output.accept(SMCRegistrateItems.PI_SHUANG.get());
+
+                ItemStack honeyHoney = Items.HONEY_BOTTLE.getDefaultInstance();
+                honeyHoney.getOrCreateTag().putBoolean(SkilletManCoreMod.MUL, true);
+                honeyHoney.setHoverName(SkilletManCoreMod.getInfo("honey_custom_name"));
+                output.accept(honeyHoney);
+
             }).build());
 }

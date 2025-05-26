@@ -7,6 +7,7 @@ import com.p1nero.smc.block.custom.INpcDialogueBlock;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
+import com.p1nero.smc.effect.SMCEffects;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.entity.custom.npc.special.HeShen;
 import com.p1nero.smc.entity.custom.npc.special.Thief1;
@@ -185,6 +186,14 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(owner);
         if(!hasSkillet() || !isWorkingTime()){
             isWorking = false;
+            return;
+        }
+        if(owner.hasEffect(SMCEffects.RUMOR.get())) {
+            isWorking = false;
+            owner.displayClientMessage(SkilletManCoreMod.getInfo("rumor_no_work"), false);
+            if(hasSkillet()){
+                owner.level().destroyBlock(this.getSkilletPos(), true);
+            }
             return;
         }
         int dayTime = this.getDayTime();

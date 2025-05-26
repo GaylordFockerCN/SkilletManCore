@@ -20,6 +20,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -149,6 +150,13 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
                 mul *= cookedFoodData.size;
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("size_mul", cookedFoodData.size), false);
             }
+            if(cookedFoodData.entries.stream().anyMatch(entry -> {
+                ItemStack itemStack = entry.stack();
+                return itemStack.is(Items.HONEY_BOTTLE) && itemStack.hasTag() && itemStack.getOrCreateTag().getBoolean(SkilletManCoreMod.MUL);
+            })){
+                mul *= 2;
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("honey_mul",2.0F), false);
+            }
         }
         SMCPlayer.addMoney(((int) (100 * mul)), serverPlayer);
         serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SMCSounds.VILLAGER_YES.get(), serverPlayer.getSoundSource(), 1.0F, 1.0F);
@@ -175,6 +183,13 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
             if(cookedFoodData.size > 0){
                 mul *= cookedFoodData.size / 2.0F;
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("size_mul", cookedFoodData.size / 2.0F), false);
+            }
+            if(cookedFoodData.entries.stream().anyMatch(entry -> {
+                ItemStack itemStack = entry.stack();
+                return itemStack.is(Items.HONEY_BOTTLE) && itemStack.hasTag() && itemStack.getOrCreateTag().getBoolean(SkilletManCoreMod.MUL);
+            })){
+                mul *= 2;
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("honey_mul",2.0F), false);
             }
         }
         SMCPlayer.addMoney((int) (50 * mul), serverPlayer);

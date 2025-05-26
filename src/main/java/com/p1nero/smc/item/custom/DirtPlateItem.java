@@ -2,8 +2,10 @@ package com.p1nero.smc.item.custom;
 
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.datagen.SMCAdvancementData;
+import com.p1nero.smc.effect.SMCEffects;
 import com.p1nero.smc.util.ItemUtil;
 import dev.xkmc.cuisinedelight.content.block.CuisineSkilletBlockEntity;
+import dev.xkmc.cuisinedelight.content.item.BaseFoodItem;
 import dev.xkmc.cuisinedelight.content.item.PlateItem;
 import dev.xkmc.cuisinedelight.content.logic.CookedFoodData;
 import dev.xkmc.cuisinedelight.content.logic.CookingData;
@@ -26,7 +28,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -61,9 +62,7 @@ public class DirtPlateItem extends PlateItem {
         }
     }
 
-    private void giveBack(ItemStack foodStack, CookedFoodData food, ReturnTarget target) {
-        target.addItem(foodStack);
-        target.addExp(food.score * food.size / 100);
+    public static void giveBack(ItemStack foodStack, CookedFoodData food, ReturnTarget target) {
         if(target instanceof PlateItem.PlayerTarget playerTarget) {
             if(playerTarget.player() instanceof ServerPlayer serverPlayer) {
                 AtomicReference<PlateFood> plateFoodAtomicReference = new AtomicReference<>();
@@ -78,12 +77,25 @@ public class DirtPlateItem extends PlateItem {
                     SMCAdvancementData.finishAdvancement(name, serverPlayer);
                 }
 
+                //预制菜
                 if(serverPlayer.serverLevel().isNight()){
                     SMCAdvancementData.finishAdvancement("pre_cook", serverPlayer);
+                }
+
+                //绝命毒师
+                if(foodStack.hasTag() && foodStack.getOrCreateTag().getBoolean(SkilletManCoreMod.POISONED_SKILLET) && foodStack.getOrCreateTag().getBoolean(SkilletManCoreMod.GUO_CHAO)){
+                    SMCAdvancementData.finishAdvancement("super_poison", serverPlayer);
+                }
+
+                if(serverPlayer.hasEffect(SMCEffects.SUPER_CHEF.get())) {
+                    food.score = 100;
+                    BaseFoodItem.setData(foodStack, food);
                 }
             }
             DirtPlateItem.giveScoreEffect(playerTarget.player(), food.score);
         }
+        target.addItem(foodStack);
+        target.addExp(food.score * food.size / 100);
     }
 
     @Override
@@ -126,10 +138,14 @@ public class DirtPlateItem extends PlateItem {
                     CookedFoodData food = new CookedFoodData(data);
                     ItemStack foodStack = BaseCuisineRecipe.findBestMatch(level, food);
                     ctx.getItemInHand().shrink(1);
+                    boolean poisoned = be.baseItem.getOrCreateTag().getBoolean(SkilletManCoreMod.POISONED_SKILLET);
+                    if(poisoned) {
+                        foodStack.getOrCreateTag().getBoolean(SkilletManCoreMod.POISONED_SKILLET);
+                    }
                     if (player != null) {
-                        this.giveBack(foodStack, food, new PlayerTarget(player));
+                        giveBack(foodStack, food, new PlayerTarget(player));
                     } else {
-                        this.giveBack(foodStack, food, new BlockTarget(ctx));
+                        giveBack(foodStack, food, new BlockTarget(ctx));
                     }
                     SMCAdvancementData.finishAdvancement("dirt_plate", ((ServerPlayer) player));
                     be.cookingData = new CookingData();

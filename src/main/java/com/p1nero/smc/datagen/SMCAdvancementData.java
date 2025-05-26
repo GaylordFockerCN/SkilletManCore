@@ -113,7 +113,11 @@ public class SMCAdvancementData extends ForgeAdvancementProvider {
             Advancement first5StarSkillet = registerAdvancement(firstGacha, "first_5star_skillet", FrameType.TASK, SMCRegistrateItems.IRON_SKILLET_LEVEL5, true, true, false);
             Advancement first5StarItem = registerAdvancement(firstGacha, "first_5star_item", FrameType.TASK, SMCRegistrateItems.DIAMOND_SPATULA_V5, true, true, false);
 
+            Advancement rumor = registerAdvancement(root, "rumor", FrameType.TASK, SMCRegistrateItems.RUMOR_ITEM);
+            Advancement rumor_hurt_self = registerAdvancement(rumor, "rumor_hurt_self", FrameType.TASK, SMCRegistrateItems.RUMOR_ITEM);
+            Advancement cat_group = registerAdvancement(root, "cat_group", FrameType.TASK, SMCRegistrateItems.LUCKY_CAT);
             Advancement dogNoEat = registerAdvancement(root, "dog_no_eat", FrameType.TASK, Items.BONE);
+            Advancement superPoison = registerAdvancement(root, "super_poison", FrameType.TASK, SMCRegistrateItems.PI_SHUANG);
             Advancement noYourPower = registerAdvancement(root, "no_your_power", FrameType.TASK, Blocks.BARRIER);
             Advancement fakeSleep = registerAdvancement(root, "fake_sleep", FrameType.TASK, Items.RED_BED);
             Advancement tryPush = registerAdvancement(root, "try_push", FrameType.TASK, Blocks.PISTON);

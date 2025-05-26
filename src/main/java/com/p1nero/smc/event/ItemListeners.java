@@ -16,6 +16,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -64,6 +65,15 @@ public class ItemListeners {
         if(stack.hasTag() && !stack.getAttributeModifiers(EquipmentSlot.MAINHAND).get(Attributes.ATTACK_DAMAGE).isEmpty()){
             int level = stack.getOrCreateTag().getInt(SkilletManCoreMod.WEAPON_LEVEL_KEY);
             event.getToolTip().add(1, SkilletManCoreMod.getInfo("weapon_level").append(String.valueOf(level)).withStyle(ChatFormatting.AQUA));
+        }
+        if(stack.is(Items.HONEY_BOTTLE) && stack.hasTag() && stack.getOrCreateTag().getBoolean(SkilletManCoreMod.MUL)) {
+            event.getToolTip().add(1, SkilletManCoreMod.getInfo("honey_bottle_item_usage"));
+        }
+        if(stack.hasTag() && stack.getOrCreateTag().getBoolean(SkilletManCoreMod.GUO_CHAO)) {
+            event.getToolTip().add(1, SkilletManCoreMod.getInfo("guo_chao_item_info"));
+        }
+        if(stack.hasTag() && stack.getOrCreateTag().getBoolean(SkilletManCoreMod.POISONED_SKILLET)) {
+            event.getToolTip().add(1, SkilletManCoreMod.getInfo("poisoned_skillet_item_info"));
         }
     }
 

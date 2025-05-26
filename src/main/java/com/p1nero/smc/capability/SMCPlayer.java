@@ -226,6 +226,7 @@ public class SMCPlayer {
             PlateFood.SEAFOOD_WITH_VEGETABLES, PlateFood.MIXED_FRIED_RICE, PlateFood.MIXED_PASTA);
     public static final List<PlateFood> STAGE2_FOOD_LIST = new ArrayList<>();
     public static final List<List<Item>> LEVEL_UP_ITEMS = new ArrayList<>();
+    private static List<ItemStack> RANDOM_PROP = null;
 
     static {
         STAGE1_FOOD_LIST.addAll(STAGE0_FOOD_LIST);
@@ -370,11 +371,25 @@ public class SMCPlayer {
         }
 
         ItemUtil.addItem(serverPlayer, Items.ENCHANTED_GOLDEN_APPLE.getDefaultInstance(), true);
+        smcPlayer.getRandomProp(serverPlayer);
         SMCPlayer.addMoney(200, serverPlayer);
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("shop_upgrade", smcPlayer.level), false);
         int nextStageLeft = smcPlayer.getNextStageLeft();
         serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("next_grade_left", nextStageLeft), false);
         serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SoundEvents.PLAYER_LEVELUP, SoundSource.BLOCKS, 1.0F, 1.0F);
+    }
+
+    public void getRandomProp(ServerPlayer serverPlayer){
+        if(RANDOM_PROP == null) {
+            ItemStack honeyHoney = Items.HONEY_BOTTLE.getDefaultInstance();
+            honeyHoney.getOrCreateTag().putBoolean(SkilletManCoreMod.MUL, true);
+            honeyHoney.setHoverName(SkilletManCoreMod.getInfo("honey_custom_name"));
+            RANDOM_PROP = List.of(honeyHoney, SMCRegistrateItems.BAD_CAT.asStack(), SMCRegistrateItems.LUCKY_CAT.asStack(), SMCRegistrateItems.SUPER_CHEF_PILL.asStack(),
+                    SMCRegistrateItems.RUMOR_ITEM.asItem().getDefaultInstance(), SMCRegistrateItems.GUO_CHAO.asStack(5), SMCRegistrateItems.PI_SHUANG.asStack());
+        }
+        ItemStack itemStack = RANDOM_PROP.get(serverPlayer.getRandom().nextInt(RANDOM_PROP.size()));
+        ItemStack toAdd = itemStack.copy();
+        ItemUtil.addItem(serverPlayer, toAdd, true);
     }
 
     public int getNextStageLeft() {
@@ -950,6 +965,11 @@ public class SMCPlayer {
             }
 
         }
+    }
+
+    private void broadcastCommonGot(ServerPlayer player, ItemStack itemStack) {
+        Component itemName = itemStack.is(EpicFightItems.SKILLBOOK.get()) ? itemStack.getDisplayName().copy().append(" - ").append(SkillBookItem.getContainSkill(itemStack).getDisplayName()) : itemStack.getDisplayName();
+        player.server.getPlayerList().getPlayers().forEach(serverPlayer -> serverPlayer.displayClientMessage(player.getName().copy().append(SkilletManCoreMod.getInfo("common_item_got", itemName)), false));
     }
 
     private void playCommonEffect(ServerPlayer player) {

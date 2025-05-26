@@ -7,11 +7,13 @@ import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.TreeNode;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
+import com.p1nero.smc.effect.SMCEffects;
 import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.custom.npc.customer.Customer;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.NPCDialoguePacket;
+import hungteen.htlib.common.world.entity.DummyEntityManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -109,6 +111,17 @@ public class StartNPCPlus extends StartNPC {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(owner);
         if(!isWorkingTime()){
             setWorking(false);
+            return;
+        }
+        if(this.level() instanceof ServerLevel serverLevel && !DummyEntityManager.getDummyEntities(serverLevel).isEmpty()) {
+            for(ServerPlayer player : serverLevel.players()) {
+                player.displayClientMessage(SkilletManCoreMod.getInfo("raid_no_work"), true);
+            }
+            return;
+        }
+        if(owner.hasEffect(SMCEffects.RUMOR.get())) {
+            setWorking(false);
+            owner.displayClientMessage(SkilletManCoreMod.getInfo("rumor_no_work"), false);
             return;
         }
         int dayTime = this.getDayTime();

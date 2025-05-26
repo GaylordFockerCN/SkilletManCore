@@ -17,6 +17,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
@@ -68,6 +70,11 @@ public class LivingEntityListeners {
         }
         if(event.getEntity() instanceof Player) {
             event.setAmount(event.getAmount() * 0.5F);
+        }
+        if(event.getSource().getEntity() instanceof ServerPlayer serverPlayer) {
+            if(serverPlayer.getMainHandItem().hasTag() && serverPlayer.getMainHandItem().getOrCreateTag().getBoolean(SkilletManCoreMod.POISONED_SKILLET) && event.getEntity().isAlive()) {
+                event.getEntity().addEffect(new MobEffectInstance(MobEffects.POISON, 200), serverPlayer);
+            }
         }
     }
 

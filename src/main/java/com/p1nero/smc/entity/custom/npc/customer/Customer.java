@@ -115,6 +115,7 @@ public class Customer extends SMCNpc {
     protected CustomerData customerData;
     protected int foodLevel;
     private int dieTimer = 0;
+
     public Customer(EntityType<? extends Villager> entityType, Level level) {
         super(entityType, level);
         this.setSMCId(this.getRandom().nextInt(MAX_CUSTOMER_TYPE));//确保村民随机且固定
@@ -135,10 +136,10 @@ public class Customer extends SMCNpc {
 
     public void setTraded(boolean traded) {
         this.getEntityData().set(TRADED, traded);
-        if(traded && !level().isClientSide) {
+        if (traded && !level().isClientSide) {
             dieTimer = 10;
         }
-        if(this.isSpecial() && this.getOwner() instanceof ServerPlayer serverPlayer) {
+        if (this.isSpecial() && this.getOwner() instanceof ServerPlayer serverPlayer) {
             SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
             smcPlayer.setSpecialAlive(false);
         }
@@ -163,7 +164,7 @@ public class Customer extends SMCNpc {
 
     @Override
     public int getTeamColor() {
-        if(isSpecial()) {
+        if (isSpecial()) {
             return 0xfff66d;//金色传说！
         }
         return super.getTeamColor();
@@ -184,6 +185,7 @@ public class Customer extends SMCNpc {
     public ItemStack getOrder() {
         return this.getEntityData().get(ORDER);
     }
+
     public void setMoodAfterTrade(int moodAfterTrade) {
         this.getEntityData().set(MOOD_AFTER_TRADE, moodAfterTrade);
     }
@@ -221,13 +223,13 @@ public class Customer extends SMCNpc {
     }
 
     @Nullable
-    public MainCookBlockEntity getHomeBlockEntity(){
+    public MainCookBlockEntity getHomeBlockEntity() {
         return level().getBlockEntity(getHomePos()) instanceof MainCookBlockEntity mainCookBlockEntity ? mainCookBlockEntity : null;
     }
 
     public void onFinishTrade(ServerPlayer owner, int result) {
         MainCookBlockEntity mainCookBlockEntity = this.getHomeBlockEntity();
-        if(mainCookBlockEntity != null) {
+        if (mainCookBlockEntity != null) {
             mainCookBlockEntity.onNPCFinishTrade(owner, this, result);
         }
     }
@@ -236,19 +238,19 @@ public class Customer extends SMCNpc {
     public void tick() {
         super.tick();
 
-        if(this.getUnhappyCounter() > 0) {
+        if (this.getUnhappyCounter() > 0) {
             this.addParticlesAroundSelf(ParticleTypes.ANGRY_VILLAGER);
         }
 
-        if(this.getConversingPlayer() == null && !level().isClientSide) {
+        if (this.getConversingPlayer() == null && !level().isClientSide) {
             this.getNavigation().moveTo(this.getNavigation().createPath(this.isTraded() ? this.getSpawnPos() : this.getHomePos(), 3), 1.0F);
             //开门
             Path path = this.getNavigation().getPath();
-            if(path != null && path.getNextNodeIndex() < path.getNodeCount()) {
+            if (path != null && path.getNextNodeIndex() < path.getNodeCount()) {
                 BlockPos pos = path.getNextNode().asBlockPos();
                 BlockState blockState = level().getBlockState(pos);
                 if (blockState.is(BlockTags.WOODEN_DOORS, (base) -> base.getBlock() instanceof DoorBlock)) {
-                    DoorBlock block = (DoorBlock)blockState.getBlock();
+                    DoorBlock block = (DoorBlock) blockState.getBlock();
                     if (!block.isOpen(blockState)) {
                         block.setOpen(this, level(), blockState, pos, true);
                     }
@@ -257,7 +259,7 @@ public class Customer extends SMCNpc {
 
         }
 
-        if(!this.isTraded() && this.getOwner() != null) {
+        if (!this.isTraded() && this.getOwner() != null) {
             this.getLookControl().setLookAt(this.getOwner());
         }
 
@@ -266,17 +268,17 @@ public class Customer extends SMCNpc {
     @Override
     public void onSecond() {
         super.onSecond();
-        if(this.dieTimer > 0) {
-            this.dieTimer --;
-            if(this.dieTimer <= 0) {
+        if (this.dieTimer > 0) {
+            this.dieTimer--;
+            if (this.dieTimer <= 0) {
                 this.discard();//直接消失，无需多言
             }
         }
 
-        if(this.tickCount > 3600 && !this.isTraded()) {
-            if(this.getOwner() instanceof ServerPlayer serverPlayer) {
+        if (this.tickCount > 3600 && !this.isTraded()) {
+            if (this.getOwner() instanceof ServerPlayer serverPlayer) {
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("customer_left"), false);
-                if(this.isSpecial()) {
+                if (this.isSpecial()) {
                     SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
                     smcPlayer.setSpecialAlive(false);
                 }
@@ -284,7 +286,7 @@ public class Customer extends SMCNpc {
             }
         }
 
-        if(this.isTraded() && this.getOnPos().getCenter().distanceTo(this.getSpawnPos().getCenter()) < 2) {
+        if (this.isTraded() && this.getOnPos().getCenter().distanceTo(this.getSpawnPos().getCenter()) < 2) {
             this.discard();
         }
 
@@ -293,7 +295,7 @@ public class Customer extends SMCNpc {
     @Override
     public boolean hurt(@NotNull DamageSource source, float value) {
         //可以攻击他人的顾客
-        if(source.getEntity() instanceof ServerPlayer serverPlayer && !serverPlayer.equals(this.getOwner())){
+        if (source.getEntity() instanceof ServerPlayer serverPlayer && !serverPlayer.equals(this.getOwner())) {
             this.setTraded(true);
             return super.hurt(source, 1145);
         }
@@ -302,32 +304,55 @@ public class Customer extends SMCNpc {
 
     @Override
     public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
-        if(this.isTraded()) {
+        if (this.isTraded()) {
             return InteractionResult.FAIL;
         }
-        if(player instanceof ServerPlayer serverPlayer && this.getOwner() != null && !player.getUUID().equals(this.getOwnerUUID())) {
+        SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
+        if (player instanceof ServerPlayer serverPlayer && this.getOwner() != null && !player.getUUID().equals(this.getOwnerUUID())) {
             SMCAdvancementData.finishAdvancement("hijack_customer", serverPlayer);
         }
+        ItemStack mainHandItem = player.getMainHandItem();
+        if (this.getOrder().is(mainHandItem.getItem())) {
+            //国潮毒死
+            if (player instanceof ServerPlayer serverPlayer && mainHandItem.hasTag()) {
+                if(mainHandItem.getOrCreateTag().getBoolean(SkilletManCoreMod.GUO_CHAO)) {
+                    if (random.nextFloat() < 0.10F) {
+                        this.setHealth(0);
+                        player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+                        SMCPlayer.updateWorkingState(false, serverPlayer);
+                        player.displayClientMessage(SkilletManCoreMod.getInfo("villager_die_for_guo_chao"), false);
+                        SMCPlayer.consumeMoney(2000 * smcPlayer.getLevelMoneyRate(), serverPlayer);
+                        return InteractionResult.SUCCESS;
+                    }
+                }
+                if(mainHandItem.getOrCreateTag().getBoolean(SkilletManCoreMod.POISONED_SKILLET)) {
+                    this.setHealth(0);
+                    player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+                    SMCPlayer.updateWorkingState(false, serverPlayer);
+                    player.displayClientMessage(SkilletManCoreMod.getInfo("villager_die_for_poison"), false);
+                    SMCPlayer.consumeMoney(5000 * smcPlayer.getLevelMoneyRate(), serverPlayer);
+                    return InteractionResult.SUCCESS;
+                }
+            }
 
-        if(this.getOrder().is(player.getMainHandItem().getItem())) {
-            CookedFoodData cookedFoodData = BaseFoodItem.getData(player.getMainHandItem());
-            if(cookedFoodData != null){
+            CookedFoodData cookedFoodData = BaseFoodItem.getData(mainHandItem);
+            if (cookedFoodData != null) {
                 int score = cookedFoodData.score;
-                if(score >= 90) {
+                if (score >= 90) {
                     this.foodLevel = CustomerData.BEST;
-                } else if(score >= 70){
+                } else if (score >= 70) {
                     this.foodLevel = CustomerData.MIDDLE;
                 } else {
                     this.foodLevel = CustomerData.BAD;
                 }
 
-                if(cookedFoodData.toFoodData() == CookedFoodData.BAD) {
+                if (cookedFoodData.toFoodData() == CookedFoodData.BAD) {
                     this.foodLevel = CustomerData.BAD;
                 }
             }
         }
-        if(this.foodLevel == CustomerData.BAD && !DataManager.firstFoodBad.get(player)) {
-            if(player instanceof ServerPlayer serverPlayer) {
+        if (this.foodLevel == CustomerData.BAD && !DataManager.firstFoodBad.get(player)) {
+            if (player instanceof ServerPlayer serverPlayer) {
                 //灶王爷不乐意了
                 CompoundTag tag = new CompoundTag();
                 tag.putBoolean("is_first_food_bad", true);
@@ -340,17 +365,16 @@ public class Customer extends SMCNpc {
         }
 
         //双端
-        if(customerData == null && !level().isClientSide) {
+        if (customerData == null && !level().isClientSide) {
             //每级1/5概率刷新神人
-            SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
-            if(smcPlayer.getLevel() > 0 && !smcPlayer.isSpecialAlive() && this.getRandom().nextInt(3) == 1) {
+            if (smcPlayer.getLevel() > 0 && !smcPlayer.isSpecialAlive() && this.getRandom().nextInt(3) == 1) {
                 customerData = SPECIAL_CUSTOMERS.get(this.getSMCId() % SPECIAL_CUSTOMERS.size());
                 this.setSpecial(true);
                 smcPlayer.setSpecialAlive(true);
             } else {
                 customerData = CUSTOMERS.get(this.getSMCId() % CUSTOMERS.size());
             }
-            if(customerData != null && player instanceof ServerPlayer){
+            if (customerData != null && player instanceof ServerPlayer) {
                 customerData.onInteract(((ServerPlayer) player), this);
             }
         }
@@ -371,7 +395,7 @@ public class Customer extends SMCNpc {
     /**
      * 一句寒暄，一个提交选项。
      * customer _ 实体编号 _ 是否为特殊顾客 _ 对话编号
-     *            1 ~ 100    _s            0 ~ 4
+     * 1 ~ 100    _s            0 ~ 4
      * 0:需求
      * 1:选项 （交付）
      * 2：100%时的评价
@@ -384,27 +408,27 @@ public class Customer extends SMCNpc {
     public void openDialogueScreen(CompoundTag senderData) {
         LinkListStreamDialogueScreenBuilder builder = new LinkListStreamDialogueScreenBuilder(this);
         DialogueComponentBuilder dialogueComponentBuilder = new DialogueComponentBuilder(this);
-        if(senderData.getBoolean("is_special")){
+        if (senderData.getBoolean("is_special")) {
             customerData = SPECIAL_CUSTOMERS.get(this.getSMCId() % SPECIAL_CUSTOMERS.size());
         } else {
             customerData = CUSTOMERS.get(this.getSMCId() % CUSTOMERS.size());
         }
         this.customerData.getDialogScreen(senderData, builder, dialogueComponentBuilder, senderData.getBoolean("can_submit"), senderData.getInt("food_level"));
-        if(!builder.isEmpty()){
+        if (!builder.isEmpty()) {
             Minecraft.getInstance().setScreen(builder.build());
         }
     }
 
     @Override
     public void handleNpcInteraction(ServerPlayer player, byte interactionID) {
-        if(interactionID == CustomerData.BAD) {
+        if (interactionID == CustomerData.BAD) {
             submitFood(player);
             this.setMoodAfterTrade(UN_HAPPY);
             this.setTraded(true);//离去
             onFinishTrade(player, CustomerData.BAD);
         }
 
-        if(interactionID == CustomerData.BEST || interactionID == CustomerData.MIDDLE) {
+        if (interactionID == CustomerData.BEST || interactionID == CustomerData.MIDDLE) {
             submitFood(player);
             SMCPlayer.addExperience(player);//能吃就能升级
             this.setMoodAfterTrade(interactionID == CustomerData.BEST ? HAPPY : UN_HAPPY);
@@ -412,11 +436,11 @@ public class Customer extends SMCNpc {
             onFinishTrade(player, interactionID);
         }
 
-        if(this.customerData != null){
+        if (this.customerData != null) {
             this.customerData.handle(player, this, interactionID);
         }
 
-        if(interactionID == CustomerData.BEST || interactionID == CustomerData.MIDDLE || interactionID == CustomerData.BAD) {
+        if (interactionID == CustomerData.BEST || interactionID == CustomerData.MIDDLE || interactionID == CustomerData.BAD) {
             return;
         }
 
@@ -430,21 +454,21 @@ public class Customer extends SMCNpc {
         ItemUtil.addItem(player, SMCRegistrateItems.DIRT_PLATE.asItem(), 1);
     }
 
-    public void displayRecipeInfo(Player player){
-        if(this.isTraded()){
+    public void displayRecipeInfo(Player player) {
+        if (this.isTraded()) {
             return;
         }
         player.displayClientMessage(SkilletManCoreMod.getInfo("ingredient_info"), false);
         RecipeManager recipeManager = level().getRecipeManager();
-        for(BaseCuisineRecipe<?> baseCuisineRecipe : recipeManager.getAllRecipesFor(CDMisc.RT_CUISINE.get())){
-            if(this.getOrder().is(baseCuisineRecipe.holderItem)) {
+        for (BaseCuisineRecipe<?> baseCuisineRecipe : recipeManager.getAllRecipesFor(CDMisc.RT_CUISINE.get())) {
+            if (this.getOrder().is(baseCuisineRecipe.holderItem)) {
                 baseCuisineRecipe.list.forEach(cuisineRecipeMatch -> {
                     ItemStack[] itemStacks = cuisineRecipeMatch.ingredient().getItems();
                     Component info = Component.empty();
-                    if(itemStacks.length > 1) {
+                    if (itemStacks.length > 1) {
                         ItemStack refer = itemStacks[0];
                         IngredientConfig.IngredientEntry entry = IngredientConfig.get().getEntry(refer);
-                        if(entry != null) {
+                        if (entry != null) {
                             info = Component.literal("[").append(entry.type.get()).append("]").withStyle(entry.type.format);
                         }
                     } else {
@@ -461,18 +485,21 @@ public class Customer extends SMCNpc {
         return this.customerData == null ? Component.translatable(this.getType().getDescriptionId()) : this.customerData.getTranslation();
     }
 
-    public static abstract class CustomerData{
+    public static abstract class CustomerData {
         protected static final byte BEST = 3;
         protected static final byte MIDDLE = 2;
         protected static final byte BAD = 1;
         protected static final byte NO_FOOD = -1;
 
         public abstract void generateTranslation(SMCLangGenerator generator);
+
         public abstract void onInteract(ServerPlayer player, Customer self);
+
         @OnlyIn(Dist.CLIENT)
         public abstract void getDialogScreen(CompoundTag serverData, LinkListStreamDialogueScreenBuilder screenBuilder, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodLevel);
 
         public abstract void handle(ServerPlayer serverPlayer, Customer self, byte interactId);
+
         public abstract Component getTranslation();
 
     }
