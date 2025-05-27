@@ -265,12 +265,8 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
                     new ItemStack(AllItems.BRASS_INGOT, 10),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
-                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
-                    new ItemStack(AllBlocks.DEPLOYER, 1),
-                    142857, 0, 0));
-            merchantOffers.add(new MerchantOffer(
-                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
-                    new ItemStack(AllItems.PRECISION_MECHANISM, 1),
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 40),
+                    new ItemStack(AllItems.PRECISION_MECHANISM, 2),
                     142857, 0, 0));
         }
 
@@ -283,7 +279,7 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
                     new ItemStack(AllBlocks.BLAZE_BURNER, 1),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
-                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 10),
+                    new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
                     new ItemStack(AllItems.ELECTRON_TUBE, 1),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
@@ -296,7 +292,7 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
-                    new ItemStack(AllBlocks.ROSE_QUARTZ_LAMP, 10),
+                    new ItemStack(AllBlocks.ROSE_QUARTZ_LAMP, 2),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
