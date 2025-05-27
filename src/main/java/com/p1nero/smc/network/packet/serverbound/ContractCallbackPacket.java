@@ -38,8 +38,8 @@ public record ContractCallbackPacket(UUID playerUUID) implements BasePacket {
                     oldCollaborator2.displayClientMessage(SkilletManCoreMod.getInfo("collaborate_loss", targetS.getDisplayName()).withStyle(ChatFormatting.RED), false);
                 }
                 targetSMCPlayer.setCollaborator(serverPlayer);
-                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("collaborate_with", targetS.getDisplayName()).withStyle(ChatFormatting.GREEN), true);
-                targetS.displayClientMessage(SkilletManCoreMod.getInfo("collaborate_with", serverPlayer.getDisplayName()).withStyle(ChatFormatting.GREEN), true);
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("collaborate_with", targetS.getDisplayName()).withStyle(ChatFormatting.GREEN), false);
+                targetS.displayClientMessage(SkilletManCoreMod.getInfo("collaborate_with", serverPlayer.getDisplayName()).withStyle(ChatFormatting.GREEN), false);
             }
         }
     }

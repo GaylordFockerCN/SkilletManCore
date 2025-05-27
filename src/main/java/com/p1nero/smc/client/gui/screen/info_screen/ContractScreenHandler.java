@@ -36,7 +36,7 @@ public class ContractScreenHandler {
 
     public static void onGenerate(SMCLangGenerator generator) {
         generator.addScreenName(name, "来自 %s 的契约");
-        generator.addScreenAns(name, 0, "%s 向您发来了契约申请。同意后，双方将共享所有金币收入，但不共享声望等级。如需共享等级收入，可在向村民交付料理时轮流交付以共享声望等级！您是否愿意与之签订契约？§c§l注意，除非新的契约成立，否则契约将不可取消！");
+        generator.addScreenAns(name, 0, "[%s]向您发来了契约申请。同意后，双方将共享所有金币收入，但不共享声望等级。如需共享等级收入，可在向村民交付料理时轮流交付以共享声望等级！您是否愿意与之签订契约？§c§l注意，除非新的契约成立，否则契约将不可取消！");
         generator.addScreenOpt(name, 0, "同意签署");
         generator.addScreenOpt(name, 1, "我拒绝！");
         generator.addScreenAns(name, 1, "您成功与 %s 签订了契约！");
