@@ -15,15 +15,15 @@ import com.p1nero.smc.item.custom.LeftSkilletRightSpatula;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.packet.SyncArchivePacket;
+import com.p1nero.smc.network.packet.clientbound.OpenContractScreenPacket;
 import com.p1nero.smc.network.packet.clientbound.OpenStartGuideScreenPacket;
 import com.p1nero.smc.network.packet.clientbound.SyncUuidPacket;
-import com.p1nero.smc.util.BookManager;
+import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
 import com.simibubi.create.Create;
 import com.teamtea.eclipticseasons.api.constant.solar.SolarTerm;
 import com.teamtea.eclipticseasons.api.util.EclipticUtil;
-import com.teamtea.eclipticseasons.common.registry.ItemRegistry;
 import dev.xkmc.cuisinedelight.content.item.CuisineSkilletItem;
 import dev.xkmc.cuisinedelight.content.item.SpatulaItem;
 import dev.xkmc.cuisinedelight.events.FoodEatenEvent;
@@ -33,9 +33,6 @@ import net.blay09.mods.waystones.block.ModBlocks;
 import net.kenddie.fantasyarmor.item.FAItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.nbt.IntTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -46,7 +43,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
@@ -61,13 +57,10 @@ import yesman.epicfight.gameasset.EpicFightSkills;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
-import yesman.epicfight.world.capabilities.item.ArmorCapability;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
-import yesman.epicfight.world.capabilities.item.ShieldCapability;
 import yesman.epicfight.world.capabilities.item.WeaponCapability;
 import yesman.epicfight.world.item.EpicFightItems;
 
-import java.util.List;
 import java.util.Objects;
 
 import static com.p1nero.smc.datagen.SMCAdvancementData.FOOD_ADV_PRE;
@@ -155,7 +148,7 @@ public class PlayerEventListeners {
                 ItemUtil.addItem(serverPlayer, ModItems.NETHERITE_BACKPACK.get(), 1);
                 ItemUtil.addItem(serverPlayer, CDItems.SKILLET.asItem(), 1);
                 ItemUtil.addItem(serverPlayer, CDItems.SPATULA.asItem(), 1);
-                ItemUtil.addItem(serverPlayer, ItemRegistry.calendar_item.get(), 1);
+                ItemUtil.addItem(serverPlayer, SMCRegistrateItems.CONTRACT.asItem(), 1, true);
                 ItemStack step = new ItemStack(EpicFightItems.SKILLBOOK.get());
                 step.getOrCreateTag().putString("skill", EpicFightSkills.STEP.toString());
                 ItemStack parrying = new ItemStack(EpicFightItems.SKILLBOOK.get());
@@ -221,7 +214,7 @@ public class PlayerEventListeners {
     }
 
     @SubscribeEvent
-    public static void onPlayerInteract(PlayerInteractEvent event) {
+    public static void onPlayerInteractBlock(PlayerInteractEvent.RightClickBlock event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
             //传送石就是重生点
             if (event.getLevel().getBlockState(event.getPos()).is(ModBlocks.waystone)) {
@@ -243,6 +236,18 @@ public class PlayerEventListeners {
     public static void onPlayerEatFood(FoodEatenEvent event) {
         if (event.player instanceof ServerPlayer serverPlayer) {
             SMCAdvancementData.finishAdvancement("self_eat", serverPlayer);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerInteractEntity(PlayerInteractEvent.EntityInteract event) {
+        Player player = event.getEntity();
+        if(player.isShiftKeyDown() && event.getTarget() instanceof ServerPlayer targetPlayer) {
+            if(player.getMainHandItem().is(SMCRegistrateItems.CONTRACT.asItem())) {
+                player.displayClientMessage(SkilletManCoreMod.getInfo("send_contract", targetPlayer.getDisplayName()).withStyle(ChatFormatting.GREEN), false);
+                PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new OpenContractScreenPacket(player.getName(), player.getUUID()), targetPlayer);
+                player.getMainHandItem().shrink(1);
+            }
         }
     }
 

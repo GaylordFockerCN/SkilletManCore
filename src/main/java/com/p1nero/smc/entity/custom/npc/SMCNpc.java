@@ -1,7 +1,7 @@
 package com.p1nero.smc.entity.custom.npc;
 
 import com.mojang.serialization.Dynamic;
-import com.p1nero.api.component.DialogueComponentBuilder;
+import com.p1nero.dialog_lib.api.component.DialogueComponentBuilder;
 import com.p1nero.smc.archive.SMCArchiveManager;
 import com.p1nero.smc.entity.ai.behavior.VillagerTasks;
 import com.p1nero.smc.entity.ai.goal.NpcDialogueGoal;

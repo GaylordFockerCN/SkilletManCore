@@ -7,6 +7,7 @@ import com.p1nero.smc.client.gui.screen.entity_dialog.animal.*;
 import com.p1nero.smc.client.gui.screen.entity_dialog.golem.IronGolemDialogScreenHandler;
 import com.p1nero.smc.client.gui.screen.entity_dialog.golem.SnowGolemDialogScreenHandler;
 import com.p1nero.smc.client.gui.screen.info_screen.BanPortalScreenHandler;
+import com.p1nero.smc.client.gui.screen.info_screen.ContractScreenHandler;
 import com.p1nero.smc.client.gui.screen.info_screen.StartCreateScreenHandler;
 import com.p1nero.smc.client.gui.screen.info_screen.StartGuideScreenHandler;
 import com.p1nero.smc.client.keymapping.KeyMappings;
@@ -175,6 +176,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         StartGuideScreenHandler.onGenerate(this);
         StartCreateScreenHandler.onGenerate(this);
         BanPortalScreenHandler.onGenerate(this);
+        ContractScreenHandler.onGenerate(this);
 
         this.addEffect(SMCEffects.BURNT, "灼伤");
         this.addEffect(SMCEffects.RUMOR, "谣言");
@@ -372,10 +374,16 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("guo_chao_item_info", "§c§l国潮来袭！美味诱人！");
         this.addInfo("villager_die_for_guo_chao", "不好啦！客户吃了国潮外卖，中毒身亡！");
         this.addInfo("villager_die_for_poison", "不好啦！客户中毒身亡啦！锅被下毒啦！");
+        this.addInfo("send_contract", "成功向[%s]§a发送合作契约！");
+        this.addInfo("from_collaborator", "§a契约共享分成！");
+        this.addInfo("collaborate_with", "成功与[%s]建立契约！将共享所有收入！");
+        this.addInfo("collaborate_loss", "[%s]废弃了与您的契约！");
         this.add(SMCRegistrateItems.SUPER_CHEF_PILL.get(), "超级厨师药丸");
         this.addItemUsageInfo(SMCRegistrateItems.SUPER_CHEF_PILL.get(), "食用后获得一分钟“超级厨师”效果，效果持续期间内炒出的§6料理品质视为100%，无视未熟和烧焦惩罚！");
         this.add(SMCRegistrateItems.PI_SHUANG.get(), "砒霜");
         this.addItemUsageInfo(SMCRegistrateItems.PI_SHUANG.get(), "右键对放置的平底锅使用，使其炒出来的料理都带有剧毒属性，无法消除！不过...用下过毒的平底锅攻击敌人亦可使敌人中毒！");
+        this.add(SMCRegistrateItems.CONTRACT.get(), "合作契约");
+        this.addItemUsageInfo(SMCRegistrateItems.CONTRACT.get(), "潜行时右键其他玩家以使用，在对方同意后，双方将共享所有收入，但不共享声望等级。若两人想合作同一家店，则可以轮流递交菜品以共享等级收益。§c§l注意，除非新的契约成立，否则契约将不可取消！");
 
         this.add(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.get(), "技能书抽奖券");
         this.addItemUsageInfo(SMCRegistrateItems.SKILL_BOOK_RAFFLE_TICKET.asItem(), "可以在§6图书管理员§r处抽取技能书。找不到武器匠时可以尝试 在无业村民附近摆放§a[讲台]§r 或 通过对话 转化普通村民");

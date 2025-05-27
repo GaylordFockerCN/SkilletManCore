@@ -31,10 +31,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 改编自theAether 的 ValkyrieQueenDialogueScreen
@@ -280,15 +277,15 @@ public class DialogueScreen extends Screen {
         this.finishChat((byte) 0);
     }
 
-    public static Component screen(String name) {
-        return Component.translatable("screen.smc." + name);
+    public static Component screen(String name, Object ...objects) {
+        return Component.translatable("screen.smc." + name, objects);
     }
 
-    public static Component screenAns(String name, int id) {
-        return Component.translatable("screen.smc.ans." + name + "_" + id);
+    public static Component screenAns(String name, int id, Object ...objects) {
+        return Component.translatable("screen.smc.ans." + name + "_" + id, objects);
     }
-    public static Component screenOpt(String name, int id) {
-        return Component.translatable("screen.smc.opt." + name + "_" + id);
+    public static Component screenOpt(String name, int id, Object ...objects) {
+        return Component.translatable("screen.smc.opt." + name + "_" + id, objects);
     }
 
     public static class ScreenDialogueBuilder{
@@ -306,24 +303,24 @@ public class DialogueScreen extends Screen {
             defaultOptFormats.addAll(List.of(formatting));
         }
 
-        public Component ans(int id) {
-            Component ans = DialogueScreen.screenAns(name, id);
+        public Component ans(int id, Object ...objects) {
+            Component ans = DialogueScreen.screenAns(name, id, objects);
             if(!defaultAnsFormats.isEmpty()) {
                 return ans.copy().withStyle(defaultAnsFormats.toArray(new ChatFormatting[]{}));
             }
             return ans;
         }
 
-        public Component opt(int id) {
-            Component opt = DialogueScreen.screenOpt(name, id);
+        public Component opt(int id, Object ...objects) {
+            Component opt = DialogueScreen.screenOpt(name, id, objects);
             if(!defaultOptFormats.isEmpty()){
                 return opt.copy().withStyle(defaultOptFormats.toArray(new ChatFormatting[]{}));
             }
             return opt;
         }
 
-        public Component name(){
-            return DialogueScreen.screen(name);
+        public Component name(Object ...objects){
+            return DialogueScreen.screen(name, objects);
         }
 
     }

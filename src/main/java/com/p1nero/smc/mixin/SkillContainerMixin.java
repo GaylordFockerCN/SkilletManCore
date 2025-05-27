@@ -23,7 +23,7 @@ public abstract class SkillContainerMixin {
 
     @Inject(method = "setSkill(Lyesman/epicfight/skill/Skill;Z)Z", at = @At("HEAD"))
     private void smc$setSkill(Skill skill, boolean initialize, CallbackInfoReturnable<Boolean> cir){
-        if(initialize && !this.getExecuter().isLogicalClient()){
+        if(executor != null && !executor.isLogicalClient() && skill != null){
             ResourceLocation name = skill.getRegistryName();
             SMCAdvancementData.finishAdvancement("skill_adv_" +name.getNamespace() + "_" + name.getPath(), ((ServerPlayerPatch) executor).getOriginal());
         }

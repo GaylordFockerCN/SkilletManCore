@@ -195,6 +195,10 @@ public class SMCRegistrateItems {
                     new SimpleDescriptionFoilItem(p.food(new FoodProperties.Builder().effect(()-> new MobEffectInstance(SMCEffects.SUPER_CHEF.get(), 1200), 1.0F).build()).rarity(Rarity.RARE)))
             .defaultModel()
             .defaultLang().register();
+    public static final ItemEntry<SimpleDescriptionFoilItem> CONTRACT = SkilletManCoreMod.REGISTRATE.item("contract", p ->
+                    new SimpleDescriptionFoilItem(p.rarity(Rarity.RARE)))
+            .defaultModel()
+            .defaultLang().register();
     public static final ItemEntry<PiShuangItem> PI_SHUANG = SkilletManCoreMod.REGISTRATE.item("pi_shuang", p ->
                     new PiShuangItem(p.rarity(Rarity.RARE)))
             .defaultModel()

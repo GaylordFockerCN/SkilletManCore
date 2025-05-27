@@ -12,6 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -31,7 +32,8 @@ public record EndScreenCallbackPacket() implements BasePacket {
             ServerLevel overworld = player.getServer().getLevel(Level.OVERWORLD);
             if (overworld != null) {
                 if(player.level().dimension() != Level.OVERWORLD) {
-                    serverPlayer.changeDimension(overworld, new SMCTeleporter(overworld.getSharedSpawnPos()));
+                    RandomSource randomSource = player.getRandom();
+                    serverPlayer.changeDimension(overworld, new SMCTeleporter(overworld.getSharedSpawnPos().offset(randomSource.nextInt(10), 2, randomSource.nextInt(10))));
                 }
                 if(!DataManager.bossKilled.get(serverPlayer)) {
                     serverPlayer.setRespawnPosition(Level.OVERWORLD, overworld.getSharedSpawnPos(), 0.0F, false, true);

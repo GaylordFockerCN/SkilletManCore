@@ -1,7 +1,7 @@
 package com.p1nero.smc.entity.custom.npc.start_npc;
 
 import com.cazsius.solcarrot.item.SOLCarrotItems;
-import com.p1nero.api.component.DialogueComponentBuilder;
+import com.p1nero.dialog_lib.api.component.DialogueComponentBuilder;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.block.entity.MainCookBlockEntity;

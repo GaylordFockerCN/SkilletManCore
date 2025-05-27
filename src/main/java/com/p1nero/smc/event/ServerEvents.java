@@ -101,18 +101,20 @@ public class ServerEvents {
                 if (dayTime > 0 && dayTime % 6 == 0 && dayTick == 100) {
                     SolarTerm solarTerm = EclipticUtil.getNowSolarTerm(overworld);
                     ArrayList<ServerPlayer> players = getRankedList(event.getServer());
-                    ServerPlayer bestPlayer = players.get(0);
-                    Season season = solarTerm.getSeason();
-                    players.forEach(serverPlayer -> serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("best_for_season", bestPlayer.getDisplayName(), season.getTranslation()).withStyle(season.getColor()), false));
-                    ItemStack itemStack = switch (season) {
-                        case SPRING -> BlockRegistry.spring_greenhouse_core.get().asItem().getDefaultInstance();
-                        case SUMMER -> BlockRegistry.summer_greenhouse_core.get().asItem().getDefaultInstance();
-                        case AUTUMN -> BlockRegistry.autumn_greenhouse_core.get().asItem().getDefaultInstance();
-                        case WINTER -> BlockRegistry.winter_greenhouse_core.get().asItem().getDefaultInstance();
-                        case NONE -> ItemStack.EMPTY;
-                    };
-                    itemStack.setHoverName(SkilletManCoreMod.getInfo("best_season_win", season.getTranslation(), bestPlayer.getDisplayName()).withStyle(season.getColor()));
-                    ItemUtil.addItem(bestPlayer, itemStack, true);
+                    if(!players.isEmpty()) {
+                        ServerPlayer bestPlayer = players.get(0);
+                        Season season = solarTerm.getSeason();
+                        players.forEach(serverPlayer -> serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("best_for_season", bestPlayer.getDisplayName(), season.getTranslation()).withStyle(season.getColor()), false));
+                        ItemStack itemStack = switch (season) {
+                            case SPRING -> BlockRegistry.spring_greenhouse_core.get().asItem().getDefaultInstance();
+                            case SUMMER -> BlockRegistry.summer_greenhouse_core.get().asItem().getDefaultInstance();
+                            case AUTUMN -> BlockRegistry.autumn_greenhouse_core.get().asItem().getDefaultInstance();
+                            case WINTER -> BlockRegistry.winter_greenhouse_core.get().asItem().getDefaultInstance();
+                            case NONE -> ItemStack.EMPTY;
+                        };
+                        itemStack.setHoverName(SkilletManCoreMod.getInfo("best_season_win", season.getTranslation(), bestPlayer.getDisplayName()).withStyle(season.getColor()));
+                        ItemUtil.addItem(bestPlayer, itemStack, true);
+                    }
                 }
 
             }
@@ -121,10 +123,12 @@ public class ServerEvents {
 
     public static ArrayList<ServerPlayer> getRankedList(MinecraftServer server) {
         ArrayList<ServerPlayer> players = new ArrayList<>(server.getPlayerList().getPlayers());
-        players.sort(Comparator.comparingInt((player) -> {
-            SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer((Player) player);
-            return smcPlayer.getMoneyInSeason();
-        }).reversed());
+        if(!players.isEmpty()) {
+            players.sort(Comparator.comparingInt((player) -> {
+                SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer((Player) player);
+                return smcPlayer.getMoneyInSeason();
+            }).reversed());
+        }
         return players;
     }
 
@@ -134,6 +138,9 @@ public class ServerEvents {
     }
 
     public static void displayRankingListFor(ServerPlayer serverPlayer, List<ServerPlayer> sortedPlayers) {
+        if(sortedPlayers.isEmpty()) {
+            return;
+        }
         Player first = sortedPlayers.get(0);
         if (DataManager.inRaid.get(serverPlayer)) {
             return;

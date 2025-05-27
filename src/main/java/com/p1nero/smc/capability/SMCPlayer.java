@@ -61,6 +61,7 @@ import yesman.epicfight.world.item.SkillBookItem;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
@@ -78,10 +79,10 @@ public class SMCPlayer {
     private boolean dir;//true 左 false 右
 
     public float getCurrentSpatulaIndex(float partialTick) {
-        return Mth.lerp(partialTick, currentSpatulaIndex0,  currentSpatulaIndex);
+        return Mth.lerp(partialTick, currentSpatulaIndex0, currentSpatulaIndex);
     }
 
-    public boolean inCorrectStirTime(){
+    public boolean inCorrectStirTime() {
         return currentSpatulaIndex > MAX_SPATULA_TIME / 3 && currentSpatulaIndex < MAX_SPATULA_TIME * 2 / 3;
     }
 
@@ -199,6 +200,31 @@ public class SMCPlayer {
         weaponPity5Star = 0;
     }
     //============================================================================================
+
+    @Nullable
+    private UUID collaboratorUUID = null;
+
+    @Nullable
+    public UUID getCollaboratorUUID() {
+        return collaboratorUUID;
+    }
+
+    @Nullable
+    public Player getCollaborator(Player self) {
+        UUID uuid = this.getCollaboratorUUID();
+        if (uuid != null) {
+            return self.level().getPlayerByUUID(uuid);
+        }
+        return null;
+    }
+
+    public void clearCollaborator() {
+        this.collaboratorUUID = null;
+    }
+
+    public void setCollaborator(ServerPlayer player) {
+        this.collaboratorUUID = player.getUUID();
+    }
 
     private int tickAfterBossDieLeft;
     private int specialCustomerMet;
@@ -365,7 +391,7 @@ public class SMCPlayer {
             }
         }
 
-        if(smcPlayer.isTrialRequired()){
+        if (smcPlayer.isTrialRequired()) {
             DataManager.trailRequired.put(serverPlayer, true);
             DataManager.hintUpdated.put(serverPlayer, true);
         }
@@ -379,8 +405,8 @@ public class SMCPlayer {
         serverPlayer.serverLevel().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), SoundEvents.PLAYER_LEVELUP, SoundSource.BLOCKS, 1.0F, 1.0F);
     }
 
-    public void getRandomProp(ServerPlayer serverPlayer){
-        if(RANDOM_PROP == null) {
+    public void getRandomProp(ServerPlayer serverPlayer) {
+        if (RANDOM_PROP == null) {
             ItemStack honeyHoney = Items.HONEY_BOTTLE.getDefaultInstance();
             honeyHoney.getOrCreateTag().putBoolean(SkilletManCoreMod.MUL, true);
             honeyHoney.setHoverName(SkilletManCoreMod.getInfo("honey_custom_name"));
@@ -455,7 +481,7 @@ public class SMCPlayer {
      * 袭击完全结束后再播报
      */
     public static void tryBroadCastRank(ServerPlayer serverPlayer) {
-        if(DummyEntityManager.getDummyEntities(serverPlayer.serverLevel()).size() <= 1) {
+        if (DummyEntityManager.getDummyEntities(serverPlayer.serverLevel()).size() <= 1) {
             ServerEvents.displayRankingListFor(serverPlayer);
         }
     }
@@ -559,12 +585,22 @@ public class SMCPlayer {
         if (smcPlayer.moneyCount < 0) {
             SMCAdvancementData.finishAdvancement("no_money", serverPlayer);
         }
-        serverPlayer.displayClientMessage(Component.literal("-" + (int)moneyCount).withStyle(ChatFormatting.BOLD, ChatFormatting.RED), false);
+        serverPlayer.displayClientMessage(Component.literal("-" + (int) moneyCount).withStyle(ChatFormatting.BOLD, ChatFormatting.RED), false);
         smcPlayer.syncToClient(serverPlayer);
     }
 
     public static void addMoney(int count, ServerPlayer serverPlayer) {
+        addMoney(count, serverPlayer, false);
+    }
+
+    public static void addMoney(int count, ServerPlayer serverPlayer, boolean ignoredCollaborator) {
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+        if (!ignoredCollaborator && smcPlayer.getCollaborator(serverPlayer) instanceof ServerPlayer collaborator) {
+            collaborator.displayClientMessage(SkilletManCoreMod.getInfo("from_collaborator"), false);
+            addMoney(count / 2, collaborator, true);
+            serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("from_collaborator"), false);
+            addMoney(count / 2, serverPlayer, true);
+        }
         smcPlayer.moneyCount += count;
         smcPlayer.moneyInSeason += count;
         serverPlayer.displayClientMessage(Component.literal("+" + count).withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN), false);
@@ -724,6 +760,9 @@ public class SMCPlayer {
         tag.putBoolean("working", isWorking);
         tag.putInt("consumerLeft", consumerLeft);
         tag.put("customDataManager", data);
+        if (collaboratorUUID != null) {
+            tag.putUUID("collaboratorUUID", collaboratorUUID);
+        }
         return tag;
     }
 
@@ -754,10 +793,15 @@ public class SMCPlayer {
         consumerLeft = tag.getInt("consumerLeft");
         isWorking = tag.getBoolean("working");
         data = tag.getCompound("customDataManager");
+        if (tag.contains("collaboratorUUID")) {
+            collaboratorUUID = tag.getUUID("collaboratorUUID");
+        }
     }
 
     public void copyFrom(SMCPlayer old) {
         this.data = old.data;
+
+        this.collaboratorUUID = old.collaboratorUUID;
 
         this.moneyInSeason = old.moneyInSeason;
         this.tickAfterBossDieLeft = old.tickAfterBossDieLeft;
@@ -801,32 +845,32 @@ public class SMCPlayer {
 
 
         //控制铲子位置
-        if(player.getMainHandItem().getItem() instanceof SpatulaItem) {
+        if (player.getMainHandItem().getItem() instanceof SpatulaItem) {
             currentSpatulaIndex0 = currentSpatulaIndex;
             int time = dayTick % ((int) MAX_SPATULA_TIME + 1);
-            if(dir) {
+            if (dir) {
                 currentSpatulaIndex = time;
             } else {
                 currentSpatulaIndex = (int) (MAX_SPATULA_TIME - time);
             }
-            if(currentSpatulaIndex == MAX_SPATULA_TIME) {
+            if (currentSpatulaIndex == MAX_SPATULA_TIME) {
                 dir = false;
             }
-            if(currentSpatulaIndex == 0) {
+            if (currentSpatulaIndex == 0) {
                 dir = true;
             }
         }
 
         if (player.level().isClientSide) {
-            if(player.isLocalPlayer()) {
+            if (player.isLocalPlayer()) {
                 int currentCombo = DataManager.spatulaCombo.get(player).intValue();
-                if(currentCombo != lastClientCombo) {
+                if (currentCombo != lastClientCombo) {
                     lastClientCombo = currentCombo;
-                    if(currentCombo == 0) {
+                    if (currentCombo == 0) {
                         player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), SoundEvents.VILLAGER_NO, SoundSource.BLOCKS, 1.0F, 1.0F, false);
                     } else {
                         player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 1.0F, 1.0F, false);
-                        if(currentCombo % 10 == 0) {
+                        if (currentCombo % 10 == 0) {
                             player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), SMCSounds.VILLAGER_YES.get(), SoundSource.BLOCKS, currentCombo / 20.0F + 0.5F, 1.0F, false);
                         }
                     }
@@ -858,12 +902,12 @@ public class SMCPlayer {
                 XaeroMinimapSession session = clientLevel.getXaero_minimapSession();
                 WaypointsManager waypointsManager = session.getWaypointsManager();
                 String name = SkilletManCoreMod.getInfoKey("no_owner_shop");
-                if(waypointsManager.getWaypoints() != null) {
+                if (waypointsManager.getWaypoints() != null) {
                     List<Waypoint> list = waypointsManager.getWaypoints().getList();
                     int beforeSize = list.size();
                     list.removeIf((waypoint -> {
                         Vec3 waypointPos = new Vec3(waypoint.getX(), waypoint.getY(), waypoint.getZ());
-                        return  waypoint.getName().equals(name) && player.position().distanceTo(waypointPos) > 200;
+                        return waypoint.getName().equals(name) && player.position().distanceTo(waypointPos) > 200;
                     }));
                     if (list.size() != beforeSize) {
                         try {
@@ -879,10 +923,10 @@ public class SMCPlayer {
             ServerLevel serverLevel = serverPlayer.serverLevel();
 
             //显示当天节气
-            if(dayTick == 100) {
+            if (dayTick == 100) {
                 SolarTerm solarTerm = EclipticUtil.getNowSolarTerm(serverPlayer.serverLevel());
                 serverPlayer.connection.send(new ClientboundSetTitleTextPacket(solarTerm.getTranslation().withStyle(solarTerm.getSeason().getColor())));
-                if(dayTime % 7 == 0) {
+                if (dayTime % 7 == 0) {
                     moneyInSeason = 0;
                 }
             }
