@@ -600,6 +600,7 @@ public class SMCPlayer {
             addMoney(count / 2, collaborator, true);
             serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("from_collaborator"), false);
             addMoney(count / 2, serverPlayer, true);
+            return;
         }
         smcPlayer.moneyCount += count;
         smcPlayer.moneyInSeason += count;
