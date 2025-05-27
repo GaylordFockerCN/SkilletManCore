@@ -198,19 +198,6 @@
             "names": [
               "merlin204"
             ]
-          },
-          {
-            "title": "蓝图",
-            "names": [
-              "JackNeksa",
-              "RSGed"
-            ]
-          },
-          {
-            "title": "机械动力教程",
-            "names": [
-              "A"
-            ]
           }
         ]
       },
@@ -271,14 +258,6 @@
         "discipline": "",
         "titles": [
           {
-            "title": "",
-            "names": [
-              "Minecraft",
-              "Minecraft Forge",
-              "以及整合包中所有的模组"
-            ]
-          },
-          {
             "title": "对话系统所借鉴的开源项目（Licensed under GNU Lesser General Public License v3.0）",
             "names": [
               "The Aether"
@@ -295,7 +274,24 @@
           {
             "title": "翻译",
             "names": [
-              "deepseek"
+              "Aupoex",
+              "P1nero"
+            ]
+          },
+          {
+            "title": "在机械动力上给予我帮助",
+            "names": [
+              "Aupoex",
+              "JackNeksa",
+              "RSGed"
+            ]
+          },
+          {
+            "title": "致敬",
+            "names": [
+              "Minecraft",
+              "Minecraft Forge",
+              "以及整合包中所有的模组"
             ]
           }
         ]

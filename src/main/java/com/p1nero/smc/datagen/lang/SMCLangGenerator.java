@@ -100,7 +100,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("raid_success_for_day", "成功抵御了第 %d 天的袭击！");
         this.addInfo("raid_victory", "成功抵御了袭击！");
         this.addInfo("raid_loss", "抵御失败！损失惨重！");
-        this.addInfo("raid_loss_tip", "§6寻找§6盔甲匠§r，§6武器匠§r和§6图书管理员§r抽取更强力的盔甲、武器和技能书！也别忘了练习招架和格挡！");
+        this.addInfo("raid_loss_tip", "§6寻找§6盔甲匠§r，§6武器匠§r和§6图书管理员§r抽取更强力的盔甲、武器和技能书！也别忘了练习招架和闪避！");
         this.addInfo("trail_title", "突破试炼");
         this.addInfo("trail_success", "进阶成功！");
         this.addInfo("trail_failed", " 很遗憾，你没能通过试炼");
@@ -307,7 +307,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("end", "结束了？", "击败最终boss");
         this.addAdvancement("true_end", "真结局", "和牧师对话解锁真相");
 
-        this.addAdvancement("start_fight", "战斗之路", "第一次成功抵御来自终界的袭击。注意，夜间的袭击在第三天后才会开始，隔两天生成一次哦");
+        this.addAdvancement("start_fight", "战斗之路", "第一次成功抵御来自终界的袭击。注意，夜间的袭击在第三天后才会开始");
         this.addAdvancement("raid5d", "村庄卫士", "抵御五天的袭击");
         this.addAdvancement("raid15d", "村庄英雄", "抵御十五天的袭击。袭击那么烦人，你怎么忍住不去打最终boss的。");
         this.addAdvancement("raid30d", "你怎么还没去打最终boss？", "抵御三十天的袭击。");

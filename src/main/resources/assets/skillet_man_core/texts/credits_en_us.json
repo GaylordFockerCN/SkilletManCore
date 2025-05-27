@@ -1,35 +1,103 @@
 [
   {
-    "section": "演员表 Cast",
+    "section": "Cast",
     "disciplines": [
       {
-        "discipline": "主演 Lead Actor/Actress",
+        "discipline": "Lead Actors",
         "titles": [
           {
             "title": "",
             "names": [
-              "PLAYERNAME"
+              "Skillet Man - PLAYERNAME as",
+              "End Realm Lord - Golden Flame King as",
+              "Narrator - P1nero as"
             ]
           }
         ]
       },
       {
-        "discipline": "配角 Supporting Role",
+        "discipline": "Supporting Roles",
         "titles": [
           {
-            "title": "World",
+            "title": "Villager Team",
             "names": [
-              "P1nero",
-              "Corrupt_Dog (腐犬)",
-              "太阳照常升起",
-              "ShelMarow",
-              "修缘哉"
+              "Quality Life Assistant Villager",
+              "Priest Villager",
+              "Legendary Armorer",
+              "Burly Weaponsmith",
+              "Legendary Mechanic",
+              "Librarian",
+              "Child Villager",
+              "Butcher Villager",
+              "Fisherman Villager",
+              "Farmer Villager",
+              "Shepherd Villager",
+              "Iron Golem",
+              "Super Alpha Iron Bro"
             ]
           }
         ]
       },
       {
-        "discipline": "Narrative Designer",
+        "discipline": "Guest Appearances",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "Power-Packed Villager",
+              "Rāna Kaname"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "Extras",
+        "titles": [
+          {
+            "title": "Villager Team",
+            "names": [
+              "Harmless Wandering Trader",
+              "Harmless Villager Client",
+              "Unemployed Drifter A",
+              "Unemployed Drifter B",
+              "Unemployed Drifter C"
+            ]
+          },
+          {
+            "title": "Monster Team",
+            "names": [
+              "Zombie",
+              "Skeleton",
+              "Spider",
+              "Creeper",
+              "Witch",
+              "Wither Skeleton",
+              "Blaze",
+              "Vindicator",
+              "Evoker",
+              "Enderman"
+            ]
+          },
+          {
+            "title": "Animal Team",
+            "names": [
+              "Chicken Bro",
+              "Wolf",
+              "Cat",
+              "Pig",
+              "Cow",
+              "Sheep"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "section": "Production Team",
+    "disciplines": [
+      {
+        "discipline": "Author",
         "titles": [
           {
             "title": "",
@@ -40,22 +108,10 @@
         ]
       },
       {
-        "discipline": "Environment Artist",
+        "discipline": "Director",
         "titles": [
           {
-            "title": "Church",
-            "names": [
-              "El_mal"
-            ]
-          },
-          {
-            "title": "Final Arena",
-            "names": [
-              "RSGed"
-            ]
-          },
-          {
-            "title": "Biome Distribution",
+            "title": "",
             "names": [
               "P1nero"
             ]
@@ -63,14 +119,95 @@
         ]
       },
       {
-        "discipline": "Animator",
+        "discipline": "Programming",
         "titles": [
           {
             "title": "",
             "names": [
-              "Asanginxst",
-              "MoGlasses",
-              "Corrupt_Dog (腐犬)"
+              "P1nero"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "Quest, Codex & Tutorial Design",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "P1nero"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "Dialogue Design",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "P1nero"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "Art Design",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "P1nero"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "Worldbuilding",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "P1nero"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "Multi-tier Shops & Windmill Architecture",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "P1nero"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "External Support",
+        "titles": [
+          {
+            "title": "Final Boss",
+            "names": [
+              "太阳照常升起 (LittleSun2048)"
+            ]
+          },
+          {
+            "title": "Animation",
+            "names": [
+              "merlin204"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "Equipment Support",
+        "titles": [
+          {
+            "title": "Server Sponsorship",
+            "names": [
+              "白露 (NHBlock)"
             ]
           }
         ]
@@ -78,124 +215,7 @@
     ]
   },
   {
-    "section": "凝星制作组",
-    "disciplines": [
-      {
-        "discipline": "整合现作者",
-        "titles": [
-          {
-            "title": "",
-            "names": [
-              "太阳照常升起",
-              "HantOnN（24岁_事指挥官）"
-            ]
-          }
-        ]
-      },
-      {
-        "discipline": "整合原作者",
-        "titles": [
-          {
-            "title": "",
-            "names": [
-              "Jobin Ghy",
-              "Kindom（奋斗吧清峰）"
-            ]
-          }
-        ]
-      },
-      {
-        "discipline": "任务制作",
-        "titles": [
-          {
-            "title": "",
-            "names": [
-              "太刀虾萧萧"
-            ]
-          }
-        ]
-      },
-      {
-        "discipline": "建筑制作",
-        "titles": [
-          {
-            "title": "",
-            "names": [
-              "RSGed (kk)",
-              "一撮骨灰",
-              "El_mal"
-            ]
-          }
-        ]
-      },
-      {
-        "discipline": "美术制作",
-        "titles": [
-          {
-            "title": "",
-            "names": [
-              "Ink_Hiro（喵紙）",
-              "马了还想马",
-              "一只路过的小吴"
-            ]
-          }
-        ]
-      },
-      {
-        "discipline": "背景设定",
-        "titles": [
-          {
-            "title": "",
-            "names": [
-              "一只无情码字机"
-            ]
-          }
-        ]
-      },
-      {
-        "discipline": "设备支持",
-        "titles": [
-          {
-            "title": "",
-            "names": [
-              " 斑鸠（zhifan）"
-            ]
-          }
-        ]
-      },
-      {
-        "discipline": "技术支持",
-        "titles": [
-          {
-            "title": "",
-            "names": [
-              "longlong",
-              "普白丁（zdyyy）",
-              "孤豪_",
-              "东非大野猪（Tairitsu）",
-              "凌",
-              "Corrupt_Dog (腐犬)",
-              "P1nero",
-              "NHblock (白露)"
-            ]
-          }
-        ]
-      },
-      {
-        "discipline": "吉祥物",
-        "titles": [
-          {
-            "title": "",
-            "names": [
-              "蒂蒂"
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "section": "贡献人员",
+    "section": "Alpha Testing Contributions",
     "disciplines": [
       {
         "discipline": "",
@@ -203,16 +223,28 @@
           {
             "title": "",
             "names": [
-              "番茄布丁",
-              "dlack（厄老师）",
-              "流光（Liuguang233）",
-              "伯皆无人（Oldsmar）",
-              "环环（Huanhuan_）",
-              "忘幽（Creation-YM）",
-              "jiojio卷不动啦",
-              "一纸空文",
-              "马铃薯不是大土豆（豆纱粉）",
-              "豁浪玄黄（yellow_sea）"
+              "紫斗",
+              "佩拉瑞斯",
+              "雪落无痕",
+              "RSGed",
+              "Merlin204"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "section": "Advertisement Space Available",
+    "disciplines": [
+      {
+        "discipline": "Advertisements for Rent",
+        "titles": [
+          {
+            "title": "Advertisement Space Available",
+            "names": [
+              "Advertisement space available",
+              "Contact P1nero for inquiries"
             ]
           }
         ]
@@ -226,13 +258,40 @@
         "discipline": "",
         "titles": [
           {
-            "title": "",
+            "title": "Dialogue system inspired by open-source project (Licensed under GNU Lesser General Public License v3.0)",
             "names": [
-              "Epic Fight",
-              "Weapons of Miracles",
-              "Epic Fight - Indestructible",
+              "The Aether"
+            ]
+          },
+          {
+            "title": "Some materials sourced from (infringement deleted):",
+            "names": [
+              "pixabay",
+              "aigei.com",
+              "Partial elements pay tribute to Plants vs. Zombies"
+            ]
+          },
+          {
+            "title": "Translation Assistance",
+            "names": [
+              "Aupoex",
+              "P1nero"
+            ]
+          },
+          {
+            "title": "Assistance with Create Mod",
+            "names": [
+              "Aupoex",
+              "JackNeksa",
+              "RSGed"
+            ]
+          },
+          {
+            "title": "Tribute to",
+            "names": [
+              "Minecraft",
               "Minecraft Forge",
-              "and to all the friends who participated in the beta test and provided skins."
+              "All mods in the modpack"
             ]
           }
         ]
