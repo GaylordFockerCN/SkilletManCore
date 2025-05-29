@@ -204,69 +204,69 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
 
         merchantOffers.add(new MerchantOffer(
                 new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 10),
-                new ItemStack(AllItems.IRON_SHEET, 10),
+                new ItemStack(AllItems.IRON_SHEET, 30),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
                 new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 10),
-                new ItemStack(AllItems.COPPER_SHEET, 10),
+                new ItemStack(AllItems.COPPER_SHEET, 30),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
                 new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
-                new ItemStack(AllItems.GOLDEN_SHEET, 10),
+                new ItemStack(AllItems.GOLDEN_SHEET, 30),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
                 new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 10),
-                new ItemStack(AllItems.ZINC_INGOT, 10),
+                new ItemStack(AllItems.ZINC_INGOT, 30),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
                 new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 10),
-                new ItemStack(AllItems.ANDESITE_ALLOY, 10),
+                new ItemStack(AllItems.ANDESITE_ALLOY, 40),
                 142857, 0, 0));
 
         if(smcPlayer.getLevel() > SMCPlayer.STAGE2_REQUIRE){
 
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 12),
-                    new ItemStack(AllBlocks.ANDESITE_CASING, 10),
+                    new ItemStack(AllBlocks.ANDESITE_CASING, 60),
                     142857, 0, 0));
 
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 12),
-                    new ItemStack(AllBlocks.COPPER_CASING, 5),
+                    new ItemStack(AllBlocks.COPPER_CASING, 20),
                     142857, 0, 0));
 
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 2),
-                    new ItemStack(AllItems.BELT_CONNECTOR, 10),
+                    new ItemStack(AllItems.BELT_CONNECTOR, 40),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 2),
-                    new ItemStack(AllBlocks.SHAFT, 10),
+                    new ItemStack(AllBlocks.SHAFT, 40),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 2),
-                    new ItemStack(AllBlocks.COGWHEEL, 5),
+                    new ItemStack(AllBlocks.COGWHEEL, 20),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 2),
-                    new ItemStack(AllBlocks.LARGE_COGWHEEL, 10),
+                    new ItemStack(AllBlocks.LARGE_COGWHEEL, 40),
                     142857, 0, 0));
 
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 12),
-                    new ItemStack(AllBlocks.BRASS_CASING, 3),
+                    new ItemStack(AllBlocks.BRASS_CASING, 12),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
-                    new ItemStack(AllItems.BRASS_SHEET, 8),
+                    new ItemStack(AllItems.BRASS_SHEET, 32),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
-                    new ItemStack(AllItems.BRASS_INGOT, 10),
+                    new ItemStack(AllItems.BRASS_INGOT, 40),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 40),
-                    new ItemStack(AllItems.PRECISION_MECHANISM, 2),
+                    new ItemStack(AllItems.PRECISION_MECHANISM, 8),
                     142857, 0, 0));
         }
 
@@ -276,27 +276,27 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
                     new ItemStack(Items.BLAZE_ROD, 2),
-                    new ItemStack(AllBlocks.BLAZE_BURNER, 1),
+                    new ItemStack(AllBlocks.BLAZE_BURNER, 2),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
-                    new ItemStack(AllItems.ELECTRON_TUBE, 1),
+                    new ItemStack(AllItems.ELECTRON_TUBE, 4),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
-                    new ItemStack(CCItems.CONTROL_CHIP, 1),
+                    new ItemStack(CCItems.CONTROL_CHIP, 4),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
-                    new ItemStack(AllItems.STURDY_SHEET, 1),
+                    new ItemStack(AllItems.STURDY_SHEET, 4),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
-                    new ItemStack(AllBlocks.ROSE_QUARTZ_LAMP, 2),
+                    new ItemStack(AllBlocks.ROSE_QUARTZ_LAMP, 8),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 20),
-                    new ItemStack(AllItems.TRANSMITTER, 1),
+                    new ItemStack(AllItems.TRANSMITTER, 4),
                     142857, 0, 0));
             merchantOffers.add(new MerchantOffer(
                     new ItemStack(SMCRegistrateItems.CREATE_RAFFLE, 10),

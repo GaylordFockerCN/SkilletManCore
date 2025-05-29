@@ -117,7 +117,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             }
 
             //若无主人则3s通知一次附近玩家
-            if(mainCookBlockEntity.startNPC.getOwner() == null && mainCookBlockEntity.startNPC.tickCount % 60 == 0) {
+            if(mainCookBlockEntity.startNPC.getOwnerUUID() == null && mainCookBlockEntity.startNPC.tickCount % 60 == 0) {
                 serverLevel.players().stream().filter(serverPlayer -> serverPlayer.position().distanceTo(mainCookBlockEntity.getBlockPos().getCenter()) < 200)
                         .forEach(serverPlayer -> PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new AddWaypointPacket(SkilletManCoreMod.getInfoKey("no_owner_shop"), pos, WaypointColor.RED), serverPlayer));
             }
