@@ -3,7 +3,6 @@ package com.p1nero.smc.client.gui;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.client.gui.screen.DialogueScreen;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +16,7 @@ public class TreeNode {
     protected Component answer;
     protected Component option = Component.empty();
 
-    @Nullable
-    protected Consumer<DialogueScreen> screenConsumer;//要执行的操作
+    protected List<Consumer<DialogueScreen>> screenConsumers = new ArrayList<>();//要执行的操作
 
     public byte getExecuteValue() {
         return executeValue;
@@ -45,6 +43,11 @@ public class TreeNode {
         return this;
     }
 
+    public TreeNode addLeaf(TreeNode finalNode) {
+        options.add(finalNode);
+        return this;
+    }
+
     /**
      * 默认的情况。负数不会被处理
      */
@@ -68,7 +71,7 @@ public class TreeNode {
     }
 
     public TreeNode addExecutable(Consumer<DialogueScreen> runnable) {
-        this.screenConsumer = runnable;
+        this.screenConsumers.add(runnable);
         return this;
     }
 
@@ -78,22 +81,20 @@ public class TreeNode {
     }
 
     public void execute(DialogueScreen screen) {
-        if(screenConsumer != null){
-            screenConsumer.accept(screen);
-        }
+        screenConsumers.forEach(consumer -> consumer.accept(screen));
     }
 
     public TreeNode copy() {
         TreeNode treeNode = new TreeNode(answer);
         treeNode.option = this.option;
         treeNode.options = this.options;
-        treeNode.screenConsumer = this.screenConsumer;
+        treeNode.screenConsumers = this.screenConsumers;
         treeNode.executeValue = this.executeValue;
         return treeNode;
     }
 
     public boolean canExecute(){
-        return screenConsumer !=null;
+        return !screenConsumers.isEmpty();
     }
 
     public boolean canExecuteCode(){

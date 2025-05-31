@@ -217,10 +217,10 @@ public class LinkListStreamDialogueScreenBuilder {
         //如果是终止按钮则实现返回效果
         if (node instanceof TreeNode.FinalNode finalNode) {
             return button -> {
-                screen.finishChat(finalNode.getReturnValue());
                 if (finalNode.canExecute()) {
                     finalNode.execute(screen);
                 }
+                screen.finishChat(finalNode.getReturnValue());
             };
         }
 

@@ -1,6 +1,7 @@
 package com.p1nero.smc.entity.custom.boss.goldenflame;
 
 import com.p1nero.smc.SMCConfig;
+import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.sound.SMCSounds;
@@ -328,6 +329,10 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity {
 
         if(source.isCreativePlayer()) {
             super.hurt(source, Integer.MAX_VALUE);
+        }
+
+        if(source.getEntity() instanceof Player player && DataManager.fastKillBoss.get(player)) {
+            super.hurt(source, this.getMaxHealth() / 3);
         }
 
         if (!shouldRender()) {

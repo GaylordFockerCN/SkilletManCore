@@ -38,6 +38,7 @@ public class SMCPacketHandler {
         register(OpenEndScreenPacket.class, OpenEndScreenPacket::decode);
         register(AddEntityAfterImageParticle.class, AddEntityAfterImageParticle::decode);
 
+        register(OpenFastKillBossScreenPacket.class, OpenFastKillBossScreenPacket::decode);
         register(OpenContractScreenPacket.class, OpenContractScreenPacket::decode);
         register(OpenCreateGuideScreenPacket.class, OpenCreateGuideScreenPacket::decode);
         register(OpenStartGuideScreenPacket.class, OpenStartGuideScreenPacket::decode);
@@ -46,6 +47,7 @@ public class SMCPacketHandler {
 
 
         // 发给服务端
+        register(HandleScorePacket.class, HandleScorePacket::decode);
         register(ContractCallbackPacket.class, ContractCallbackPacket::decode);
         register(RequestExitSpectatorPacket.class, RequestExitSpectatorPacket::decode);
         register(AddDialogPacket.class, AddDialogPacket::decode);

@@ -1,6 +1,7 @@
 package com.p1nero.smc.event;
 
 import com.p1nero.smc.SkilletManCoreMod;
+import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.entity.SMCEntities;
@@ -8,6 +9,9 @@ import com.p1nero.smc.entity.custom.boss.SMCBoss;
 import com.p1nero.smc.entity.custom.boss.goldenflame.GoldenFlame;
 import com.p1nero.smc.entity.custom.npc.me.P1nero;
 import com.p1nero.smc.entity.custom.npc.special.virgil.VirgilVillager;
+import com.p1nero.smc.network.PacketRelay;
+import com.p1nero.smc.network.SMCPacketHandler;
+import com.p1nero.smc.network.packet.clientbound.OpenFastKillBossScreenPacket;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
@@ -92,6 +96,7 @@ public class LivingEntityListeners {
             serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("die_tip"), false);
             if(event.getSource().getEntity() instanceof SMCBoss smcBoss) {
                 smcBoss.setHealth(smcBoss.getHealth() + smcBoss.getMaxHealth() / 3);
+                DataManager.lastKilledByBoss.put(serverPlayer, true);//记录上次被boss杀，复活的时候用
             }
         }
 
@@ -136,6 +141,11 @@ public class LivingEntityListeners {
 
         if(event.getEntity() instanceof ServerPlayer serverPlayer) {
             SMCCapabilityProvider.syncPlayerDataToClient(serverPlayer);
+            //重置
+            if(DataManager.lastKilledByBoss.get(serverPlayer)) {
+                PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new OpenFastKillBossScreenPacket(), serverPlayer);
+                DataManager.lastKilledByBoss.put(serverPlayer, false);
+            }
         }
 
         if(weapons.isEmpty()) {

@@ -1,7 +1,9 @@
 package com.p1nero.smc.entity.custom.npc.me;
 
+import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.client.gui.TreeNode;
+import com.p1nero.smc.client.gui.screen.DialogueScreen;
 import com.p1nero.smc.client.gui.screen.LinkListStreamDialogueScreenBuilder;
 import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.entity.SMCEntities;
@@ -9,6 +11,7 @@ import com.p1nero.smc.entity.custom.npc.SMCNpc;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.NPCDialoguePacket;
+import com.p1nero.smc.network.packet.serverbound.HandleScorePacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -31,17 +34,14 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Consumer;
+
 /**
  * 打完BOSS结束后出对话
  */
 public class P1nero extends SMCNpc {
-    private static final byte STAR0 = 1;
-    private static final byte STAR1 = 2;
-    private static final byte STAR2 = 3;
-    private static final byte STAR3 = 4;
-    private static final byte STAR4 = 5;
-    private static final byte STAR5 = 6;
     private static final byte END = 7;
+    private String clientScoreString;
     public P1nero(EntityType<? extends Villager> entityType, Level level) {
         super(entityType, level);
     }
@@ -112,9 +112,19 @@ public class P1nero extends SMCNpc {
 
     }
 
+    @OnlyIn(Dist.CLIENT)
+    private Consumer<DialogueScreen> addScore(String score) {
+        return screen -> clientScoreString += score;
+    }
+    @OnlyIn(Dist.CLIENT)
+    private Consumer<DialogueScreen> sendScore() {
+        SkilletManCoreMod.LOGGER.info("SMC: Sending score: " + clientScoreString);
+        return screen -> PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new HandleScorePacket(clientScoreString));
+    }
     @Override
     @OnlyIn(Dist.CLIENT)
     public void openDialogueScreen(CompoundTag senderData) {
+        clientScoreString = "";
         LinkListStreamDialogueScreenBuilder builder = new LinkListStreamDialogueScreenBuilder(this);
         if(getAmbientSound() != null) {
             level().playLocalSound(getX(), getY(), getZ(), getAmbientSound(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
@@ -127,59 +137,107 @@ public class P1nero extends SMCNpc {
             return;
         }
 
-        TreeNode star5_1 = new TreeNode(ans(1), opt(0));
-        TreeNode star5_2 = new TreeNode(ans(2), opt(0));
-        TreeNode star5_3 = new TreeNode(ans(3), opt(0));
-        TreeNode star5_4 = new TreeNode(ans(4), opt(0));
-        TreeNode star5_5 = new TreeNode(ans(5), opt(0));
-        TreeNode star5_6 = new TreeNode(ans(6), opt(0));
-        TreeNode star5_7 = new TreeNode(ans(7), opt(0));
-        TreeNode star5_8 = new TreeNode(ans(8), opt(0));
+        TreeNode star5_1 = new TreeNode(ans(1), opt(0))
+                .addExecutable(addScore("5"));
+        TreeNode star5_2 = new TreeNode(ans(2), opt(0))
+                .addExecutable(addScore("5"));
+        TreeNode star5_3 = new TreeNode(ans(3), opt(0))
+                .addExecutable(addScore("5"));
+        TreeNode star5_4 = new TreeNode(ans(4), opt(0))
+                .addExecutable(addScore("5"));
+        TreeNode star5_5 = new TreeNode(ans(5), opt(0))
+                .addExecutable(addScore("5"));
+        TreeNode star5_6 = new TreeNode(ans(6), opt(0))
+                .addExecutable(addScore("5"));
+        TreeNode star5_7 = new TreeNode(ans(7), opt(0))
+                .addExecutable(addScore("5"));
+        TreeNode star5_8 = new TreeNode(ans(8), opt(0))
+                .addExecutable(addScore("5"));
 
-        TreeNode star4_1 = new TreeNode(ans(1), opt(1));
-        TreeNode star4_2 = new TreeNode(ans(2), opt(1));
-        TreeNode star4_3 = new TreeNode(ans(3), opt(1));
-        TreeNode star4_4 = new TreeNode(ans(4), opt(1));
-        TreeNode star4_5 = new TreeNode(ans(5), opt(1));
-        TreeNode star4_6 = new TreeNode(ans(6), opt(1));
-        TreeNode star4_7 = new TreeNode(ans(7), opt(1));
-        TreeNode star4_8 = new TreeNode(ans(8), opt(1));
+        TreeNode star4_1 = new TreeNode(ans(1), opt(1))
+                .addExecutable(addScore("4"));
+        TreeNode star4_2 = new TreeNode(ans(2), opt(1))
+                .addExecutable(addScore("4"));
+        TreeNode star4_3 = new TreeNode(ans(3), opt(1))
+                .addExecutable(addScore("4"));
+        TreeNode star4_4 = new TreeNode(ans(4), opt(1))
+                .addExecutable(addScore("4"));
+        TreeNode star4_5 = new TreeNode(ans(5), opt(1))
+                .addExecutable(addScore("4"));
+        TreeNode star4_6 = new TreeNode(ans(6), opt(1))
+                .addExecutable(addScore("4"));
+        TreeNode star4_7 = new TreeNode(ans(7), opt(1))
+                .addExecutable(addScore("4"));
+        TreeNode star4_8 = new TreeNode(ans(8), opt(1))
+                .addExecutable(addScore("4"));
 
-        TreeNode star3_1 = new TreeNode(ans(1), opt(2));
-        TreeNode star3_2 = new TreeNode(ans(2), opt(2));
-        TreeNode star3_3 = new TreeNode(ans(3), opt(2));
-        TreeNode star3_4 = new TreeNode(ans(4), opt(2));
-        TreeNode star3_5 = new TreeNode(ans(5), opt(2));
-        TreeNode star3_6 = new TreeNode(ans(6), opt(2));
-        TreeNode star3_7 = new TreeNode(ans(7), opt(2));
-        TreeNode star3_8 = new TreeNode(ans(8), opt(2));
+        TreeNode star3_1 = new TreeNode(ans(1), opt(2))
+                .addExecutable(addScore("3"));
+        TreeNode star3_2 = new TreeNode(ans(2), opt(2))
+                .addExecutable(addScore("3"));
+        TreeNode star3_3 = new TreeNode(ans(3), opt(2))
+                .addExecutable(addScore("3"));
+        TreeNode star3_4 = new TreeNode(ans(4), opt(2))
+                .addExecutable(addScore("3"));
+        TreeNode star3_5 = new TreeNode(ans(5), opt(2))
+                .addExecutable(addScore("3"));
+        TreeNode star3_6 = new TreeNode(ans(6), opt(2))
+                .addExecutable(addScore("3"));
+        TreeNode star3_7 = new TreeNode(ans(7), opt(2))
+                .addExecutable(addScore("3"));
+        TreeNode star3_8 = new TreeNode(ans(8), opt(2))
+                .addExecutable(addScore("3"));
 
-        TreeNode star2_1 = new TreeNode(ans(1), opt(3));
-        TreeNode star2_2 = new TreeNode(ans(2), opt(3));
-        TreeNode star2_3 = new TreeNode(ans(3), opt(3));
-        TreeNode star2_4 = new TreeNode(ans(4), opt(3));
-        TreeNode star2_5 = new TreeNode(ans(5), opt(3));
-        TreeNode star2_6 = new TreeNode(ans(6), opt(3));
-        TreeNode star2_7 = new TreeNode(ans(7), opt(3));
-        TreeNode star2_8 = new TreeNode(ans(8), opt(3));
+        TreeNode star2_1 = new TreeNode(ans(1), opt(3))
+                .addExecutable(addScore("2"));
+        TreeNode star2_2 = new TreeNode(ans(2), opt(3))
+                .addExecutable(addScore("2"));
+        TreeNode star2_3 = new TreeNode(ans(3), opt(3))
+                .addExecutable(addScore("2"));
+        TreeNode star2_4 = new TreeNode(ans(4), opt(3))
+                .addExecutable(addScore("2"));
+        TreeNode star2_5 = new TreeNode(ans(5), opt(3))
+                .addExecutable(addScore("2"));
+        TreeNode star2_6 = new TreeNode(ans(6), opt(3))
+                .addExecutable(addScore("2"));
+        TreeNode star2_7 = new TreeNode(ans(7), opt(3))
+                .addExecutable(addScore("2"));
+        TreeNode star2_8 = new TreeNode(ans(8), opt(3))
+                .addExecutable(addScore("2"));
 
-        TreeNode star1_1 = new TreeNode(ans(1), opt(4));
-        TreeNode star1_2 = new TreeNode(ans(2), opt(4));
-        TreeNode star1_3 = new TreeNode(ans(3), opt(4));
-        TreeNode star1_4 = new TreeNode(ans(4), opt(4));
-        TreeNode star1_5 = new TreeNode(ans(5), opt(4));
-        TreeNode star1_6 = new TreeNode(ans(6), opt(4));
-        TreeNode star1_7 = new TreeNode(ans(7), opt(4));
-        TreeNode star1_8 = new TreeNode(ans(8), opt(4));
+        TreeNode star1_1 = new TreeNode(ans(1), opt(4))
+                .addExecutable(addScore("1"));
+        TreeNode star1_2 = new TreeNode(ans(2), opt(4))
+                .addExecutable(addScore("1"));
+        TreeNode star1_3 = new TreeNode(ans(3), opt(4))
+                .addExecutable(addScore("1"));
+        TreeNode star1_4 = new TreeNode(ans(4), opt(4))
+                .addExecutable(addScore("1"));
+        TreeNode star1_5 = new TreeNode(ans(5), opt(4))
+                .addExecutable(addScore("1"));
+        TreeNode star1_6 = new TreeNode(ans(6), opt(4))
+                .addExecutable(addScore("1"));
+        TreeNode star1_7 = new TreeNode(ans(7), opt(4))
+                .addExecutable(addScore("1"));
+        TreeNode star1_8 = new TreeNode(ans(8), opt(4))
+                .addExecutable(addScore("1"));
 
-        TreeNode star0_1 = new TreeNode(ans(1), opt(5));
-        TreeNode star0_2 = new TreeNode(ans(2), opt(5));
-        TreeNode star0_3 = new TreeNode(ans(3), opt(5));
-        TreeNode star0_4 = new TreeNode(ans(4), opt(5));
-        TreeNode star0_5 = new TreeNode(ans(5), opt(5));
-        TreeNode star0_6 = new TreeNode(ans(6), opt(5));
-        TreeNode star0_7 = new TreeNode(ans(7), opt(5));
-        TreeNode star0_8 = new TreeNode(ans(8), opt(5));
+        TreeNode star0_1 = new TreeNode(ans(1), opt(5))
+                .addExecutable(addScore("0"));
+        TreeNode star0_2 = new TreeNode(ans(2), opt(5))
+                .addExecutable(addScore("0"));
+        TreeNode star0_3 = new TreeNode(ans(3), opt(5))
+                .addExecutable(addScore("0"));
+        TreeNode star0_4 = new TreeNode(ans(4), opt(5))
+                .addExecutable(addScore("0"));
+        TreeNode star0_5 = new TreeNode(ans(5), opt(5))
+                .addExecutable(addScore("0"));
+        TreeNode star0_6 = new TreeNode(ans(6), opt(5))
+                .addExecutable(addScore("0"));
+        TreeNode star0_7 = new TreeNode(ans(7), opt(5))
+                .addExecutable(addScore("0"));
+        TreeNode star0_8 = new TreeNode(ans(8), opt(5))
+                .addExecutable(addScore("0"));
 
         TreeNode root = new TreeNode(ans(0));
         root.addChild(star5_1);
@@ -261,9 +319,9 @@ public class P1nero extends SMCNpc {
                                     layer7.addChild(star0_8);
                                     for(TreeNode layer8 : layer7.getChildren()) {
                                         if(layer8.getChildren().isEmpty()) {
-                                            layer8.addLeaf(opt(6), END);
-                                            layer8.addLeaf(opt(7), END);
-                                            layer8.addLeaf(opt(8), END);
+                                            layer8.addLeaf(new TreeNode.FinalNode(opt(6), END).addExecutable(sendScore()));
+                                            layer8.addLeaf(new TreeNode.FinalNode(opt(7), END).addExecutable(sendScore()));
+                                            layer8.addLeaf(new TreeNode.FinalNode(opt(8), END).addExecutable(sendScore()));
                                         }
                                     }
                                 }
@@ -284,7 +342,7 @@ public class P1nero extends SMCNpc {
     @Override
     public void handleNpcInteraction(ServerPlayer player, byte interactionID) {
         if(interactionID == END) {
-            this.explodeAndDiscard();//TODO 补个帅气的离场
+            this.explodeAndDiscard();
             DataManager.findBBQHint.put(player, true);
         }
         this.setConversingPlayer(null);

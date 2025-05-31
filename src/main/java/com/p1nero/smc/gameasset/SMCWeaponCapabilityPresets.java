@@ -26,6 +26,23 @@ import java.util.function.Function;
 
 @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class SMCWeaponCapabilityPresets {
+
+    public static final Function<Item, CapabilityItem.Builder> TEST = (item) ->
+            (CapabilityItem.Builder) WeaponCapability.builder().category(CapabilityItem.WeaponCategories.SWORD)
+                    .styleProvider((playerPatch) -> CapabilityItem.Styles.TWO_HAND).collider(SMCColliders.SKILLET)
+                    .hitSound(EpicFightSounds.BLUNT_HIT.get())
+                    .hitParticle(EpicFightParticles.HIT_BLUNT.get())
+                    .swingSound(EpicFightSounds.WHOOSH.get())
+                    .canBePlacedOffhand(false)
+                    .newStyleCombo(
+                            CapabilityItem.Styles.TWO_HAND,
+                            Animations.GREATSWORD_AUTO1,
+                            Animations.GREATSWORD_AUTO2,
+                            Animations.GREATSWORD_AIR_SLASH,
+                            Animations.GREATSWORD_AIR_SLASH)
+                    .innateSkill(CapabilityItem.Styles.TWO_HAND, (itemstack) -> null)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.IDLE, SMCAnimations.TALKING)
+                    .comboCancel((style) -> false);
     public static final Function<Item, CapabilityItem.Builder> POTATO_CANNON = (item) ->
             RangedWeaponCapability.builder().zoomInType(CapabilityItem.ZoomInType.CUSTOM)
                     .addAnimationsModifier(LivingMotions.IDLE, Animations.BIPED_CROSSBOW_AIM)
@@ -341,6 +358,8 @@ public class SMCWeaponCapabilityPresets {
 
         event.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "diamond_spatula"), DIAMOND_SPATULA);
         event.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "potato_cannon"), POTATO_CANNON);
+
+        event.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "test"), TEST);
     }
 
 }

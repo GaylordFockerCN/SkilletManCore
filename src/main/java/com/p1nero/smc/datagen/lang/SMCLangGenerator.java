@@ -6,10 +6,7 @@ import com.p1nero.smc.client.gui.screen.entity_dialog.VillagerDialogScreenHandle
 import com.p1nero.smc.client.gui.screen.entity_dialog.animal.*;
 import com.p1nero.smc.client.gui.screen.entity_dialog.golem.IronGolemDialogScreenHandler;
 import com.p1nero.smc.client.gui.screen.entity_dialog.golem.SnowGolemDialogScreenHandler;
-import com.p1nero.smc.client.gui.screen.info_screen.BanPortalScreenHandler;
-import com.p1nero.smc.client.gui.screen.info_screen.ContractScreenHandler;
-import com.p1nero.smc.client.gui.screen.info_screen.StartCreateScreenHandler;
-import com.p1nero.smc.client.gui.screen.info_screen.StartGuideScreenHandler;
+import com.p1nero.smc.client.gui.screen.info_screen.*;
 import com.p1nero.smc.client.keymapping.KeyMappings;
 import com.p1nero.smc.effect.SMCEffects;
 import com.p1nero.smc.entity.SMCEntities;
@@ -40,6 +37,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add("key.categories.smc", "平底锅侠 - 核心");
         this.addKeyMapping(KeyMappings.SHOW_HINT, "隐藏/显示当前引导");
 
+        this.addInfo("fast_kill_enable", "§l§c秒杀BOSS模式已开启！");
         this.addInfo("hint_update_tip", "§l§c[§l§6新§l§c]");
         this.addInfo("task_todo_tip", "§l§c[§l§e待办§l§c]");
         this.addInfo("ingredient_info", "§6配方信息提示： ");
@@ -173,6 +171,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("no_your_power2", "关闭§6战斗模式§r以拾取被丢出的物品，部分物品阶段提升后可在战斗模式下使用。");
         this.addInfo("two_craft_tip", "每两把同星级物品可以合成更高星级的物品，五星级除外。");
 
+        FastKillBossScreenHandler.onGenerate(this);
         StartGuideScreenHandler.onGenerate(this);
         StartCreateScreenHandler.onGenerate(this);
         BanPortalScreenHandler.onGenerate(this);

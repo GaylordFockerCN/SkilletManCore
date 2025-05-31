@@ -16,6 +16,7 @@ import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.packet.SyncArchivePacket;
 import com.p1nero.smc.network.packet.clientbound.OpenContractScreenPacket;
+import com.p1nero.smc.network.packet.clientbound.OpenFastKillBossScreenPacket;
 import com.p1nero.smc.network.packet.clientbound.OpenStartGuideScreenPacket;
 import com.p1nero.smc.network.packet.clientbound.SyncUuidPacket;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
@@ -70,8 +71,9 @@ public class PlayerEventListeners {
 
     @SubscribeEvent
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-        if (event.getEntity().level().dimension().equals(SMCDimension.P_SKY_ISLAND_LEVEL_KEY)) {
-            event.getEntity().addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 100, 4));
+        Player player = event.getEntity();
+        if (player instanceof ServerPlayer serverPlayer && player.level().dimension().equals(SMCDimension.P_SKY_ISLAND_LEVEL_KEY)) {
+            player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 100, 4));
         }
     }
 

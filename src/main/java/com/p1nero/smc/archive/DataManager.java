@@ -29,6 +29,8 @@ import java.util.Set;
  */
 public class DataManager {
     private final static Set<String> EXISTING_ID = new HashSet<>();
+    public static BoolData lastKilledByBoss = new BoolData("killed_by_boss", false);
+    public static BoolData fastKillBoss = new BoolData("fast_kill_boss", false);
     public static BoolData findBBQHint = new BoolData("find_bbq", false);
     public static BoolData bossKilled = new BoolData("boss_killed", false);
     public static BoolData hintUpdated = new BoolData("hint_updated", true);

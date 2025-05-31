@@ -2,6 +2,7 @@ package com.p1nero.smc.network.packet.serverbound;
 
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.archive.DataManager;
+import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.gui.screen.entity_dialog.VillagerDialogScreenHandler;
 import com.p1nero.smc.client.gui.screen.entity_dialog.animal.CatDialogScreenHandler;
 import com.p1nero.smc.client.gui.screen.entity_dialog.golem.IronGolemDialogScreenHandler;
@@ -31,6 +32,7 @@ public record NpcPlayerInteractPacket(int entityID, byte interactionID) implemen
     public static final int NO_ENTITY = -1;
     public static final byte SET_HARD_SPATULA = 1;
     public static final byte SET_EAZY_SPATULA= 2;
+    public static final byte FAST_KILL_BOSS= 3;
     @Override
     public void encode(FriendlyByteBuf buf) {
         buf.writeInt(this.entityID());
@@ -66,17 +68,25 @@ public record NpcPlayerInteractPacket(int entityID, byte interactionID) implemen
                 }
 
             }
-        }
-        if(this.entityID == NO_ENTITY) {
-            if(interactionID == SET_HARD_SPATULA) {
-                DataManager.hardSpatulaMode.put(player, true);
-                player.displayClientMessage(SkilletManCoreMod.getInfo("set_to_hard_spatula"), true);
-                player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SMCSounds.VILLAGER_YES.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-            }
-            if(interactionID == SET_EAZY_SPATULA) {
-                DataManager.hardSpatulaMode.put(player, false);
-                player.displayClientMessage(SkilletManCoreMod.getInfo("set_to_easy_spatula"), true);
-                player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SMCSounds.VILLAGER_YES.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+
+            if(this.entityID == NO_ENTITY) {
+                if(interactionID == SET_HARD_SPATULA) {
+                    DataManager.hardSpatulaMode.put(player, true);
+                    player.displayClientMessage(SkilletManCoreMod.getInfo("set_to_hard_spatula"), true);
+                    player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SMCSounds.VILLAGER_YES.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                }
+                if(interactionID == SET_EAZY_SPATULA) {
+                    DataManager.hardSpatulaMode.put(player, false);
+                    player.displayClientMessage(SkilletManCoreMod.getInfo("set_to_easy_spatula"), true);
+                    player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SMCSounds.VILLAGER_YES.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                }
+                if(interactionID == FAST_KILL_BOSS) {
+                    if(SMCPlayer.hasMoney(serverPlayer, 100000, true)) {
+                        SMCPlayer.consumeMoney(100000, serverPlayer);
+                        DataManager.fastKillBoss.put(serverPlayer, true);
+                        serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("fast_kill_enable"), true);
+                    }
+                }
             }
         }
     }
