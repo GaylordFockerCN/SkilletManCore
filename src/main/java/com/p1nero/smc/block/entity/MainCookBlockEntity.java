@@ -32,6 +32,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -85,11 +86,14 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         return isWorking;
     }
 
+    public void setWorking(boolean working) {
+        isWorking = working;
+    }
+
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState state, T t) {
         if(level.isClientSide) {
             return;
         }
-        ServerLevel serverLevel = (ServerLevel) level;
         if (t instanceof MainCookBlockEntity mainCookBlockEntity) {
             if (mainCookBlockEntity.startNPC == null) {
                 //优先附近找
@@ -105,33 +109,6 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
                     startNPC1.setHomePos(pos);
                     startNPC1.setVillagerData(startNPC1.getVillagerData().setType(VillagerType.byBiome(startNPC1.level().getBiome(pos))));
                     level.addFreshEntity(startNPC1);
-                } else {
-//                    level.destroyBlock(pos, false);
-                    return;
-                }
-            }
-
-            //若无主人则3s通知一次附近玩家
-            if(mainCookBlockEntity.startNPC.getOwnerUUID() == null && mainCookBlockEntity.startNPC.tickCount % 60 == 0) {
-                serverLevel.players().stream().filter(serverPlayer -> serverPlayer.position().distanceTo(mainCookBlockEntity.getBlockPos().getCenter()) < 200)
-                        .forEach(serverPlayer -> PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new AddWaypointPacket(SkilletManCoreMod.getInfoKey("no_owner_shop"), pos, WaypointColor.RED), serverPlayer));
-            }
-
-            if (mainCookBlockEntity.startNPC.isGuider()) {
-                LivingEntity owner = mainCookBlockEntity.startNPC.getOwner();
-                if (owner instanceof ServerPlayer serverPlayer && owner.isAlive()) {
-                    if(mainCookBlockEntity.isWorking) {
-                        mainCookBlockEntity.workingTick(serverPlayer);
-                        mainCookBlockEntity.updateWorkingState(serverPlayer);
-                    } else {
-                        //检查上班时间
-                        if(mainCookBlockEntity.isWorkingTime()) {
-                            if(owner.level().getBlockState(pos.above(1)).is(ModBlocks.STOVE.get()) && mainCookBlockEntity.hasSkillet()){
-                                mainCookBlockEntity.isWorking = true;
-                                mainCookBlockEntity.updateWorkingState(serverPlayer);
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -205,8 +182,9 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCBlockDialoguePacket(this.getBlockPos(), tag), owner);
             owner.serverLevel().playSound(null, owner.getX(), owner.getY(), owner.getZ(), SoundEvents.FIRE_EXTINGUISH, owner.getSoundSource(), 1.0F, 1.0F);
             if (!DataManager.inSpecial.get(owner)) {
-                summonSpecial(owner, this.getBlockPos(), 10, 12);
-                DataManager.inSpecial.put(owner, true);
+                if(summonSpecial(owner, this.getBlockPos(), 10, 12)) {
+                    DataManager.inSpecial.put(owner, true);
+                }
             }
             return;
         }
@@ -261,7 +239,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
     /**
      * 生成特殊事件npc
      */
-    public static void summonSpecial(ServerPlayer owner, BlockPos center, int minDis, int maxDis){
+    public static boolean summonSpecial(ServerPlayer owner, BlockPos center, int minDis, int maxDis){
         BlockPos randomSpawnPos = getRandomPos(owner, minDis, maxDis, center).above(2);
         BlockPos randomHomePos = getRandomPos(owner, minDis, maxDis, center).above(2);
         if(!DataManager.specialEvent1Solved.get(owner)) {
@@ -295,6 +273,10 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             owner.serverLevel().addFreshEntity(thief1);
             owner.serverLevel().addFreshEntity(thief2);
         } else if(!DataManager.specialEvent4Solved.get(owner)){
+            //V哥算敌对，和平生不了
+            if(owner.getServer() != null && owner.getServer().getWorldData().getDifficulty() == Difficulty.PEACEFUL) {
+                return false;
+            }
             double yRot = MathUtils.getYRotOfVector(randomSpawnPos.getCenter().subtract(owner.position()));
             Direction direction = Direction.fromYRot(yRot);
             BlockState blockState = SMCRegistrateBlocks.CHAIR.getDefaultState().setValue(BlockStateProperties.HORIZONTAL_FACING, direction.getOpposite());//不知道为嘛反了
@@ -306,6 +288,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             villager.setYHeadRot(dir);
             owner.serverLevel().addFreshEntity(villager);
         }
+        return true;
     }
 
     public void clearCustomers(){

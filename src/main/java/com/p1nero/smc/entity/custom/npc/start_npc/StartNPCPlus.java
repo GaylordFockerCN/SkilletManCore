@@ -133,8 +133,9 @@ public class StartNPCPlus extends StartNPC {
             PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new NPCDialoguePacket(this.getId(), tag), owner);
             owner.serverLevel().playSound(null, owner.getX(), owner.getY(), owner.getZ(), SoundEvents.FIRE_EXTINGUISH, owner.getSoundSource(), 1.0F, 1.0F);
             if (!DataManager.inSpecial.get(owner)) {
-                summonSpecial(owner, this.getOnPos(), 15, 20);
-                DataManager.inSpecial.put(owner, true);
+                if(summonSpecial(owner, this.getOnPos(), 15, 20)) {
+                    DataManager.inSpecial.put(owner, true);
+                }
             }
             return;
         }

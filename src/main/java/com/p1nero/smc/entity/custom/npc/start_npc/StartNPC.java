@@ -51,6 +51,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.entity.player.Player;
@@ -72,6 +73,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
 import vectorwing.farmersdelight.common.registry.ModItems;
+import xaero.hud.minimap.waypoint.WaypointColor;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -224,6 +226,45 @@ public class StartNPC extends SMCNpc {
 
     public int takeAllIncome() {
         return takeIncome(getIncome());
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (level().getBlockEntity(this.getHomePos()) instanceof MainCookBlockEntity mainCookBlockEntity) {
+            if (mainCookBlockEntity.getStartNPC() != null && mainCookBlockEntity.getStartNPC().is(this)) {
+                mainBlockTick(mainCookBlockEntity, this.getHomePos());
+            }
+        }
+    }
+
+    public void mainBlockTick(MainCookBlockEntity mainCookBlockEntity, BlockPos pos) {
+        if(level().isClientSide) {
+            return;
+        }
+        //若无主人则3s通知一次附近玩家
+        if(this.getOwnerUUID() == null && this.tickCount % 60 == 0) {
+            ((ServerLevel)level()).players().stream().filter(serverPlayer -> serverPlayer.position().distanceTo(mainCookBlockEntity.getBlockPos().getCenter()) < 200)
+                    .forEach(serverPlayer -> PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new AddWaypointPacket(SkilletManCoreMod.getInfoKey("no_owner_shop"), pos, WaypointColor.RED), serverPlayer));
+        }
+
+        if (this.isGuider()) {
+            LivingEntity owner = this.getOwner();
+            if (owner instanceof ServerPlayer serverPlayer && owner.isAlive()) {
+                if(mainCookBlockEntity.isWorking()) {
+                    mainCookBlockEntity.workingTick(serverPlayer);
+                    mainCookBlockEntity.updateWorkingState(serverPlayer);
+                } else {
+                    //检查上班时间
+                    if(mainCookBlockEntity.isWorkingTime()) {
+                        if(owner.level().getBlockState(pos.above(1)).is(ModBlocks.STOVE.get()) && mainCookBlockEntity.hasSkillet()){
+                            mainCookBlockEntity.setWorking(true);
+                            mainCookBlockEntity.updateWorkingState(serverPlayer);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void onSecond() {
