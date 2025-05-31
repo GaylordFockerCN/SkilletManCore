@@ -67,7 +67,7 @@ public abstract class AbstractRaidMixin extends DummyEntity {
 
         //把袭击者抓回来
         for(Entity raider : this.getRaiders()) {
-            if(raider.position().distanceTo(this.getPosition()) > raid.getRaidRange()) {
+            if(raider.position().distanceTo(this.getPosition()) > (raid.getRaidRange() * 3 / 4)) {
                 raider.setDeltaMovement(this.getPosition().subtract(raider.position()).normalize());
             }
         }

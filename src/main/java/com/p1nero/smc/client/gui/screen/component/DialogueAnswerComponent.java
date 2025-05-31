@@ -25,10 +25,10 @@ public class DialogueAnswerComponent {
     private final Component name;
     public int height;
     //打字机效果的下标
-    private int index;
+    public int index;
     //打字机效果的最大值
-    private int max;
-    private int maxWidth;
+    public int max;
+    public int maxWidth;
 
     private boolean shouldRenderOption = false;
 

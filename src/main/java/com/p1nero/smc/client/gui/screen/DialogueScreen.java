@@ -223,6 +223,17 @@ public class DialogueScreen extends Screen {
         PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new NpcPlayerInteractPacket(this.entity == null ? NpcPlayerInteractPacket.NO_ENTITY :this.entity.getId(), interactionID));
     }
 
+    /**
+     * 单机后可提前显示
+     */
+    @Override
+    public boolean mouseClicked(double v, double v1, int i) {
+        if(this.dialogueAnswer.index < dialogueAnswer.max - 3) {
+            this.dialogueAnswer.index = dialogueAnswer.max - 3;
+        }
+        return super.mouseClicked(v, v1, i);
+    }
+
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(guiGraphics);

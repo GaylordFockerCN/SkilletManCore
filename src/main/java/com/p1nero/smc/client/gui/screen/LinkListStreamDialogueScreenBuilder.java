@@ -226,6 +226,10 @@ public class LinkListStreamDialogueScreenBuilder {
 
         //否则继续递归创建按钮
         return button -> {
+            //防止还没显示的时候点击到
+            if(!screen.dialogueAnswer.shouldRenderOption()) {
+                return;
+            }
             screen.setYOffset(0);
             if (node.canExecute()) {
                 node.execute(screen);
