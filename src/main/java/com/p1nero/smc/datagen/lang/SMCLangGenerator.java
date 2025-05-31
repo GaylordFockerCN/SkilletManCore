@@ -86,8 +86,8 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addInfo("move_too_far_from_npc_plus", "老大，还没下班呢，你要抛弃我吗");
         this.addInfo("npc_plus_need_rest", "老大，现在不是上班时间哦");
 
-        this.addInfo("golden_skillet_tip", "§e烹饪速度降低至0.66");
-        this.addInfo("diamond_skillet_tip", "§e烹饪速度降低至0.33");
+        this.addInfo("golden_skillet_tip", "§e烹饪速度提升至2.0");
+        this.addInfo("diamond_skillet_tip", "§e烹饪速度降低至0.5");
         this.addInfo("diamond_weapon_tip", "§b每段攻击都应该尝试一下 [KEY2] （默认右键），摸索出最合适的连招！");
         this.addInfo("golden_spatula_tip", "§e翻炒冷却降低至 15tick");
         this.addInfo("diamond_spatula_tip", "§b翻炒冷却降低至 10tick");

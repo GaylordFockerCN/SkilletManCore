@@ -30,7 +30,7 @@ public class GoldenCuisineSkilletBlock extends CuisineSkilletBlock {
     public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
         BlockEntity tileEntity = level.getBlockEntity(pos);
         if (tileEntity instanceof CuisineSkilletBlockEntity be) {
-            be.cookingData.setSpeed(0.66F);
+            be.cookingData.setSpeed(2.0F);
         }
         return super.use(state, level, pos, player, hand, hit);
     }

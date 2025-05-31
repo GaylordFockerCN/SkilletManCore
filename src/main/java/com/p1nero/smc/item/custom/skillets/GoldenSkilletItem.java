@@ -71,7 +71,7 @@ public class GoldenSkilletItem extends SMCCuisineSkilletItem {
         if(canUse(skilletStack, player, level)){
             CookingData data = getData(skilletStack);
             if(data != null){
-                data.setSpeed(0.5F);
+                data.setSpeed(2.0F);
                 setData(skilletStack, data);
             }
         }
