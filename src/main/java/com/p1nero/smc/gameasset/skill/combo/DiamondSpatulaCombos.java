@@ -18,7 +18,7 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class SpatulaCombos {
+public class DiamondSpatulaCombos {
     public static Skill DIAMOND_SPATULA_COMBO;
     @SubscribeEvent
     public static void BuildSkills(SkillBuildEvent event){
@@ -46,8 +46,7 @@ public class SpatulaCombos {
                     entityPatch.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 200, 2));
                 })));
         ComboNode aaaa_ = ComboNode.create().addConditionAnimation(jumpAttack).addConditionAnimation(aaaa).addConditionAnimation(dashAttack);
-        ComboNode ab = ComboNode.createNode(() -> WOMAnimations.MOONLESS_BYPASS).setNotCharge(true);
-        ComboNode aba = ComboNode.createNode(() -> WOMAnimations.MOONLESS_REVERSED_BYPASS).setNotCharge(true);
+        ComboNode ab = ComboNode.createNode(() -> WOMAnimations.MOONLESS_REVERSED_BYPASS).setNotCharge(true);
         ComboNode aab = ComboNode.createNode(() -> WOMAnimations.SOLAR_AUTO_1_POLVORA).setNotCharge(true);
         ComboNode aaab = ComboNode.createNode(() -> WOMAnimations.SOLAR_AUTO_1_POLVORA).setNotCharge(true);
         ComboNode da = ComboNode.createNode(() -> WOMAnimations.AGONY_RISING_EAGLE).setNotCharge(true);
@@ -59,10 +58,6 @@ public class SpatulaCombos {
         aaa.key1(aaaa_);
         aaa.key2(aaab);
         aaaa.key2(skill);
-        ab.key1(aba);
-        ab.key2(ab);
-        aba.key1(aba);
-        aba.key2(ab);
         aab.key1(aaa_);
         aaab.key1(aaaa_);
         jumpAttack.key1(rise);

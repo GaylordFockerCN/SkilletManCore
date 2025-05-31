@@ -4,7 +4,7 @@ import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.capability.epicfight.PotatoCannonWeaponCapability;
 import com.p1nero.smc.gameasset.skill.SMCSkills;
 import com.p1nero.smc.gameasset.skill.combo.SkilletCombos;
-import com.p1nero.smc.gameasset.skill.combo.SpatulaCombos;
+import com.p1nero.smc.gameasset.skill.combo.DiamondSpatulaCombos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -18,7 +18,6 @@ import yesman.epicfight.gameasset.EpicFightSkills;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
-import yesman.epicfight.world.capabilities.item.CrossbowCapability;
 import yesman.epicfight.world.capabilities.item.RangedWeaponCapability;
 import yesman.epicfight.world.capabilities.item.WeaponCapability;
 
@@ -326,7 +325,7 @@ public class SMCWeaponCapabilityPresets {
                     .newStyleCombo(
                             CapabilityItem.Styles.TWO_HAND,
                             WOMAnimations.HERRSCHER_AUSROTTUNG)
-                    .innateSkill(CapabilityItem.Styles.TWO_HAND, (itemStack -> SpatulaCombos.DIAMOND_SPATULA_COMBO))
+                    .innateSkill(CapabilityItem.Styles.TWO_HAND, (itemStack -> DiamondSpatulaCombos.DIAMOND_SPATULA_COMBO))
                     .passiveSkill(WOMSkills.LUNAR_ECHO_PASSIVE)
                     .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
                     .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.IDLE, WOMAnimations.STAFF_IDLE)

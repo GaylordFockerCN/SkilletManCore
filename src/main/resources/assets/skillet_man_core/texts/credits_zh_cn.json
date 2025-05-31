@@ -198,6 +198,12 @@
             "names": [
               "merlin204"
             ]
+          },
+          {
+            "title": "部分贴图",
+            "names": [
+              "Hant0nN"
+            ]
           }
         ]
       },
@@ -205,7 +211,7 @@
         "discipline": "设备支持",
         "titles": [
           {
-            "title": "服务器赞助",
+            "title": "测试服务器赞助",
             "names": [
               "白露（NHBlock）"
             ]
@@ -272,7 +278,7 @@
             ]
           },
           {
-            "title": "翻译",
+            "title": "翻译（其他语言的译者可以加上你的名字）",
             "names": [
               "Aupoex",
               "P1nero"

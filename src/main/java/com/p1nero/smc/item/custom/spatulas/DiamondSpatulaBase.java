@@ -30,7 +30,6 @@ public class DiamondSpatulaBase extends SMCSpatulaItem {
         list.add(Component.empty());
         list.add(SkilletManCoreMod.getInfo("diamond_weapon_tip"));
         list.add(Component.translatable("item.smc.diamond_spatula_skill1", InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey2()).withStyle(ChatFormatting.GRAY));
-        list.add(Component.translatable("item.smc.diamond_spatula_skill2", InvincibleKeyMappings.getTranslatableKey1(), InvincibleKeyMappings.getTranslatableKey2()).withStyle(ChatFormatting.GRAY));
         list.add(Component.translatable("item.smc.diamond_spatula_skill3").withStyle(ChatFormatting.GRAY));
     }
 }
