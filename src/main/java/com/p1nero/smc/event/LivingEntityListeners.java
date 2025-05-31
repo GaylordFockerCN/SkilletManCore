@@ -16,6 +16,7 @@ import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
 import hungteen.htlib.common.event.events.DummyEntityEvent;
+import hungteen.htlib.common.event.events.RaidEvent;
 import hungteen.htlib.common.world.raid.DefaultRaid;
 import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerLevel;
@@ -107,6 +108,21 @@ public class LivingEntityListeners {
         if(event.getDummyEntity() instanceof DefaultRaid defaultRaid) {
             for(Entity entity : defaultRaid.getRaiders()){
                 entity.setGlowingTag(true);
+            }
+        }
+    }
+
+    /**
+     * 尝试修多人突破bug
+     */
+    @SubscribeEvent
+    public static void onRaidDefeated(RaidEvent.RaidDefeatedEvent event) {
+        for(Entity entity : event.getRaid().getDefenders()){
+            if(entity instanceof ServerPlayer serverPlayer) {
+                SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+                if(smcPlayer.isTrialRequired()) {
+                    SMCPlayer.stageUp(serverPlayer);
+                }
             }
         }
     }

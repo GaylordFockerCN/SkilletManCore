@@ -218,9 +218,10 @@ public class VirgilVillager extends Vindicator implements NpcDialogue {
         super.die(damageSource);
         if (damageSource.getEntity() instanceof ServerPlayer player) {
             setFinished(player);
-            if(this.getOwner() instanceof ServerPlayer player1) {
-                setFinished(player1);
-            }
+        }
+
+        if(this.getOwner() instanceof ServerPlayer player1) {
+            setFinished(player1);
         }
     }
 
