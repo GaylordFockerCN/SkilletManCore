@@ -83,7 +83,8 @@ public class ServerEvents {
                     }
                 }
 
-                if (overworld.isDay() && dayTick == 2000) {
+                //下界入侵
+                if (overworld.isDay() && dayTick == 2000 && dayTime % 2 == 0) {
                     for (ServerPlayer serverPlayer : event.getServer().getPlayerList().getPlayers()) {
                         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
                         if (DataManager.bossKilled.get(serverPlayer) && !DataManager.inRaid.get(serverPlayer)) {

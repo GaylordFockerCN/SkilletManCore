@@ -177,11 +177,6 @@ public class StartNPC extends SMCNpc {
     }
 
     public void setShopLevel(int level) {
-        if(level().getBlockEntity(this.getHomePos()) instanceof MainCookBlockEntity mainCookBlockEntity) {
-            if(mainCookBlockEntity.getShopLevel() < level) {
-                mainCookBlockEntity.setShopLevel(level);
-            }
-        }
         this.getEntityData().set(SHOP_LEVEL, level);
     }
 
@@ -234,10 +229,10 @@ public class StartNPC extends SMCNpc {
     public void onSecond() {
 
         if (!level().isClientSide) {
-            if(shouldRemoveWithoutMainBlock()){
+            if(shouldRemoveWithoutMainBlock() && this.tickCount > 200){
                 if (level().getBlockEntity(this.getHomePos()) instanceof MainCookBlockEntity mainCookBlockEntity) {
                     if (mainCookBlockEntity.getStartNPC() != null && !mainCookBlockEntity.getStartNPC().is(this)) {
-                        this.discard();
+                        mainCookBlockEntity.setStartNPC(this);
                     }
                 } else {
                     this.discard();
@@ -817,7 +812,7 @@ public class StartNPC extends SMCNpc {
      */
     @Override
     public boolean isPushable() {
-        return this.position().distanceTo(this.getHomePos().getCenter()) < 3.5;
+        return this.position().distanceTo(this.getHomePos().getCenter()) < MainCookBlockEntity.SEARCH_DIS;
     }
 
     @Override

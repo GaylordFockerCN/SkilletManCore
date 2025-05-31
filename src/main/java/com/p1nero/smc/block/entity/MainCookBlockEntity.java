@@ -62,7 +62,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
     @Nullable
     private StartNPC startNPC;
     private boolean isWorking;
-    private int shopLevel;
+    private boolean npcSummoned;
     public static final int WORKING_RADIUS = 8;
     private final List<Customer> customers = new ArrayList<>();
     public static final List<VillagerProfession> PROFESSION_LIST = ForgeRegistries.VILLAGER_PROFESSIONS.getValues().stream().toList();
@@ -77,16 +77,12 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         return startNPC;
     }
 
+    public void setStartNPC(@Nullable StartNPC startNPC) {
+        this.startNPC = startNPC;
+    }
+
     public boolean isWorking() {
         return isWorking;
-    }
-
-    public void setShopLevel(int shopLevel) {
-        this.shopLevel = shopLevel;
-    }
-
-    public int getShopLevel() {
-        return shopLevel;
     }
 
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState state, T t) {
@@ -96,23 +92,22 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         ServerLevel serverLevel = (ServerLevel) level;
         if (t instanceof MainCookBlockEntity mainCookBlockEntity) {
             if (mainCookBlockEntity.startNPC == null) {
-                //优先附近找，找不到再生一只。
+                //优先附近找
                 int offset = SEARCH_DIS;
                 StartNPC startNPC = level.getNearestEntity(StartNPC.class, TargetingConditions.DEFAULT, null, pos.getX(), pos.getY(), pos.getZ(), new AABB(pos.offset(offset, offset, offset), pos.offset(-offset, -offset, -offset)));
                 if (startNPC != null) {
-                    //互相通知
                     mainCookBlockEntity.startNPC = startNPC;
-                    startNPC.setHomePos(pos);
-                } else {
+                } else if (!mainCookBlockEntity.npcSummoned){
+                    mainCookBlockEntity.npcSummoned = true;
                     StartNPC startNPC1 = new StartNPC(((ServerLevel) level), pos.above(3));
                     //互相通知
                     mainCookBlockEntity.startNPC = startNPC1;
                     startNPC1.setHomePos(pos);
                     startNPC1.setVillagerData(startNPC1.getVillagerData().setType(VillagerType.byBiome(startNPC1.level().getBiome(pos))));
-                    if(mainCookBlockEntity.shopLevel > startNPC1.getShopLevel()) {
-                        startNPC1.setShopLevel(mainCookBlockEntity.shopLevel);
-                    }
                     level.addFreshEntity(startNPC1);
+                } else {
+//                    level.destroyBlock(pos, false);
+                    return;
                 }
             }
 
@@ -146,14 +141,14 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
     protected void saveAdditional(@NotNull CompoundTag compoundTag) {
         super.saveAdditional(compoundTag);
         compoundTag.putBoolean("isWorking", isWorking);
-        compoundTag.putInt("shopLevel", shopLevel);
+        compoundTag.putBoolean("npcSummoned", npcSummoned);
     }
 
     @Override
     public void load(@NotNull CompoundTag compoundTag) {
         super.load(compoundTag);
         isWorking = compoundTag.getBoolean("isWorking");
-        shopLevel = compoundTag.getInt("shopLevel");
+        npcSummoned = compoundTag.getBoolean("npcSummoned");
     }
 
     public void updateWorkingState(ServerPlayer serverPlayer) {
