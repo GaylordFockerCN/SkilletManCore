@@ -70,7 +70,7 @@ public class ServerEvents {
                 //夜晚生成袭击
                 if (overworld.isNight() && dayTick > 10000) {
                     //2天后每两天来一次袭击，10天后每天都将生成袭击
-                    if (dayTime > 2) {
+                    if (dayTime > 2 && dayTime % 2 == 1) {
                         for (ServerPlayer serverPlayer : event.getServer().getPlayerList().getPlayers()) {
                             SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
                             if (!smcPlayer.isTodayInRaid()) {

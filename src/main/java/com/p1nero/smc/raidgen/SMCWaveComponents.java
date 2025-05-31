@@ -114,7 +114,7 @@ public interface SMCWaveComponents {
                     wave3builder.add(Pair.of(ConstantInt.of(70), reference));
                 });
             }
-            if(i > 5) {
+            if(i > 7) {
                 spawns.get(SMCSpawnComponents.WITCHES.get(i)).ifPresent(reference -> {
                     wave2builder.add(Pair.of(ConstantInt.of(90), reference));
                     wave3builder.add(Pair.of(ConstantInt.of(90), reference));
@@ -124,7 +124,7 @@ public interface SMCWaveComponents {
                     wave3builder.add(Pair.of(ConstantInt.of(90), reference));
                 });
             }
-            if(i > 7) {
+            if(i > 11) {
                 spawns.get(SMCSpawnComponents.VINDICATORS.get(i)).ifPresent(reference -> {
                     wave2builder.add(Pair.of(ConstantInt.of(100), reference));
                     wave3builder.add(Pair.of(ConstantInt.of(100), reference));
@@ -132,12 +132,9 @@ public interface SMCWaveComponents {
                 spawns.get(SMCSpawnComponents.EVOKERS.get(i)).ifPresent(reference -> wave3builder.add(Pair.of(ConstantInt.of(100), reference)));
             }
 
-            if(i > 9) {
+            if(i > 13) {
                 spawns.get(SMCSpawnComponents.WITHER_SKELETONS.get(i)).ifPresent(reference -> wave3builder.add(Pair.of(ConstantInt.of(100), reference)));
                 spawns.get(SMCSpawnComponents.BLAZES.get(i)).ifPresent(reference -> wave3builder.add(Pair.of(ConstantInt.of(100), reference)));
-            }
-            if(i > 11) {
-                spawns.get(SMCSpawnComponents.ENDER_MANS.get(i)).ifPresent(reference -> wave3builder.add(Pair.of(ConstantInt.of(100), reference)));
             }
 
             if(i > 1 && i % 10 == 0) {

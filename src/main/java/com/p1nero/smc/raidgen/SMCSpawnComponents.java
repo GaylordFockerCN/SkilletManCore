@@ -40,7 +40,6 @@ public interface SMCSpawnComponents {
     List<ResourceKey<ISpawnComponent>> EVOKERS = new ArrayList<>();
     List<ResourceKey<ISpawnComponent>> WITHER_SKELETONS = new ArrayList<>();
     List<ResourceKey<ISpawnComponent>> BLAZES = new ArrayList<>();
-    List<ResourceKey<ISpawnComponent>> ENDER_MANS = new ArrayList<>();
     List<ResourceKey<ISpawnComponent>> PIGLIN = new ArrayList<>();
     List<ResourceKey<ISpawnComponent>> PIGLIN_BRUTE = new ArrayList<>();
     List<ResourceKey<ISpawnComponent>> GHAST = new ArrayList<>();
@@ -66,7 +65,6 @@ public interface SMCSpawnComponents {
             EVOKERS.add(create("evoker" + i));
             WITHER_SKELETONS.add(create("wither_skeleton" + i));
             BLAZES.add(create("blaze" + i));
-            ENDER_MANS.add(create("ender_man" + i));
             PIGLIN.add(create("piglin" + i));
             PIGLIN_BRUTE.add(create("piglin_brute" + i));
             GHAST.add(create("ghast" + i));
@@ -139,7 +137,7 @@ public interface SMCSpawnComponents {
                         , 40 * (i / 5), 40, 1, 0));
             }
             //5天后开始出现女巫，灾厄村民
-            if(i > 5) {
+            if(i > 7) {
                 context.register(WITCHES.get(i), new DurationSpawn(HTSpawnComponents.builder()
                         .entityType(EntityType.WITCH)
                         .placement(positions.getOrThrow(SMCPositionComponents.RAID))
@@ -156,7 +154,7 @@ public interface SMCSpawnComponents {
                         , 40 * (i / 5), 40, 1, 0));
             }
             //7天后开始出现卫道士唤魔者
-            if(i > 7) {
+            if(i > 11) {
                 context.register(VINDICATORS.get(i), new DurationSpawn(HTSpawnComponents.builder()
                         .entityType(EntityType.VINDICATOR)
                         .placement(positions.getOrThrow(SMCPositionComponents.RAID))
@@ -173,7 +171,7 @@ public interface SMCSpawnComponents {
                         , 40 * (i / 7), 40, 1, 0));
             }
             //9天后开始凋零骷髅，烈焰人
-            if(i >= 9) {
+            if(i >= 13) {
                 context.register(WITHER_SKELETONS.get(i), new DurationSpawn(HTSpawnComponents.builder()
                         .entityType(EntityType.WITHER_SKELETON)
                         .placement(positions.getOrThrow(SMCPositionComponents.RAID))
@@ -188,16 +186,6 @@ public interface SMCSpawnComponents {
                                 .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 18.0 + i * 1.2F))),
                                         NBTHelper.healthTag(18.0F + i * 1.2F))).build()
                         , 40 * (i / 9), 40, 1, 0));
-            }
-            //11天后开始生成末影人
-            if(i > 11) {
-                context.register(ENDER_MANS.get(i), new DurationSpawn(HTSpawnComponents.builder()
-                        .entityType(EntityType.ENDERMAN)
-                        .placement(positions.getOrThrow(SMCPositionComponents.RAID))
-                        .nbt(NBTHelper
-                                .merge(NBTHelper.attributeTags(List.of(Pair.of(Attributes.MAX_HEALTH, 18.0 + i * 1.2F))),
-                                        NBTHelper.healthTag(18.0F + i * 1.2F))).build()
-                        , 40 * (i / 11), 40, 1, 0));
             }
         }
 
