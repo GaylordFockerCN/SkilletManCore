@@ -55,6 +55,7 @@ import xaero.common.minimap.waypoints.WaypointsManager;
 import xaero.minimap.XaeroMinimap;
 import yesman.epicfight.client.ClientEngine;
 import yesman.epicfight.skill.Skill;
+import yesman.epicfight.world.effect.EpicFightMobEffects;
 import yesman.epicfight.world.item.EpicFightItems;
 import yesman.epicfight.world.item.SkillBookItem;
 
@@ -922,7 +923,9 @@ public class SMCPlayer {
         } else {
             ServerPlayer serverPlayer = (ServerPlayer) player;
             ServerLevel serverLevel = serverPlayer.serverLevel();
-
+            if(serverPlayer.isInvulnerable() && !serverPlayer.hasEffect(EpicFightMobEffects.STUN_IMMUNITY.get())) {
+                serverPlayer.setInvulnerable(false);
+            }
             //显示当天节气
             if (dayTick == 100) {
                 SolarTerm solarTerm = EclipticUtil.getNowSolarTerm(serverPlayer.serverLevel());
