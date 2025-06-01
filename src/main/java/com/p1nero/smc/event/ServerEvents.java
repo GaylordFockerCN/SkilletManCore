@@ -72,12 +72,14 @@ public class ServerEvents {
                     //2天后每两天来一次袭击，10天后每天都将生成袭击
                     if (dayTime > 2 && dayTime % 2 == 1) {
                         for (ServerPlayer serverPlayer : event.getServer().getPlayerList().getPlayers()) {
-                            SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
-                            if (!smcPlayer.isTodayInRaid()) {
-                                if (!DataManager.bossKilled.get(serverPlayer)) {
-                                    SMCRaidManager.startNightRaid(serverPlayer, smcPlayer);
+                            if(serverPlayer.level().dimension() == Level.OVERWORLD) {
+                                SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+                                if (!smcPlayer.isTodayInRaid()) {
+                                    if (!DataManager.bossKilled.get(serverPlayer)) {
+                                        SMCRaidManager.startNightRaid(serverPlayer, smcPlayer);
+                                    }
+                                    DataManager.specialSolvedToday.put(serverPlayer, false);
                                 }
-                                DataManager.specialSolvedToday.put(serverPlayer, false);
                             }
                         }
                     }
@@ -86,9 +88,11 @@ public class ServerEvents {
                 //下界入侵
                 if (overworld.isDay() && dayTick == 2000 && dayTime % 2 == 0) {
                     for (ServerPlayer serverPlayer : event.getServer().getPlayerList().getPlayers()) {
-                        SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
-                        if (DataManager.bossKilled.get(serverPlayer) && !DataManager.inRaid.get(serverPlayer)) {
-                            SMCRaidManager.startDayNetherRaid(serverPlayer, smcPlayer);
+                        if(serverPlayer.level().dimension() == Level.OVERWORLD) {
+                            SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+                            if (DataManager.bossKilled.get(serverPlayer) && !DataManager.inRaid.get(serverPlayer)) {
+                                SMCRaidManager.startDayNetherRaid(serverPlayer, smcPlayer);
+                            }
                         }
                     }
                 }
