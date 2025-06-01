@@ -3,19 +3,16 @@ package com.p1nero.smc.entity.custom.boss.goldenflame;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.mojang.datafixers.util.Pair;
-import com.p1nero.smc.archive.SMCArchiveManager;
 import com.p1nero.smc.capability.epicfight.SMCBossPatch;
 import com.p1nero.smc.entity.custom.boss.goldenflame.ai.GoldenFlameCombatBehaviors;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import org.jetbrains.annotations.Nullable;
 import reascer.wom.gameasset.WOMAnimations;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.api.animation.LivingMotions;
 import yesman.epicfight.api.animation.types.EntityState;
-import yesman.epicfight.api.animation.types.HitAnimation;
-import yesman.epicfight.api.animation.types.LongHitAnimation;
-import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.gameasset.Animations;
@@ -69,6 +66,13 @@ public class GoldenFlamePatch extends SMCBossPatch<GoldenFlame> {
             }
         }
         return result;
+    }
+
+    @Override
+    protected void serverTick(LivingEvent.LivingTickEvent event) {
+        super.serverTick(event);
+        this.getOriginal().setGlowingTag(this.getEntityState().getLevel() == 2 || this.getEntityState().getLevel() == 1);//可以攻击时或后摇时发光
+        this.getOriginal().setTeamColor(this.getEntityState().getLevel() == 2 ? 0xff0000 : 0xffff00);
     }
 
     @Nullable
@@ -128,10 +132,14 @@ public class GoldenFlamePatch extends SMCBossPatch<GoldenFlame> {
      */
     @Override
     public boolean applyStun(StunType stunType, float stunTime) {
-        if(this.getOriginal().inAntiForm() || !this.getOriginal().shouldRender()) {
+        if(isStunImmunity()) {
             return false;
         }
-        return super.applyStun(stunType, stunTime);
+        return super.applyStun(stunType, stunTime * 2);
+    }
+
+    public boolean isStunImmunity() {
+        return this.getOriginal().inAntiForm() || !this.getOriginal().shouldRender() || this.getOriginal().isCharging() || this.getEntityState().inaction();
     }
 
 }

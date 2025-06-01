@@ -1,5 +1,6 @@
 package com.p1nero.smc.item.custom;
 
+import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.util.ItemUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -21,6 +22,8 @@ public class TeleporterItem extends SimpleDescriptionFoilItem{
             ServerLevel end = level.getServer().getLevel(Level.END);
             if(end != null) {
                 player.changeDimension(end);
+                player.displayClientMessage(SkilletManCoreMod.getInfo("warning_yellow_glow"), true);
+                player.displayClientMessage(SkilletManCoreMod.getInfo("warning_yellow_glow"), false);
                 ItemUtil.addItem(player, Items.NETHERITE_PICKAXE.getDefaultInstance(), true);
             }
         }

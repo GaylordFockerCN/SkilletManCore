@@ -46,6 +46,8 @@ public class ClericDialogBuilder extends VillagerDialogScreenHandler.VillagerDia
                 ServerLevel end = serverPlayer.serverLevel().getServer().getLevel(Level.END);
                 if(end != null){
                     serverPlayer.changeDimension(end);
+                    serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("warning_yellow_glow"), true);
+                    serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("warning_yellow_glow"), false);
                     ItemUtil.addItem(serverPlayer, Items.NETHERITE_PICKAXE.getDefaultInstance(), true);
                 }
             }

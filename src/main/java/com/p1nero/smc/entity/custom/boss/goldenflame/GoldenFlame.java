@@ -10,6 +10,7 @@ import com.p1nero.smc.effect.SMCEffects;
 import com.p1nero.smc.entity.api.IWanderableEntity;
 import com.p1nero.smc.entity.ai.epicfight.api.TimeStampedEvent;
 import com.p1nero.smc.entity.ai.goal.CustomWanderGoal;
+import com.p1nero.smc.entity.api.MultiPlayerBoostEntity;
 import com.p1nero.smc.entity.custom.boss.SMCBoss;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
@@ -52,11 +53,12 @@ import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
 import java.util.Random;
 
-public class GoldenFlame extends SMCBoss implements IWanderableEntity {
+public class GoldenFlame extends SMCBoss implements IWanderableEntity, MultiPlayerBoostEntity {
     protected static final EntityDataAccessor<Integer> CHARGING_TIMER = SynchedEntityData.defineId(GoldenFlame.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Integer> FLAME_CIRCLE_LIFETIME = SynchedEntityData.defineId(GoldenFlame.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Integer> CURRENT_FLAME_CIRCLE_TIMER = SynchedEntityData.defineId(GoldenFlame.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Integer> ANTI_FORM_TIMER = SynchedEntityData.defineId(GoldenFlame.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Integer> TEAM_COLOR = SynchedEntityData.defineId(GoldenFlame.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Boolean> IS_BLUE = SynchedEntityData.defineId(GoldenFlame.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> SHOULD_RENDER = SynchedEntityData.defineId(GoldenFlame.class, EntityDataSerializers.BOOLEAN);
     private int antiFormCooldown = 0;
@@ -85,12 +87,22 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity {
     }
 
     @Override
+    public int getTeamColor() {
+        return this.getEntityData().get(TEAM_COLOR);
+    }
+
+    public void setTeamColor(int color){
+        this.getEntityData().set(TEAM_COLOR, color);
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         getEntityData().define(CHARGING_TIMER, 0);
         getEntityData().define(FLAME_CIRCLE_LIFETIME, 0);
         getEntityData().define(CURRENT_FLAME_CIRCLE_TIMER, 0);
         getEntityData().define(ANTI_FORM_TIMER, 0);
+        getEntityData().define(TEAM_COLOR, 0);
         getEntityData().define(IS_BLUE, false);
         getEntityData().define(SHOULD_RENDER, true);
     }
@@ -302,7 +314,7 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity {
 
     public static AttributeSupplier setAttributes() {
         return Animal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 773.27)
+                .add(Attributes.MAX_HEALTH, 322.75)
                 .add(Attributes.ATTACK_DAMAGE, 2.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
                 .add(Attributes.MOVEMENT_SPEED, 0.3f)

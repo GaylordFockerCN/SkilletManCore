@@ -77,12 +77,4 @@ public class EntityUtil {
         return self.level().getNearbyEntities(aClass, TargetingConditions.forNonCombat(), self, getPlayerAABB(self.getOnPos(), offset));
     }
 
-    public static int getPlayerCount(ServerLevel level){
-        return getAllPlayers(level).size();
-    }
-
-    public static List<ServerPlayer> getAllPlayers(ServerLevel level){
-        return level.getPlayers((serverPlayer -> true));
-    }
-
 }

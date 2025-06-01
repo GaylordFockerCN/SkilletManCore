@@ -4,39 +4,48 @@ import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.SMCConfig;
 import com.p1nero.smc.util.EntityUtil;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
  * 多人时血量增加
  */
 public interface MultiPlayerBoostEntity {
-    default void whenPlayerCountChange(){
+    default void whenPlayerCountChange() {
         LivingEntity entity = ((LivingEntity) this);
         float ordinal = entity.getHealth();
-        if(entity.level() instanceof ServerLevel serverLevel){
+        if (entity.level() instanceof ServerLevel serverLevel) {
             float healthOrdinal = entity.getHealth();
             float maxHealthOrdinal = entity.getMaxHealth();
-            int playerCount = EntityUtil.getPlayerCount(serverLevel);
-            for(int i = 1; i <= SMCConfig.BOSS_HEALTH_AND_LOOT_MULTIPLE_MAX.get(); i++){
-                AttributeModifier modifier = new AttributeModifier(UUID.fromString("d2d110cc-f22f-11ed-a05b-1212bb11451"+i), "health_modify_in_multi_player", i - 1, AttributeModifier.Operation.MULTIPLY_TOTAL);
+            List<ServerPlayer> serverPlayers = serverLevel.players();
+            int playerCount = serverPlayers.size();
+            int target = Math.min(playerCount - 1, SMCConfig.BOSS_HEALTH_AND_LOOT_MULTIPLE_MAX.get());
+            boolean modified = false;
+            for (int i = 1; i <= SMCConfig.BOSS_HEALTH_AND_LOOT_MULTIPLE_MAX.get(); i++) {
+                AttributeModifier modifier = new AttributeModifier(UUID.fromString("d2d110cc-f22f-11ed-a05b-1212bb11451" + i), "health_modify_in_multi_player", i - 1, AttributeModifier.Operation.MULTIPLY_TOTAL);
                 AttributeInstance instance = entity.getAttribute(Attributes.MAX_HEALTH);
-                if(instance != null){
-                    if(i == playerCount){
-                        if(instance.hasModifier(modifier)){
+                if (instance != null) {
+                    if (i == target) {
+                        if (!instance.hasModifier(modifier)) {
                             instance.addPermanentModifier(modifier);
+                            modified = true;
                         }
                     } else {
                         instance.removeModifier(modifier);
                     }
                 }
             }
-            entity.setHealth(healthOrdinal * entity.getMaxHealth() / maxHealthOrdinal);//别忘了血量也要变
-            SkilletManCoreMod.LOGGER.info("[Player Count Modify]" + entity.getType().getDescriptionId() + "'s max health has changed from [" + ordinal + "] to : " + entity.getMaxHealth());
+            if(modified) {
+                entity.setHealth(healthOrdinal * entity.getMaxHealth() / maxHealthOrdinal);//别忘了血量也要变
+                SkilletManCoreMod.LOGGER.info("[Player Count Modify]" + entity.getType().getDescriptionId() + "'s max health has changed from [" + ordinal + "] to : " + entity.getMaxHealth());
+                serverPlayers.forEach(serverPlayer -> serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("multy_player_health_boost_to", target), true));
+            }
         }
     }
 }

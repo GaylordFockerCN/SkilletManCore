@@ -5,6 +5,7 @@ import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.entity.SMCEntities;
+import com.p1nero.smc.entity.api.MultiPlayerBoostEntity;
 import com.p1nero.smc.entity.custom.boss.SMCBoss;
 import com.p1nero.smc.entity.custom.boss.goldenflame.GoldenFlame;
 import com.p1nero.smc.entity.custom.npc.me.P1nero;
@@ -13,6 +14,7 @@ import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.OpenFastKillBossScreenPacket;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
+import com.p1nero.smc.util.EntityUtil;
 import com.p1nero.smc.util.ItemUtil;
 import com.p1nero.smc.worldgen.dimension.SMCDimension;
 import hungteen.htlib.common.event.events.DummyEntityEvent;
@@ -170,6 +172,12 @@ public class LivingEntityListeners {
         }
 
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
+            for(Entity entity : serverPlayer.serverLevel().getEntities().getAll()){
+                if(entity instanceof MultiPlayerBoostEntity multiPlayerBoostEntity){
+                    multiPlayerBoostEntity.whenPlayerCountChange();
+                }
+            }
+
             SMCCapabilityProvider.syncPlayerDataToClient(serverPlayer);
             //重置
             if (DataManager.lastKilledByBoss.get(serverPlayer)) {
