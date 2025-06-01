@@ -124,32 +124,14 @@ public class GoldenFlamePatch extends SMCBossPatch<GoldenFlame> {
     }
 
     /**
-     * 免疫硬直
+     * 反神形态免疫硬直，其余硬直冲击降低
      */
     @Override
     public boolean applyStun(StunType stunType, float stunTime) {
-        return false;
+        if(this.getOriginal().inAntiForm() || !this.getOriginal().shouldRender()) {
+            return false;
+        }
+        return super.applyStun(stunType, stunTime);
     }
 
-    /**
-     * 免疫硬直
-     */
-    @Override
-    public void playAnimationSynchronized(StaticAnimation animation, float convertTimeModifier) {
-        if(animation instanceof HitAnimation || animation instanceof LongHitAnimation){
-            return;
-        }
-        super.playAnimationSynchronized(animation, convertTimeModifier);
-    }
-
-    /**
-     * 免疫硬直
-     */
-    @Override
-    public void playAnimationSynchronized(StaticAnimation animation, float convertTimeModifier, AnimationPacketProvider packetProvider) {
-        if(animation instanceof HitAnimation || animation instanceof LongHitAnimation){
-            return;
-        }
-        super.playAnimationSynchronized(animation, convertTimeModifier, packetProvider);
-    }
 }

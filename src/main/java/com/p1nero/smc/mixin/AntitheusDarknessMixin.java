@@ -50,7 +50,7 @@ public abstract class AntitheusDarknessMixin extends AbstractHurtingProjectile {
                     damage.setStunType(StunType.LONG);
                     if(entity1 instanceof GoldenFlame goldenFlame && entity instanceof Player){
                         if(livingEntityPatch.getEntityState().attackResult(damage).dealtDamage()){
-                            goldenFlame.setHealth(goldenFlame.getHealth() + goldenFlame.getMaxHealth() / 40);
+                            goldenFlame.setHealth(goldenFlame.getHealth() + goldenFlame.getMaxHealth() / 100);
                         }
                     }
                     int prevInvulTime = entity.invulnerableTime;

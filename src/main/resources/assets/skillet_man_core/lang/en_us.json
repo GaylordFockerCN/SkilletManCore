@@ -499,6 +499,7 @@
   "info.smc.best_for_season": "Congratulations to [%s] for winning the [%s] quarterly sales champion!",
   "info.smc.best_season_win": "Quarterly Trophy: [%s] - Belongs to %s",
   "info.smc.best_seller": "§eThe player with the most accumulated assets this quarter: [%s]§e!",
+  "info.smc.boss_will_recover": "§l§cWARNING! THE BOSS WILL RECOVER WHEN KILLED PLAYER!",
   "info.smc.cannot_left_customers": "\n §eHey young man, you can't leave your customers hanging! At least dismantle the skillet and clock out before running off!",
   "info.smc.cat_go": "Cat Attack!",
   "info.smc.collaborate_loss": "[%s] has abandoned the contract with you!",

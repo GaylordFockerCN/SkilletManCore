@@ -118,8 +118,10 @@ public class P1nero extends SMCNpc {
     }
     @OnlyIn(Dist.CLIENT)
     private Consumer<DialogueScreen> sendScore() {
-        SkilletManCoreMod.LOGGER.info("SMC: Sending score: " + clientScoreString);
-        return screen -> PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new HandleScorePacket(clientScoreString));
+        return screen -> {
+            SkilletManCoreMod.LOGGER.info("SMC: Sending score: " + clientScoreString);
+            PacketRelay.sendToServer(SMCPacketHandler.INSTANCE, new HandleScorePacket(clientScoreString));
+        };
     }
     @Override
     @OnlyIn(Dist.CLIENT)

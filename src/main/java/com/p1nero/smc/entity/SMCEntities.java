@@ -81,7 +81,7 @@ public class SMCEntities {
     public static final RegistryObject<EntityType<FlameCircleEntity>> FLAME_CIRCLE = register("flame_circle",
             EntityType.Builder.<FlameCircleEntity>of(FlameCircleEntity::new, MobCategory.AMBIENT).sized(1.0f, 1.0f));
     public static final RegistryObject<EntityType<GoldenFlame>> GOLDEN_FLAME = register("golden_flame",
-            EntityType.Builder.of(GoldenFlame::new, MobCategory.MONSTER).sized(0.8f, 2.5f));
+            EntityType.Builder.of(GoldenFlame::new, MobCategory.MONSTER).sized(1.0f, 2.5f));
     public static final RegistryObject<EntityType<SuperBadIronGolem>> SUPER_BAD_GOLEM = register("super_golem",
             EntityType.Builder.of(SuperBadIronGolem::new, MobCategory.MISC).sized(1.4F, 2.7f));
     public static final RegistryObject<EntityType<SuperGoodIronGolem>> SUPER_GOOD_GOLEM = register("super_good_golem",

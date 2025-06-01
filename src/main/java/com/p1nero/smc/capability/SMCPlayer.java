@@ -44,6 +44,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.phys.Vec3;
 import net.p3pp3rf1y.sophisticatedbackpacks.init.ModItems;
 import org.jetbrains.annotations.Nullable;
@@ -62,6 +64,7 @@ import yesman.epicfight.world.item.SkillBookItem;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -984,6 +987,9 @@ public class SMCPlayer {
                 if (this.weaponGachaingCount > 0) {
                     this.weaponGachaingCount--;
                     ItemStack itemStack = WeaponGachaSystem.pull(serverPlayer);
+                    if(itemStack.is(Items.BOW)) {
+                        EnchantmentHelper.enchantItem(serverPlayer.getRandom(), itemStack, 30 + serverPlayer.getRandom().nextInt(25), false);
+                    }
                     CustomColorItemEntity entity = ItemUtil.addItemEntity(player, itemStack);
                     if (WeaponGachaSystem.STAR5_LIST.stream().anyMatch(itemStackInPool -> itemStackInPool.is(itemStack.getItem()))) {
                         entity.setTeamColor(0xfff66d);

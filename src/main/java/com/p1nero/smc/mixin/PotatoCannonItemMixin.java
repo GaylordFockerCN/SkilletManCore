@@ -13,15 +13,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 
+import static com.simibubi.create.content.equipment.potatoCannon.PotatoCannonItem.getAmmo;
+
 @Mixin(value = PotatoCannonItem.class)
 public class PotatoCannonItemMixin {
 
-    @Inject(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/InteractionResultHolder;success(Ljava/lang/Object;)Lnet/minecraft/world/InteractionResultHolder;"))
+    @Inject(method = "use", at = @At("HEAD"))
     private void smc$use(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir){
+        ItemStack heldStack = player.getItemInHand(hand);
+        heldStack.getOrCreateTag();//修之
         if(level.isClientSide){
-            PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
-            if(playerPatch != null) {
-                playerPatch.getClientAnimator().playReboundAnimation();
+            PotatoCannonItem.Ammo ammo = getAmmo(player, heldStack);
+            if (ammo != null) {
+                PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                if(playerPatch != null) {
+                    playerPatch.getClientAnimator().playReboundAnimation();
+                }
             }
         }
     }

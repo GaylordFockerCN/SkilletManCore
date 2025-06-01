@@ -37,6 +37,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add("key.categories.smc", "平底锅侠 - 核心");
         this.addKeyMapping(KeyMappings.SHOW_HINT, "隐藏/显示当前引导");
 
+        this.addInfo("boss_will_recover", "§l§c注意！若被Boss击杀，Boss将会回血！");
         this.addInfo("fast_kill_enable", "§l§c秒杀BOSS模式已开启！");
         this.addInfo("hint_update_tip", "§l§c[§l§6新§l§c]");
         this.addInfo("task_todo_tip", "§l§c[§l§e待办§l§c]");

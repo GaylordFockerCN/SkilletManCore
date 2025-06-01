@@ -154,6 +154,10 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity {
         return getEntityData().get(ANTI_FORM_TIMER);
     }
 
+    public boolean inAntiForm() {
+        return this.getAntiFormTimer() > 0;
+    }
+
     public int getAntiFormCooldown() {
         return antiFormCooldown;
     }

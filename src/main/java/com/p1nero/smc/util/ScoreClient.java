@@ -45,7 +45,7 @@ public class ScoreClient {
         }
     }
 
-    private static boolean isValidScore(String score) {
+    public static boolean isValidScore(String score) {
         return score != null &&
                 score.length() == 8 &&
                 score.matches("[0-5]+");

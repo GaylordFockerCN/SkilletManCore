@@ -96,49 +96,52 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
 
         merchantOffers.add(new MerchantOffer(
                 new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
                 new ItemStack(WOMItems.ENDER_BLASTER.get(), 1),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
-                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
                 new ItemStack(WOMItems.AGONY.get(), 1),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
-                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
                 new ItemStack(WOMItems.MOONLESS.get(), 1),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
-                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
                 new ItemStack(WOMItems.SATSUJIN.get(), 1),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
-                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
                 new ItemStack(WOMItems.SOLAR.get(), 1),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
-                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
                 new ItemStack(WOMItems.RUINE.get(), 1),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
-                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
                 new ItemStack(WOMItems.TORMENTED_MIND.get(), 1),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
-                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
                 new ItemStack(WOMItems.ANTITHEUS.get(), 1),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
                 new ItemStack(WOMItems.HERRSCHER.get(), 1),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
-                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 45),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
+                new ItemStack(SMCRegistrateItems.WEAPON_RAFFLE_TICKET, 60),
                 new ItemStack(WOMItems.GESETZ.get(), 1),
                 142857, 0, 0));
 

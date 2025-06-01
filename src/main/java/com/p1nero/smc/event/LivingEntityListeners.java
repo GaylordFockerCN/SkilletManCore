@@ -22,11 +22,14 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSources;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.Enemy;
@@ -42,6 +45,7 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -67,17 +71,26 @@ public class LivingEntityListeners {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onEntityHurt(LivingHurtEvent event) {
-        if(event.getEntity() instanceof Villager villager && !(villager instanceof P1nero) && villager.getVillagerData().getProfession() != VillagerProfession.CLERIC && event.getSource().getEntity() instanceof ServerPlayer player) {
+
+        //宠物免伤
+        if (event.getEntity() instanceof OwnableEntity ownableEntity) {
+            if (event.getSource().getEntity() == ownableEntity.getOwner()) {
+                event.setAmount(0);
+                event.setCanceled(true);
+            }
+        }
+
+        if (event.getEntity() instanceof Villager villager && !(villager instanceof P1nero) && villager.getVillagerData().getProfession() != VillagerProfession.CLERIC && event.getSource().getEntity() instanceof ServerPlayer player) {
             event.setAmount(0);
             event.setCanceled(true);
             player.displayClientMessage(SkilletManCoreMod.getInfo("customer_is_first").withStyle(ChatFormatting.RED), true);
             SMCPlayer.consumeMoney(10, player);
         }
-        if(event.getEntity() instanceof Player) {
+        if (event.getEntity() instanceof Player) {
             event.setAmount(event.getAmount() * 0.5F);
         }
-        if(event.getSource().getEntity() instanceof ServerPlayer serverPlayer) {
-            if(serverPlayer.getMainHandItem().hasTag() && serverPlayer.getMainHandItem().getOrCreateTag().getBoolean(SkilletManCoreMod.POISONED_SKILLET) && event.getEntity().isAlive()) {
+        if (event.getSource().getEntity() instanceof ServerPlayer serverPlayer) {
+            if (serverPlayer.getMainHandItem().hasTag() && serverPlayer.getMainHandItem().getOrCreateTag().getBoolean(SkilletManCoreMod.POISONED_SKILLET) && event.getEntity().isAlive()) {
                 event.getEntity().addEffect(new MobEffectInstance(MobEffects.POISON, 200), serverPlayer);
             }
         }
@@ -85,18 +98,21 @@ public class LivingEntityListeners {
 
     @SubscribeEvent
     public static void onEntityDie(LivingDeathEvent event) {
-        if(event.getEntity() instanceof Enemy && event.getSource().getEntity() instanceof ServerPlayer player) {
+        if (event.getEntity() instanceof Enemy && event.getSource().getEntity() instanceof ServerPlayer player) {
             SMCPlayer.addMoney((int) event.getEntity().getMaxHealth(), player);//击杀奖励
         }
 
-        if(event.getEntity() instanceof Villager villager && villager.getVillagerData().getProfession() == VillagerProfession.CLERIC && event.getSource().getEntity() instanceof ServerPlayer serverPlayer) {
+        if (event.getEntity() instanceof Villager villager && villager.getVillagerData().getProfession() == VillagerProfession.CLERIC && event.getSource().getEntity() instanceof ServerPlayer serverPlayer) {
             ItemUtil.addItem(serverPlayer, SMCRegistrateItems.END_TELEPORTER.asStack(), true);
         }
 
-        if(event.getEntity() instanceof ServerPlayer serverPlayer){
+        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
             serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("die_tip"), false);
-            if(event.getSource().getEntity() instanceof SMCBoss smcBoss) {
-                smcBoss.setHealth(smcBoss.getHealth() + smcBoss.getMaxHealth() / 3);
+            if (event.getSource().getEntity() instanceof SMCBoss smcBoss) {
+                smcBoss.setHealth(smcBoss.getHealth() + smcBoss.getMaxHealth() / 10);
+                for (Player player : serverPlayer.serverLevel().players()) {
+                    player.displayClientMessage(SkilletManCoreMod.getInfo("boss_will_recover"), false);
+                }
                 DataManager.lastKilledByBoss.put(serverPlayer, true);//记录上次被boss杀，复活的时候用
             }
         }
@@ -105,8 +121,8 @@ public class LivingEntityListeners {
 
     @SubscribeEvent
     public static void onRaidSpawn(DummyEntityEvent.DummyEntitySpawnEvent event) {
-        if(event.getDummyEntity() instanceof DefaultRaid defaultRaid) {
-            for(Entity entity : defaultRaid.getRaiders()){
+        if (event.getDummyEntity() instanceof DefaultRaid defaultRaid) {
+            for (Entity entity : defaultRaid.getRaiders()) {
                 entity.setGlowingTag(true);
             }
         }
@@ -117,10 +133,10 @@ public class LivingEntityListeners {
      */
     @SubscribeEvent
     public static void onRaidDefeated(RaidEvent.RaidDefeatedEvent event) {
-        for(Entity entity : event.getRaid().getDefenders()){
-            if(entity instanceof ServerPlayer serverPlayer) {
+        for (Entity entity : event.getRaid().getDefenders()) {
+            if (entity instanceof ServerPlayer serverPlayer) {
                 SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
-                if(smcPlayer.isTrialRequired()) {
+                if (smcPlayer.isTrialRequired()) {
                     SMCPlayer.stageUp(serverPlayer);
                 }
             }
@@ -128,43 +144,41 @@ public class LivingEntityListeners {
     }
 
     @SubscribeEvent
-    public static void onLivingTick(LivingEvent.LivingTickEvent event){
-        if(event.getEntity() instanceof EnderDragon enderDragon){
-            //以下俩都没法隐藏自然生的血条
-            if(enderDragon.tickCount > 100) {
-                enderDragon.discard();
-            }
+    public static void onLivingExperienceDropEvent(LivingExperienceDropEvent event) {
+        if (event.getEntity() instanceof EnderDragon) {
+            event.setDroppedExperience(0);
         }
     }
 
     @SubscribeEvent
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
 
-        if(event.getEntity() instanceof AbstractPiglin piglin) {
+        if (event.getEntity() instanceof AbstractPiglin piglin) {
             piglin.setImmuneToZombification(true);
         }
 
-        if(event.getEntity() instanceof EnderDragon enderDragon) {
-            if(event.getLevel() instanceof ServerLevel serverLevel){
-                if(serverLevel.getEntities(SMCEntities.GOLDEN_FLAME.get(), LivingEntity::isAlive).isEmpty()){
-                    SMCEntities.GOLDEN_FLAME.get().spawn(serverLevel, enderDragon.getOnPos(), MobSpawnType.SPAWNER);
+        if (event.getEntity() instanceof EnderDragon enderDragon) {
+            if (event.getLevel() instanceof ServerLevel serverLevel) {
+                if (serverLevel.getEntities(SMCEntities.GOLDEN_FLAME.get(), LivingEntity::isAlive).isEmpty()) {
+                    GoldenFlame goldenFlame = SMCEntities.GOLDEN_FLAME.get().spawn(serverLevel, enderDragon.getOnPos(), MobSpawnType.SPAWNER);
+                    if (goldenFlame != null) {
+                        enderDragon.setHealth(0);
+                        SkilletManCoreMod.LOGGER.info("replace ender dragon to golden flame.");
+                    }
                 }
             }
-            enderDragon.setHealth(0);//直接移除血条不会丢
-            enderDragon.discard();
-            return;
         }
 
-        if(event.getEntity() instanceof ServerPlayer serverPlayer) {
+        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
             SMCCapabilityProvider.syncPlayerDataToClient(serverPlayer);
             //重置
-            if(DataManager.lastKilledByBoss.get(serverPlayer)) {
+            if (DataManager.lastKilledByBoss.get(serverPlayer)) {
                 PacketRelay.sendToPlayer(SMCPacketHandler.INSTANCE, new OpenFastKillBossScreenPacket(), serverPlayer);
                 DataManager.lastKilledByBoss.put(serverPlayer, false);
             }
         }
 
-        if(weapons.isEmpty()) {
+        if (weapons.isEmpty()) {
             weapons.add(Items.GOLDEN_SWORD.getDefaultInstance());
             weapons.add(Items.GOLDEN_AXE.getDefaultInstance());
             weapons.add(EpicFightItems.GOLDEN_LONGSWORD.get().getDefaultInstance());
@@ -175,21 +189,21 @@ public class LivingEntityListeners {
             weapons.add(EpicFightItems.GOLDEN_DAGGER.get().getDefaultInstance());
         }
 
-        if(event.getEntity() instanceof Monster monster) {
-            if(monster instanceof VirgilVillager){
+        if (event.getEntity() instanceof Monster monster) {
+            if (monster instanceof VirgilVillager) {
                 monster.setItemInHand(InteractionHand.MAIN_HAND, SMCRegistrateItems.IRON_SKILLET_LEVEL5.asStack());
                 return;
             }
-            if(monster.getMainHandItem().isEmpty()) {
+            if (monster.getMainHandItem().isEmpty()) {
                 monster.setItemInHand(InteractionHand.MAIN_HAND, weapons.get(monster.getRandom().nextInt(weapons.size())));
-                if(monster.getRandom().nextInt(5) == 0){
+                if (monster.getRandom().nextInt(5) == 0) {
                     monster.setItemInHand(InteractionHand.OFF_HAND, monster.getMainHandItem());
                 }
             }
         }
 
-        if(event.getEntity() instanceof Cat cat && !cat.level().isClientSide) {
-            if(!cat.hasCustomName() && cat.getVariant().texture().toString().contains("white") && cat.getRandom().nextBoolean()) {
+        if (event.getEntity() instanceof Cat cat && !cat.level().isClientSide) {
+            if (!cat.hasCustomName() && cat.getVariant().texture().toString().contains("white") && cat.getRandom().nextBoolean()) {
                 cat.setCustomName(SkilletManCoreMod.getInfo("rana_kaname"));
                 cat.setCustomNameVisible(true);
             }

@@ -184,6 +184,8 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             if (!DataManager.inSpecial.get(owner)) {
                 if(summonSpecial(owner, this.getBlockPos(), 10, 12)) {
                     DataManager.inSpecial.put(owner, true);
+                } else {
+                    DataManager.specialSolvedToday.put(owner, true);
                 }
             }
             return;
@@ -247,7 +249,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             heShen.setSpawnPos(randomSpawnPos);
             heShen.setHomePos(randomHomePos);
             heShen.setOwner(owner);
-            owner.serverLevel().addFreshEntity(heShen);
+            return owner.serverLevel().addFreshEntity(heShen);
         } else if(!DataManager.specialEvent2Solved.get(owner)){
             TwoKid twoKid1 = new TwoKid(owner, randomHomePos.getCenter());
             twoKid1.setSpawnPos(randomSpawnPos);
@@ -257,8 +259,8 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             twoKid2.setHomePos(randomHomePos);
             twoKid1.setOwner(owner);
             twoKid2.setOwner(owner);
-            owner.serverLevel().addFreshEntity(twoKid1);
-            owner.serverLevel().addFreshEntity(twoKid2);
+            boolean flag = owner.serverLevel().addFreshEntity(twoKid1);
+            return flag && owner.serverLevel().addFreshEntity(twoKid2);
         } else if(!DataManager.specialEvent3Solved.get(owner)) {
             Thief1 thief1 = new Thief1(owner, randomHomePos.getCenter());
             thief1.setSpawnPos(randomSpawnPos);
@@ -270,8 +272,8 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             thief2.setOwner(owner);
             thief2.setThief1(thief1);
             thief1.setThief2(thief2);
-            owner.serverLevel().addFreshEntity(thief1);
-            owner.serverLevel().addFreshEntity(thief2);
+            boolean flag = owner.serverLevel().addFreshEntity(thief1);
+            return flag && owner.serverLevel().addFreshEntity(thief2);
         } else if(!DataManager.specialEvent4Solved.get(owner)){
             //V哥算敌对，和平生不了
             if(owner.getServer() != null && owner.getServer().getWorldData().getDifficulty() == Difficulty.PEACEFUL) {
@@ -286,9 +288,9 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
             villager.setYRot(dir);
             villager.setYBodyRot(dir);
             villager.setYHeadRot(dir);
-            owner.serverLevel().addFreshEntity(villager);
+            return owner.serverLevel().addFreshEntity(villager);
         }
-        return true;
+        return false;
     }
 
     public void clearCustomers(){
