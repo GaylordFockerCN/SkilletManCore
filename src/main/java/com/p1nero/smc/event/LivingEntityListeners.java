@@ -14,9 +14,7 @@ import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.OpenFastKillBossScreenPacket;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
-import com.p1nero.smc.util.EntityUtil;
 import com.p1nero.smc.util.ItemUtil;
-import com.p1nero.smc.worldgen.dimension.SMCDimension;
 import hungteen.htlib.common.event.events.DummyEntityEvent;
 import hungteen.htlib.common.event.events.RaidEvent;
 import hungteen.htlib.common.world.raid.DefaultRaid;
@@ -24,8 +22,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.DamageSources;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -42,9 +38,7 @@ import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.GameType;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
@@ -52,7 +46,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.loading.FMLEnvironment;
+import org.anti_ad.a.b.a.a.a.E;
 import yesman.epicfight.world.item.EpicFightItems;
 
 import java.util.ArrayList;
@@ -63,12 +57,11 @@ public class LivingEntityListeners {
 
     public static List<ItemStack> weapons = new ArrayList<>();
 
-    /**
-     * 穿盔甲加效果
-     */
     @SubscribeEvent
     public static void onEntityUpdate(LivingEvent.LivingTickEvent event) {
-
+        if(event.getEntity() instanceof MultiPlayerBoostEntity multiPlayerBoostEntity && event.getEntity().level() instanceof ServerLevel serverLevel) {
+            multiPlayerBoostEntity.tickCheck(serverLevel);
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -172,11 +165,6 @@ public class LivingEntityListeners {
         }
 
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-            for(Entity entity : serverPlayer.serverLevel().getEntities().getAll()){
-                if(entity instanceof MultiPlayerBoostEntity multiPlayerBoostEntity){
-                    multiPlayerBoostEntity.whenPlayerCountChange();
-                }
-            }
 
             SMCCapabilityProvider.syncPlayerDataToClient(serverPlayer);
             //重置

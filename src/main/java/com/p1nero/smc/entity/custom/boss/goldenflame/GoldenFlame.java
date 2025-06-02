@@ -1,22 +1,16 @@
 package com.p1nero.smc.entity.custom.boss.goldenflame;
 
-import com.p1nero.smc.SMCConfig;
 import com.p1nero.smc.archive.DataManager;
 import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.sound.SMCSounds;
-import com.p1nero.smc.datagen.SMCAdvancementData;
 import com.p1nero.smc.effect.SMCEffects;
 import com.p1nero.smc.entity.api.IWanderableEntity;
 import com.p1nero.smc.entity.ai.epicfight.api.TimeStampedEvent;
 import com.p1nero.smc.entity.ai.goal.CustomWanderGoal;
 import com.p1nero.smc.entity.api.MultiPlayerBoostEntity;
 import com.p1nero.smc.entity.custom.boss.SMCBoss;
-import com.p1nero.smc.network.PacketRelay;
-import com.p1nero.smc.network.SMCPacketHandler;
-import com.p1nero.smc.network.packet.clientbound.OpenEndScreenPacket;
 import com.p1nero.smc.util.EntityUtil;
-import com.p1nero.smc.worldgen.portal.SMCTeleporter;
 import net.kenddie.fantasyarmor.item.FAItems;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -66,6 +60,7 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity, MultiPlay
     private static final int MAX_ANTI_FORM_TIMER = 1000;
     private static final int MAX_FLAME_CIRCLE_TIME = 200;
     private boolean healthLock = true;
+    private int lastTickPlayerCnt;
 
     public GoldenFlame(EntityType<? extends PathfinderMob> type, Level level) {
         super(type, level);
@@ -314,7 +309,7 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity, MultiPlay
 
     public static AttributeSupplier setAttributes() {
         return Animal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 322.75)
+                .add(Attributes.MAX_HEALTH, 226.13)
                 .add(Attributes.ATTACK_DAMAGE, 2.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
                 .add(Attributes.MOVEMENT_SPEED, 0.3f)
@@ -380,4 +375,21 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity, MultiPlay
         return SMCSounds.RAID_BGM.get();
     }
 
+    @Override
+    public int getLastTickPlayerCount() {
+        return lastTickPlayerCnt;
+    }
+
+    @Override
+    public void setLastTickPlayerCount(int lastTickPlayerCnt) {
+        this.lastTickPlayerCnt = lastTickPlayerCnt;
+    }
+
+    @Override
+    public boolean isInvulnerable() {
+        if(!this.shouldRender()){
+            return true;
+        }
+        return super.isInvulnerable();
+    }
 }

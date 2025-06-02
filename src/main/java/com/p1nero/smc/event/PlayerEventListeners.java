@@ -9,6 +9,7 @@ import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.datagen.SMCAdvancementData;
+import com.p1nero.smc.entity.api.MultiPlayerBoostEntity;
 import com.p1nero.smc.entity.custom.boss.SMCBoss;
 import com.p1nero.smc.gameasset.skill.SMCSkills;
 import com.p1nero.smc.item.custom.LeftSkilletRightSpatula;
@@ -113,6 +114,12 @@ public class PlayerEventListeners {
 //                    SMCAdvancementData.finishAdvancement("belt", serverPlayer);
 //                }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
+        if(event.getEntity() instanceof ServerPlayer serverPlayer) {
         }
     }
 
@@ -251,11 +258,6 @@ public class PlayerEventListeners {
                 player.getMainHandItem().shrink(1);
             }
         }
-    }
-
-    @SubscribeEvent
-    public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
-
     }
 
     /**

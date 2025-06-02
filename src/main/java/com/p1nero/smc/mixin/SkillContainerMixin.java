@@ -17,13 +17,11 @@ import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 @Mixin(value = SkillContainer.class, remap = false)
 public abstract class SkillContainerMixin {
 
-    @Shadow public abstract PlayerPatch<?> getExecuter();
-
     @Shadow private PlayerPatch<?> executor;
 
     @Inject(method = "setSkill(Lyesman/epicfight/skill/Skill;Z)Z", at = @At("HEAD"))
     private void smc$setSkill(Skill skill, boolean initialize, CallbackInfoReturnable<Boolean> cir){
-        if(executor != null && !executor.isLogicalClient() && skill != null){
+        if(executor != null && !executor.isLogicalClient() && skill != null && skill.getCategory().learnable()){
             ResourceLocation name = skill.getRegistryName();
             SMCAdvancementData.finishAdvancement("skill_adv_" +name.getNamespace() + "_" + name.getPath(), ((ServerPlayerPatch) executor).getOriginal());
         }

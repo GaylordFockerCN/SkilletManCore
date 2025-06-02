@@ -10,6 +10,7 @@
     "AnimationsMixin",
     "AntitheusDarknessMixin",
     "AttackAnimationMixin",
+    "AttributesMixin",
     "BaseFoodItemMixin",
     "BasicMultipleAttackAnimationMixin",
     "CatMixin",

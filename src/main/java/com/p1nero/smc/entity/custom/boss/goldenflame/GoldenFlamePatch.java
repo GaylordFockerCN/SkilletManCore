@@ -139,7 +139,7 @@ public class GoldenFlamePatch extends SMCBossPatch<GoldenFlame> {
     }
 
     public boolean isStunImmunity() {
-        return this.getOriginal().inAntiForm() || !this.getOriginal().shouldRender() || this.getOriginal().isCharging() || this.getEntityState().inaction();
+        return this.getOriginal().inAntiForm() || !this.getOriginal().shouldRender() || this.getOriginal().isCharging() || (this.getEntityState().inaction() && this.getEntityState().getLevel() != 3);
     }
 
 }
