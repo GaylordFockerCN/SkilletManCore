@@ -12,10 +12,14 @@ import com.p1nero.smc.entity.SMCEntities;
 import com.p1nero.smc.entity.SMCVillagers;
 import com.p1nero.smc.entity.ai.behavior.VillagerTasks;
 import com.p1nero.smc.entity.custom.npc.SMCNpc;
+import com.p1nero.smc.item.custom.skillets.DiamondSkilletItem;
+import com.p1nero.smc.item.custom.skillets.GoldenSkilletItem;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.util.ItemUtil;
+import de.keksuccino.konkrete.json.jsonpath.internal.function.numeric.Min;
 import dev.xkmc.cuisinedelight.content.item.CuisineSkilletItem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -199,19 +203,35 @@ public class HeShen extends SMCNpc implements SpecialNpc {
 
         DialogueComponentBuilder dialogueComponentBuilder = new DialogueComponentBuilder(this);
 
-        builder.setAnswerRoot(new TreeNode(dialogueComponentBuilder.ans(0))
+        TreeNode diamond1 = new TreeNode(dialogueComponentBuilder.ans(3), dialogueComponentBuilder.opt(2))
+                .addExecutable((byte) 3)
+                .addLeaf(dialogueComponentBuilder.opt(-3));
+
+        TreeNode diamond2 = new TreeNode(dialogueComponentBuilder.ans(1), dialogueComponentBuilder.opt(2))
+                .addExecutable((byte) 1)
+                .addLeaf(dialogueComponentBuilder.opt(-1));
+
+        TreeNode root = new TreeNode(dialogueComponentBuilder.ans(0))
                 .addChild(new TreeNode(dialogueComponentBuilder.ans(1), dialogueComponentBuilder.opt(0))//普通
                         .addExecutable((byte) 1)
                         .addLeaf(dialogueComponentBuilder.opt(-1)))
                 .addChild(new TreeNode(dialogueComponentBuilder.ans(2), dialogueComponentBuilder.opt(1))//黄金
                         .addExecutable((byte) 2)
-                        .addLeaf(dialogueComponentBuilder.opt(-2)))
-                .addChild(new TreeNode(dialogueComponentBuilder.ans(3), dialogueComponentBuilder.opt(2))//钻石
-                        .addExecutable((byte) 3)
-                        .addLeaf(dialogueComponentBuilder.opt(-3)))
-                .addChild(new TreeNode(dialogueComponentBuilder.ans(3), dialogueComponentBuilder.opt(3))//都是
-                        .addExecutable((byte) 3)
-                        .addLeaf(dialogueComponentBuilder.opt(-3))));
+                        .addLeaf(dialogueComponentBuilder.opt(-2)));
+
+        LocalPlayer player = Minecraft.getInstance().player;
+
+        if(player != null && player.getInventory().hasAnyMatching(itemStack -> itemStack.getItem() instanceof DiamondSkilletItem)) {
+            root.addChild(diamond2);
+        } else {
+            root.addChild(diamond1);
+        }
+
+        root.addChild(new TreeNode(dialogueComponentBuilder.ans(3), dialogueComponentBuilder.opt(3))//都是
+                        .addExecutable((byte) 4)
+                        .addLeaf(dialogueComponentBuilder.opt(-3)));
+
+        builder.setAnswerRoot(root);
 
         if (!builder.isEmpty()) {
             Minecraft.getInstance().setScreen(builder.build());
@@ -233,7 +253,7 @@ public class HeShen extends SMCNpc implements SpecialNpc {
             SMCPlayer.consumeMoney(1600, player);
             ItemUtil.addItem(player, SMCRegistrateItems.GOLDEN_SKILLET_V3.asStack(), true);
             SMCPlayer.levelUPPlayer(player);
-        } else if(interactionID == 3) {
+        } else if(interactionID == 3 || interactionID == 4) {
             SMCPlayer.consumeMoney(1600, player);
             ItemUtil.searchAndConsumeItem(player, item -> item instanceof CuisineSkilletItem, 1);
             level().playSound(null, getX(), getY(), getZ(), SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 1, 1);

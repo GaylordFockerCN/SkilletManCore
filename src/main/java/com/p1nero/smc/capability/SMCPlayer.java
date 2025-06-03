@@ -952,7 +952,7 @@ public class SMCPlayer {
             }
 
             //重置袭击状态
-            if (DataManager.inRaid.get(player) && DummyEntityManager.getDummyEntities(((ServerLevel) player.level())).isEmpty()) {
+            if (DataManager.inRaid.get(player) && DummyEntityManager.getDummyEntities(serverLevel).isEmpty()) {
                 DataManager.inRaid.put(player, false);
             }
 

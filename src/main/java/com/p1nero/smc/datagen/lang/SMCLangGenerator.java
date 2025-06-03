@@ -37,6 +37,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add("key.categories.smc", "平底锅侠 - 核心");
         this.addKeyMapping(KeyMappings.SHOW_HINT, "隐藏/显示当前引导");
 
+        this.addInfo("online_required", "§c需正版验证！");
         this.addInfo("warning_yellow_glow", "§e黄光提示躲避！不要恋战！");
         this.addInfo("multy_player_health_boost_to", "§l§c受玩家数量影响，Boss血量提升至 %d 倍");
         this.addInfo("boss_will_recover", "§l§c注意！若被Boss击杀，Boss将会回血！");
@@ -284,7 +285,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addAdvancement("start_work", "新的开始", "接手一家店铺并开始经营");
         this.addAdvancement("money10000", "一万富翁", "持有 10, 000 绿宝石");
         this.addAdvancement("money100000", "十万富翁", "持有 100,000 绿宝石");
-        this.addAdvancement("money1000000", "百万富翁", "持有 1,000,000 绿宝石（你真的没有开挂吗）");
+        this.addAdvancement("money1000000", "百万富翁", "持有 1,000,000 绿宝石");
         this.addAdvancement("money1000000000", "一个小目标", "持有 1,000,000,000 绿宝石（你真的没有开挂吗）");
         this.addAdvancement("special_customer_1", "大亨", "接待10位特殊客户");
         this.addAdvancement("special_customer_2", "超级大亨", "接待20位特殊客户");

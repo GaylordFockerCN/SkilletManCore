@@ -1,5 +1,6 @@
 package com.p1nero.smc.util;
 
+import com.p1nero.smc.SkilletManCoreMod;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.User;
@@ -23,13 +24,13 @@ public class ScoreClient {
 
         if (player.getServer() != null) {
             if (player.getServer().isSingleplayer() && Minecraft.getInstance().getUser().getType() != User.Type.MSA) {
-                player.displayClientMessage(Component.literal("Online Required!").withStyle(ChatFormatting.RED), false);
+                player.displayClientMessage(SkilletManCoreMod.getInfo("online_required"), false);
                 return;
             }
         }
 
         if (player.getServer() instanceof DedicatedServer dedicatedServer && !dedicatedServer.usesAuthentication()) {
-            player.displayClientMessage(Component.literal("Online Required!").withStyle(ChatFormatting.RED), false);
+            player.displayClientMessage(SkilletManCoreMod.getInfo("online_required"), false);
             return;
         }
 

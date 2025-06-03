@@ -173,6 +173,7 @@ dependencies {
     implementation fg.deobf("curse.maven:farmers-delight-398521:6154802")
     implementation fg.deobf("curse.maven:cuisine-delight-893541:5814261")
     implementation fg.deobf("curse.maven:barbeques-delight-1007788:5848042")
+//    implementation fg.deobf("curse.maven:storage-drawers-223852:6549483")
     implementation fg.deobf("curse.maven:spice-of-life-carrot-edition-277616:4888575")
 
     //机械动力
@@ -216,7 +217,7 @@ dependencies {
     implementation fg.deobf("curse.maven:konkrete-410295:5028413")
     implementation fg.deobf("curse.maven:melody-938643:5109692")
 
-    //相机
+    //相机 NOTE runData不能用
 //    implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
 //    implementation fg.deobf("curse.maven:leawind-third-person-930880:5961735")
 //    implementation fg.deobf("libs:eflw:20.9.0")

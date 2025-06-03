@@ -28,11 +28,12 @@ import java.util.List;
  * 碟片抽卡
  */
 public class CartographerDialogBuilder extends VillagerDialogScreenHandler.VillagerDialogBuilder {
-    public static final List<ItemStack> DISCS = List.of(Items.MUSIC_DISC_11.getDefaultInstance(), Items.MUSIC_DISC_WARD.getDefaultInstance(), Items.MUSIC_DISC_13.getDefaultInstance(),
+    public static final List<ItemStack> DISCS = List.of(
+            Items.MUSIC_DISC_11.getDefaultInstance(), Items.MUSIC_DISC_WARD.getDefaultInstance(), Items.MUSIC_DISC_13.getDefaultInstance(), Items.MUSIC_DISC_STAL.getDefaultInstance(),
             Items.MUSIC_DISC_5.getDefaultInstance(), Items.MUSIC_DISC_OTHERSIDE.getDefaultInstance(), Items.MUSIC_DISC_BLOCKS.getDefaultInstance(), Items.MUSIC_DISC_CAT.getDefaultInstance(),
             Items.MUSIC_DISC_CHIRP.getDefaultInstance(), Items.MUSIC_DISC_FAR.getDefaultInstance(), Items.MUSIC_DISC_MALL.getDefaultInstance(), Items.MUSIC_DISC_MELLOHI.getDefaultInstance(),
-            Items.MUSIC_DISC_PIGSTEP.getDefaultInstance(), Items.MUSIC_DISC_RELIC.getDefaultInstance(), Items.MUSIC_DISC_STRAD.getDefaultInstance(), Items.MUSIC_DISC_WAIT.getDefaultInstance(),
-            Items.MUSIC_DISC_STAL.getDefaultInstance());
+            Items.MUSIC_DISC_PIGSTEP.getDefaultInstance(), Items.MUSIC_DISC_RELIC.getDefaultInstance(), Items.MUSIC_DISC_STRAD.getDefaultInstance(), Items.MUSIC_DISC_WAIT.getDefaultInstance()
+    );
 
     public CartographerDialogBuilder() {
         super(VillagerProfession.CARTOGRAPHER);

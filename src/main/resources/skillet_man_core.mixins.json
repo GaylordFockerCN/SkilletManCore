@@ -23,6 +23,7 @@
     "CuisineSkilletBlockEntityMixin",
     "CuisineSkilletBlockMixin",
     "CuisineSkilletItemMixin",
+    "EnderManMixin",
     "FoodDataMixin",
     "HumanoidMobPatchMixin",
     "HurtEventMixin",
@@ -47,6 +48,7 @@
     "VillagerMixin",
     "WanderingTraderMixin",
     "WindmillBearingBlockEntityMixin",
+    "WitherBossMixin",
     "WolfMixin",
     "WOMAnimationsMixin",
     "WorldOptionsMixin"

@@ -574,6 +574,7 @@
   "info.smc.no_task2": "If all else fails, go fight the final boss~",
   "info.smc.no_your_power": "Oh no, this power does not belong to you... By design, you can only use skillets and spatulas.",
   "info.smc.no_your_power2": "Turn off §6Combat Mode§r to pick up dropped items. Some items can be used in combat mode after stage progression.",
+  "info.smc.online_required": "§cOnline Required!",
   "info.smc.npc_plus_need_rest": "Boss, it's not working hours right now.",
   "info.smc.please_in_battle_mode": "§cPress §e[%s§e] §cto open Combat Mode!!",
   "info.smc.poisoned_skillet_item_info": "§2§lHighly Toxic!!",

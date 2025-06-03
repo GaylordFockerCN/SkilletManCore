@@ -9,7 +9,6 @@ import com.p1nero.smc.capability.SMCCapabilityProvider;
 import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.client.sound.SMCSounds;
 import com.p1nero.smc.datagen.SMCAdvancementData;
-import com.p1nero.smc.entity.api.MultiPlayerBoostEntity;
 import com.p1nero.smc.entity.custom.boss.SMCBoss;
 import com.p1nero.smc.gameasset.skill.SMCSkills;
 import com.p1nero.smc.item.custom.LeftSkilletRightSpatula;
@@ -17,7 +16,6 @@ import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.packet.SyncArchivePacket;
 import com.p1nero.smc.network.packet.clientbound.OpenContractScreenPacket;
-import com.p1nero.smc.network.packet.clientbound.OpenFastKillBossScreenPacket;
 import com.p1nero.smc.network.packet.clientbound.OpenStartGuideScreenPacket;
 import com.p1nero.smc.network.packet.clientbound.SyncUuidPacket;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
@@ -31,6 +29,7 @@ import dev.xkmc.cuisinedelight.content.item.SpatulaItem;
 import dev.xkmc.cuisinedelight.events.FoodEatenEvent;
 import dev.xkmc.cuisinedelight.init.registrate.CDItems;
 import hungteen.htlib.common.event.events.RaidEvent;
+import hungteen.htlib.common.world.entity.DummyEntityManager;
 import net.blay09.mods.waystones.block.ModBlocks;
 import net.kenddie.fantasyarmor.item.FAItems;
 import net.minecraft.ChatFormatting;
@@ -126,6 +125,11 @@ public class PlayerEventListeners {
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
+            //重置袭击状态，保险措施
+            if (DummyEntityManager.getDummyEntities(serverPlayer.serverLevel()).isEmpty()) {
+                DataManager.inRaid.put(serverPlayer, false);
+            }
+
             SolarTerm solarTerm = EclipticUtil.getNowSolarTerm(serverPlayer.serverLevel());
             serverPlayer.connection.send(new ClientboundSetTitleTextPacket(solarTerm.getTranslation().withStyle(solarTerm.getSeason().getColor())));//显示当天节气
             //同步客户端数据
