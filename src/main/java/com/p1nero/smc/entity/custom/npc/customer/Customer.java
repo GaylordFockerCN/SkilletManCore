@@ -389,6 +389,9 @@ public class Customer extends SMCNpc {
         BaseFoodItem.getData(this.getOrder());
         compoundTag.putString("food_name", this.getOrder().getDescriptionId());
         compoundTag.putBoolean("can_submit", !this.getOrder().isEmpty() && this.getOrder().is(serverPlayer.getMainHandItem().getItem()));
+        if (customerData != null) {
+            customerData.onInteract(serverPlayer, this);
+        }
         return super.getDialogData(compoundTag, serverPlayer);
     }
 
@@ -494,6 +497,8 @@ public class Customer extends SMCNpc {
         public abstract void generateTranslation(SMCLangGenerator generator);
 
         public abstract void onInteract(ServerPlayer player, Customer self);
+
+        public abstract void onGatherServerData(ServerPlayer player, Customer self);
 
         @OnlyIn(Dist.CLIENT)
         public abstract void getDialogScreen(CompoundTag serverData, LinkListStreamDialogueScreenBuilder screenBuilder, DialogueComponentBuilder dialogueComponentBuilder, boolean canSubmit, int foodLevel);

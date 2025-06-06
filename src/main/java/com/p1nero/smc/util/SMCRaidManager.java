@@ -11,6 +11,7 @@ import hungteen.htlib.api.interfaces.raid.IRaidComponent;
 import hungteen.htlib.common.impl.raid.HTRaidComponents;
 import hungteen.htlib.common.world.entity.DummyEntity;
 import hungteen.htlib.common.world.entity.DummyEntityManager;
+import hungteen.htlib.common.world.raid.AbstractRaid;
 import hungteen.htlib.util.helper.CodecHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -41,7 +42,6 @@ public class SMCRaidManager {
             if(dummyEntity != null) {
                 smcPlayer.setTodayInRaid(true);
                 DataManager.inRaid.put(serverPlayer, true);
-//                RAID_MAP.put(dummyEntity.getEntityID(), serverPlayer.getUUID());
             }
         }
     }
@@ -84,7 +84,6 @@ public class SMCRaidManager {
             if(dummyEntity != null) {
                 smcPlayer.setTodayInRaid(true);
                 DataManager.inRaid.put(serverPlayer, true);
-//                RAID_MAP.put(dummyEntity.getEntityID(), serverPlayer.getUUID());
             }
         }
     }
@@ -107,16 +106,12 @@ public class SMCRaidManager {
             if(dummyEntity != null) {
                 smcPlayer.setTodayInRaid(true);
                 DataManager.inRaid.put(serverPlayer, true);
-//                RAID_MAP.put(dummyEntity.getEntityID(), serverPlayer.getUUID());
             }
         }
     }
 
     public static DummyEntity createRaid(ServerLevel serverLevel, ResourceLocation raidId, Vec3 position) {
-        CompoundTag nbt = new CompoundTag();
-        IRaidComponent raidComponent = HTRaidComponents.registry().getValue(serverLevel, HTRaidComponents.registry().createKey(raidId));
-        CodecHelper.encodeNbt(HTRaidComponents.getDirectCodec(), raidComponent).result().ifPresent((tag) -> nbt.put("RaidTag", tag));
-        return DummyEntityManager.createDummyEntity(serverLevel, DUMMY_TYPE, position, nbt);
+        return AbstractRaid.summonRaid(serverLevel, DUMMY_TYPE, HTRaidComponents.registry().createKey(raidId), position);
     }
 
 }

@@ -33,7 +33,7 @@ public class ClericDialogBuilder extends VillagerDialogScreenHandler.VillagerDia
     public void handle(ServerPlayer serverPlayer, Villager villager, byte interactionID) {
         super.handle(serverPlayer, villager, interactionID);
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
-        if(interactionID == 1) {
+        if(interactionID == 1 && !DataManager.inRaid.get(serverPlayer)) {
             SMCRaidManager.startTrial(serverPlayer, smcPlayer);
         }
 

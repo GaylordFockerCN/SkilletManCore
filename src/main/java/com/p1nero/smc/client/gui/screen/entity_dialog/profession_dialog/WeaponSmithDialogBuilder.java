@@ -37,7 +37,7 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
     public void handle(ServerPlayer serverPlayer, Villager villager, byte interactionID) {
         super.handle(serverPlayer, villager, interactionID);
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
-        int moneyBase =  160 * (int)smcPlayer.getLevelMoneyRate();
+        int moneyBase = 160 * (int) smcPlayer.getLevelMoneyRate();
         if (interactionID == 1) {
             int ticketCount = ItemUtil.searchAndConsumeItem(serverPlayer, SMCRegistrateItems.WEAPON_RAFFLE_TICKET.asItem(), 1);
             if (ticketCount == 0) {
@@ -70,21 +70,21 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
             if (itemStack.hasTag()) {
                 level = itemStack.getOrCreateTag().getInt(SkilletManCoreMod.WEAPON_LEVEL_KEY);
             }
-            if(level >= 40) {
+            if (level >= 40) {
                 serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("weapon_level_max"), true);
                 return;
             }
             int need = (int) (Math.pow(upgradeRate, (level)) * 1600);
             if (SMCPlayer.hasMoney(serverPlayer, need, true)) {
                 SMCPlayer.consumeMoney(need, serverPlayer);
-                if(itemStack.isEmpty()){
+                if (itemStack.isEmpty()) {
                     SMCAdvancementData.finishAdvancement("upgrade_air", serverPlayer);
                 }
                 itemStack.getOrCreateTag().putInt(SkilletManCoreMod.WEAPON_LEVEL_KEY, level + 1);
             }
         }
 
-        if(interactionID == 4){
+        if (interactionID == 4) {
             this.startTrade(serverPlayer, villager);
         }
 
@@ -187,11 +187,15 @@ public class WeaponSmithDialogBuilder extends VillagerDialogScreenHandler.Villag
                     .addLeaf(choice(4), (byte) 3)
                     .addLeaf(choice(5));
 
-            builder.setAnswerRoot(new TreeNode(answer(0))
-                    .addChild(pull)
-                    .addChild(weaponUpdate)
-                    .addLeaf(choice(7), (byte) 4)
-                    .addLeaf(choice(1)));
+            TreeNode root = new TreeNode(answer(0));
+            root.addChild(pull)
+                    .addChild(weaponUpdate);
+            if (smcPlayer.getLevel() > SMCPlayer.STAGE2_REQUIRE) {
+                root.addLeaf(choice(7), (byte) 4);
+            }
+            root.addLeaf(choice(1));
+
+            builder.setAnswerRoot(root);
         }
     }
 

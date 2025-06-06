@@ -235,7 +235,7 @@ public class SMCPlayer {
     private boolean todayInRaid;
     private int morality = 0;
     private int level;
-    private int stage;
+    private int stage = 0;
     private int moneyCount;
     private int moneyInSeason;
     private boolean isWorking;

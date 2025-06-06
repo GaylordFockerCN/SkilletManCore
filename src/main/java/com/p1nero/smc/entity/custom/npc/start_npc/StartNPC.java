@@ -380,8 +380,12 @@ public class StartNPC extends SMCNpc {
         DialogueComponentBuilder dialogueComponentBuilder = new DialogueComponentBuilder(this);
 
         TreeNode upgrade = null;
-        if (getShopLevel() <= 3) {
+        if (getShopLevel() < 3) {
             upgrade = new TreeNode(dialogueComponentBuilder.ans(13, Component.literal(String.valueOf(getUpgradeShopNeed())).withStyle(ChatFormatting.GREEN)), dialogueComponentBuilder.opt(25));
+        }
+
+        if (getShopLevel() == 3) {
+            upgrade = new TreeNode(dialogueComponentBuilder.ans(15, Component.literal(String.valueOf(getUpgradeShopNeed())).withStyle(ChatFormatting.GREEN)), dialogueComponentBuilder.opt(25));
         }
 
         if (upgrade != null) {

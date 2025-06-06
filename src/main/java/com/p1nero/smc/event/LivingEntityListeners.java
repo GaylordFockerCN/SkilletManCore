@@ -10,6 +10,7 @@ import com.p1nero.smc.entity.custom.boss.SMCBoss;
 import com.p1nero.smc.entity.custom.boss.goldenflame.GoldenFlame;
 import com.p1nero.smc.entity.custom.npc.me.P1nero;
 import com.p1nero.smc.entity.custom.npc.special.virgil.VirgilVillager;
+import com.p1nero.smc.mixin.AbstractRaidAccessor;
 import com.p1nero.smc.network.PacketRelay;
 import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.OpenFastKillBossScreenPacket;
@@ -19,6 +20,7 @@ import hungteen.htlib.common.event.events.DummyEntityEvent;
 import hungteen.htlib.common.event.events.RaidEvent;
 import hungteen.htlib.common.world.raid.DefaultRaid;
 import net.minecraft.ChatFormatting;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -128,11 +130,45 @@ public class LivingEntityListeners {
      */
     @SubscribeEvent
     public static void onRaidDefeated(RaidEvent.RaidDefeatedEvent event) {
-        for (Entity entity : event.getRaid().getDefenders()) {
-            if (entity instanceof ServerPlayer serverPlayer) {
-                SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
-                if (smcPlayer.isTrialRequired()) {
-                    SMCPlayer.stageUp(serverPlayer);
+        ResourceLocation raidLocation = ((AbstractRaidAccessor) event.getRaid()).getRaidLocation();
+        if(raidLocation == null) {
+            return;
+        }
+        if(!raidLocation.getNamespace().equals(SkilletManCoreMod.MOD_ID)) {
+            return;
+        }
+        if(raidLocation.getPath().contains("trial")) {
+            for (Entity entity : event.getRaid().getDefenders()) {
+                if (entity instanceof ServerPlayer serverPlayer) {
+                    SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
+                    if (smcPlayer.isTrialRequired()) {
+                        SMCPlayer.stageUp(serverPlayer);
+                    }
+                }
+            }
+        }
+        if(raidLocation.getPath().contains("raid")) {
+            for (Entity entity : event.getRaid().getDefenders()) {
+                if (entity instanceof ServerPlayer serverPlayer) {
+                    SMCPlayer.defendSuccess(serverPlayer);
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onRaidDefeated(RaidEvent.RaidLostEvent event) {
+        ResourceLocation raidLocation = ((AbstractRaidAccessor) event.getRaid()).getRaidLocation();
+        if(raidLocation == null) {
+            return;
+        }
+        if(!raidLocation.getNamespace().equals(SkilletManCoreMod.MOD_ID)) {
+            return;
+        }
+        if(raidLocation.getPath().contains("raid")) {
+            for (Entity entity : event.getRaid().getDefenders()) {
+                if (entity instanceof ServerPlayer serverPlayer) {
+                    SMCPlayer.defendFailed(serverPlayer);
                 }
             }
         }

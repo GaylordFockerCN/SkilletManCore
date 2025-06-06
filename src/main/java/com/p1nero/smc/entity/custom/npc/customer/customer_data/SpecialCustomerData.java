@@ -41,6 +41,11 @@ public abstract class SpecialCustomerData extends Customer.CustomerData {
     }
 
     @Override
+    public void onGatherServerData(ServerPlayer player, Customer self) {
+
+    }
+
+    @Override
     public void generateTranslation(SMCLangGenerator generator) {
     }
 

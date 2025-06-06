@@ -8,6 +8,7 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
+
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
 //    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'org.spongepowered.mixin' version '0.7.+'
@@ -175,6 +176,7 @@ dependencies {
     implementation fg.deobf("curse.maven:barbeques-delight-1007788:5848042")
 //    implementation fg.deobf("curse.maven:storage-drawers-223852:6549483")
     implementation fg.deobf("curse.maven:spice-of-life-carrot-edition-277616:4888575")
+//    implementation fg.deobf("curse.maven:appleskin-248787:4770828")
 
     //机械动力
     implementation fg.deobf("com.simibubi.create:create-${create_minecraft_version}:${create_version}-${create_version_build}:slim") { transitive = false }
@@ -186,7 +188,7 @@ dependencies {
     implementation fg.deobf("libs:create_cuisine:1.0.0")
     implementation fg.deobf("libs:create_arm_made_bbq:1.0.0")
 
-    implementation fg.deobf("curse.maven:hungteens-lib-794622:5782587")
+    implementation fg.deobf("curse.maven:hungteens-lib-794622:6616773")
 
     implementation fg.deobf("curse.maven:epic-terrain-compatible-1137535:6439744")
     implementation fg.deobf("curse.maven:biomes-o-plenty-220318:6364065")
@@ -201,6 +203,8 @@ dependencies {
     //背包
     implementation fg.deobf("curse.maven:sophisticated-core-618298:6266807")
     implementation fg.deobf("curse.maven:sophisticated-backpacks-422301:6246607")
+
+//    implementation fg.deobf("curse.maven:curios-309927:6418456")
 
     implementation fg.deobf("curse.maven:toms-storage-378609:6418133")
 

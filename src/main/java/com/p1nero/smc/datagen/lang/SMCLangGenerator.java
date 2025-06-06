@@ -468,9 +468,10 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialog(SMCEntities.START_NPC, 10, "这是目前可以订购的食材大礼包的列表，本列表将随着游戏阶段的提升而增加。");
         this.addDialog(SMCEntities.START_NPC, 11, "要兑换哪种抽奖券呢？");
         this.addDialog(SMCEntities.START_NPC, 12, "兑换几张呢？");
-        this.addDialog(SMCEntities.START_NPC, 13, "注意，升级会§c强行覆盖§r周边建筑，更高的升级可能§c重置§r整个建筑，升级前请先确定建筑内或周边无贵重物品！特别是你的§6存储仓库§r！ 本次修缮花费 %d ，确定升级吗？");
+        this.addDialog(SMCEntities.START_NPC, 13, "注意，升级会§c强行覆盖§r周边建筑，更高的升级§e（三级升四级）§r可能§c重置§r整个建筑，升级前请先确定建筑内或周边无贵重物品！特别是你的§6存储仓库§r！ 本次修缮花费 %d ，确定升级吗？");
 
         this.addDialog(SMCEntities.START_NPC, 14, "烧烤店是击败Boss后的全新玩法，需花费§6200,000§r绿宝石，是否继续？");
+        this.addDialog(SMCEntities.START_NPC, 15, "注意，升级会§c重置§r整个建筑！我们将进入§a机械动力时代§r！如果你不想体验机械动力的内容，我们不建议您升级。升级前请先确定建筑内或周边无贵重物品，特别是你的§6存储仓库§r！ 本次修缮花费 %d ，确定升级吗？");
         this.add(SMCEntities.START_NPC_PLUS.get(), "§e人畜无害的村民§r");
         this.add(SMCEntities.START_NPC_PLUS.get() + "_empty", "§e⬇对话以开始经营⬇");
         this.add(SMCEntities.START_NPC_PLUS.get().getDescriptionId() + "_hired", "§a收入：%d §e| §a速度 %s");
@@ -580,7 +581,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialogChoice(SMCEntities.VIRGIL_VILLAGER, 5, " 该做个了解了！一了百了！");
 
         this.add(SMCEntities.P1NERO.get(), "总导演：P1nero");
-        this.addDialog(SMCEntities.P1NERO, 0, "Cut!完美！太完美了！至此，平底锅侠的传奇故事告一段落，您的表演实在是太出色了！请问总体来说您愿意给整合包打几分？不用担心，我们不会泄露您的信息！§l§6（评分收集截止至2025.8.31 00:00 UTC +8）");
+        this.addDialog(SMCEntities.P1NERO, 0, "Cut!完美！太完美了！至此，平底锅侠的传奇故事告一段落，您的表演实在是太出色了！请问总体来说您愿意给整合包打几分？§c§l本评分将会统计至作者的服务器，请勿乱填！请勿乱填！请勿乱填！§r 不用担心，我们不会泄露您的信息！§l§6（评分收集截止至2025.8.31 00:00 UTC +8）");
         this.addDialog(SMCEntities.P1NERO, 1, "您觉得本整合包的创意如何？");
         this.addDialog(SMCEntities.P1NERO, 2, "您觉得本整合包难度和节奏把控如何？");
         this.addDialog(SMCEntities.P1NERO, 3, "您觉得本整合包美术体验如何？");
