@@ -37,6 +37,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add("key.categories.smc", "平底锅侠 - 核心");
         this.addKeyMapping(KeyMappings.SHOW_HINT, "隐藏/显示当前引导");
 
+        this.addInfo("defend_success_add_villagers", "§a抵御成功！村民人口增长3！最多增加到30！");
         this.addInfo("online_required", "§c需正版验证！");
         this.addInfo("warning_yellow_glow", "§e黄光提示躲避！不要恋战！");
         this.addInfo("multy_player_health_boost_to", "§l§c受玩家数量影响，Boss血量提升至 %d 倍");
@@ -361,13 +362,11 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add(SMCRegistrateItems.DIAMOND_SPATULA_V4.get(), "钻石锅铲");
         this.add(SMCRegistrateItems.DIAMOND_SPATULA_V5.get(), "钻石锅铲");
         this.add("item.smc.diamond_spatula_skill1", "%s %s %s %s %s 开启强化");
-        this.add("item.smc.diamond_spatula_skill2", "%s %s 开启无月连段");
-        this.add("item.smc.diamond_spatula_skill3", "存在 冲刺 跳跃 攻击分支");
+        this.add("item.smc.diamond_spatula_skill3", "存在跳跃攻击和冲刺攻击分支");
         this.add(SMCRegistrateItems.GOLDEN_SKILLET.get(), "黄金平底锅");
         this.add(SMCRegistrateItems.DIAMOND_SKILLET.get(), "钻石平底锅");
         this.add("item.smc.diamond_skillet_skill1", "%s %s %s %s %s %s %s 开启强化");
-        this.add("item.smc.diamond_skillet_skill2", "冲刺时 %s %s/%s %s 释放 CREMATORIO");
-        this.add("item.smc.diamond_skillet_skill3", "%s %s %s %s %s 释放 SOLAR POLVORA");
+        this.add("item.smc.diamond_skillet_skill2", "存在跳跃攻击和冲刺攻击分支");
         this.add(SMCRegistrateItems.DIRT_PLATE.get(), "脏盘子");
         this.add(SMCRegistrateItems.DIRT_PLATE.get().getDescriptionId() + ".disc", "上面充满了油渍，对着水右键可以洗干净。");
         this.add(SMCBlocks.MAIN_COOK_BLOCK.get(), "核心方块");

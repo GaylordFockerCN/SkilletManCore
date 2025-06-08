@@ -22,13 +22,14 @@ import yesman.epicfight.world.effect.EpicFightMobEffects;
 @Mod.EventBusSubscriber(modid = SkilletManCoreMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class SkilletCombos {
     public static Skill DIAMOND_SKILLET_COMBO;
+
     @SubscribeEvent
-    public static void BuildSkills(SkillBuildEvent event){
+    public static void BuildSkills(SkillBuildEvent event) {
         ComboNode root = ComboNode.create();
         ComboNode a = ComboNode.create();
-        ComboNode jumpAttack = ComboNode.createNode(() -> WOMAnimations.RUINE_EXPIATION).setNotCharge(true).addCondition(new JumpCondition()).setPriority(2);
+        ComboNode jumpAttack = ComboNode.createNode(() -> WOMAnimations.SOLAR_OBSCURIDAD_DINAMITA).setNotCharge(true).addCondition(new JumpCondition()).setPriority(2);
         ComboNode dashAttack = ComboNode.createNode(() -> WOMAnimations.RUINE_EXPIATION).setNotCharge(true).addCondition(new SprintingCondition()).setPriority(1).setCanBeInterrupt(false);
-        ComboNode auto1 = ComboNode.createNode(() -> WOMAnimations.SOLAR_AUTO_1);
+        ComboNode auto1 = ComboNode.createNode(() -> WOMAnimations.SOLAR_AUTO_1).setCanBeInterrupt(false);
         a.addConditionAnimation(jumpAttack).addConditionAnimation(dashAttack).addConditionAnimation(auto1);
         ComboNode aa = ComboNode.createNode(() -> WOMAnimations.SOLAR_AUTO_2);
         ComboNode aa_ = ComboNode.create().addConditionAnimation(jumpAttack).addConditionAnimation(aa).addConditionAnimation(dashAttack);
@@ -39,17 +40,21 @@ public class SkilletCombos {
         ComboNode ab = ComboNode.createNode(() -> WOMAnimations.SOLAR_AUTO_1_POLVORA).setNotCharge(true);
         ComboNode aab = ComboNode.createNode(() -> WOMAnimations.SOLAR_AUTO_2_POLVORA).setNotCharge(true);
         ComboNode aaab = ComboNode.createNode(() -> WOMAnimations.SOLAR_AUTO_3_POLVORA).setNotCharge(true);
-        ComboNode aaaaa = ComboNode.createNode(() -> WOMAnimations.SOLAR_AUTO_4_POLVORA).setNotCharge(true);
-        ComboNode aaaab = ComboNode.createNode(() -> WOMAnimations.SOLAR_OBSCURIDAD_IMPACTO).setNotCharge(true);
-        ComboNode aaaaba = ComboNode.createNode(() -> WOMAnimations.SOLAR_OBSCURIDAD_DINAMITA).setNotCharge(true);
-        ComboNode aaaabaa = ComboNode.createNode(() -> WOMAnimations.SOLAR_BRASERO_OBSCURIDAD).setNotCharge(true)
+        ComboNode aaaaa = ComboNode.createNode(() -> WOMAnimations.SOLAR_AUTO_4_POLVORA).setNotCharge(true)
                 .addTimeEvent(new TimeStampedEvent(1.5F, (entityPatch -> {
                     entityPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 2));
                     entityPatch.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 200, 2));
                     entityPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 200, 2));
                     entityPatch.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 200, 2));
                 })));
-        ComboNode aaaabab = ComboNode.createNode(() -> WOMAnimations.SOLAR_BRASERO_INFIERNO).setNotCharge(true);
+        ComboNode aaaab = ComboNode.createNode(() -> WOMAnimations.SOLAR_OBSCURIDAD_IMPACTO).setNotCharge(true);
+        ComboNode daa = ComboNode.createNode(() -> WOMAnimations.SOLAR_BRASERO_OBSCURIDAD).setNotCharge(true)
+                .addTimeEvent(new TimeStampedEvent(1.5F, (entityPatch -> {
+                    entityPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 2));
+                    entityPatch.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 200, 2));
+                    entityPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 200, 2));
+                    entityPatch.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 200, 2));
+                })));
         ComboNode da = ComboNode.createNode(() -> WOMAnimations.TORMENT_AUTO_4).setNotCharge(true);
         ComboNode dab = ComboNode.createNode(() -> WOMAnimations.SOLAR_BRASERO_CREMATORIO).setNotCharge(true)
                 .addTimeEvent(new TimeStampedEvent(0.3F, entityPatch -> {
@@ -61,7 +66,13 @@ public class SkilletCombos {
                 }))
                 .addTimeEvent(new TimeStampedEvent(1.0F, SMCCombatBehaviors.PLAY_SOLAR_BRASERO_CREMATORIO_PARTICLE))
                 .addTimeEvent(new TimeStampedEvent(1.5F, SMCCombatBehaviors.PLAY_SOLAR_BRASERO_CREMATORIO_PARTICLE))
-                .addTimeEvent(new TimeStampedEvent(2.0F, SMCCombatBehaviors.PLAY_SOLAR_BRASERO_CREMATORIO_PARTICLE));
+                .addTimeEvent(new TimeStampedEvent(2.0F, SMCCombatBehaviors.PLAY_SOLAR_BRASERO_CREMATORIO_PARTICLE))
+                .addTimeEvent(new TimeStampedEvent(0.0F, (entityPatch -> {
+                    entityPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 2));
+                    entityPatch.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 200, 2));
+                    entityPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 200, 2));
+                    entityPatch.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 200, 2));
+                })));
         a.key2(ab);
         a.key1(aa_);
         aa.key1(aaa_);
@@ -75,18 +86,17 @@ public class SkilletCombos {
         aaab.key1(aaaa_);
         aaaaa.key1(a);
         aaaab.key2(aaaab);
-        aaaab.key1(aaaaba);
-        aaaaba.key1(aaaabaa);
-        aaaaba.key2(aaaabab);
-        jumpAttack.key1(da);
-        jumpAttack.key2(da);
+        aaaab.key1(a);
+        jumpAttack.key1(daa);
+        jumpAttack.key2(dab);
         root.key1(a);
         root.key2(dashAttack);
         dashAttack.key1(da);
         dashAttack.key2(da);
-        da.key1(a);
+        da.key1(daa);
         da.key2(dab);
         dab.key1(a);
+        daa.key1(a);
         SkillBuildEvent.ModRegistryWorker registryWorker = event.createRegistryWorker(SkilletManCoreMod.MOD_ID);
         DIAMOND_SKILLET_COMBO = registryWorker.build("diamond_skillet_combo", DiamondSkilletCombo::new, DiamondSkilletCombo.createComboBasicAttack().setCombo(root).setShouldDrawGui(false));
     }

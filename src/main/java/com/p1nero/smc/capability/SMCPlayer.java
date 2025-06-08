@@ -15,6 +15,7 @@ import com.p1nero.smc.network.SMCPacketHandler;
 import com.p1nero.smc.network.packet.clientbound.OpenEndScreenPacket;
 import com.p1nero.smc.network.packet.clientbound.SyncSMCPlayerPacket;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
+import com.p1nero.smc.util.EntityUtil;
 import com.p1nero.smc.util.ItemUtil;
 import com.p1nero.smc.util.gacha.ArmorGachaSystem;
 import com.p1nero.smc.util.gacha.SkillBookGachaSystem;
@@ -39,7 +40,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -470,6 +474,19 @@ public class SMCPlayer {
         addMoney(1600 * (1 + dayTime), serverPlayer);
         SMCPlayer.addExperience(serverPlayer);
         tryBroadCastRank(serverPlayer);
+        summonVillagers(serverPlayer);
+    }
+
+    public static void summonVillagers(ServerPlayer serverPlayer) {
+        if (DummyEntityManager.getDummyEntities(serverPlayer.serverLevel()).size() <= 1) {
+            List<Villager> villagers = EntityUtil.getNearByEntities(Villager.class, serverPlayer, 64);
+            if (villagers.size() < 30) {
+                for (int i = 0; i < 3; i++) {
+                    EntityType.VILLAGER.spawn(serverPlayer.serverLevel(), serverPlayer.getOnPos(), MobSpawnType.MOB_SUMMONED);
+                }
+                serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("defend_success_add_villagers"), false);
+            }
+        }
     }
 
     public static void defendFailed(ServerPlayer serverPlayer) {
@@ -926,7 +943,7 @@ public class SMCPlayer {
         } else {
             ServerPlayer serverPlayer = (ServerPlayer) player;
             ServerLevel serverLevel = serverPlayer.serverLevel();
-            if(serverPlayer.isInvulnerable() && !serverPlayer.hasEffect(EpicFightMobEffects.STUN_IMMUNITY.get())) {
+            if (serverPlayer.isInvulnerable() && !serverPlayer.hasEffect(EpicFightMobEffects.STUN_IMMUNITY.get())) {
                 serverPlayer.setInvulnerable(false);
             }
             //显示当天节气
@@ -987,7 +1004,7 @@ public class SMCPlayer {
                 if (this.weaponGachaingCount > 0) {
                     this.weaponGachaingCount--;
                     ItemStack itemStack = WeaponGachaSystem.pull(serverPlayer);
-                    if(itemStack.is(Items.BOW)) {
+                    if (itemStack.is(Items.BOW)) {
                         EnchantmentHelper.enchantItem(serverPlayer.getRandom(), itemStack, 30 + serverPlayer.getRandom().nextInt(25), false);
                     }
                     CustomColorItemEntity entity = ItemUtil.addItemEntity(player, itemStack);
