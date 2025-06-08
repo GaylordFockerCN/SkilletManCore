@@ -3,6 +3,8 @@ package com.p1nero.smc.entity.custom.npc;
 import com.mojang.serialization.Dynamic;
 import com.p1nero.dialog_lib.api.component.DialogueComponentBuilder;
 import com.p1nero.smc.archive.SMCArchiveManager;
+import com.p1nero.smc.capability.SMCCapabilityProvider;
+import com.p1nero.smc.capability.SMCPlayer;
 import com.p1nero.smc.entity.ai.behavior.VillagerTasks;
 import com.p1nero.smc.entity.ai.goal.NpcDialogueGoal;
 import com.p1nero.smc.entity.api.HomePointEntity;
@@ -126,6 +128,17 @@ public abstract class SMCNpc extends Villager implements HomePointEntity, NpcDia
 
     public void setOwnerUUID(@Nullable UUID pUuid) {
         this.entityData.set(OWNER_UUID, Optional.ofNullable(pUuid));
+    }
+
+    /**
+     * 算上合同玩家
+     */
+    public boolean isOwner(Player player) {
+        SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
+        if(player.getUUID().equals(this.getOwnerUUID())) {
+            return true;
+        }
+        return smcPlayer.getCollaboratorUUID() == this.getOwnerUUID();
     }
 
     @Override

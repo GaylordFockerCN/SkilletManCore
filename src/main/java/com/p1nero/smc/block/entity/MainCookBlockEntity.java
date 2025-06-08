@@ -329,7 +329,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         if(this.startNPC == null) {
             return;
         }
-        if(!serverPlayer.getUUID().equals(this.startNPC.getOwnerUUID())) {
+        if(!this.startNPC.isOwner(serverPlayer)) {
             SMCPlayer.updateWorkingState(false, serverPlayer);
             this.clearCustomers();
             serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("already_has_owner"), true);
@@ -347,7 +347,7 @@ public class MainCookBlockEntity extends BlockEntity implements INpcDialogueBloc
         if(this.startNPC == null) {
             return true;
         }
-        if(!serverPlayer.getUUID().equals(this.startNPC.getOwnerUUID())) {
+        if(!this.startNPC.isOwner(serverPlayer)) {
             SMCPlayer.updateWorkingState(false, serverPlayer);
             this.clearCustomers();
             serverPlayer.displayClientMessage(SkilletManCoreMod.getInfo("already_has_owner"), true);

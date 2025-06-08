@@ -5,7 +5,7 @@
 	#Range: 1 ~ 10
 	long_press_count = 2
 	auto_preparation = false
-	mining_autoswitch_items = ["minecraft:stone_axe", "minecraft:netherite_axe", "minecraft:netherite_pickaxe", "minecraft:golden_axe", "minecraft:iron_axe", "minecraft:diamond_axe", "minecraft:stone_pickaxe", "minecraft:golden_pickaxe", "minecraft:diamond_pickaxe", "minecraft:iron_pickaxe"]
+	mining_autoswitch_items = ["minecraft:iron_axe", "minecraft:netherite_axe", "minecraft:stone_axe", "minecraft:netherite_pickaxe", "minecraft:iron_pickaxe", "minecraft:diamond_pickaxe", "minecraft:diamond_axe", "minecraft:stone_pickaxe", "minecraft:golden_pickaxe", "minecraft:golden_axe"]
 	blood_effects = true
 	show_target_indicator = true
 	#Range: 0.0 ~ 1.0
@@ -14,7 +14,7 @@
 	#Allowed Values: NONE, HURT, TARGET
 	health_bar_show_option = "TARGET"
 	camera_auto_switch = true
-	filter_animation = true
+	filter_animation = false
 	aiming_correction = true
 	first_person_model = true
 	#Range: 0 ~ 30

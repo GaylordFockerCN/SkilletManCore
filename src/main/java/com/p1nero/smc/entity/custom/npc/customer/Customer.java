@@ -308,7 +308,7 @@ public class Customer extends SMCNpc {
             return InteractionResult.FAIL;
         }
         SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(player);
-        if (player instanceof ServerPlayer serverPlayer && this.getOwner() != null && !player.getUUID().equals(this.getOwnerUUID())) {
+        if (player instanceof ServerPlayer serverPlayer && this.getOwner() != null && !this.isOwner(player)) {
             SMCAdvancementData.finishAdvancement("hijack_customer", serverPlayer);
         }
         ItemStack mainHandItem = player.getMainHandItem();

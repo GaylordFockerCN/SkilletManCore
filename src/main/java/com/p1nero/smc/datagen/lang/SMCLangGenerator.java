@@ -16,6 +16,7 @@ import com.p1nero.smc.item.SMCItems;
 import com.p1nero.smc.item.custom.CookGuideBookItem;
 import com.p1nero.smc.item.custom.CreateCookGuideBookItem;
 import com.p1nero.smc.item.custom.CreateFuelGuideBookItem;
+import com.p1nero.smc.item.custom.EpicFightGuideBookItem;
 import com.p1nero.smc.registrate.SMCRegistrateItems;
 import com.p1nero.smc.worldgen.biome.SMCBiomes;
 import dev.xkmc.cuisinedelight.init.registrate.CDItems;
@@ -345,6 +346,9 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add(SMCRegistrateItems.CREATE_FUEL_GUIDE_BOOK.get(), "论美食与柴油动力");
         this.addItemUsageInfo(SMCRegistrateItems.CREATE_FUEL_GUIDE_BOOK.get(), "右键以学习柴油动力在本整合包的特殊玩法。本书应和 工作盆盖板 与 柴油引擎 的 [思索] 结合阅读。");
         CreateFuelGuideBookItem.addTranslation(this);
+        this.add(SMCRegistrateItems.EPIC_FIGHT_GUIDE_BOOK.get(), "史诗战斗入门指南");
+        this.addItemUsageInfo(SMCRegistrateItems.EPIC_FIGHT_GUIDE_BOOK.get(), "右键以学习史诗战斗入门玩法，非常的入门！");
+        EpicFightGuideBookItem.addTranslation(this);
 
         this.add(SMCItems.LEFT_SKILLET_RIGHT_SPATULA.get(), "左锅右铲");
         this.add(SMCRegistrateItems.SPATULA_V2.get(), "锅铲");
@@ -365,7 +369,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add("item.smc.diamond_spatula_skill3", "存在跳跃攻击和冲刺攻击分支");
         this.add(SMCRegistrateItems.GOLDEN_SKILLET.get(), "黄金平底锅");
         this.add(SMCRegistrateItems.DIAMOND_SKILLET.get(), "钻石平底锅");
-        this.add("item.smc.diamond_skillet_skill1", "%s %s %s %s %s %s %s 开启强化");
+        this.add("item.smc.diamond_skillet_skill1", "%s %s %s %s %s 开启强化");
         this.add("item.smc.diamond_skillet_skill2", "存在跳跃攻击和冲刺攻击分支");
         this.add(SMCRegistrateItems.DIRT_PLATE.get(), "脏盘子");
         this.add(SMCRegistrateItems.DIRT_PLATE.get().getDescriptionId() + ".disc", "上面充满了油渍，对着水右键可以洗干净。");

@@ -356,7 +356,7 @@ public class StartNPC extends SMCNpc {
     @Override
     public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         if (this.getEntityData().get(STATE) != EMPTY) {
-            if (!player.getUUID().equals(this.getOwnerUUID())) {
+            if (!isOwner(player)) {
                 player.displayClientMessage(SkilletManCoreMod.getInfo("already_has_owner"), true);
                 return InteractionResult.FAIL;
             }

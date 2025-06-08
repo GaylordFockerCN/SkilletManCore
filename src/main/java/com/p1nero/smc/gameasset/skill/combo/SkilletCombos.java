@@ -41,7 +41,7 @@ public class SkilletCombos {
         ComboNode aab = ComboNode.createNode(() -> WOMAnimations.SOLAR_AUTO_2_POLVORA).setNotCharge(true);
         ComboNode aaab = ComboNode.createNode(() -> WOMAnimations.SOLAR_AUTO_3_POLVORA).setNotCharge(true);
         ComboNode aaaaa = ComboNode.createNode(() -> WOMAnimations.SOLAR_AUTO_4_POLVORA).setNotCharge(true)
-                .addTimeEvent(new TimeStampedEvent(1.5F, (entityPatch -> {
+                .addTimeEvent(new TimeStampedEvent(0.0F, (entityPatch -> {
                     entityPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 2));
                     entityPatch.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 200, 2));
                     entityPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 200, 2));
@@ -49,7 +49,7 @@ public class SkilletCombos {
                 })));
         ComboNode aaaab = ComboNode.createNode(() -> WOMAnimations.SOLAR_OBSCURIDAD_IMPACTO).setNotCharge(true);
         ComboNode daa = ComboNode.createNode(() -> WOMAnimations.SOLAR_BRASERO_OBSCURIDAD).setNotCharge(true)
-                .addTimeEvent(new TimeStampedEvent(1.5F, (entityPatch -> {
+                .addTimeEvent(new TimeStampedEvent(0.0F, (entityPatch -> {
                     entityPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 2));
                     entityPatch.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 200, 2));
                     entityPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 200, 2));

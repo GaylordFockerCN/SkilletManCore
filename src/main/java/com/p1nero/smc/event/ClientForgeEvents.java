@@ -88,7 +88,7 @@ public class ClientForgeEvents {
         TIPS.add("任何时候开始学机械动力都不晚！");
         TIPS.add("我知道你根本就不会看作者在左上角给的提示，对吧~");
         TIPS.add("[提示框广告招租，五元一条不限时！]");
-        TIPS.add("玩家被最终boss击败时，最终boss将恢复最大生命值1/3的血量。");
+        TIPS.add("玩家被最终boss击败时，最终boss将恢复最大生命值1/10的血量。");
     }
     /**
      * 画提示

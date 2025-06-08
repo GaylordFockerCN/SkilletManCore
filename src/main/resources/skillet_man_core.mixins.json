@@ -26,6 +26,7 @@
     "CuisineSkilletItemMixin",
     "EnderManMixin",
     "FoodDataMixin",
+    "GuardSkillMixin",
     "HumanoidMobPatchMixin",
     "HurtEventMixin",
     "IronGolemMixin",

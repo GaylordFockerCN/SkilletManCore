@@ -590,6 +590,13 @@ public class SMCPlayer {
             }
             smcPlayer.syncToClient(serverPlayer);
         }
+        Player collaborator = smcPlayer.getCollaborator(serverPlayer);
+        if(collaborator instanceof ServerPlayer spCollaborator) {
+            SMCPlayer smcCollaborator = SMCCapabilityProvider.getSMCPlayer(collaborator);
+            if(smcCollaborator.isWorking != isWorking) {
+                updateWorkingState(isWorking, spCollaborator);
+            }
+        }
     }
 
     public int getMoneyCount() {

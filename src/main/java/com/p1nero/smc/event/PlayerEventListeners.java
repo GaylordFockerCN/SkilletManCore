@@ -162,6 +162,7 @@ public class PlayerEventListeners {
                 ItemUtil.addItem(serverPlayer, CDItems.SKILLET.asItem(), 1);
                 ItemUtil.addItem(serverPlayer, CDItems.SPATULA.asItem(), 1);
                 ItemUtil.addItem(serverPlayer, SMCRegistrateItems.CONTRACT.asItem(), 1, true);
+                ItemUtil.addItem(serverPlayer, SMCRegistrateItems.EPIC_FIGHT_GUIDE_BOOK.asItem(), 1);
                 ItemStack step = new ItemStack(EpicFightItems.SKILLBOOK.get());
                 step.getOrCreateTag().putString("skill", EpicFightSkills.STEP.toString());
                 ItemStack parrying = new ItemStack(EpicFightItems.SKILLBOOK.get());
@@ -216,14 +217,14 @@ public class PlayerEventListeners {
      */
     @SubscribeEvent
     public static void onPlayerAttack(LivingAttackEvent event) {
-        if (event.getSource().getEntity() instanceof Player player) {
-            if (!EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class).isBattleMode() && !event.getSource().isIndirect()) {
-                if(player.level().isClientSide) {
-                    player.displayClientMessage(SkilletManCoreMod.getInfo("please_in_battle_mode", EpicFightKeyMappings.SWITCH_MODE.getTranslatedKeyMessage().copy().withStyle(ChatFormatting.YELLOW)), true);
-                }
-                event.setCanceled(true);
-            }
-        }
+//        if (event.getSource().getEntity() instanceof Player player) {
+//            if (!EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class).isBattleMode() && !event.getSource().isIndirect()) {
+//                if(player.level().isClientSide) {
+//                    player.displayClientMessage(SkilletManCoreMod.getInfo("please_in_battle_mode", EpicFightKeyMappings.SWITCH_MODE.getTranslatedKeyMessage().copy().withStyle(ChatFormatting.YELLOW)), true);
+//                }
+//                event.setCanceled(true);
+//            }
+//        }
     }
 
     @SubscribeEvent

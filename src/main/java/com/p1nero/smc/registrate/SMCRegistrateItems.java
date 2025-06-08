@@ -177,6 +177,10 @@ public class SMCRegistrateItems {
             .defaultModel()
             .defaultLang().register();
 
+    public static final ItemEntry<EpicFightGuideBookItem> EPIC_FIGHT_GUIDE_BOOK = SkilletManCoreMod.REGISTRATE.item("epic_fight_guide_book", p -> new EpicFightGuideBookItem(p.stacksTo(1).rarity(Rarity.EPIC)))
+            .defaultModel()
+            .defaultLang().register();
+
     public static final ItemEntry<RumorItem> RUMOR_ITEM = SkilletManCoreMod.REGISTRATE.item("rumor_item", p -> new RumorItem(p.rarity(Rarity.RARE)))
             .defaultModel()
             .defaultLang().register();
