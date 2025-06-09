@@ -194,6 +194,7 @@ public class LivingEntityListeners {
                     GoldenFlame goldenFlame = SMCEntities.GOLDEN_FLAME.get().spawn(serverLevel, enderDragon.getOnPos(), MobSpawnType.SPAWNER);
                     if (goldenFlame != null) {
                         enderDragon.setHealth(0);
+                        goldenFlame.setHomePos(goldenFlame.getOnPos());
                         SkilletManCoreMod.LOGGER.info("replace ender dragon to golden flame.");
                     }
                 }

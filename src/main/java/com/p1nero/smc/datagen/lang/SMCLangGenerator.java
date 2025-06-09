@@ -474,7 +474,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.addDialog(SMCEntities.START_NPC, 13, "注意，升级会§c强行覆盖§r周边建筑，更高的升级§e（三级升四级）§r可能§c重置§r整个建筑，升级前请先确定建筑内或周边无贵重物品！特别是你的§6存储仓库§r！ 本次修缮花费 %d ，确定升级吗？");
 
         this.addDialog(SMCEntities.START_NPC, 14, "烧烤店是击败Boss后的全新玩法，需花费§6200,000§r绿宝石，是否继续？");
-        this.addDialog(SMCEntities.START_NPC, 15, "注意，升级会§c重置§r整个建筑！我们将进入§a机械动力时代§r！如果你不想体验机械动力的内容，我们不建议您升级。升级前请先确定建筑内或周边无贵重物品，特别是你的§6存储仓库§r！ 本次修缮花费 %d ，确定升级吗？");
+        this.addDialog(SMCEntities.START_NPC, 15, "注意，升级会§c重置整个建筑§r！并新增地下室！我们将进入§a机械动力时代§r！如果你不想体验§a[机械动力]§r的内容，我们§c不建议§r您升级。升级前请先确定建筑内或周边（包括地下）无贵重物品，特别是你的§6存储仓库§r！ 本次修缮花费 %d ，确定升级吗？");
         this.add(SMCEntities.START_NPC_PLUS.get(), "§e人畜无害的村民§r");
         this.add(SMCEntities.START_NPC_PLUS.get() + "_empty", "§e⬇对话以开始经营⬇");
         this.add(SMCEntities.START_NPC_PLUS.get().getDescriptionId() + "_hired", "§a收入：%d §e| §a速度 %s");

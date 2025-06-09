@@ -23,6 +23,9 @@ public class AttemptToGoHomeGoal<T extends PathfinderMob & HomePointEntity> exte
 
 	@Override
 	public boolean canUse() {
+		if(this.mob.getTarget() != null) {
+			return false;
+		}
 		if (this.mob.getHomePos() == null || this.mob.inHome()) {
 			return false;
 		} else {

@@ -354,6 +354,10 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity, MultiPlay
             value = Math.min(value, getMaxHealth() * 0.01F);
         }
 
+        if(value > 10) {
+            value = 10;
+        }
+
         return super.hurt(source, value);
     }
 
