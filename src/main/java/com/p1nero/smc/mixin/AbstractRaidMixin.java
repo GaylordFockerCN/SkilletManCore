@@ -65,6 +65,8 @@ public abstract class AbstractRaidMixin extends DummyEntity {
 
     @Shadow public abstract List<Entity> getRaiders();
 
+    @Shadow public abstract void remove();
+
     @Inject(method = "joinRaid", at = @At("HEAD"))
     private void smc$joinRaid(int wave, Entity raider, CallbackInfo ci) {
         raider.setGlowingTag(true);
@@ -108,6 +110,7 @@ public abstract class AbstractRaidMixin extends DummyEntity {
 
             if (++this.stopTick >= smc$MAX_STOP) {
                 this.onLoss();
+                this.remove();
             }
 
         } else {
