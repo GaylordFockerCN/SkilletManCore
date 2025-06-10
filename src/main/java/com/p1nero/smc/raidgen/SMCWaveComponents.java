@@ -141,7 +141,10 @@ public interface SMCWaveComponents {
 
             if(i > 13) {
                 spawns.get(SMCSpawnComponents.WITHER_SKELETONS.get(i)).ifPresent(reference -> wave3builder.add(Pair.of(ConstantInt.of(100), reference)));
-                spawns.get(SMCSpawnComponents.BLAZES.get(i)).ifPresent(reference -> wave3builder.add(Pair.of(ConstantInt.of(100), reference)));
+                spawns.get(SMCSpawnComponents.BLAZES.get(i)).ifPresent(reference -> {
+                    wave3builder.add(Pair.of(ConstantInt.of(100), reference));
+                    netherWave.add(Pair.of(ConstantInt.of(100), reference));
+                });
                 spawns.get(SMCSpawnComponents.ENDER_MAN.get(i)).ifPresent(reference -> wave3builder.add(Pair.of(ConstantInt.of(100), reference)));
             }
 

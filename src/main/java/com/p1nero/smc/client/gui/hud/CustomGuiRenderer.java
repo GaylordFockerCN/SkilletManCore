@@ -79,8 +79,8 @@ public class CustomGuiRenderer {
         //日历
         int termX = solarTerm.getIconPosition().getKey();
         int termY = solarTerm.getIconPosition().getValue();
-        guiGraphics.blit(TERM_ICON, 2, yL - 73 + 2, 16, 16, termX * 30, termY * 30, 30, 30, 180, 120);
-        guiGraphics.drawString(font, term, 24, yL - 68 + 2, stageColor, true);
+        guiGraphics.blit(TERM_ICON, 2, 2, 16, 16, termX * 30, termY * 30, 30, 30, 180, 120);
+        guiGraphics.drawString(font, term, 24, 7, stageColor, true);
 
         //任务提示
         if (Minecraft.getInstance().screen == null) {
@@ -95,7 +95,34 @@ public class CustomGuiRenderer {
         guiGraphics.drawString(font, moneyCount, screenW - offsetX, yR - 40 + 5, 16777215, true);
         //工作状态
         guiGraphics.drawString(font, smcPlayer.isWorking() ? SkilletManCoreMod.getInfo("working").withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN) : SkilletManCoreMod.getInfo("resting").withStyle(ChatFormatting.BOLD, ChatFormatting.GOLD), screenW - offsetX - 22, yR + font.lineHeight + interval - 40, 0x00ff00, true);
+        long time = localPlayer.level().getDayTime();
+        String formattedTime = convertMinecraftTime(time);
+        guiGraphics.drawString(font, Component.literal(formattedTime).withStyle(smcPlayer.isWorking() ? ChatFormatting.GREEN : ChatFormatting.GOLD), screenW - offsetX - 22, yR + font.lineHeight * 2 + interval - 40, 0x00ff00, true);
+    }
 
+    public static String convertMinecraftTime(long time) {
+        // 调整时间到一天范围内 [0, 23999]
+        long adjustedTime = time % 24000;
+        if (adjustedTime < 0) {
+            adjustedTime += 24000; // 处理负值
+        }
+
+        // 计算总小时数（包括小数），加上6小时的偏移（因为0刻对应6:00）
+        double totalHours = (double) adjustedTime / 1000.0 + 6.0;
+        totalHours %= 24; // 确保在24小时内
+
+        // 提取小时和分钟
+        int hours = (int) totalHours;
+        int minutes = (int) Math.round((totalHours - hours) * 60);
+
+        // 处理分钟进位（例如 23.999小时 -> 24:00 应转为 00:00）
+        if (minutes >= 60) {
+            hours = (hours + 1) % 24;
+            minutes = 0;
+        }
+
+        // 格式化为两位数
+        return String.format("%02d:%02d", hours, minutes);
     }
 
     public static void renderTutorial(GuiGraphics guiGraphics, LocalPlayer localPlayer, SMCPlayer smcPlayer, Font font, int lineHeight, int screenW, int screenH, int x, int y) {

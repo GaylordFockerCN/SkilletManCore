@@ -78,10 +78,10 @@ public class LivingEntityListeners {
         }
 
         if (event.getEntity() instanceof Villager villager && !(villager instanceof P1nero) && villager.getVillagerData().getProfession() != VillagerProfession.CLERIC && event.getSource().getEntity() instanceof ServerPlayer player) {
+            player.displayClientMessage(SkilletManCoreMod.getInfo("customer_is_first").withStyle(ChatFormatting.RED), true);
+            SMCPlayer.consumeMoney(event.getAmount(), player);
             event.setAmount(0);
             event.setCanceled(true);
-            player.displayClientMessage(SkilletManCoreMod.getInfo("customer_is_first").withStyle(ChatFormatting.RED), true);
-            SMCPlayer.consumeMoney(10, player);
         }
         if (event.getEntity() instanceof Player) {
             event.setAmount(event.getAmount() * 0.5F);

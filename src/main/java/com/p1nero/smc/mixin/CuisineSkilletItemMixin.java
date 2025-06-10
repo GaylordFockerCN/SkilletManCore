@@ -32,15 +32,19 @@ public abstract class CuisineSkilletItemMixin extends SkilletItem {
         super(block, properties);
     }
 
+    /**
+     * 史诗战斗下use无用
+     */
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
     private void smc$use(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir){
         ItemStack skilletStack = player.getItemInHand(hand);
-        if (!level.isClientSide()) {
-            //战斗模式不可用
-            if(EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class).isBattleMode()){
-                cir.setReturnValue(InteractionResultHolder.fail(skilletStack));
-            }
-        }
+//        if (!level.isClientSide()) {
+//            //战斗模式不可用
+//            if(EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class).isBattleMode()){
+//                cir.setReturnValue(InteractionResultHolder.fail(skilletStack));
+//            }
+//        }
+        cir.setReturnValue(InteractionResultHolder.fail(skilletStack));
     }
 
     /**

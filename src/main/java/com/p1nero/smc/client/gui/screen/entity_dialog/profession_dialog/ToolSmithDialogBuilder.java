@@ -88,6 +88,10 @@ public class ToolSmithDialogBuilder extends VillagerDialogScreenHandler.Villager
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(
                 new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 1),
+                new ItemStack(Items.CLAY, 16),
+                142857, 0, 0));
+        merchantOffers.add(new MerchantOffer(
+                new ItemStack(SMCRegistrateItems.REDSTONE_RAFFLE, 1),
                 new ItemStack(Items.OAK_LOG, 64),
                 142857, 0, 0));
         merchantOffers.add(new MerchantOffer(

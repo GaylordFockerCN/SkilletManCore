@@ -3,6 +3,7 @@ package com.p1nero.smc.block;
 import com.p1nero.smc.SkilletManCoreMod;
 import com.p1nero.smc.block.custom.*;
 import com.p1nero.smc.item.SMCItems;
+import com.p1nero.smc.item.custom.SimpleDescriptionBlockItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
@@ -29,7 +30,7 @@ public class SMCBlocks {
     }
 
     private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block) {
-        return SMCItems.REGISTRY.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+        return SMCItems.REGISTRY.register(name, () -> new SimpleDescriptionBlockItem(block.get(), new Item.Properties()));
     }
 
 }

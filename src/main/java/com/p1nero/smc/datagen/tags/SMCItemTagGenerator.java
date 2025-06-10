@@ -12,6 +12,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -41,6 +42,9 @@ public class SMCItemTagGenerator extends ItemTagsProvider {
         TagKey<Item> fermentable3 = ItemTags.create(ResourceLocation.fromNamespaceAndPath(SkilletManCoreMod.MOD_ID, "fermentable3"));
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tagAppender3 = this.tag(fermentable3).replace(false);
         ForgeRegistries.ITEMS.getValues().forEach(item -> {
+            if(item == Items.ROTTEN_FLESH || item == Items.SPIDER_EYE) {
+                return;
+            }
             if(item.getDescriptionId().contains(CuisineDelight.MODID)){
                 return;
             }

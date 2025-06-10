@@ -226,6 +226,7 @@
   "block.skillet_man_core.diamond_cuisine_skillet": "Diamond Skillet",
   "block.skillet_man_core.golden_cuisine_skillet": "Golden Skillet",
   "block.skillet_man_core.main_cook_block": "Core Block",
+  "block.skillet_man_core.main_cook_block.usage": "§cOnce placed, it cannot be removed unless in Creative Mode!§cCannot be removed!§cCannot be removed!§r  §aPlacing a §6[Stove]§a on top of the core block will be recognized as a shop unit  §cHowever, the §6[Shop Upgrade]§c feature will be disabled! And surrounding blocks will be protected! You can only remove the core block from its bottom  §aYou may choose to build your own shop or find existing shops in villages  ",
   "effect.skillet_man_core.bad_cat": "Hissing Kitty",
   "effect.skillet_man_core.burnt": "Burn",
   "effect.skillet_man_core.rumor": "Rumor",

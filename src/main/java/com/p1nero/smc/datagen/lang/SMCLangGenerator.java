@@ -374,6 +374,7 @@ public class SMCLangGenerator extends SMCLangProvider {
         this.add(SMCRegistrateItems.DIRT_PLATE.get(), "脏盘子");
         this.add(SMCRegistrateItems.DIRT_PLATE.get().getDescriptionId() + ".disc", "上面充满了油渍，对着水右键可以洗干净。");
         this.add(SMCBlocks.MAIN_COOK_BLOCK.get(), "核心方块");
+        this.addItemUsageInfo(SMCBlocks.MAIN_COOK_BLOCK.get().asItem(), "§c摆放后除非开创造模式，否则不可移除！§c否则不可移除！§c否则不可移除！§r  §a在核心方块上方放上§6[炉灶]§a，即被视为一个店铺单位。[炉灶]所需的[黏土]可在§6[机械师]§a处交易  §c但§6[店铺升级]§c功能将被禁用！且周围的方块受到保护！您只能从底部移除核心方块  §a您可以选择搭建自己的店铺，也可以选择在村庄里寻找现有的店铺");
         this.add(SMCRegistrateItems.GUO_CHAO.get(), "国潮外卖盒");
         this.addItemUsageInfo(SMCRegistrateItems.GUO_CHAO.get(), "可当做盘子使用。但过度使用的话，后果很严重...");
         this.addInfo("poisoned_skillet_item_info", "§2§l剧毒！！");

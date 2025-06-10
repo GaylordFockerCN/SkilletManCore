@@ -36,7 +36,7 @@ public class NitWitDialogBuilder extends VillagerDialogScreenHandler.VillagerDia
         generator.addVillagerOpt(this.profession, 1, "Mojang是不是忘了给你写交易代码？");
         generator.addVillagerAns(this.profession, 2, "他们说这是“特色”，就像洞穴更新前的地下岩浆湖。");
         generator.addVillagerOpt(this.profession, 2, "你真的是村子的守护者吗？");
-        generator.addVillagerAns(this.profession, 3, "阿巴，阿巴阿巴");
+        generator.addVillagerAns(this.profession, 3, "阿巴，阿巴阿巴。其实作者本来是想给我上一个在夜里可以攻击敌对生物的功能的，但是怕我喧宾夺主，抢了平底锅侠的风头，于是便放弃了，诶嘿嘿");
     }
 
 

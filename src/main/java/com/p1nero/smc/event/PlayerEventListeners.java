@@ -158,6 +158,7 @@ public class PlayerEventListeners {
                 serverPlayer.setItemSlot(EquipmentSlot.HEAD, FAItems.THIEF_HELMET.get().getDefaultInstance());
                 serverPlayer.setItemSlot(EquipmentSlot.CHEST, FAItems.THIEF_CHESTPLATE.get().getDefaultInstance());
 
+                ItemUtil.addItem(serverPlayer, SMCBlocks.MAIN_COOK_BLOCK.get().asItem(), 1);
                 ItemUtil.addItem(serverPlayer, ModItems.NETHERITE_BACKPACK.get(), 1);
                 ItemUtil.addItem(serverPlayer, CDItems.SKILLET.asItem(), 1);
                 ItemUtil.addItem(serverPlayer, CDItems.SPATULA.asItem(), 1);

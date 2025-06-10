@@ -475,6 +475,14 @@ public class SMCPlayer {
         SMCPlayer.addExperience(serverPlayer);
         tryBroadCastRank(serverPlayer);
         summonVillagers(serverPlayer);
+        //送随机附魔书
+        ItemStack book = Items.BOOK.getDefaultInstance();
+        ItemStack enchantedBook = EnchantmentHelper.enchantItem(serverPlayer.getRandom(), book, 30 + serverPlayer.getRandom().nextInt(25), false);
+        CustomColorItemEntity entity = ItemUtil.addItemEntity(serverPlayer, enchantedBook);
+        entity.setTeamColor(0xfff66d);
+        entity.setGlowingTag(true);
+        entity.setDefaultPickUpDelay();
+        playRareEffect(serverPlayer, enchantedBook);
     }
 
     public static void summonVillagers(ServerPlayer serverPlayer) {
@@ -1050,7 +1058,7 @@ public class SMCPlayer {
         player.server.getPlayerList().getPlayers().forEach(serverPlayer -> serverPlayer.displayClientMessage(player.getName().copy().append(SkilletManCoreMod.getInfo("common_item_got", itemName)), false));
     }
 
-    private void playCommonEffect(ServerPlayer player) {
+    private static void playCommonEffect(ServerPlayer player) {
         SMCAdvancementData.finishAdvancement("first_gacha", player);
         if (!DataManager.firstGachaGot.get(player)) {
             DataManager.firstGachaGot.put(player, true);
@@ -1060,7 +1068,7 @@ public class SMCPlayer {
         player.serverLevel().sendParticles(ParticleTypes.TOTEM_OF_UNDYING, player.getX(), player.getY(), player.getZ(), 10, 1.0, 1.0, 1.0, 0.2);
     }
 
-    private void playRareEffect(ServerPlayer player, ItemStack itemStack) {
+    private static void playRareEffect(ServerPlayer player, ItemStack itemStack) {
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 2.0F, 2.0F);
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 2.0F, 2.0F);
 
@@ -1068,7 +1076,7 @@ public class SMCPlayer {
         player.server.getPlayerList().getPlayers().forEach(serverPlayer -> serverPlayer.displayClientMessage(player.getName().copy().append(SkilletManCoreMod.getInfo("rare_item_got", itemName)), false));
     }
 
-    private void playGoldEffect(ServerPlayer player, ItemStack itemStack) {
+    private static void playGoldEffect(ServerPlayer player, ItemStack itemStack) {
         SMCAdvancementData.finishAdvancement("first_5star_item", player);
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 3.0F, 1.0F);
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 2.0F, 0.5F);

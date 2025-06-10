@@ -86,7 +86,7 @@ public class ServerEvents {
                 }
 
                 //下界入侵
-                if (overworld.isDay() && dayTick == 2000 && dayTime % 2 == 0) {
+                if (overworld.isDay() && dayTick == 2000 && dayTime % 4 == 0) {
                     for (ServerPlayer serverPlayer : event.getServer().getPlayerList().getPlayers()) {
                         if(serverPlayer.level().dimension() == Level.OVERWORLD) {
                             SMCPlayer smcPlayer = SMCCapabilityProvider.getSMCPlayer(serverPlayer);
