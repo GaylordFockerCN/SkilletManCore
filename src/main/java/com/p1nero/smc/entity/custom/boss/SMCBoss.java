@@ -233,7 +233,7 @@ public abstract class SMCBoss extends SMCMonster implements HomePointEntity, IWa
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new AttemptToGoHomeGoal<>(this, 1.0));
+//        this.goalSelector.addGoal(0, new AttemptToGoHomeGoal<>(this, 1.0));
     }
 
     protected void registerCommonGoals() {

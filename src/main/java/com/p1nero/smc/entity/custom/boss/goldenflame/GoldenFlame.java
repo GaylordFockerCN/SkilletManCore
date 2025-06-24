@@ -325,9 +325,9 @@ public class GoldenFlame extends SMCBoss implements IWanderableEntity, MultiPlay
         super.registerGoals();
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, false));
-        this.goalSelector.addGoal(1, new CustomWanderGoal<>(this, 1.0, true, 64));//无效
-        this.goalSelector.addGoal(2, new RandomStrollGoal(this, 1));
-        this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(7, new CustomWanderGoal<>(this, 1.0, true, 64));//无效
+        this.goalSelector.addGoal(8, new RandomStrollGoal(this, 1));
+        this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
     }
 
     @Override
